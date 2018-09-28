@@ -25,4 +25,5 @@ public class ExampleInstrumentedTest
 
         assertEquals("ch.epfl.sweng.studdybuddy", appContext.getPackageName());
     }
+
 }
