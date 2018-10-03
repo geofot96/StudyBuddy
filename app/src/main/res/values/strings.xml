@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">StuddyBuddy</string>
+    <string name="title_activity_groups">GroupsActivity</string>
 </resources>
