@@ -30,10 +30,11 @@
         android:id="@+id/gotoGroups"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="47dp"
         android:onClick="gotoGroups"
         android:text="Button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="47dp" />
+        app:layout_constraintTop_toTopOf="parent" />
 
 </android.support.constraint.ConstraintLayout>
