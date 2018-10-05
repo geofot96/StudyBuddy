@@ -5,13 +5,20 @@ import android.graphics.Bitmap;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import java.util.ArrayList;
+
 public class MainActivity extends AppCompatActivity
 {
 
+    private RecyclerView mRecyclerView;
+    private RecyclerView.Adapter mAdapter;
+    private RecyclerView.LayoutManager mLayoutManager;
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -30,6 +37,7 @@ public class MainActivity extends AppCompatActivity
                 }
             }
         });
+
     }
 
     static final int REQUEST_IMAGE_CAPTURE = 1;
@@ -50,7 +58,7 @@ public class MainActivity extends AppCompatActivity
 
     public void gotoGroups(View view)
     {
-        Intent intent = new Intent(this, GroupsActivityvol2.class);
+        Intent intent = new Intent(this, GroupsActivity.class);
         startActivity(intent);
     }
 

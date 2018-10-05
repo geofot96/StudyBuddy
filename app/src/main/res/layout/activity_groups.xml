@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".GroupsActivityvol2">
+    tools:context=".GroupsActivity">
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/createGroup"
@@ -19,4 +19,11 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@color/colorAccent" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/testRecycleViewer"
+        android:layout_width="368dp"
+        android:layout_height="495dp"
+        tools:layout_editor_absoluteX="8dp"
+        tools:layout_editor_absoluteY="16dp" />
 </android.support.constraint.ConstraintLayout>

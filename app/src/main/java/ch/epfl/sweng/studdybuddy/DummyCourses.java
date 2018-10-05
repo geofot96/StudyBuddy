@@ -17,7 +17,7 @@ public class DummyCourses {
     @Retention(RetentionPolicy.SOURCE)
     public @interface Section {}
 
-    public ArrayList<Course> getListOfCourses() {
+    public DummyCourses() {
         listOfCourses.add(new Course("Analysis 1","en",COMPUTERSCIENCE));
         listOfCourses.add(new Course("Analysis 1","fr",COMPUTERSCIENCE));
         listOfCourses.add(new Course("Linear Algebra","en",COMPUTERSCIENCE));
@@ -30,6 +30,10 @@ public class DummyCourses {
         listOfCourses.add(new Course("Linear Algebra","fr",MATHEMATICS));
         listOfCourses.add(new Course("Physics 1","en",MATHEMATICS));
         listOfCourses.add(new Course("Physics 1","fr",MATHEMATICS));
+    }
+
+    public ArrayList<Course> getListOfCourses() {
+
         return listOfCourses;
     }
 }
