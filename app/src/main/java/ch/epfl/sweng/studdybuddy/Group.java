@@ -35,6 +35,12 @@ public class Group
         this.course = course;
         this.participants = participants;
     }
+    public Group(Group sourceGroup) throws CloneNotSupportedException {
+        this.course=new Course(sourceGroup.getCourse());
+        this.participants=new ArrayList<>(sourceGroup.participants);
+        this.participantNumber=sourceGroup.getParticipantNumber();
+        this.maxParticipantNumber=sourceGroup.getMaxParticipantNumber();
+    }
 
     public int getParticipantNumber()
     {
@@ -64,24 +70,22 @@ public class Group
         this.maxParticipantNumber = maxParticipantNumber;
     }
 
-    public Course getCourse()
-    {
-        return course;
+    public Course getCourse(){
+        return new Course(this.getCourse());
     }
 
-    public void setCourse(Course course)
-    {
-        this.course = course;// TODO maybe use "safe" copy
+    public void setCourse(Course course){
+        this.course = new Course(course);
     }
 
     public ArrayList<User> getParticipants()
     {
-        return participants;
+        return new ArrayList<>(participants);
     }
 
     public void setParticipants(ArrayList<User> participants)
     {
-        this.participants = participants;
+        this.participants = new ArrayList<>(participants);
     }
 
     public void addParticipant(User newParticipant)
