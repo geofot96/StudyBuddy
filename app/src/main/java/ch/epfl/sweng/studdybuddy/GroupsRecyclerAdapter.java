@@ -42,7 +42,7 @@ public class GroupsRecyclerAdapter extends RecyclerView.Adapter<GroupsRecyclerAd
     public void onBindViewHolder(MyViewHolder holder, int position) {
       Group group=groupList.get(position);
         TextView newGroupCourseTextView = holder.groupCourseTextView;
-        newGroupCourseTextView.setText((String)group.getCourse().getCouseName());
+        newGroupCourseTextView.setText((String)group.getCourse().getCourseName());
         TextView newGroupParticipantInfoTextView = holder.groupParticipantInfoTextView;
         newGroupParticipantInfoTextView.setText(("Participants: "+group.getParticipantNumber()+"/"+group.getMaxParticipantNumber()));
         Button button= holder.messageButton;
