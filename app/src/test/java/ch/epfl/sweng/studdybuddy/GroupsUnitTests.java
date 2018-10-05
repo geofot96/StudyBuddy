@@ -94,7 +94,7 @@ public class GroupsUnitTests
         addUsers();
         Group group = new Group(1, 3, dummy, participants);
         assertEquals("test", group.getCourse().getCourseName());
-        assertEquals("en", group.getCourse().getLanguage());
+        assertEquals("fr", group.getCourse().getLanguage());
         assertEquals("IN", group.getCourse().getSection());
     }
 
