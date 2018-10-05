@@ -48,8 +48,6 @@ public class GroupsRecyclerAdapter extends RecyclerView.Adapter<GroupsRecyclerAd
         Button button= holder.messageButton;
         button.setText("More info");
     }
-
-    // Return the size of your dataset (invoked by the layout manager)
     @Override
     public int getItemCount() {
         return groupList.size();
