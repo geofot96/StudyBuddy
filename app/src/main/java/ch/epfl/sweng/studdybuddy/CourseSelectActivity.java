@@ -50,7 +50,9 @@ public class CourseSelectActivity extends AppCompatActivity {
         textView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                addCourse(parent.getItemAtPosition(position).toString());
+                String textInput = parent.getItemAtPosition(position).toString();
+                if(!courseSelection.contains(textInput))
+                    addCourse(textInput);
             }
         });
         //courseSelection.add("Wine tasting");
@@ -75,7 +77,7 @@ public class CourseSelectActivity extends AppCompatActivity {
                 textView.performValidation();
                 //Protection
                 String textInput = textView.getText().toString();
-                if(Arrays.asList(coursesDB).contains(textInput)) addCourse(textInput);
+                if(Arrays.asList(coursesDB).contains(textInput) && !courseSelection.contains(textInput)) addCourse(textInput);
                 return true;
             }
         });
