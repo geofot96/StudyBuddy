@@ -25,8 +25,8 @@ public class GroupsActivity extends AppCompatActivity
         rv.setLayoutManager(lm);
 
 
-        Group g1=new Group(0,5,dummy.getListOfCourses().get(0),new ArrayList<User>());
-        Group g2=new Group(3,7,dummy.getListOfCourses().get(4),new ArrayList<User>());
+        Group g1=new Group(5,dummy.getListOfCourses().get(0),new ArrayList<User>());
+        Group g2=new Group(7,dummy.getListOfCourses().get(4),new ArrayList<User>());
         ArrayList<Group> groupList1=new ArrayList<>();
         groupList1.add(g1);
         groupList1.add(g2);

@@ -1,5 +1,10 @@
 package ch.epfl.sweng.studdybuddy;
 
+/**
+ * Class representing courses
+ */
+//TODO add a semester attribute
+
 public class Course
 {
     private final String courseName;
