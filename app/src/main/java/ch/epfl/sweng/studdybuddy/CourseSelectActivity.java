@@ -12,6 +12,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -69,8 +70,29 @@ public class CourseSelectActivity extends AppCompatActivity {
                     if (event.getAction()!=KeyEvent.ACTION_DOWN) return true;
                 }
                 else  return false;
-                addCourse(textView.getText().toString());
+                //Unnecessary
+                textView.performCompletion();
+                textView.performValidation();
+                //Protection
+                String textInput = textView.getText().toString();
+                if(Arrays.asList(coursesDB).contains(textInput)) addCourse(textInput);
                 return true;
+            }
+        });
+        Button skipButton = (Button)findViewById(R.id.skipButton);
+        Button doneButton = (Button)findViewById(R.id.doneButton);
+        skipButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //
+                //intent to main
+            }
+        });
+        doneButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //tie courses to account
+                //intent to main
             }
         });
     }
