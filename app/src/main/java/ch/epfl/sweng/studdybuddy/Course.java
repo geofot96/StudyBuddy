@@ -1,29 +1,33 @@
 package ch.epfl.sweng.studdybuddy;
 
-public class Course<X, Y, Z>
+/**
+ * Class representing courses
+ */
+//TODO add a semester attribute
+public class Course
 {
-    private final X couseName;
-    private final Y language;
-    private final Z section;
+    private final String courseName;
+    private final String language;
+    private final String section;
 
-    public Course(X couseName, Y language, Z section)
+    public Course(String courseName, String language, String section)
     {
-        this.couseName = couseName;
+        this.courseName = courseName;
         this.language = language;
         this.section = section;
     }
 
-    public X getCourseName()
+    public String getCourseName()
     {
-        return couseName;
+        return courseName;
     }
 
-    public Y getLanguage()
+    public String getLanguage()
     {
         return language;
     }
 
-    public Z getSection()
+    public String getSection()
     {
         return section;
     }

@@ -26,28 +26,21 @@ public class GroupsUnitTests
     public void constructorDoesntAcceptNegParticipants()
     {
         addUsers();
-        Group group = new Group(-1, 5, dummy, participants);
+        Group group = new Group(-5, dummy, participants);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void constructorDoesntAcceptNegMaxParticipants()
     {
         addUsers();
-        Group group = new Group(1, 0, dummy, participants);
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void constructorDoesntAcceptMaxParticipantsToBeLessThan()
-    {
-        addUsers();
-        Group group = new Group(4, 2, dummy, participants);
+        Group group = new Group(0, dummy, participants);
     }
 
     @Test
     public void getParticipantNumberWorks()
     {
         addUsers();
-        Group group = new Group(1, 4, dummy, participants);
+        Group group = new Group(4, dummy, participants);
         assertEquals(1, group.getParticipantNumber());
     }
 
@@ -55,7 +48,7 @@ public class GroupsUnitTests
     public void getMaxParticipantNumberWorks()
     {
         addUsers();
-        Group group = new Group(1, 4, dummy, participants);
+        Group group = new Group(4, dummy, participants);
         assertEquals(4, group.getMaxParticipantNumber());
     }
 
@@ -63,7 +56,7 @@ public class GroupsUnitTests
     public void setMaxParticipantNumberWorks()
     {
         addUsers();
-        Group group = new Group(1, 4, dummy, participants);
+        Group group = new Group(4, dummy, participants);
         group.setMaxParticipantNumber(5);
         assertEquals(5, group.getMaxParticipantNumber());
     }
@@ -72,7 +65,7 @@ public class GroupsUnitTests
     public void increaseParticipantNumberWorks()
     {
         addUsers();
-        Group group = new Group(1, 4, dummy, participants);
+        Group group = new Group(4, dummy, participants);
         group.increaseParticipantNumber();
         assertEquals(2, group.getParticipantNumber());
     }
@@ -81,7 +74,7 @@ public class GroupsUnitTests
     public void increaseParticipantNumberFailsWhenOverMax()
     {
         addUsers();
-        Group group = new Group(1, 3, dummy, participants);
+        Group group = new Group(3, dummy, participants);
         group.increaseParticipantNumber();
         group.increaseParticipantNumber();
         group.increaseParticipantNumber();
@@ -92,9 +85,9 @@ public class GroupsUnitTests
     public void getCourseWorks()
     {
         addUsers();
-        Group group = new Group(1, 3, dummy, participants);
+        Group group = new Group(3, dummy, participants);
         assertEquals("test", group.getCourse().getCourseName());
-        assertEquals("fr", group.getCourse().getLanguage());
+        assertEquals("en", group.getCourse().getLanguage());
         assertEquals("IN", group.getCourse().getSection());
     }
 
@@ -102,7 +95,7 @@ public class GroupsUnitTests
     public void addParticipantWorks()
     {
         addUsers();
-        Group group = new Group(1, 3, dummy, participants);
+        Group group = new Group(3, dummy, participants);
         User user2 = new User("2", "Mr Potato 2", "SC", null);
         group.addParticipant(user2);
         group.showParticipants(); //TODO check with get participants
