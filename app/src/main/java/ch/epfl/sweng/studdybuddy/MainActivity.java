@@ -3,14 +3,25 @@ package ch.epfl.sweng.studdybuddy;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+
 public class MainActivity extends AppCompatActivity
 {
+    private FirebaseAuth mAuth;
+    private GoogleSignInClient mGoogleSignInClient;
+    private Button mSignOutBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -26,6 +37,23 @@ public class MainActivity extends AppCompatActivity
                     startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
 
                 }
+            }
+        });
+
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                //.requestIdToken("873211888268-ta3e9jvlg8nfmf8jhfuqkb601srec5n1.apps.googleusercontent.com")
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build();
+        // Build a GoogleSignInClient with the options specified by gso.
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+        mAuth = FirebaseAuth.getInstance();
+
+        mSignOutBtn = findViewById(R.id.signout_btn);
+        mSignOutBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                signOut(); //get signed out
             }
         });
     }
@@ -44,5 +72,15 @@ public class MainActivity extends AppCompatActivity
 
         }
     }
-
+    private void signOut(){
+        mAuth.signOut();
+        // Google sign out
+        mGoogleSignInClient.signOut().addOnCompleteListener(this,
+                new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        startActivity(new Intent(MainActivity.this, GoogleSignInActivity.class));
+                    }
+                });
+    }
 }

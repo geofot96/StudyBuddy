@@ -27,14 +27,15 @@ import com.google.firebase.auth.GoogleAuthProvider;
 
 public class GoogleSignInActivity extends AppCompatActivity {
 
-    private GoogleSignInClient mGoogleSignInClient;
+
     private SignInButton mGoogleBtn;
-    private Button  mSignOutBtn;
+    //private Button  mSignOutBtn;
 
     private static final int RC_SIGN_IN = 1;
     private static final String TAG = "GoogleActivity";
 
     private FirebaseAuth mAuth;
+    private GoogleSignInClient mGoogleSignInClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +43,7 @@ public class GoogleSignInActivity extends AppCompatActivity {
         setContentView(R.layout.activity_google_sign_in);
 
         mGoogleBtn = findViewById(R.id.googleBtn);
-        mSignOutBtn = findViewById(R.id.sign_out_btn);
+        //mSignOutBtn = findViewById(R.id.sign_out_btn);
         mAuth = FirebaseAuth.getInstance();
 
         // Configure sign-in to request the user's ID, email address, and basic
@@ -62,13 +63,13 @@ public class GoogleSignInActivity extends AppCompatActivity {
             }
         });
 
-        mSignOutBtn.setOnClickListener(new View.OnClickListener() {
+        /*mSignOutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 signOut(); //get signed out
                 mSignOutBtn.setVisibility(View.GONE);
             }
-        });
+        });*/
     }
     @Override
     protected void onStart() {
@@ -84,7 +85,7 @@ public class GoogleSignInActivity extends AppCompatActivity {
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
 
-    private void signOut(){
+    /*private void signOut(){
         mAuth.signOut();
         // Google sign out
         mGoogleSignInClient.signOut().addOnCompleteListener(this,
@@ -95,7 +96,7 @@ public class GoogleSignInActivity extends AppCompatActivity {
                     }
                 });
     }
-
+    */
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -145,7 +146,7 @@ public class GoogleSignInActivity extends AppCompatActivity {
 
         GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(getApplicationContext());
         if (acct != null) {
-            mSignOutBtn.setVisibility(View.VISIBLE);
+            //mSignOutBtn.setVisibility(View.VISIBLE);
             String personName = acct.getDisplayName();
             String personGivenName = acct.getGivenName();
             String personFamilyName = acct.getFamilyName();
@@ -154,6 +155,7 @@ public class GoogleSignInActivity extends AppCompatActivity {
             Uri personPhoto = acct.getPhotoUrl();
 
             Toast.makeText(this, "Name of the user: " + personName + " user id is: " + personId, Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(GoogleSignInActivity.this, MainActivity.class));
         }else{
             Toast.makeText(this, "No User", Toast.LENGTH_SHORT).show();
         }
