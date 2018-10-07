@@ -2,6 +2,13 @@ package ch.epfl.sweng.studdybuddy;
 
 import java.util.ArrayList;
 
+/**
+ * class representing a group
+ * participantNumber is the current number of participants
+ * maxParticipantNumber is the maximum capacity of the group
+ * course is the course for which the group is created
+ * participants is the actual group members
+ */
 public class Group
 {
     private int participantNumber;
@@ -11,26 +18,28 @@ public class Group
 
     //private commonSchedule;
     // private groupChat;
-    public Group(int participantNumber, int maxParticipantNumber, Course course, ArrayList<User> participants)
-    {
 
-        if(participantNumber < 0 || maxParticipantNumber <= 0)
+    //TODO create a copy constructor to make the getters safe
+
+    public Group(int maxParticipantNumber, Course course, ArrayList<User> participants)
+    {
+        this.participantNumber = participants.size();
+        if(maxParticipantNumber <= 0)
         {
             throw new IllegalArgumentException("Participants number must be > 0 and maximum number of participants must be positive");
         }
-        //TODO do we want to throw an exception here or just put the values to 0 and 1?
+
 
         if(participants.size() > maxParticipantNumber)
         {
             throw new IllegalArgumentException("You can't have more than the maximum number of participants");
         }
-        //TODO ask Gerald
+
         if(maxParticipantNumber < participantNumber)
         {
             throw new IllegalArgumentException("Max number of participants can't be less than actual number of participants");
         }
 
-        this.participantNumber = participantNumber;
         this.maxParticipantNumber = maxParticipantNumber;
         this.course = course;
         this.participants = participants;
@@ -102,7 +111,7 @@ public class Group
         {
             throw new IllegalArgumentException("You have attended the maximum number of participants");
         }
-        //TODO handle this case
+        //TODO handle this case differently?
     }
 
     public void removeParticipant(User leavingParticipant)
