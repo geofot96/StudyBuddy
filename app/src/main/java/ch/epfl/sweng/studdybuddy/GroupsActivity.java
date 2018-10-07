@@ -7,6 +7,8 @@ import android.view.View;
 
 import java.util.ArrayList;
 
+import static ch.epfl.sweng.studdybuddy.DummyCourses.MATHEMATICS;
+
 public class GroupsActivity extends AppCompatActivity
 {
 
@@ -17,7 +19,10 @@ public class GroupsActivity extends AppCompatActivity
         setContentView(R.layout.activity_groups_activity);
         Intent other = getIntent();
 
+<<<<<<< HEAD
         DummyCourses dummy=new DummyCourses();
+=======
+>>>>>>> retry previous push
         RecyclerView rv=(RecyclerView)findViewById(R.id.testRecycleViewer);
         rv.setHasFixedSize(true);
 
@@ -25,12 +30,7 @@ public class GroupsActivity extends AppCompatActivity
         rv.setLayoutManager(lm);
 
 
-        Group g1=new Group(5,dummy.getListOfCourses().get(0),new ArrayList<User>());
-        Group g2=new Group(7,dummy.getListOfCourses().get(4),new ArrayList<User>());
-        ArrayList<Group> groupList1=new ArrayList<>();
-        groupList1.add(g1);
-        groupList1.add(g2);
-        GroupsRecyclerAdapter mAdapter = new GroupsRecyclerAdapter(groupList1);
+        GroupsRecyclerAdapter mAdapter = new GroupsRecyclerAdapter(MainActivity.groupList1);
         rv.setAdapter(mAdapter);
 
     }
