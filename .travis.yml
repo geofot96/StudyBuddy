@@ -9,7 +9,6 @@ android:
     - android-24
     - android-22
     # The system image, to run an emulator during the tests
-    - sys-img-armeabi-v7a-android-22
     - sys-img-armeabi-v7a-android-24
 before_script:
   # Emulator Management: Create, Start and Wait
