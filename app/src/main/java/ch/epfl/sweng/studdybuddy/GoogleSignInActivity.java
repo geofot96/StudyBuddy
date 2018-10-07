@@ -65,7 +65,7 @@ public class GoogleSignInActivity extends AppCompatActivity {
         mSignOutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mAuth.signOut(); //get signed out
+                signOut(); //get signed out
                 mSignOutBtn.setVisibility(View.GONE);
             }
         });
@@ -82,6 +82,18 @@ public class GoogleSignInActivity extends AppCompatActivity {
     private void signIn() {
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, RC_SIGN_IN);
+    }
+
+    private void signOut(){
+        mAuth.signOut();
+        // Google sign out
+        mGoogleSignInClient.signOut().addOnCompleteListener(this,
+                new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        updateUI(null);
+                    }
+                });
     }
 
     @Override
@@ -142,6 +154,8 @@ public class GoogleSignInActivity extends AppCompatActivity {
             Uri personPhoto = acct.getPhotoUrl();
 
             Toast.makeText(this, "Name of the user: " + personName + " user id is: " + personId, Toast.LENGTH_SHORT).show();
+        }else{
+            Toast.makeText(this, "No User", Toast.LENGTH_SHORT).show();
         }
     }
 }
