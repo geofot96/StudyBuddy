@@ -1,27 +1,36 @@
+sudo: required
+
 language: android
+jdk: oraclejdk8
+
+before_cache:
+  - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
+  - rm -rf $HOME/.gradle/caches/*/plugin-resolution/
+
+cache:
+  directories:
+  - $HOME/.gradle/caches/
+  - $HOME/.gradle/wrapper/
+  - $HOME/.android/build-cache
+
+env:
+ global:
+ - ANDROID_API=26
+ - ANDROID_BUILD_TOOLS=26.0.2
+
 android:
   components:
-    # The BuildTools version used by your project
-    - build-tools-27.0.3
-    # The SDK version used to compile your project
-    - android-28
-    # The SDK version used by the system image
-    - android-24
-    # The system image, to run an emulator during the tests
-    - sys-img-armeabi-v7a-android-24
-     - sys-img-armeabi-v7a-android-24
-before_script:
-  # Emulator Management: Create, Start and Wait
-  # - echo no | android create avd --force -n test -t android-24 --abi armeabi-v7a
-  # - emulator -avd test -no-audio -no-window &
-  # - android-wait-for-emulator
-  # - adb shell input keyevent 82
-  # Set up Code Climate test reporter
-  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
-  - chmod +x ./cc-test-reporter
-  - ./cc-test-reporter before-build
+  - tools
+  - tools # Running this twice get's the latest build tools (https://github.com/codepath/android_guides/wiki/Setting-up-Travis-CI)
+  - platform-tools
+  - android-${ANDROID_API}
+  - build-tools-${ANDROID_BUILD_TOOLS}
+  - extra
+
 script:
-  - ./gradlew build connectedCheck jacocoTestReport
+- ./gradlew clean test build
+- ./gradlew build connectedCheck jacocoTestReport
+  
 after_script:
   # Report test coverage to Code Climate
   - export JACOCO_SOURCE_PATH=app/src/main/java/
