@@ -52,7 +52,7 @@ public class GroupsRecyclerAdapter extends RecyclerView.Adapter<GroupsRecyclerAd
         TextView newGroupLanguageTextView = holder.groupLanguageTextView;
         newGroupLanguageTextView.setText(group.getCourse().getLanguage());
         TextView newGroupParticipantInfoTextView = holder.groupParticipantInfoTextView;
-        newGroupParticipantInfoTextView.setText(("Participants: "+group.getParticipantNumber()+"/"+group.getMaxParticipantNumber()));
+        newGroupParticipantInfoTextView.setText(("Particip: "+group.getParticipantNumber()+"/"+group.getMaxParticipantNumber()));
 
 
         Button button= holder.messageButton;
