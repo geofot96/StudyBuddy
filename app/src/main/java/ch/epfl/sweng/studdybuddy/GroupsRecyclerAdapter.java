@@ -17,17 +17,21 @@ public class GroupsRecyclerAdapter extends RecyclerView.Adapter<GroupsRecyclerAd
 
         public TextView groupCourseTextView;
         public TextView groupParticipantInfoTextView;
+        public TextView groupSectionTextView;
+        public TextView groupLanguageTextView;
         public Button messageButton;
         public MyViewHolder(View itemView) {
             super(itemView);
             groupCourseTextView=(TextView)itemView.findViewById(R.id.group_course_name);
             groupParticipantInfoTextView=(TextView)itemView.findViewById(R.id.group_participant_info);
+            groupSectionTextView=(TextView)itemView.findViewById(R.id.group_section);
+            groupLanguageTextView=(TextView)itemView.findViewById(R.id.group_language);
             messageButton=(Button)itemView.findViewById(R.id.message_button);
         }
     }
 
     public GroupsRecyclerAdapter(ArrayList<Group> groupList) {
-        this.groupList=groupList;
+        this.groupList=groupList;//TODO make safe
     }
 
     @Override
@@ -42,9 +46,15 @@ public class GroupsRecyclerAdapter extends RecyclerView.Adapter<GroupsRecyclerAd
     public void onBindViewHolder(MyViewHolder holder, int position) {
       Group group=groupList.get(position);
         TextView newGroupCourseTextView = holder.groupCourseTextView;
-        newGroupCourseTextView.setText((String)group.getCourse().getCourseName());
+        newGroupCourseTextView.setText(group.getCourse().getCourseName());
+        TextView newGroupSectionTextView = holder.groupSectionTextView;
+        newGroupSectionTextView.setText(group.getCourse().getSection());
+        TextView newGroupLanguageTextView = holder.groupLanguageTextView;
+        newGroupLanguageTextView.setText(group.getCourse().getLanguage());
         TextView newGroupParticipantInfoTextView = holder.groupParticipantInfoTextView;
         newGroupParticipantInfoTextView.setText(("Participants: "+group.getParticipantNumber()+"/"+group.getMaxParticipantNumber()));
+
+
         Button button= holder.messageButton;
         button.setText("More info");
     }

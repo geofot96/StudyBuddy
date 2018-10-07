@@ -16,6 +16,12 @@ public class Course
         this.language = language;
         this.section = section;
     }
+    public Course (Course sourceCourse)
+    {
+        this.courseName=sourceCourse.getCourseName();
+        this.language=sourceCourse.getLanguage();
+        this.section=sourceCourse.getSection();
+    }
 
     public String getCourseName()
     {

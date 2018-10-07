@@ -19,7 +19,6 @@ public class Group
     //private commonSchedule;
     // private groupChat;
 
-    //TODO create a copy constructor to make the getters safe
 
     public Group(int maxParticipantNumber, Course course, ArrayList<User> participants)
     {
@@ -44,8 +43,8 @@ public class Group
         this.course = course;
         this.participants = participants;
     }
-    public Group(Group sourceGroup) throws CloneNotSupportedException {
-        this.course=new Course(sourceGroup.getCourse());
+    public Group(Group sourceGroup){
+        this.course=sourceGroup.getCourse();
         this.participants=new ArrayList<>(sourceGroup.participants);
         this.participantNumber=sourceGroup.getParticipantNumber();
         this.maxParticipantNumber=sourceGroup.getMaxParticipantNumber();
@@ -80,7 +79,7 @@ public class Group
     }
 
     public Course getCourse(){
-        return new Course(this.getCourse());
+        return new Course(this.course);
     }
 
     public void setCourse(Course course){
