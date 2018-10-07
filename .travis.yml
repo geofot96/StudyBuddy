@@ -7,15 +7,15 @@ android:
     - android-28
     # The SDK version used by the system image
     - android-24
-    - android-22
     # The system image, to run an emulator during the tests
     - sys-img-armeabi-v7a-android-24
+     - sys-img-armeabi-v7a-android-24
 before_script:
   # Emulator Management: Create, Start and Wait
-  - echo no | android create avd --force -n test -t android-24 --abi armeabi-v7a
-  - emulator -avd test -no-audio -no-window &
-  - android-wait-for-emulator
-  - adb shell input keyevent 82
+  # - echo no | android create avd --force -n test -t android-24 --abi armeabi-v7a
+  # - emulator -avd test -no-audio -no-window &
+  # - android-wait-for-emulator
+  # - adb shell input keyevent 82
   # Set up Code Climate test reporter
   - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
   - chmod +x ./cc-test-reporter
