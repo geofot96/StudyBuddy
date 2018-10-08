@@ -34,8 +34,6 @@ public class DummyCourses
         listOfCourses.add(new Course("Linear Algebra", "fr", MATHEMATICS));
         listOfCourses.add(new Course("Physics 1", "en", MATHEMATICS));
         listOfCourses.add(new Course("Physics 1", "fr", MATHEMATICS));
-        listOfCourses.add(new Course("Analysis 1", "en", "Specific Section to Analysis 1"));
-        listOfCourses.add(new Course("Physics 1", "en", "Specific Section to Physics 1"));
     }
 
     public ArrayList<Course> getListOfCourses()
