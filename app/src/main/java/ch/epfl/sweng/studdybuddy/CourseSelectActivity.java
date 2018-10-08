@@ -1,10 +1,12 @@
 package ch.epfl.sweng.studdybuddy;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -34,7 +36,7 @@ public class CourseSelectActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_course_select);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+        final ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_dropdown_item_1line, coursesDB);
         textView = (AutoCompleteTextView)findViewById(R.id.courseComplete);
         textView.setAdapter(adapter);
@@ -50,17 +52,33 @@ public class CourseSelectActivity extends AppCompatActivity {
         textView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String textInput = parent.getItemAtPosition(position).toString();
+                String textInput = parent.getAdapter().getItem(position).toString();
                 if(!courseSelection.contains(textInput))
                     addCourse(textInput);
             }
         });
         //courseSelection.add("Wine tasting");
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.coursesSet);
+        final RecyclerView recyclerView = (RecyclerView) findViewById(R.id.coursesSet);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         recyclerView.setAdapter(new CourseAdapter(courseSelection));
+        ItemTouchHelper mIth = new ItemTouchHelper(
+                new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP | ItemTouchHelper.DOWN,
+                        ItemTouchHelper.RIGHT) {
+                    @Override
+                    public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder viewHolder1) {
+                        return false;
+                    }
+
+                    @Override
+                    public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
+                        CourseHolder cc = (CourseHolder)viewHolder;
+                        courseSelection.remove(courseSelection.indexOf(cc.get()));
+                        recyclerView.getAdapter().notifyDataSetChanged();
+                    }
+                });
+        mIth.attachToRecyclerView(recyclerView);
         textView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView view, int actionId, KeyEvent event) {
@@ -72,17 +90,14 @@ public class CourseSelectActivity extends AppCompatActivity {
                     if (event.getAction()!=KeyEvent.ACTION_DOWN) return true;
                 }
                 else  return false;
-                //Unnecessary
-                textView.performCompletion();
-                textView.performValidation();
                 //Protection
                 String textInput = textView.getText().toString();
                 if(Arrays.asList(coursesDB).contains(textInput) && !courseSelection.contains(textInput)) addCourse(textInput);
                 return true;
             }
         });
-        Button skipButton = (Button)findViewById(R.id.skipButton);
-        Button doneButton = (Button)findViewById(R.id.doneButton);
+        Button skipButton =findViewById(R.id.skipButton);
+        Button doneButton =findViewById(R.id.doneButton);
         skipButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -108,6 +123,8 @@ public class CourseSelectActivity extends AppCompatActivity {
         textView.setText("");
     }
 
-
+    private void removeCourse(String course) {
+        courseSelection.remove(course);
+    }
 
 }
