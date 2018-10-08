@@ -27,6 +27,11 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".GroupsActivity" />
         </activity>
+        <activity android:name=".CourseSelectActivity" android:parentActivityName=".MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".CourseSelectActivity" />
+        </activity>
     </application>
 
 </manifest>

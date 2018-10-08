@@ -45,5 +45,11 @@ public class MainActivity extends AppCompatActivity
         startActivity(intent);
     }
 
+    public void gotoFred(View view)
+    {
+        Intent intent = new Intent(this, CourseSelectActivity.class);
+        startActivity(intent);
+    }
+
 
 }
