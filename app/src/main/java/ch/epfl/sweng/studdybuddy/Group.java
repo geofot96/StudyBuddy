@@ -43,11 +43,13 @@ public class Group
         this.course = course;
         this.participants = participants;
     }
-    public Group(Group sourceGroup){
-        this.course=sourceGroup.getCourse();
-        this.participants=new ArrayList<>(sourceGroup.participants);
-        this.participantNumber=sourceGroup.getParticipantNumber();
-        this.maxParticipantNumber=sourceGroup.getMaxParticipantNumber();
+
+    public Group(Group sourceGroup)
+    {
+        this.course = sourceGroup.getCourse();
+        this.participants = new ArrayList<>(sourceGroup.participants);
+        this.participantNumber = sourceGroup.getParticipantNumber();
+        this.maxParticipantNumber = sourceGroup.getMaxParticipantNumber();
     }
 
     public int getParticipantNumber()
@@ -78,11 +80,13 @@ public class Group
         this.maxParticipantNumber = maxParticipantNumber;
     }
 
-    public Course getCourse(){
+    public Course getCourse()
+    {
         return new Course(this.course);
     }
 
-    public void setCourse(Course course){
+    public void setCourse(Course course)
+    {
         this.course = new Course(course);
     }
 
@@ -118,6 +122,7 @@ public class Group
         if(participants.size() >= 2 && participants.contains(leavingParticipant))
         {
             participants.remove(leavingParticipant);
+            participantNumber -= 1;
         }
     }
 
@@ -128,6 +133,5 @@ public class Group
             System.out.println(participants.get(i).getName() + " " + participants.get(i).getSection());
         }
     }
-
 
 }
