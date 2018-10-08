@@ -6,24 +6,28 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <TextView
-        android:id="@+id/textView"
+    <Button
+        android:id="@+id/gotoGroups"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginTop="47dp"
+        android:onClick="gotoGroups"
+        android:text="goToGroups"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/cameraButton"
+        android:id="@+id/button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="57dp"
-        android:text="Open Camera"
-        app:layout_constraintBottom_toTopOf="@+id/textView"
+        android:layout_marginTop="221dp"
+        android:layout_marginBottom="203dp"
+        android:onClick="gotoFred"
+        android:text="goToFred"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/gotoGroups" />
 
 </android.support.constraint.ConstraintLayout>

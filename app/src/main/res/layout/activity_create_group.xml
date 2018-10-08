@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".CreateGroup"
+    tools:layout_editor_absoluteY="25dp">
+
+    <Spinner
+        android:id="@+id/spinnerCourse"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="13dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="103dp"
+        app:layout_constraintBottom_toTopOf="@+id/spinnerSection"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Spinner
+        android:id="@+id/spinnerSection"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="19dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/spinnerLanguage"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/spinnerCourse" />
+
+    <Spinner
+        android:id="@+id/spinnerLanguage"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="19dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/numberPicker"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/spinnerSection" />
+
+    <NumberPicker
+        android:id="@+id/numberPicker"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="27dp"
+        android:layout_marginEnd="156dp"
+        app:layout_constraintBottom_toTopOf="@+id/confirmGroupCreation"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/textView2"
+        app:layout_constraintStart_toStartOf="@+id/confirmGroupCreation"
+        app:layout_constraintTop_toBottomOf="@+id/spinnerLanguage" />
+
+    <Button
+        android:id="@+id/confirmGroupCreation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="152dp"
+        android:onClick="addtoGroups"
+        android:text=" Create Group"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/numberPicker" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="47dp"
+        android:layout_marginEnd="18dp"
+        android:text="Maximum \n Participants"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toBottomOf="@+id/numberPicker"
+        app:layout_constraintEnd_toStartOf="@+id/numberPicker"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</android.support.constraint.ConstraintLayout>

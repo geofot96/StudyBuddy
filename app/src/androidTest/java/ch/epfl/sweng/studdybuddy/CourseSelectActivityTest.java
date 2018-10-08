@@ -35,17 +35,12 @@ public class CourseSelectActivityTest {
         //onView(withId(R.id.skipButton)).perform(click()).check();
     }
 
+
     @Test
     public void doneIsHiddenIfNoCourseSelected() {
 
     }
 
-    @Test//()
-    public void clickOnCourseFieldOpensSuggestions() {
-        onView(withId(R.id.courseComplete)).perform(click());
-        //onView(withId(R.id.courseComplete)).check(matches(isDisplayed()));
-        AutoCompleteTextView tv;
-    }
 
     @Test //()
     public void courseNotAddedIfGibberish() {
@@ -57,11 +52,15 @@ public class CourseSelectActivityTest {
     @Test //()
     public void enterOnValidInputAddsCourseToList() {
         onView(withId(R.id.courseComplete)).perform(pressImeActionButton());
+       // onView(withId(R.id.courseField)).perform(typeText(coursesDB[0]));
+        //onView(withId(R.id.courseField)).perform(pressImeActionButton());
+        //onView(withId(R.id.courseView)).check(matches());
     }
 
     @Test
     public void clickOnCourseSuggestionAddsCourseToList() {
         onView(withId(R.id.courseComplete)).perform(click());
+        //onView(withId(R.id.courseField)).perform();
     }
 
     //swipe on course
