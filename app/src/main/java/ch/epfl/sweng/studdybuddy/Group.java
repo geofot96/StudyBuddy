@@ -126,12 +126,4 @@ public class Group
         }
     }
 
-    public void showParticipants() // TODO add a method to return the User Objects
-    {
-        for(int i = 0; i < this.participantNumber; i++)
-        {
-            System.out.println(participants.get(i).getName() + " " + participants.get(i).getSection());
-        }
-    }
-
 }
