@@ -2,6 +2,7 @@ package ch.epfl.sweng.studdybuddy;
 
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
+import android.widget.AutoCompleteTextView;
 
 import org.junit.Rule;
 import org.junit.Test;
@@ -14,8 +15,12 @@ import static android.support.test.espresso.action.ViewActions.pressImeActionBut
 import static android.support.test.espresso.action.ViewActions.pressKey;
 import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
+import static android.support.test.espresso.matcher.ViewMatchers.isChecked;
+import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
 
 //Suggestions refers to courses database
 
@@ -30,6 +35,7 @@ public class CourseSelectActivityTest {
         //onView(withId(R.id.skipButton)).perform(click()).check();
     }
 
+<<<<<<< HEAD
     @Test//()
     public void clickOnCourseFieldOpensSuggestions() {
         //onView(withId(R.id.courseField)).perform(click());
@@ -38,29 +44,45 @@ public class CourseSelectActivityTest {
 
     @Test //()
     public void suggestionsDntGrowWhenLetterTyped() {
+=======
+    @Test
+    public void doneIsHiddenIfNoCourseSelected() {
+>>>>>>> Fixed card deletion
 
+    }
+
+    @Test//()
+    public void clickOnCourseFieldOpensSuggestions() {
+        onView(withId(R.id.courseComplete)).perform(click());
+        //onView(withId(R.id.courseComplete)).check(matches(isDisplayed()));
+        AutoCompleteTextView tv;
     }
 
     @Test //()
-    public void suggestionsEmptyWhenGibberishEntered() {
-
-    }
-
-    @Test
-    public void enterIsDisabledWhenInvalidInput() {
+    public void courseNotAddedIfGibberish() {
+        onView(withId(R.id.courseComplete)).perform(click(), typeText("yxcvbn"), pressImeActionButton());
+        //onView(withId(R.id.coursesSet)).check()
 
     }
 
     @Test //()
     public void enterOnValidInputAddsCourseToList() {
+<<<<<<< HEAD
        // onView(withId(R.id.courseField)).perform(typeText(coursesDB[0]));
         //onView(withId(R.id.courseField)).perform(pressImeActionButton());
         //onView(withId(R.id.courseView)).check(matches());
+=======
+        onView(withId(R.id.courseComplete)).perform(pressImeActionButton());
+>>>>>>> Fixed card deletion
     }
 
     @Test
     public void clickOnCourseSuggestionAddsCourseToList() {
+<<<<<<< HEAD
         //onView(withId(R.id.courseField)).perform();
+=======
+        onView(withId(R.id.courseComplete)).perform(click());
+>>>>>>> Fixed card deletion
     }
 
     //swipe on course
