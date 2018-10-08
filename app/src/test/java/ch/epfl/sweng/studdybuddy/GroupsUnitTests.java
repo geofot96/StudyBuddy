@@ -98,7 +98,22 @@ public class GroupsUnitTests
         Group group = new Group(3, dummy, participants);
         User user2 = new User("2", "Mr Potato 2", "SC", null);
         group.addParticipant(user2);
-        group.showParticipants(); //TODO check with get participants
+        ArrayList<User> part = group.getParticipants();
+        assertEquals(user.getName(), part.get(0).getName());
+        assertEquals(user2.getName(), part.get(1).getName());
+    }
+
+    @Test
+    public void removeParticipantWorks()
+    {
+        addUsers();
+        Group group = new Group(3, dummy, participants);
+        User user2 = new User("2", "Mr Potato 2", "SC", null);
+        group.addParticipant(user2);
+        group.removeParticipant(user2);
+        ArrayList<User> part = group.getParticipants();
+        assertEquals(user.getName(), part.get(0).getName());
+        assertEquals(1, group.getParticipantNumber());
     }
 
 
