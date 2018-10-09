@@ -36,6 +36,8 @@ public class CourseSelectActivity extends AppCompatActivity {
 
     private static AutoCompleteTextView textView;
 
+    private static Button doneButton;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,6 +47,9 @@ public class CourseSelectActivity extends AppCompatActivity {
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_dropdown_item_1line, coursesDB);
+        Button skipButton =findViewById(R.id.skipButton);
+        doneButton =findViewById(R.id.doneButton);
+        doneButton.setEnabled(false);
         textView = (AutoCompleteTextView)findViewById(R.id.courseComplete);
         textView.setAdapter(adapter);
         textView.setThreshold(0);
@@ -83,6 +88,8 @@ public class CourseSelectActivity extends AppCompatActivity {
                         CourseHolder cc = (CourseHolder)viewHolder;
                         courseSelection.remove(courseSelection.indexOf(cc.get()));
                         recyclerView.getAdapter().notifyDataSetChanged();
+                        if(courseSelection.size() == 0)
+                            doneButton.setEnabled(false);
                     }
                 });
         mIth.attachToRecyclerView(recyclerView);
@@ -103,8 +110,7 @@ public class CourseSelectActivity extends AppCompatActivity {
                 return true;
             }
         });
-        Button skipButton =findViewById(R.id.skipButton);
-        Button doneButton =findViewById(R.id.doneButton);
+
         skipButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -128,6 +134,7 @@ public class CourseSelectActivity extends AppCompatActivity {
         imm.hideSoftInputFromWindow(textView.getWindowToken(), 0);
         //reset search text
         textView.setText("");
+        doneButton.setEnabled(true);
     }
 
     private void removeCourse(String course) {
