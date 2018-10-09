@@ -34,7 +34,7 @@ public class GoogleSignInActivity extends AppCompatActivity {
     private static final int RC_SIGN_IN = 1;
     private static final String TAG = "GoogleActivity";
 
-    private AuthService mAuth;
+    private FirebaseAuth mAuth;
     private GoogleSignInClient mGoogleSignInClient;
 
     @Override
@@ -44,7 +44,7 @@ public class GoogleSignInActivity extends AppCompatActivity {
 
         mGoogleBtn = findViewById(R.id.googleBtn);
         //mSignOutBtn = findViewById(R.id.sign_out_btn);
-        mAuth = new AuthService();
+        mAuth = FirebaseAuth.getInstance();
 
         // Configure sign-in to request the user's ID, email address, and basic
         // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
@@ -69,7 +69,7 @@ public class GoogleSignInActivity extends AppCompatActivity {
         super.onStart();
         // Check for existing Google Sign In account, if the user is already signed in
         // the GoogleSignInAccount will be non-null.
-        FirebaseUser currentUser = mAuth.getmAuth().getCurrentUser();
+        FirebaseUser currentUser = mAuth.getCurrentUser();
         updateUI(currentUser);
     }
 
@@ -103,14 +103,14 @@ public class GoogleSignInActivity extends AppCompatActivity {
 
 
         AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
-        mAuth.getmAuth().signInWithCredential(credential)
+        mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithCredential:success");
-                            FirebaseUser user = mAuth.getmAuth().getCurrentUser();
+                            FirebaseUser user = mAuth.getCurrentUser();
                             updateUI(user);
                         } else {
                             // If sign in fails, display a message to the user.
