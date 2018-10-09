@@ -45,6 +45,7 @@ public class CourseSelectActivity extends AppCompatActivity {
         
         Intent other = getIntent();
 
+        Intent toMain = new Intent(this, GroupsActivity.class);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_dropdown_item_1line, coursesDB);
         Button skipButton =findViewById(R.id.skipButton);
@@ -116,6 +117,7 @@ public class CourseSelectActivity extends AppCompatActivity {
             public void onClick(View v) {
                 //
                 //intent to main
+                startActivity(toMain);
             }
         });
         doneButton.setOnClickListener(new View.OnClickListener() {
@@ -123,6 +125,7 @@ public class CourseSelectActivity extends AppCompatActivity {
             public void onClick(View v) {
                 //tie courses to account
                 //intent to main
+                startActivity(toMain);
             }
         });
     }
