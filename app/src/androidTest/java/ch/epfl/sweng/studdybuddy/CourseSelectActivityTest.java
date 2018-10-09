@@ -58,16 +58,14 @@ public class CourseSelectActivityTest {
     public final ActivityTestRule<CourseSelectActivity> mActivityRule =
             new ActivityTestRule<>(CourseSelectActivity.class);
 
-    /*@Test
+    @Test
     public void skipLeadsToMainActivity() {
         //onView(withId(R.id.skipButton)).perform(click());
         //intended(toPackage(MainActivity.class.getName()));
     }
 
-    @Test//()
-    public void clickOnCourseFieldOpensSuggestions() {
-        //onView(withId(R.id.courseField)).perform(click());
-        onView(withId(R.id.courseComplete));
+/*
+>>>>>>> Added an empty test
 
         onView(withId(R.id.doneButton)).check(matches(not(isEnabled())));
         //select a course
