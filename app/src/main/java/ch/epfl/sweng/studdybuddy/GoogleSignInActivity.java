@@ -34,7 +34,7 @@ public class GoogleSignInActivity extends AppCompatActivity {
     private static final int RC_SIGN_IN = 1;
     private static final String TAG = "GoogleActivity";
 
-    private FirebaseAuth mAuth;
+    private AuthService mAuth;
     private GoogleSignInClient mGoogleSignInClient;
 
     @Override
@@ -44,15 +44,15 @@ public class GoogleSignInActivity extends AppCompatActivity {
 
         mGoogleBtn = findViewById(R.id.googleBtn);
         //mSignOutBtn = findViewById(R.id.sign_out_btn);
-        mAuth = FirebaseAuth.getInstance();
+        mAuth = new AuthService();
 
         // Configure sign-in to request the user's ID, email address, and basic
         // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                //.requestIdToken("873211888268-ta3e9jvlg8nfmf8jhfuqkb601srec5n1.apps.googleusercontent.com")
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
                 .build();
+
         // Build a GoogleSignInClient with the options specified by gso.
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
@@ -62,21 +62,14 @@ public class GoogleSignInActivity extends AppCompatActivity {
                 signIn();
             }
         });
-
-        /*mSignOutBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                signOut(); //get signed out
-                mSignOutBtn.setVisibility(View.GONE);
-            }
-        });*/
     }
+
     @Override
     protected void onStart() {
         super.onStart();
         // Check for existing Google Sign In account, if the user is already signed in
         // the GoogleSignInAccount will be non-null.
-        FirebaseUser currentUser = mAuth.getCurrentUser();
+        FirebaseUser currentUser = mAuth.getmAuth().getCurrentUser();
         updateUI(currentUser);
     }
 
@@ -85,18 +78,7 @@ public class GoogleSignInActivity extends AppCompatActivity {
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
 
-    /*private void signOut(){
-        mAuth.signOut();
-        // Google sign out
-        mGoogleSignInClient.signOut().addOnCompleteListener(this,
-                new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        updateUI(null);
-                    }
-                });
-    }
-    */
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -121,14 +103,14 @@ public class GoogleSignInActivity extends AppCompatActivity {
 
 
         AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
-        mAuth.signInWithCredential(credential)
+        mAuth.getmAuth().signInWithCredential(credential)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithCredential:success");
-                            FirebaseUser user = mAuth.getCurrentUser();
+                            FirebaseUser user = mAuth.getmAuth().getCurrentUser();
                             updateUI(user);
                         } else {
                             // If sign in fails, display a message to the user.
@@ -137,7 +119,6 @@ public class GoogleSignInActivity extends AppCompatActivity {
                             updateUI(null);
                         }
 
-                        // ...
                     }
                 });
     }
@@ -146,15 +127,9 @@ public class GoogleSignInActivity extends AppCompatActivity {
 
         GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(getApplicationContext());
         if (acct != null) {
-            //mSignOutBtn.setVisibility(View.VISIBLE);
-            String personName = acct.getDisplayName();
-            String personGivenName = acct.getGivenName();
-            String personFamilyName = acct.getFamilyName();
-            String personEmail = acct.getEmail();
-            String personId = acct.getId();
-            Uri personPhoto = acct.getPhotoUrl();
 
-            Toast.makeText(this, "Name of the user: " + personName + " user id is: " + personId, Toast.LENGTH_SHORT).show();
+            String personName = acct.getDisplayName();
+            Toast.makeText(this, "Welcome " + personName, Toast.LENGTH_SHORT).show();
             startActivity(new Intent(GoogleSignInActivity.this, MainActivity.class));
         }else{
             Toast.makeText(this, "No User", Toast.LENGTH_SHORT).show();
