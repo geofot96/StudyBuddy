@@ -58,7 +58,7 @@ public class CourseSelectActivityTest {
     public final ActivityTestRule<CourseSelectActivity> mActivityRule =
             new ActivityTestRule<>(CourseSelectActivity.class);
 
-    @Test
+    /*@Test
     public void skipLeadsToMainActivity() {
         //onView(withId(R.id.skipButton)).perform(click());
         //intended(toPackage(MainActivity.class.getName()));
@@ -126,6 +126,6 @@ public class CourseSelectActivityTest {
             }
         };
     }
-
+*/
 }
 
