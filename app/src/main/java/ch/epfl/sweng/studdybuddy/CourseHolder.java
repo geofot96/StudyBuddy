@@ -16,6 +16,9 @@ public class CourseHolder extends RecyclerView.ViewHolder {
         textViewView = (TextView) itemView.findViewById(R.id.text);
     }
 
+    public String get() {
+        return textViewView.getText().toString();
+    }
     //puis ajouter une fonction pour remplir la cellule en fonction d'un MyObject
     public void bind(String course){
         textViewView.setText(course);
