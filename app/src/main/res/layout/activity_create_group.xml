@@ -7,15 +7,18 @@
     tools:context=".CreateGroup"
     tools:layout_editor_absoluteY="25dp">
 
-    <Spinner
-        android:id="@+id/spinnerCourse"
+    <AutoCompleteTextView
+        android:id="@+id/courseComplete2"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="13dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="103dp"
-        app:layout_constraintBottom_toTopOf="@+id/spinnerSection"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="47dp"
+        android:contentDescription="Courses"
+        android:hint="Please select a Course"
+        android:imeOptions="actionDone"
+        android:inputType="text"
+        android:maxLines="1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -24,22 +27,22 @@
         android:id="@+id/spinnerSection"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="19dp"
+        android:layout_marginBottom="94dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/spinnerLanguage"
+        android:layout_marginTop="93dp"
+        app:layout_constraintBottom_toTopOf="@+id/textView2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spinnerCourse" />
+        app:layout_constraintTop_toTopOf="@+id/courseComplete2" />
 
     <Spinner
         android:id="@+id/spinnerLanguage"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="19dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/numberPicker"
+        android:layout_marginTop="19dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/spinnerSection" />
@@ -47,37 +50,34 @@
     <NumberPicker
         android:id="@+id/numberPicker"
         android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginBottom="27dp"
-        android:layout_marginEnd="156dp"
-        app:layout_constraintBottom_toTopOf="@+id/confirmGroupCreation"
+        android:layout_height="114dp"
+        android:layout_marginEnd="155dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/textView2"
-        app:layout_constraintStart_toStartOf="@+id/confirmGroupCreation"
-        app:layout_constraintTop_toBottomOf="@+id/spinnerLanguage" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/confirmGroupCreation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="152dp"
+        android:layout_marginTop="27dp"
         android:onClick="addtoGroups"
         android:text=" Create Group"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/numberPicker"
         app:layout_constraintTop_toBottomOf="@+id/numberPicker" />
 
     <TextView
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="47dp"
-        android:layout_marginEnd="18dp"
+        android:layout_marginEnd="34dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="32dp"
         android:text="Maximum \n Participants"
         android:textAlignment="center"
-        app:layout_constraintBottom_toBottomOf="@+id/numberPicker"
         app:layout_constraintEnd_toStartOf="@+id/numberPicker"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/numberPicker" />
 
 </android.support.constraint.ConstraintLayout>
