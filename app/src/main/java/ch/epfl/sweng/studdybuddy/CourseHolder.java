@@ -4,11 +4,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
 
-public class CourseHolder extends RecyclerView.ViewHolder {
+public class CourseHolder extends RecyclerView.ViewHolder
+{
     private TextView textViewView;
 
     //itemView est la vue correspondante à 1 cellule
-    public CourseHolder(View itemView) {
+    public CourseHolder(View itemView)
+    {
         super(itemView);
 
         //c'est ici que l'on fait nos findView
@@ -16,11 +18,14 @@ public class CourseHolder extends RecyclerView.ViewHolder {
         textViewView = (TextView) itemView.findViewById(R.id.text);
     }
 
-    public String get() {
+    public String get()
+    {
         return textViewView.getText().toString();
     }
+
     //puis ajouter une fonction pour remplir la cellule en fonction d'un MyObject
-    public void bind(String course){
+    public void bind(String course)
+    {
         textViewView.setText(course);
     }
 }

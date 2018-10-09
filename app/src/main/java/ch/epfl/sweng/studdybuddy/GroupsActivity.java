@@ -19,14 +19,13 @@ public class GroupsActivity extends AppCompatActivity
         setContentView(R.layout.activity_groups_activity);
         Intent other = getIntent();
 
-<<<<<<< HEAD
+
         DummyCourses dummy=new DummyCourses();
-=======
->>>>>>> retry previous push
-        RecyclerView rv=(RecyclerView)findViewById(R.id.testRecycleViewer);
+        RecyclerView rv = (RecyclerView) findViewById(R.id.testRecycleViewer);
+
         rv.setHasFixedSize(true);
 
-        RecyclerView.LayoutManager lm= new LinearLayoutManager(this);
+        RecyclerView.LayoutManager lm = new LinearLayoutManager(this);
         rv.setLayoutManager(lm);
 
 

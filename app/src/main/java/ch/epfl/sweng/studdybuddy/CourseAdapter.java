@@ -7,31 +7,36 @@ import android.view.ViewGroup;
 
 import java.util.List;
 
-public class CourseAdapter extends RecyclerView.Adapter<CourseHolder> {
+public class CourseAdapter extends RecyclerView.Adapter<CourseHolder>
+{
     List<String> list;
 
     //ajouter un constructeur prenant en entrée une liste
-    public CourseAdapter(List<String> list) {
+    public CourseAdapter(List<String> list)
+    {
         this.list = list;
     }
 
     //cette fonction permet de créer les viewHolder
     //et par la même indiquer la vue à inflater (à partir des layout xml)
     @Override
-    public CourseHolder onCreateViewHolder(ViewGroup viewGroup, int itemType) {
-        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.course_card,viewGroup,false);
+    public CourseHolder onCreateViewHolder(ViewGroup viewGroup, int itemType)
+    {
+        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.course_card, viewGroup, false);
         return new CourseHolder(view);
     }
 
     //c'est ici que nous allons remplir notre cellule avec le texte/image de chaque MyObjects
     @Override
-    public void onBindViewHolder(CourseHolder holder, int position) {
+    public void onBindViewHolder(CourseHolder holder, int position)
+    {
         String course = list.get(position);
         holder.bind(course);
     }
 
     @Override
-    public int getItemCount() {
+    public int getItemCount()
+    {
         return list.size();
     }
 

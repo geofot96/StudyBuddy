@@ -41,16 +41,16 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-        android:id="@+id/info_text"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-            android:text="First"/>
+            android:id="@+id/info_text"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="First" />
 
         <TextView
             android:id="@+id/info_text2"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="Second"/>
+            android:text="Second" />
 
         <TextView
             android:id="@+id/info_text3"

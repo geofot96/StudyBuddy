@@ -20,9 +20,9 @@ public class Course
 
     public Course(Course sourceCourse)
     {
-        this.courseName=sourceCourse.getCourseName();
-        this.language=sourceCourse.getLanguage();
-        this.section=sourceCourse.getSection();
+        this.courseName = sourceCourse.getCourseName();
+        this.language = sourceCourse.getLanguage();
+        this.section = sourceCourse.getSection();
     }
 
     public String getCourseName()
