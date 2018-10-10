@@ -4,16 +4,16 @@ import java.util.ArrayList;
 
 public class User
 {
-    private String id;
+    private int userID;
     private String name;
     private @DummyCourses.Section
     String Section;
     //private Schedule schedule;
     private ArrayList<Group> currentGroups;
 
-    public User(String id, String name, String section, ArrayList<Group> currentGroups)
+    public User(int userID, String name, String section, ArrayList<Group> currentGroups)
     {
-        this.id = id;
+        this.userID = userID;
         this.name = name;
         Section = section;
         this.currentGroups = currentGroups;

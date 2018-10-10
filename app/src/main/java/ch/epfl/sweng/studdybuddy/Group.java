@@ -1,6 +1,7 @@
 package ch.epfl.sweng.studdybuddy;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * class representing a group
@@ -15,6 +16,8 @@ public class Group
     private int maxParticipantNumber;
     private Course course;
     private ArrayList<User> participants;
+    private int groupID;
+    private Date creationDate;
 
     //private commonSchedule;
     // private groupChat;
@@ -38,7 +41,8 @@ public class Group
         {
             throw new IllegalArgumentException("Max number of participants can't be less than actual number of participants");
         }
-
+//TODO check for groupID
+        this.creationDate = new Date();
         this.maxParticipantNumber = maxParticipantNumber;
         this.course = course;
         this.participants = participants;
@@ -46,6 +50,7 @@ public class Group
 
     public Group(Group sourceGroup)
     {
+        //TODO why do we need this constructor and what do we do with the date
         this.course = sourceGroup.getCourse();
         this.participants = new ArrayList<>(sourceGroup.participants);
         this.participantNumber = sourceGroup.getParticipantNumber();

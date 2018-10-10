@@ -3,26 +3,22 @@ package ch.epfl.sweng.studdybuddy;
 /**
  * Class representing courses
  */
-//TODO add a semester attribute
 
 public class Course
 {
     private final String courseName;
-    private final String language;
-    private final String section;
+    private final int courseID;
 
-    public Course(String courseName, String language, String section)
+    public Course(String courseName, int courseID)
     {
         this.courseName = courseName;
-        this.language = language;
-        this.section = section;
+        this.courseID = courseID;
     }
 
     public Course(Course sourceCourse)
     {
         this.courseName = sourceCourse.getCourseName();
-        this.language = sourceCourse.getLanguage();
-        this.section = sourceCourse.getSection();
+        this.courseID = sourceCourse.getCourseID();
     }
 
     public String getCourseName()
@@ -30,15 +26,11 @@ public class Course
         return  courseName;
     }
 
-    public String getLanguage()
+    public int getCourseID()
     {
-        return language;
+        return courseID;
     }
 
-    public String getSection()
-    {
-        return section;
-    }
 
 
 }
