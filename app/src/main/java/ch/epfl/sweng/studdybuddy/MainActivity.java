@@ -22,7 +22,6 @@ public class MainActivity extends AppCompatActivity
 {
     private FirebaseAuth mAuth;
     private GoogleSignInClient mGoogleSignInClient;
-    private Button mSignOutBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -50,7 +49,7 @@ public class MainActivity extends AppCompatActivity
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
         mAuth = FirebaseAuth.getInstance();
 
-        mSignOutBtn = findViewById(R.id.signout_btn);
+        Button mSignOutBtn = findViewById(R.id.signout_btn);
         mSignOutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -82,6 +81,7 @@ public class MainActivity extends AppCompatActivity
         }
     }
     private void signOut(){
+        // Firebase sign out
         mAuth.signOut();
         // Google sign out
         mGoogleSignInClient.signOut().addOnCompleteListener(this,

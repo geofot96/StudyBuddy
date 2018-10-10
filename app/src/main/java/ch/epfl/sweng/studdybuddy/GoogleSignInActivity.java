@@ -1,14 +1,12 @@
 package ch.epfl.sweng.studdybuddy;
 
 import android.content.Intent;
-import android.net.Uri;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.Toast;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -22,14 +20,9 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
 public class GoogleSignInActivity extends AppCompatActivity {
-
-
-    private SignInButton mGoogleBtn;
-    //private Button  mSignOutBtn;
 
     private static final int RC_SIGN_IN = 1;
     private static final String TAG = "GoogleActivity";
@@ -42,8 +35,7 @@ public class GoogleSignInActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_google_sign_in);
 
-        mGoogleBtn = findViewById(R.id.googleBtn);
-        //mSignOutBtn = findViewById(R.id.sign_out_btn);
+        SignInButton mGoogleBtn = findViewById(R.id.googleBtn);
         mAuth = FirebaseAuth.getInstance();
 
         // Configure sign-in to request the user's ID, email address, and basic
@@ -69,8 +61,7 @@ public class GoogleSignInActivity extends AppCompatActivity {
         super.onStart();
         // Check for existing Google Sign In account, if the user is already signed in
         // the GoogleSignInAccount will be non-null.
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        updateUI(currentUser);
+        updateUI();
     }
 
     private void signIn() {
@@ -110,28 +101,28 @@ public class GoogleSignInActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithCredential:success");
-                            FirebaseUser user = mAuth.getCurrentUser();
-                            updateUI(user);
+                            updateUI();
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
                             Snackbar.make(findViewById(R.id.googleSignIn_activity), "Authentication Failed.", Snackbar.LENGTH_SHORT).show();
-                            updateUI(null);
+                            updateUI();
                         }
 
                     }
                 });
     }
 
-    private void updateUI(FirebaseUser user){
+    private void updateUI() {
 
         GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(getApplicationContext());
         if (acct != null) {
-
             String personName = acct.getDisplayName();
+            //appears only when the user is connected
             Toast.makeText(this, "Welcome " + personName, Toast.LENGTH_SHORT).show();
             startActivity(new Intent(GoogleSignInActivity.this, MainActivity.class));
-        }else{
+        } else {
+            //appears only when the user isn't connected to the app
             Toast.makeText(this, "No User", Toast.LENGTH_SHORT).show();
         }
     }
