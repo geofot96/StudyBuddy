@@ -1,4 +1,4 @@
-package ch.epfl.sweng.studdybuddy;
+package ch.epfl.sweng.studdybuddy.activities;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -7,9 +7,9 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-import java.util.ArrayList;
-
-import static ch.epfl.sweng.studdybuddy.DummyCourses.MATHEMATICS;
+import ch.epfl.sweng.studdybuddy.CreateGroup;
+import ch.epfl.sweng.studdybuddy.GroupsRecyclerAdapter;
+import ch.epfl.sweng.studdybuddy.R;
 
 public class GroupsActivity extends AppCompatActivity
 {

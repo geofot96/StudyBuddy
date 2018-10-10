@@ -1,6 +1,7 @@
 package ch.epfl.sweng.studdybuddy;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 public class User
 {
@@ -11,6 +12,7 @@ public class User
     //private Schedule schedule;
     private ArrayList<Group> currentGroups;
     private ArrayList<User> friendList;
+    private UUID userID;
 
     public User( String email,String name, String section, ArrayList<Group> currentGroups, ArrayList<User> friendList)
     {
@@ -19,6 +21,7 @@ public class User
         this.Section = section;
         this.currentGroups = new ArrayList<>(currentGroups);
         this.friendList=new ArrayList<>(friendList);
+        this.userID = UUID.randomUUID();
     }
 
     public String getEmail() {//TODO TEST

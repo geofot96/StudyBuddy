@@ -7,18 +7,18 @@ import java.util.UUID;
 public class Course
 {
     private final String courseName;
-   // private final int courseID;
+    private UUID courseID; //mustn't be final because it will be reset when we read from the DB #kiru
 
     public Course(String courseName)
     {
         this.courseName = courseName;
-
+        courseID = UUID.randomUUID();
     }
 
     public Course(Course sourceCourse)
     {
         this.courseName = sourceCourse.getCourseName();
-
+        this.courseID = sourceCourse.getCourseID();
     }
 
     public String getCourseName()
@@ -26,11 +26,13 @@ public class Course
         return  courseName;
     }
 
-//    public int getCourseID()
-//    {
-//        return courseID;
-//    }
+    public UUID getCourseID()
+    {
+        return courseID;
+    }
 
-
-
+    public void setCourseID(UUID courseID)
+    {
+        this.courseID = courseID;
+    }
 }
