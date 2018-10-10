@@ -23,8 +23,8 @@ public class MainActivity extends AppCompatActivity
     Group g1 = new Group(5, new Course(DummyCourses.getListOfCourses()[0]),DummyCourses.getListOfLanguages()[0], new ArrayList<User>());
     Group g2 = new Group(7, new Course(DummyCourses.getListOfCourses()[3]),DummyCourses.getListOfLanguages()[2], new ArrayList<User>());
 
-    static ArrayList<User> usersList1 = new ArrayList<>();
-    static ArrayList<Group> groupList1 = new ArrayList<>();
+    public static ArrayList<User> usersList1 = new ArrayList<>();
+    public static ArrayList<Group> groupList1 = new ArrayList<>(); //made it public for create group which complained
 
     @Override
     protected void onCreate(Bundle savedInstanceState)

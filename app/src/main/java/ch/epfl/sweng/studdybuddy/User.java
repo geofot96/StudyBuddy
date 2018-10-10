@@ -26,20 +26,29 @@ public class User
 
     public User(String email, String name, String section, ArrayList<Group> currentGroups, ArrayList<User> friendList)
     {
-        this.email=email;
+        this.email = email;
         this.name = name;
         this.Section = section;
-        this.currentGroups = new ArrayList<>(currentGroups);
-        this.friendList=new ArrayList<>(friendList);
+        if(currentGroups != null)
+        {
+            this.currentGroups = new ArrayList<>(currentGroups);
+        }
+        if(friendList != null)
+        {
+            this.friendList = new ArrayList<>(friendList);
+        }
+
         this.userID = UUID.randomUUID();
 
     }
 
-    public String getEmail() {//TODO TEST
+    public String getEmail()
+    {//TODO TEST
         return email;
     }
 
-    public void setEmail(String email) {
+    public void setEmail(String email)
+    {
         this.email = email;
     }
 
@@ -65,15 +74,28 @@ public class User
 
     public ArrayList<Group> getCurrentGroups()
     {
-        return new ArrayList<>(currentGroups);
+        if(currentGroups != null)
+        {
+            return new ArrayList<>(currentGroups);
+        }
+        else
+        {
+            return null;
+        }
     }
 
-    public ArrayList<User> getFriendList() {
+    public ArrayList<User> getFriendList()
+    {
         return friendList;
     }
 
-    public void setFriendList(ArrayList<User> friendList) {
-        this.friendList = new ArrayList<>(friendList);
+    public void setFriendList(ArrayList<User> friendList)
+    {
+        if(friendList != null)
+        {
+            this.friendList = new ArrayList<>(friendList);
+        }
+
     }
 
     //TODO why do we want this method?? Maybe have an add to group method or something like that?
