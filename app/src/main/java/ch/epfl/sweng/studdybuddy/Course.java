@@ -3,22 +3,22 @@ package ch.epfl.sweng.studdybuddy;
 /**
  * Class representing courses
  */
-
+import java.util.UUID;
 public class Course
 {
     private final String courseName;
-    private final int courseID;
+   // private final int courseID;
 
-    public Course(String courseName, int courseID)
+    public Course(String courseName)
     {
         this.courseName = courseName;
-        this.courseID = courseID;
+
     }
 
     public Course(Course sourceCourse)
     {
         this.courseName = sourceCourse.getCourseName();
-        this.courseID = sourceCourse.getCourseID();
+
     }
 
     public String getCourseName()
@@ -26,10 +26,10 @@ public class Course
         return  courseName;
     }
 
-    public int getCourseID()
-    {
-        return courseID;
-    }
+//    public int getCourseID()
+//    {
+//        return courseID;
+//    }
 
 
 

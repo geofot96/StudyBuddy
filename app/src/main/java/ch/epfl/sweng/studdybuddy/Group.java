@@ -18,12 +18,13 @@ public class Group
     private ArrayList<User> participants;
     private int groupID;
     private Date creationDate;
-
+    private String language;
+    //TODO add schedule and Chat
     //private commonSchedule;
     // private groupChat;
 
 
-    public Group(int maxParticipantNumber, Course course, ArrayList<User> participants)
+    public Group(int maxParticipantNumber, Course course, String language, ArrayList<User> participants)
     {
         this.participantNumber = participants.size();
         if(maxParticipantNumber <= 0)
@@ -46,6 +47,7 @@ public class Group
         this.maxParticipantNumber = maxParticipantNumber;
         this.course = course;
         this.participants = participants;
+        this.language=language;
     }
 
     public Group(Group sourceGroup)
@@ -55,6 +57,8 @@ public class Group
         this.participants = new ArrayList<>(sourceGroup.participants);
         this.participantNumber = sourceGroup.getParticipantNumber();
         this.maxParticipantNumber = sourceGroup.getMaxParticipantNumber();
+        this.creationDate=sourceGroup.creationDate;
+        this.language=sourceGroup.language;
     }
 
     public int getParticipantNumber()
@@ -103,6 +107,22 @@ public class Group
     public void setParticipants(ArrayList<User> participants)
     {
         this.participants = new ArrayList<>(participants);
+    }
+
+    public Date getCreationDate() {//TODO test for these 4
+        return creationDate;
+    }
+
+    public void setCreationDate(Date creationDate) {
+        this.creationDate = creationDate;
+    }
+
+    public String getLanguage() {
+        return language;
+    }
+
+    public void setLanguage(String language) {
+        this.language = language;
     }
 
     public void addParticipant(User newParticipant)

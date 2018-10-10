@@ -4,19 +4,29 @@ import java.util.ArrayList;
 
 public class User
 {
-    private int userID;
+    private String email;
     private String name;
     private @DummyCourses.Section
     String Section;
     //private Schedule schedule;
     private ArrayList<Group> currentGroups;
+    private ArrayList<User> friendList;
 
-    public User(int userID, String name, String section, ArrayList<Group> currentGroups)
+    public User( String email,String name, String section, ArrayList<Group> currentGroups, ArrayList<User> friendList)
     {
-        this.userID = userID;
+        this.email=email;
         this.name = name;
-        Section = section;
-        this.currentGroups = currentGroups;
+        this.Section = section;
+        this.currentGroups = new ArrayList<>(currentGroups);
+        this.friendList=new ArrayList<>(friendList);
+    }
+
+    public String getEmail() {//TODO TEST
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getName()
@@ -41,7 +51,15 @@ public class User
 
     public ArrayList<Group> getCurrentGroups()
     {
-        return currentGroups;
+        return new ArrayList<>(currentGroups);
+    }
+
+    public ArrayList<User> getFriendList() {
+        return friendList;
+    }
+
+    public void setFriendList(ArrayList<User> friendList) {
+        this.friendList = new ArrayList<>(friendList);
     }
 
     //TODO why do we want this method?? Maybe have an add to group method or something like that?

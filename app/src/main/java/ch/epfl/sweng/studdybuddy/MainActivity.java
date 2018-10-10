@@ -19,9 +19,10 @@ public class MainActivity extends AppCompatActivity
 {
     //TODO Temporary items, will be removed
     static DummyCourses dummy = new DummyCourses();
-    User u1 = new User("xxx@yyy.zzz", "User One", MATHEMATICS, new ArrayList<Group>());
-    Group g1 = new Group(5, dummy.getListOfCourses().get(0), new ArrayList<User>());
-    Group g2 = new Group(7, dummy.getListOfCourses().get(4), new ArrayList<User>());
+    User u1 = new User("xxx@yyy.zzz", "User 1", MATHEMATICS, new ArrayList<Group>(),new ArrayList<User>());
+    Group g1 = new Group(5, new Course(DummyCourses.getListOfCourses()[0]),DummyCourses.getListOfLanguages()[0], new ArrayList<User>());
+    Group g2 = new Group(7, new Course(DummyCourses.getListOfCourses()[3]),DummyCourses.getListOfLanguages()[2], new ArrayList<User>());
+
     static ArrayList<User> usersList1 = new ArrayList<>();
     static ArrayList<Group> groupList1 = new ArrayList<>();
 
