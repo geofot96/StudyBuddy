@@ -63,6 +63,16 @@ public class Group
         this.language = sourceGroup.language;
     }
 
+    public UUID getGroupID()
+    {
+        return groupID;
+    }
+
+    public void setGroupID(UUID groupID)
+    {
+        this.groupID = groupID;
+    }
+
     public int getParticipantNumber()
     {
         return participantNumber;

@@ -14,7 +14,17 @@ public class User
     private ArrayList<User> friendList;
     private UUID userID;
 
-    public User( String email,String name, String section, ArrayList<Group> currentGroups, ArrayList<User> friendList)
+    public UUID getUserID()
+    {
+        return userID;
+    }
+
+    public void setUserID(UUID userID)
+    {
+        this.userID = userID;
+    }
+
+    public User(String email, String name, String section, ArrayList<Group> currentGroups, ArrayList<User> friendList)
     {
         this.email=email;
         this.name = name;
@@ -22,6 +32,7 @@ public class User
         this.currentGroups = new ArrayList<>(currentGroups);
         this.friendList=new ArrayList<>(friendList);
         this.userID = UUID.randomUUID();
+
     }
 
     public String getEmail() {//TODO TEST
