@@ -76,7 +76,7 @@ public class CourseSelectActivityTest {
     }
 
 
-   /* @Test //()
+    @Test //()
     public void courseNotAddedIfGibberish() {
         onView(withId(R.id.courseComplete)).perform(click(), typeText("yxcvbn"), pressImeActionButton());
         onView(withId(R.id.coursesSet)).check(matches(not(hasDescendant(withText("yxcvbn")))));
@@ -121,7 +121,7 @@ public class CourseSelectActivityTest {
                 action.perform(uiController, view);
             }
         };
-    }*/
+    }
 
 }
 
