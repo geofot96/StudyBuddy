@@ -39,6 +39,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.isDescendantOfA
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayingAtLeast;
 import static android.support.test.espresso.matcher.ViewMatchers.isEnabled;
+import static android.support.test.espresso.matcher.ViewMatchers.isFocusable;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.CoreMatchers.allOf;
@@ -67,14 +68,14 @@ public class CourseSelectActivityTest {
 
     @Test
     public void doneIsHiddenIfNoCourseSelected() {
-        onView(withId(R.id.doneButton)).check(matches(not(isEnabled())));
+        onView(withId(R.id.doneButton)).inRoot(RootMatchers.isFocusable()).check(matches(not(isEnabled())));
         //select a course
         //delete a course
         //type a course
     }
 
 
-    @Test //()
+   /* @Test //()
     public void courseNotAddedIfGibberish() {
         onView(withId(R.id.courseComplete)).perform(click(), typeText("yxcvbn"), pressImeActionButton());
         onView(withId(R.id.coursesSet)).check(matches(not(hasDescendant(withText("yxcvbn")))));
@@ -119,7 +120,7 @@ public class CourseSelectActivityTest {
                 action.perform(uiController, view);
             }
         };
-    }
+    }*/
 
 }
 
