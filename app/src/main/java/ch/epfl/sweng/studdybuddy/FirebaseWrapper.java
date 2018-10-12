@@ -1,0 +1,141 @@
+package ch.epfl.sweng.studdybuddy;
+
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+
+import com.google.android.gms.internal.firebase_database.zzit;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.List;
+
+interface ReferenceWrapper {
+
+    Object get(String... path);
+
+    ReferenceWrapper select(String key);
+
+    Object getVal(String key);
+}
+
+
+class FirebaseReference implements ReferenceWrapper {
+    //pass it
+
+    DatabaseReference ref;
+    DataSnapshot snapshot;
+    FirebaseReference() {
+        ref = FirebaseDatabase.getInstance().getReference();
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                snapshot = dataSnapshot;
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {}
+        });
+    }
+
+
+    @Override
+    public Object get(String... path) {
+        DataSnapshot run = snapshot;
+        for(String child: path)
+            run = run.child(child);
+        return run.getValue();
+    }
+
+    @Override
+    public ReferenceWrapper select(String key) {
+        return snapshot.child(key);
+    }
+
+    @Override
+    public Object getVal(String key) {
+        return null;
+    }
+}
+
+public class FirebaseWrapper implements DatabaseWrapper {
+
+    ReferenceWrapper databaseBackend;
+
+    FirebaseWrapper(ReferenceWrapper databaseBackend) {
+        this.databaseBackend = databaseBackend;
+    }
+
+    private final List<Course> aggregateCourses(Object jsonData) {
+
+    }
+
+    @Override
+    public List<Course> getCourses() {
+        return aggregateCourses(databaseBackend.get("courses"));
+    }
+
+    @Override
+    public Group getGroup(GroupId id) {
+        databaseBackend.get("groups", id, );
+        return ;
+    }
+
+    @Override
+    public List<Group> getAllGroups() {
+        return null;
+    }
+
+    @Override
+    public void setGroup(GroupId groupId, Group newGroup) {
+
+    }
+
+    @Override
+    public void putGroup(Group newGroup) {
+
+    }
+
+    @Override
+    public void removeGroup(GroupId groupId) {
+
+    }
+
+    @Override
+    public List<Group> getUserGroups(UserId userID) {
+        return null;
+    }
+
+    @Override
+    public List<Meeting> getMeetings(UserId userId) {
+        return null;
+    }
+
+    @Override
+    public List<Friendship> getFriends(UserId userID) {
+        return null;
+    }
+
+    @Override
+    public void putFriendShip(Friendship friendship) {
+
+    }
+
+    @Override
+    public void putMeeting(Meeting meeting) {
+
+    }
+
+    @Override
+    public void deleteMeeting(MeetingId meetingId) {
+
+    }
+
+    @Override
+    public void setMeeting(MeetingId meetingId, Meeting meeting) {
+
+    }
+}
