@@ -68,4 +68,7 @@ public class GroupsRecyclerAdapter extends RecyclerView.Adapter<GroupsRecyclerAd
     {
         return groupList.size();
     }
+
+    public static class GroupAdapter {
+    }
 }
