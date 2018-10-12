@@ -15,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -25,7 +26,8 @@ public class CreateGroup extends AppCompatActivity implements AdapterView.OnItem
     private String selectedCourse;
     private String selectedLanguage;
     private int maxParticipants=2;//default value
-    private static final List<String> coursesDB= MainActivity.dummy.getListOfCourses().stream().map(x->x.getCourseName()).distinct().collect(Collectors.toList());
+    private static final List<String> coursesDB= Arrays.asList("blablabl");
+            //MainActivity.dummy.getListOfCourses().stream().map(x->x.getCourseName()).distinct().collect(Collectors.toList());
 
 
     private static final List<String> courseSelection = new ArrayList<>();
@@ -42,7 +44,8 @@ public class CreateGroup extends AppCompatActivity implements AdapterView.OnItem
         //Section Spinner
         Spinner spinnerSection = (Spinner) findViewById(R.id.spinnerSection);
         spinnerSection.setOnItemSelectedListener(this);
-        List<String> sectionsList = MainActivity.dummy.getListOfCourses().stream().map(x->x.getSection()).distinct().collect(Collectors.toList());
+        List<String> sectionsList = Arrays.asList("blablabl");
+                //MainActivity.dummy.getListOfCourses().stream().map(x->x.getSection()).distinct().collect(Collectors.toList());
         ArrayAdapter<String> dataAdapterSections = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, sectionsList);
         dataAdapterSections.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerSection.setAdapter(dataAdapterSections);
@@ -50,7 +53,8 @@ public class CreateGroup extends AppCompatActivity implements AdapterView.OnItem
         //Language spinner
         Spinner spinnerLanguage = (Spinner) findViewById(R.id.spinnerLanguage);
         spinnerLanguage.setOnItemSelectedListener(this);
-        List<String> languagesList = MainActivity.dummy.getListOfCourses().stream().map(x->x.getLanguage()).distinct().collect(Collectors.toList());//TODO change this to a separate list of only languages
+        List<String> languagesList = Arrays.asList("blablabl");
+                //MainActivity.dummy.getListOfCourses().stream().map(x->x.getLanguage()).distinct().collect(Collectors.toList());//TODO change this to a separate list of only languages
         ArrayAdapter<String> dataAdapterLanguages = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, languagesList);
         dataAdapterLanguages.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerLanguage.setAdapter(dataAdapterLanguages);
