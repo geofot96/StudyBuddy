@@ -15,8 +15,6 @@ import java.util.List;
 
 interface ReferenceWrapper {
 
-    Object get(String... path);
-
     ReferenceWrapper select(String key);
 
     Object getVal(String key);
@@ -28,6 +26,7 @@ class FirebaseReference implements ReferenceWrapper {
 
     DatabaseReference ref;
     DataSnapshot snapshot;
+
     FirebaseReference() {
         ref = FirebaseDatabase.getInstance().getReference();
         ref.addValueEventListener(new ValueEventListener() {
@@ -41,23 +40,18 @@ class FirebaseReference implements ReferenceWrapper {
         });
     }
 
-
-    @Override
-    public Object get(String... path) {
-        DataSnapshot run = snapshot;
-        for(String child: path)
-            run = run.child(child);
-        return run.getValue();
+    FirebaseReference(DataSnapshot snapshot) {
+        this.snapshot = snapshot;
     }
 
     @Override
     public ReferenceWrapper select(String key) {
-        return snapshot.child(key);
+        return new FirebaseReference(snapshot.child(key));
     }
 
     @Override
     public Object getVal(String key) {
-        return null;
+        return snapshot.child(key).getValue();
     }
 }
 
@@ -75,13 +69,15 @@ public class FirebaseWrapper implements DatabaseWrapper {
 
     @Override
     public List<Course> getCourses() {
-        return aggregateCourses(databaseBackend.get("courses"));
+        return aggregateCourses(databaseBackend.getVal("courses"));
     }
 
     @Override
     public Group getGroup(GroupId id) {
-        databaseBackend.get("groups", id, );
-        return ;
+        ReferenceWrapper groups = databaseBackend.select("groups").select(id.toString());
+        int maxNoUsers = Integer.parseInt(groups.getVal("maxNoUsers").toString());
+        
+        return databaseBackend.;
     }
 
     @Override
