@@ -50,7 +50,8 @@ public class FirebaseAuthManager implements AuthManager{
         return client.signOut();
     }
 
-    public FirebaseUser getCurrentUser(){
-        return mAuth.getCurrentUser();
+    public Account getCurrentUser(){
+        System.out.println("return firebase user");
+        return Account.from(mAuth.getCurrentUser());
     }
 }

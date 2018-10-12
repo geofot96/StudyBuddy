@@ -7,5 +7,5 @@ public interface AuthManager {
     void login(Account acct, OnLoginCallback f, String TAG);
     Task<Void> logout();
     void startLoginScreen();
-    FirebaseUser getCurrentUser();
+    Account getCurrentUser();
 }
