@@ -1,4 +1,4 @@
-package ch.epfl.sweng.studdybuddy;
+package ch.epfl.sweng.studdybuddy.activities;
 
 import android.content.Context;
 
@@ -19,12 +19,14 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import ch.epfl.sweng.studdybuddy.CourseHolder;
+import ch.epfl.sweng.studdybuddy.R;
 
 
 public class CourseSelectActivity extends AppCompatActivity

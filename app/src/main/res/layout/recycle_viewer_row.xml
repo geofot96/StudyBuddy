@@ -19,12 +19,6 @@
         android:layout_weight="1" />
 
     <TextView
-        android:id="@+id/group_section"
-        android:layout_width="196dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1" />
-
-    <TextView
         android:id="@+id/group_language"
         android:layout_width="143dp"
         android:layout_height="wrap_content"

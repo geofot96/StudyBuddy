@@ -8,19 +8,19 @@ import static org.junit.Assert.*;
 
 public class UserUnitTests
 {
-    private static User user = new User("1", "Mr Potato", "IN", null);
+    private static User user = new User("1", "Mr Potato", "IN", null, null);
 
     @Test
     public void getNameWorksCorrectly()
     {
-        User user1 = new User("1", "Mr Potato", "IN", null);
+        User user1 = new User("1", "Mr Potato", "IN", null, null);
         assertEquals("Mr Potato", user1.getName());
     }
 
     @Test
     public void getSectionWorksCorrectly()
     {
-        User user1 = new User("1", "Mr Potato", "IN", null);
+        User user1 = new User("1", "Mr Potato", "IN", null, null);
         assertEquals("IN", user1.getSection());
     }
 

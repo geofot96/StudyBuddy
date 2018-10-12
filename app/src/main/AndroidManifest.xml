@@ -9,7 +9,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity android:name=".activities.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -17,26 +17,26 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".GroupsActivity"
-            android:parentActivityName=".MainActivity">
+            android:name=".activities.GroupsActivity"
+            android:parentActivityName=".activities.MainActivity">
             <!-- The meta-data tag is required if you support API level 15 and lower -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity" />
+                android:value=".activities.MainActivity" />
         </activity>
         <activity
             android:name=".CreateGroup"
-            android:parentActivityName=".GroupsActivity">
+            android:parentActivityName=".activities.GroupsActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".GroupsActivity" />
+                android:value=".activities.GroupsActivity" />
         </activity>
         <activity
-            android:name=".CourseSelectActivity"
-            android:parentActivityName=".MainActivity">
+            android:name=".activities.CourseSelectActivity"
+            android:parentActivityName=".activities.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".CourseSelectActivity" />
+                android:value=".activities.CourseSelectActivity" />
         </activity>
     </application>
 

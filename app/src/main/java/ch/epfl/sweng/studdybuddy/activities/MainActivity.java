@@ -1,17 +1,17 @@
-package ch.epfl.sweng.studdybuddy;
+package ch.epfl.sweng.studdybuddy.activities;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.Button;
-import android.widget.ImageView;
 
 import java.util.ArrayList;
+
+import ch.epfl.sweng.studdybuddy.Course;
+import ch.epfl.sweng.studdybuddy.DummyCourses;
+import ch.epfl.sweng.studdybuddy.Group;
+import ch.epfl.sweng.studdybuddy.R;
+import ch.epfl.sweng.studdybuddy.User;
 
 import static ch.epfl.sweng.studdybuddy.DummyCourses.MATHEMATICS;
 
@@ -19,11 +19,12 @@ public class MainActivity extends AppCompatActivity
 {
     //TODO Temporary items, will be removed
     static DummyCourses dummy = new DummyCourses();
-    User u1 = new User("xxx@yyy.zzz", "User One", MATHEMATICS, new ArrayList<Group>());
-    Group g1 = new Group(5, dummy.getListOfCourses().get(0), new ArrayList<User>());
-    Group g2 = new Group(7, dummy.getListOfCourses().get(4), new ArrayList<User>());
-    static ArrayList<User> usersList1 = new ArrayList<>();
-    static ArrayList<Group> groupList1 = new ArrayList<>();
+    User u1 = new User("xxx@yyy.zzz", "User 1", MATHEMATICS, new ArrayList<Group>(),new ArrayList<User>());
+    Group g1 = new Group(5, new Course(DummyCourses.getListOfCourses()[0]),DummyCourses.getListOfLanguages()[0], new ArrayList<User>());
+    Group g2 = new Group(7, new Course(DummyCourses.getListOfCourses()[3]),DummyCourses.getListOfLanguages()[2], new ArrayList<User>());
+
+    public static ArrayList<User> usersList1 = new ArrayList<>();
+    public static ArrayList<Group> groupList1 = new ArrayList<>(); //made it public for create group which complained
 
     @Override
     protected void onCreate(Bundle savedInstanceState)

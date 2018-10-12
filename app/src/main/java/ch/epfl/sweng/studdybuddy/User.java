@@ -1,22 +1,55 @@
 package ch.epfl.sweng.studdybuddy;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 public class User
 {
-    private String id;
+    private String email;
     private String name;
     private @DummyCourses.Section
     String Section;
     //private Schedule schedule;
     private ArrayList<Group> currentGroups;
+    private ArrayList<User> friendList;
+    private UUID userID;
 
-    public User(String id, String name, String section, ArrayList<Group> currentGroups)
+    public UUID getUserID()
     {
-        this.id = id;
+        return userID;
+    }
+
+    public void setUserID(UUID userID)
+    {
+        this.userID = userID;
+    }
+
+    public User(String email, String name, String section, ArrayList<Group> currentGroups, ArrayList<User> friendList)
+    {
+        this.email = email;
         this.name = name;
-        Section = section;
-        this.currentGroups = currentGroups;
+        this.Section = section;
+        if(currentGroups != null)
+        {
+            this.currentGroups = new ArrayList<>(currentGroups);
+        }
+        if(friendList != null)
+        {
+            this.friendList = new ArrayList<>(friendList);
+        }
+
+        this.userID = UUID.randomUUID();
+
+    }
+
+    public String getEmail()
+    {//TODO TEST
+        return email;
+    }
+
+    public void setEmail(String email)
+    {
+        this.email = email;
     }
 
     public String getName()
@@ -41,7 +74,28 @@ public class User
 
     public ArrayList<Group> getCurrentGroups()
     {
-        return currentGroups;
+        if(currentGroups != null)
+        {
+            return new ArrayList<>(currentGroups);
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+    public ArrayList<User> getFriendList()
+    {
+        return friendList;
+    }
+
+    public void setFriendList(ArrayList<User> friendList)
+    {
+        if(friendList != null)
+        {
+            this.friendList = new ArrayList<>(friendList);
+        }
+
     }
 
     //TODO why do we want this method?? Maybe have an add to group method or something like that?

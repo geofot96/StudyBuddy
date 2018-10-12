@@ -8,38 +8,29 @@ import java.util.ArrayList;
 
 public class DummyCourses
 {
-    private ArrayList<Course> listOfCourses = new ArrayList<>();
+
+    //TODO ask if we need this, simple array may be better
     public static final String COMPUTERSCIENCE = "Computer Science";
     public static final String MATHEMATICS = "Mathematics";
     public static final String LIFESCIENCE = "Life Science";
-
-
     @StringDef({COMPUTERSCIENCE, MATHEMATICS, LIFESCIENCE})
     @Retention(RetentionPolicy.SOURCE)
-    public @interface Section
+    public @interface Section{}
+
+    private static final String coursesDB[] = new String[]{"Analysis", "Linear Algebra", "Algorithms", "Functionnal Programming",
+            "Computer Language Processing", "Computer Networks"};
+    private static final String languagesDB[] = new String[]{"En","Fr","De","It"};
+
+    public static String[] getListOfLanguages()
     {
+
+        return languagesDB;
     }
 
-    public DummyCourses()
-    {
-        listOfCourses.add(new Course("Analysis 1", "en", COMPUTERSCIENCE));
-        listOfCourses.add(new Course("Analysis 1", "fr", COMPUTERSCIENCE));
-        listOfCourses.add(new Course("Linear Algebra", "en", COMPUTERSCIENCE));
-        listOfCourses.add(new Course("Linear Algebra", "fr", COMPUTERSCIENCE));
-        listOfCourses.add(new Course("Physics 1", "en", COMPUTERSCIENCE));
-        listOfCourses.add(new Course("Physics 1", "fr", COMPUTERSCIENCE));
-        listOfCourses.add(new Course("Analysis 1", "en", MATHEMATICS));
-        listOfCourses.add(new Course("Analysis 1", "fr", MATHEMATICS));
-        listOfCourses.add(new Course("Linear Algebra", "en", MATHEMATICS));
-        listOfCourses.add(new Course("Linear Algebra", "fr", MATHEMATICS));
-        listOfCourses.add(new Course("Physics 1", "en", MATHEMATICS));
-        listOfCourses.add(new Course("Physics 1", "fr", MATHEMATICS));
-    }
-
-    public ArrayList<Course> getListOfCourses()
+    public static String[] getListOfCourses()
     {
 
-        return listOfCourses;
+        return coursesDB;
     }
 }
 

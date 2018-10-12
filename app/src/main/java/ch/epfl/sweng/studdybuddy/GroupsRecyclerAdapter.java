@@ -19,7 +19,6 @@ public class GroupsRecyclerAdapter extends RecyclerView.Adapter<GroupsRecyclerAd
 
         public TextView groupCourseTextView;
         public TextView groupParticipantInfoTextView;
-        public TextView groupSectionTextView;
         public TextView groupLanguageTextView;
         public Button messageButton;
 
@@ -28,7 +27,6 @@ public class GroupsRecyclerAdapter extends RecyclerView.Adapter<GroupsRecyclerAd
             super(itemView);
             groupCourseTextView = (TextView) itemView.findViewById(R.id.group_course_name);
             groupParticipantInfoTextView = (TextView) itemView.findViewById(R.id.group_participant_info);
-            groupSectionTextView = (TextView) itemView.findViewById(R.id.group_section);
             groupLanguageTextView = (TextView) itemView.findViewById(R.id.group_language);
             messageButton = (Button) itemView.findViewById(R.id.message_button);
         }
@@ -55,10 +53,8 @@ public class GroupsRecyclerAdapter extends RecyclerView.Adapter<GroupsRecyclerAd
         Group group = groupList.get(position);
         TextView newGroupCourseTextView = holder.groupCourseTextView;
         newGroupCourseTextView.setText(group.getCourse().getCourseName());
-        TextView newGroupSectionTextView = holder.groupSectionTextView;
-        newGroupSectionTextView.setText(group.getCourse().getSection());
         TextView newGroupLanguageTextView = holder.groupLanguageTextView;
-        newGroupLanguageTextView.setText(group.getCourse().getLanguage());
+        newGroupLanguageTextView.setText(group.getLanguage());
         TextView newGroupParticipantInfoTextView = holder.groupParticipantInfoTextView;
         newGroupParticipantInfoTextView.setText(("Particip: " + group.getParticipantNumber() + "/" + group.getMaxParticipantNumber()));
 

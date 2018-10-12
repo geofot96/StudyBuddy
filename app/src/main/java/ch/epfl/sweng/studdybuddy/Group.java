@@ -1,6 +1,8 @@
 package ch.epfl.sweng.studdybuddy;
 
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.UUID;
 
 /**
  * class representing a group
@@ -15,12 +17,15 @@ public class Group
     private int maxParticipantNumber;
     private Course course;
     private ArrayList<User> participants;
-
+    private UUID groupID; //TODO add getters and setters
+    private Date creationDate;
+    private String language;
+    //TODO add schedule and Chat
     //private commonSchedule;
-    // private groupChat;
+    //private groupChat;
 
 
-    public Group(int maxParticipantNumber, Course course, ArrayList<User> participants)
+    public Group(int maxParticipantNumber, Course course, String language, ArrayList<User> participants)
     {
         this.participantNumber = participants.size();
         if(maxParticipantNumber <= 0)
@@ -39,17 +44,33 @@ public class Group
             throw new IllegalArgumentException("Max number of participants can't be less than actual number of participants");
         }
 
+        this.groupID = UUID.randomUUID();
+        this.creationDate = new Date();
         this.maxParticipantNumber = maxParticipantNumber;
         this.course = course;
         this.participants = participants;
+        this.language = language;
     }
 
     public Group(Group sourceGroup)
     {
+        //TODO why do we need this constructor and what do we do with the date
         this.course = sourceGroup.getCourse();
         this.participants = new ArrayList<>(sourceGroup.participants);
         this.participantNumber = sourceGroup.getParticipantNumber();
         this.maxParticipantNumber = sourceGroup.getMaxParticipantNumber();
+        this.creationDate = sourceGroup.creationDate;
+        this.language = sourceGroup.language;
+    }
+
+    public UUID getGroupID()
+    {
+        return groupID;
+    }
+
+    public void setGroupID(UUID groupID)
+    {
+        this.groupID = groupID;
     }
 
     public int getParticipantNumber()
@@ -92,12 +113,32 @@ public class Group
 
     public ArrayList<User> getParticipants()
     {
-        return new ArrayList<>(participants);
+        return new ArrayList<>(participants); //TODO return a collections.unmodifiableList
     }
 
     public void setParticipants(ArrayList<User> participants)
     {
         this.participants = new ArrayList<>(participants);
+    }
+
+    public Date getCreationDate()
+    {//TODO test for these 4
+        return creationDate;
+    }
+
+    public void setCreationDate(Date creationDate)
+    {
+        this.creationDate = creationDate;
+    }
+
+    public String getLanguage()
+    {
+        return language;
+    }
+
+    public void setLanguage(String language)
+    {
+        this.language = language;
     }
 
     public void addParticipant(User newParticipant)
