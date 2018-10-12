@@ -18,6 +18,8 @@ interface DatabaseWrapper {
      */
     public List<Course> getCourses();
 
+
+
     /**
      * Returns a specific group stored in the database
      * @throws IllegalArgumentException if the group id is invalid

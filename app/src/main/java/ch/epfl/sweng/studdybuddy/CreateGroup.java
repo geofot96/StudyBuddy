@@ -118,4 +118,7 @@ public class CreateGroup extends AppCompatActivity implements AdapterView.OnItem
             maxParticipants = numberPicker.getValue();
         }
     };
+
+    public static class GroupID {
+    }
 }
