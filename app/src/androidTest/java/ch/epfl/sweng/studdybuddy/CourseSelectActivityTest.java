@@ -33,6 +33,7 @@ import static android.support.test.espresso.intent.Intents.intended;
 import static android.support.test.espresso.intent.Intents.intending;
 import static android.support.test.espresso.intent.matcher.IntentMatchers.hasComponent;
 import static android.support.test.espresso.intent.matcher.IntentMatchers.toPackage;
+import static android.support.test.espresso.matcher.RootMatchers.withDecorView;
 import static android.support.test.espresso.matcher.ViewMatchers.hasDescendant;
 import static android.support.test.espresso.matcher.ViewMatchers.isChecked;
 import static android.support.test.espresso.matcher.ViewMatchers.isDescendantOfA;
@@ -68,7 +69,7 @@ public class CourseSelectActivityTest {
 
     @Test
     public void doneIsHiddenIfNoCourseSelected() {
-        onView(withId(R.id.doneButton)).inRoot(RootMatchers.isFocusable()).check(matches(not(isEnabled())));
+        onView(withId(R.id.doneButton)).inRoot(withDecorView(is(mActivityRule.getActivity().getWindow().getDecorView()))).check(matches(not(isEnabled())));
         //select a course
         //delete a course
         //type a course
