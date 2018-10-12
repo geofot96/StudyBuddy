@@ -34,10 +34,11 @@ public class CourseSelectActivity extends AppCompatActivity
 
     private static final String coursesDB[] = new String[]{"Analysis", "Linear Algebra", "Algorithms", "Functionnal Programming",
             "Computer Language Processing", "Computer Networks"};
-
+    //List of selected courses
     private static final List<String> courseSelection = new ArrayList<>();
 
-    private static AutoCompleteTextView textView;
+
+    private static AutoCompleteTextView autocomplete;
 
     private static Button doneButton;
 
@@ -55,10 +56,10 @@ public class CourseSelectActivity extends AppCompatActivity
         Button skipButton = findViewById(R.id.skipButton);
         doneButton = findViewById(R.id.doneButton);
         doneButton.setEnabled(false);
-        textView = (AutoCompleteTextView) findViewById(R.id.courseComplete);
-        textView.setAdapter(adapter);
-        textView.setThreshold(0);
-        textView.setOnClickListener(new View.OnClickListener()
+        autocomplete = (AutoCompleteTextView) findViewById(R.id.courseComplete);
+        autocomplete.setAdapter(adapter);
+        autocomplete.setThreshold(0);
+        autocomplete.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
@@ -68,7 +69,7 @@ public class CourseSelectActivity extends AppCompatActivity
                 textView.showDropDown();
             }
         });
-        textView.setOnItemClickListener(new AdapterView.OnItemClickListener()
+        autocomplete.setOnItemClickListener(new AdapterView.OnItemClickListener()
         {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id)
@@ -79,11 +80,12 @@ public class CourseSelectActivity extends AppCompatActivity
             }
         });
         //courseSelection.add("Wine tasting");
-        final RecyclerView recyclerView = (RecyclerView) findViewById(R.id.coursesSet);
 
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        final RecyclerView selectedCourses = (RecyclerView) findViewById(R.id.coursesSet);
 
-        recyclerView.setAdapter(new CourseAdapter(courseSelection));
+        selectedCourses.setLayoutManager(new LinearLayoutManager(this));
+
+        selectedCourses.setAdapter(new CourseAdapter(courseSelection));
         ItemTouchHelper mIth = new ItemTouchHelper(
                 new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP | ItemTouchHelper.DOWN,
                         ItemTouchHelper.RIGHT)
@@ -99,17 +101,19 @@ public class CourseSelectActivity extends AppCompatActivity
                     {
                         CourseHolder cc = (CourseHolder) viewHolder;
                         courseSelection.remove(courseSelection.indexOf(cc.get()));
-                        recyclerView.getAdapter().notifyDataSetChanged();
+                        selectedCourses.getAdapter().notifyDataSetChanged();
                         if(courseSelection.size() == 0)
                             doneButton.setEnabled(false);
                     }
                 });
-        mIth.attachToRecyclerView(recyclerView);
-        textView.setOnEditorActionListener(new TextView.OnEditorActionListener()
+        mIth.attachToRecyclerView(selectedCourses);
+        //Update listener when pressing ENTER
+        autocomplete.setOnEditorActionListener(new TextView.OnEditorActionListener()
         {
             @Override
             public boolean onEditorAction(TextView view, int actionId, KeyEvent event)
             {
+                //Check ENTER pressed
                 if(event == null)
                 {
                     if(actionId != EditorInfo.IME_ACTION_DONE && actionId != EditorInfo.IME_ACTION_NEXT)
@@ -121,7 +125,7 @@ public class CourseSelectActivity extends AppCompatActivity
                 }
                 else return false;
                 //Protection
-                String textInput = textView.getText().toString();
+                String textInput = autocomplete.getText().toString();
                 if(Arrays.asList(coursesDB).contains(textInput) && !courseSelection.contains(textInput))
                     addCourse(textInput);
                 return true;
@@ -155,9 +159,9 @@ public class CourseSelectActivity extends AppCompatActivity
         courseSelection.add(course);
         //Dismiss KB
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(textView.getWindowToken(), 0);
+        imm.hideSoftInputFromWindow(autocomplete.getWindowToken(), 0);
         //reset search text
-        textView.setText("");
+        autocomplete.setText("");
         doneButton.setEnabled(true);
     }
 

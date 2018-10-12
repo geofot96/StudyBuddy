@@ -5,6 +5,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.util.ArrayList;
 
 import ch.epfl.sweng.studdybuddy.Course;
@@ -26,12 +29,16 @@ public class MainActivity extends AppCompatActivity
     public static ArrayList<User> usersList1 = new ArrayList<>();
     public static ArrayList<Group> groupList1 = new ArrayList<>(); //made it public for create group which complained
 
+    private DatabaseReference mDatabase;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+        mDatabase.
 
         if(groupList1.isEmpty())
         {//TODO Temporary items, will be removed after the demo
