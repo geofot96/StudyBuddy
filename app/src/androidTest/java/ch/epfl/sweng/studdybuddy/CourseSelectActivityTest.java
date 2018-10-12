@@ -69,7 +69,7 @@ public class CourseSelectActivityTest {
 
     @Test
     public void doneIsHiddenIfNoCourseSelected() {
-        onView(withId(R.id.doneButton)).inRoot(withDecorView(is(mActivityRule.getActivity().getWindow().getDecorView()))).check(matches(not(isEnabled())));
+        onView(withId(R.id.doneButton)).check(matches(not(isEnabled())));
         //select a course
         //delete a course
         //type a course
