@@ -3,6 +3,9 @@ package ch.epfl.sweng.studdybuddy;
 import org.junit.Test;
 
 public class FirebaseWrapperTest {
+
+    DatabaseWrapper db;
+
     @Test
     void dataBaseReferenceFailure() {
 

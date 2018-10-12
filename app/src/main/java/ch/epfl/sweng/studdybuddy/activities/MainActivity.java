@@ -47,6 +47,7 @@ public class MainActivity extends AppCompatActivity
         mDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                dataSnapshot.child("testttt").getValue();
                 for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
                     // TODO: handle the post
 
@@ -62,7 +63,8 @@ public class MainActivity extends AppCompatActivity
         });
 
         System.out.println(mDatabase.child("courses"));
-        mDatabase.child("tests").setValue("test1");
+
+        //mDatabase.child("tests").setValue("test1");
         if(groupList1.isEmpty())
         {//TODO Temporary items, will be removed after the demo
             g1.addParticipant(u1);
