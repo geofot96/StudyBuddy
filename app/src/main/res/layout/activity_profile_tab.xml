@@ -6,4 +6,48 @@
     android:layout_height="match_parent"
     tools:context=".ProfileTab">
 
+    <LinearLayout
+        android:layout_width="328dp"
+        android:layout_height="535dp"
+        android:layout_marginStart="16dp"
+        android:orientation="vertical"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteY="16dp">
+
+        <TextView
+            android:id="@+id/profile_tab_name"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:text="Profile"
+            android:textAlignment="center"
+            android:textSize="28sp" />
+
+        <TextView
+            android:id="@+id/profile_name_text"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:text="Student Name"
+            android:textAlignment="center"
+            android:textSize="22sp" />
+
+        <Button
+            android:id="@+id/list_courses_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="openCoursesActivity"
+            android:text="My courses" />
+
+        <Button
+            android:id="@+id/list_groups_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="My Groups" />
+
+        <Button
+            android:id="@+id/sign_out_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Sign Out" />
+    </LinearLayout>
+
 </android.support.constraint.ConstraintLayout>
