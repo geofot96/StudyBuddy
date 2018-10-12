@@ -24,7 +24,7 @@ interface DatabaseWrapper {
      * @param id the GroupId
      * @return the Group
      */
-    public Group getGroup(GroupId id);
+    public Group getGroup(ID<Group> id);
 
     /**
      * The list of all groups stored in the database
@@ -35,57 +35,61 @@ interface DatabaseWrapper {
     /**
      * Updates a group
      * @throws IllegalArgumentException if the group id is invalid
-     * @param groupId the group id
+     * @param id group to modify
      * @param newGroup  the new group's value
      */
-    public void setGroup(GroupId groupId, Group newGroup);
+    public void setGroup(ID<Group> groupId, Group group);
 
 
     /**
      * Puts the group in the database
      * @param newGroup the group to add
      */
-    public void putGroup(Group newGroup);
+    public void putGroup(Group group);
 
     /**
      * Removes the group from the database
      * @throws IllegalArgumentException if the group id is invalid
-     * @param groupId the groupID
+     * @param id removed group id
      */
-    public void removeGroup(GroupId groupId);
+    public void removeGroup(ID<Group> groupId);
 
     /**
      * Returns all the groups from a user
      * @throws IllegalArgumentException if the user id is invalid
-     * @param userID the userID
+     * @param id the userID
      * @return the user groups as a list
      */
-    public List<Group> getUserGroups(UserId userID);
+    public List<Group> getUserGroups(ID<User> userID);
 
     /**
      * Returns the list of all meetings from a user
      * @throws IllegalArgumentException if the user id is invalid
-     * @param userId the user id
+     * @param id the user id
      * @return the user meetings
      */
-    public List<Meeting> getMeetings(UserId userId);
+    public List<Meeting> getMeetings(ID<User> id);
 
     /**
      * Returns the list of friends of a user
      * @throws IllegalArgumentException if the user id is invalid
-     * @param userID the user id
+     * @param id the user id
      * @return the user friends
      */
-    public List<Friendship> getFriends(UserId userID);
+    public List<Friendship> getFriends(ID<User> id);
 
     /**
      * Puts a Friendship in the database
-     * @throws IllegalArgumentException if the group id doesn't exist
-     * @param userID the userId
+     * @param friendship the friendship to add
      */
     public void putFriendShip(Friendship friendship);
 
-
+    /**
+     * Removes a Friendship from the database
+     * @throws IllegalArgumentException if the group id doesn't exist
+     * @param id removed friendship id
+     */
+    public void deleteFriendShip(ID<Friendship> id);
     /**
      * Puts a meeting in the database
      * @param meeting the meeting to put
@@ -95,14 +99,14 @@ interface DatabaseWrapper {
     /**
      * Removes a meeting in the database
      * @throws IllegalArgumentException if the meeting id is invalid
-     * @param meetingIdid the meeting to remove
+     * @param id removed meeting id
      */
-    public void deleteMeeting(MeetingId meetingId);
+    public void deleteMeeting(ID<Meeting> id);
 
     /**
      * Modifies a meeting in the database
      * @param meeting the meeting to modify
      */
-    public void setMeeting(MeetingId meetingId, Meeting meeting);
+    public void setMeeting(ID<Meeting> id, Meeting meeting);
 
 }
