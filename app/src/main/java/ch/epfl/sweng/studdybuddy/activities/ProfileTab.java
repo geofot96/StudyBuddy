@@ -1,10 +1,11 @@
-package ch.epfl.sweng.studdybuddy;
+package ch.epfl.sweng.studdybuddy.activities;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.EditText;
+
+import ch.epfl.sweng.studdybuddy.R;
 
 public class ProfileTab extends AppCompatActivity {
     public static final String EXTRA_MESSAGE = "ch.epfl.sweng.studdybuddy.MESSAGE";
@@ -16,6 +17,10 @@ public class ProfileTab extends AppCompatActivity {
 
     public void openCoursesActivity(View view) {
         Intent intent = new Intent(this, ProfileCourses.class);
+        startActivity(intent);
+    }
+    public void openGroupsActivity(View view) {
+        Intent intent = new Intent(this, ProfileGroups.class);
         startActivity(intent);
     }
 }
