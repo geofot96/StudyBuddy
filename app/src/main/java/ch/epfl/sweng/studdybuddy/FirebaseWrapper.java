@@ -16,60 +16,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-interface ReferenceWrapper {
-
-    ReferenceWrapper select(String key);
-
-    Object getVal(String key);
-
-    Task<Void> setVal(Object o);
-}
-
-
-class FirebaseReference implements ReferenceWrapper {
-    //pass it
-
-    DatabaseReference ref;
-    DataSnapshot snapshot;
-
-    FirebaseReference() {
-        ref = FirebaseDatabase.getInstance().getReference();
-        ref.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                snapshot = dataSnapshot;
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {}
-        });
-    }
-
-    FirebaseReference(DatabaseReference snapshot) {
-        this.ref = snapshot;
-    }
-
-    @Override
-    public ReferenceWrapper select(String key) {
-        return new FirebaseReference(ref.child(key));
-    }
-
-    @Override
-    public Object getVal(String key) {
-        return snapshot.child(key).getValue();
-    }
-
-    @Override
-    public Task<Void> setVal(Object o) {
-        return ref.setValue(o);
-    }
-}
-
-abstract public class FirebaseWrapper implements DatabaseWrapper {
+ public class FirebaseWrapper implements DatabaseWrapper {
 
     ReferenceWrapper databaseBackend;
 
-    FirebaseWrapper(ReferenceWrapper databaseBackend) {
+    public FirebaseWrapper(ReferenceWrapper databaseBackend) {
         this.databaseBackend = databaseBackend;
     }
 
@@ -79,19 +30,19 @@ abstract public class FirebaseWrapper implements DatabaseWrapper {
 
     @Override
     public List<Course> getCourses() {
-        return aggregateCourses(databaseBackend.getVal("courses"));
+        return aggregateCourses(databaseBackend.select("courses").get());
     }
 
     @Override
     public Group getGroup(ID<Group> id) {
-        ReferenceWrapper group = databaseBackend.select("groups").select(id.toString());
-        int maxNoUsers = Integer.parseInt(group.getVal("maxNoUsers").toString());
-        String courseName = databaseBackend.select("courses").getVal(group.getVal("courseID").toString()).toString();
+        ReferenceWrapper group = databaseBackend.select("groups").select(id.getID());
+        int maxNoUsers = Integer.parseInt(group.select("maxNoUsers").toString());
+        String courseName = databaseBackend.select("courses").select(group.select("courseID").get().toString()).toString();
         //TODO
         //We should avoid passing references as parameters
         //Pass IDs instead
         ArrayList<User> participants = new ArrayList<>();
-        return new Group(maxNoUsers, new Course(courseName), group.getVal("lang").toString(), participants );
+        return new Group(maxNoUsers, new Course(courseName), group.select("lang").get().toString(), participants );
     }
 
     @Override
@@ -107,16 +58,18 @@ abstract public class FirebaseWrapper implements DatabaseWrapper {
     @Override
     public void setGroup(ID<Group> id, Group newGroup) {
 
+        //databaseBackend.select("groups").select(newGroup.getGroupID().toString()).setVal(newGroup);
+
     }
 
     @Override
     public void putGroup(Group newGroup) {
-        databaseBackend.setVal(newGroup);
+        databaseBackend.select("groups").select(newGroup.getGroupID().toString()).setVal(newGroup);
     }
 
     @Override
     public void removeGroup(ID<Group> id) {
-
+        databaseBackend.select("groups").select(id.getID()).clear();
     }
 
     @Override
@@ -140,6 +93,10 @@ abstract public class FirebaseWrapper implements DatabaseWrapper {
     }
 
     @Override
+    public void deleteFriendShip(ID<Friendship> id) {
+
+    }
+    @Override
     public void putMeeting(Meeting meeting) {
 
     }
@@ -152,5 +109,8 @@ abstract public class FirebaseWrapper implements DatabaseWrapper {
     @Override
     public void setMeeting(ID<Meeting> id, Meeting meeting) {
 
+
     }
+
+
 }

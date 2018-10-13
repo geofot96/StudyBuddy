@@ -1,12 +1,12 @@
 package ch.epfl.sweng.studdybuddy;
 
 public class ID<T> {
-    private int id;
+    private String id;
 
-    public ID(int id){
+    public ID(String id){
         this.id = id;
     }
 
-    public int getID(){ return id;}
+    public String getID(){ return id;}
 
 }
