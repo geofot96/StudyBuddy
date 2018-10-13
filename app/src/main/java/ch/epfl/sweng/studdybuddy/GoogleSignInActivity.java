@@ -40,7 +40,7 @@ public class GoogleSignInActivity extends AppCompatActivity {
         super.onStart();
         // Check for existing Google Sign In account, if the user is already signed in
         // the GoogleSignInAccount will be non-null.
-        Account acct = Account.from(GoogleSignIn.getLastSignedInAccount(getApplicationContext()));
+        Account acct = fbAuthManager.getCurrentUser();
         if (acct != null) {
             String personName = acct.getDisplayName();
             //appears only when the user is connected
@@ -69,7 +69,7 @@ public class GoogleSignInActivity extends AppCompatActivity {
                         if (acct != null) {
                             String personName = acct.getDisplayName();
                             //appears only when the user is connected
-                            //Toast.makeText(this, "Welcome " + personName, Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(this, "Welcome" + personName, Toast.LENGTH_SHORT).show();
                             startActivity(new Intent(GoogleSignInActivity.this, MainActivity.class));
                         }/* else {
                             //appears only when the user isn't connected to the app
