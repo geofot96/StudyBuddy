@@ -2,6 +2,8 @@ package ch.epfl.sweng.studdybuddy;
 
 import com.google.android.gms.tasks.Task;
 
+import java.util.Map;
+
 interface ReferenceWrapper {
 
     /**
@@ -33,4 +35,14 @@ interface ReferenceWrapper {
      * @return a task
      */
     Task<Void> clear();
+
+
+    /**
+     * Returns an iterator of the current level
+     * @return an iterator
+     */
+    Map<String, Object> getAll();
+
+
+
 }

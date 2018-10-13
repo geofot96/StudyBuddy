@@ -9,6 +9,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.function.Consumer;
+
 public class FirebaseReference implements ReferenceWrapper {
     //pass it
     /**
@@ -56,5 +61,23 @@ public class FirebaseReference implements ReferenceWrapper {
     @Override
     public Task<Void> clear(){
         return ref.removeValue();
+    }
+
+    @Override
+    public Map<String, Object> getAll() {
+       /* return  (Iterator<Pair<String, Map<String, Object>>>) {
+
+        }*/
+
+        Iterable<DataSnapshot> it = snapshot.getChildren();
+        Map<String, Object> elements = new HashMap<>();
+        it.forEach(new Consumer<DataSnapshot>() {
+            @Override
+            public void accept(DataSnapshot dataSnapshot) {
+                Map<String, Object> m = (HashMap<String,Object>)dataSnapshot.getValue();
+                elements.putAll(m);
+            }
+        });
+        return elements;
     }
 }

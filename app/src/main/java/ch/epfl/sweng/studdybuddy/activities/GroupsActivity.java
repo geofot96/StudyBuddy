@@ -7,7 +7,13 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
+import java.util.ArrayList;
+
+import ch.epfl.sweng.studdybuddy.Course;
 import ch.epfl.sweng.studdybuddy.CreateGroup;
+import ch.epfl.sweng.studdybuddy.FirebaseReference;
+import ch.epfl.sweng.studdybuddy.FirebaseWrapper;
+import ch.epfl.sweng.studdybuddy.Group;
 import ch.epfl.sweng.studdybuddy.GroupsRecyclerAdapter;
 import ch.epfl.sweng.studdybuddy.R;
 
@@ -26,9 +32,10 @@ public class GroupsActivity extends AppCompatActivity
 
         RecyclerView.LayoutManager lm = new LinearLayoutManager(this);
         rv.setLayoutManager(lm);
+        FirebaseWrapper firebase = new FirebaseWrapper(new FirebaseReference());
 
 
-        GroupsRecyclerAdapter mAdapter = new GroupsRecyclerAdapter(MainActivity.groupList1);
+        GroupsRecyclerAdapter mAdapter = new GroupsRecyclerAdapter(firebase.getAllGroups());
         rv.setAdapter(mAdapter);
 
     }

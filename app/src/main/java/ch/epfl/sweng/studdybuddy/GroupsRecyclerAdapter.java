@@ -9,10 +9,11 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class GroupsRecyclerAdapter extends RecyclerView.Adapter<GroupsRecyclerAdapter.MyViewHolder>
 {
-    private ArrayList<Group> groupList;
+    private List<Group> groupList;
 
     public static class MyViewHolder extends RecyclerView.ViewHolder
     {
@@ -32,7 +33,7 @@ public class GroupsRecyclerAdapter extends RecyclerView.Adapter<GroupsRecyclerAd
         }
     }
 
-    public GroupsRecyclerAdapter(ArrayList<Group> groupList)
+    public GroupsRecyclerAdapter(List<Group> groupList)
     {
         this.groupList = groupList;//TODO make safe
     }

@@ -13,10 +13,12 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
- public class FirebaseWrapper implements DatabaseWrapper {
+public class FirebaseWrapper implements DatabaseWrapper {
 
     ReferenceWrapper databaseBackend;
 
@@ -49,9 +51,13 @@ import java.util.List;
     public List<Group> getAllGroups() {
         ReferenceWrapper group = databaseBackend.select("groups");
         List<Group> groups = new ArrayList<>();
-        /*for(DataSnapshot g : group ){
-            groups.add(getGroup(g.get));
+        group.get();
+        /*Map<String, Object> content = (HashMap<String, Object>)group.get();
+        for (Map.Entry<String, Object> e: content.entrySet()){
+            groups.add(getGroup(new ID<Group>(e.getKey())));
         }*/
+
+
         return groups;
     }
 
@@ -65,6 +71,7 @@ import java.util.List;
     @Override
     public void putGroup(Group newGroup) {
         databaseBackend.select("groups").select(newGroup.getGroupID().toString()).setVal(newGroup);
+
     }
 
     @Override

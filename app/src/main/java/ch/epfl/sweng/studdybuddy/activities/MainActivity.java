@@ -1,6 +1,7 @@
 package ch.epfl.sweng.studdybuddy.activities;
 
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,12 +13,20 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 
 import ch.epfl.sweng.studdybuddy.Course;
 import ch.epfl.sweng.studdybuddy.DummyCourses;
+import ch.epfl.sweng.studdybuddy.FirebaseReference;
+import ch.epfl.sweng.studdybuddy.FirebaseWrapper;
+
+import ch.epfl.sweng.studdybuddy.Friendship;
 import ch.epfl.sweng.studdybuddy.Group;
+import ch.epfl.sweng.studdybuddy.ID;
 import ch.epfl.sweng.studdybuddy.R;
 import ch.epfl.sweng.studdybuddy.User;
 
@@ -34,7 +43,9 @@ public class MainActivity extends AppCompatActivity
     public static ArrayList<User> usersList1 = new ArrayList<>();
     public static ArrayList<Group> groupList1 = new ArrayList<>(); //made it public for create group which complained
 
-    private DatabaseReference mDatabase;
+    public String p(Object o, int i){
+        return ((ParameterizedType) o.getClass().getGenericSuperclass()).getActualTypeArguments()[i].getTypeName();
+    }
 
 
     @Override
@@ -42,28 +53,33 @@ public class MainActivity extends AppCompatActivity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        mDatabase = FirebaseDatabase.getInstance().getReference();
-        // My top posts by number of stars
-        mDatabase.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                dataSnapshot.child("testttt").getValue();
-                for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
-                    // TODO: handle the post
 
-                }
+        FirebaseWrapper firebase = new FirebaseWrapper(new FirebaseReference());
+
+        firebase.putGroup(new Group(10, new Course("Computer Langage Processing"), "fr", new ArrayList<>()));
+
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+firebase.getAllGroups();
+        /*ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Log.i("TAG",dataSnapshot.child("groups").getChildren().iterator().next().getValue().getClass().toString());
+                Log.i("TAG",p(dataSnapshot.child("groups").getChildren().iterator().next().getValue().getClass(),0));
+                Log.i("TAG",p(dataSnapshot.child("groups").getChildren().iterator().next().getValue().getClass(),1));
+
+                Collection k = ((HashMap)(dataSnapshot.child("groups").getChildren().iterator().next().getValue())).keySet();
+                Collection v = ((HashMap)(dataSnapshot.child("groups").getChildren().iterator().next().getValue())).values();
+
+                k.forEach(x -> Log.i("TAG", x.getClass().toString()));
+                v.forEach(x -> Log.i("TAG", x.getClass().toString()));
+
+
+
             }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {
-                // Getting Post failed, log a message
-                Log.w("Info", "loadPost:onCancelled", databaseError.toException());
-                // ...
-            }
-        });
-
-        System.out.println(mDatabase.child("courses"));
-
+            public void onCancelled(@NonNull DatabaseError databaseError) {}
+        });*/
         //mDatabase.child("tests").setValue("test1");
         if(groupList1.isEmpty())
         {//TODO Temporary items, will be removed after the demo
