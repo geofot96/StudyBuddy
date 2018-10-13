@@ -13,7 +13,7 @@ import com.google.android.gms.tasks.Task;
 
 public class MainActivity extends AppCompatActivity
 {
-    private AuthManager mAuth = new FirebaseAuthManager(this, getString(R.string.default_web_client_id));;
+    private AuthManager mAuth = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -22,6 +22,7 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
 
         Button mSignOutBtn = findViewById(R.id.signout_btn);
+
         mSignOutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -33,7 +34,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onStart(){
         super.onStart();
-        Account currentUser = mAuth.getCurrentUser();
+        Account currentUser = getAuthManager().getCurrentUser();
         if(currentUser == null){
             signOut();
         }
@@ -41,7 +42,7 @@ public class MainActivity extends AppCompatActivity
 
 
     private void signOut(){
-        mAuth.logout().addOnCompleteListener(this,
+        getAuthManager().logout().addOnCompleteListener(this,
                 new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
@@ -50,12 +51,12 @@ public class MainActivity extends AppCompatActivity
                 });
     }
 
-    public AuthManager getmAuth(){
-        return this.mAuth;
+    public AuthManager getAuthManager(){
+        if (mAuth == null){
+            mAuth = new FirebaseAuthManager(this, getString(R.string.default_web_client_id));
+        }
+        return mAuth;
     }
 
-    public void setmAuth(AuthManager mAuth){
-        this.mAuth = mAuth;
-    }
 }
 
