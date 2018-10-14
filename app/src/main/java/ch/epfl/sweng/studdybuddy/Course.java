@@ -6,13 +6,15 @@ package ch.epfl.sweng.studdybuddy;
 import java.util.UUID;
 public class Course
 {
-    private final String courseName;
-    private UUID courseID; //mustn't be final because it will be reset when we read from the DB #kiru
+    private String courseName;
+    private ID<Course> courseID; //mustn't be final because it will be reset when we read from the DB #kiru
+
+    public Course() {}
 
     public Course(String courseName)
     {
         this.courseName = courseName;
-        courseID = UUID.randomUUID();
+        courseID = new ID<Course>(UUID.randomUUID().toString());
     }
 
     public Course(Course sourceCourse)
@@ -26,12 +28,14 @@ public class Course
         return  courseName;
     }
 
-    public UUID getCourseID()
+    public void setCourseName(String name) { courseName = name; }
+
+    public ID<Course> getCourseID()
     {
         return courseID;
     }
 
-    public void setCourseID(UUID courseID)
+    public void setCourseID(ID<Course> courseID)
     {
         this.courseID = courseID;
     }
