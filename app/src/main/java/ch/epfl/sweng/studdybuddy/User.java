@@ -1,46 +1,42 @@
 package ch.epfl.sweng.studdybuddy;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 public class User
 {
     private String email;
     private String name;
-    private @DummyCourses.Section
-    String Section;
+    private String Section;
     //private Schedule schedule;
-    private ArrayList<Group> currentGroups;
-    private ArrayList<User> friendList;
-    private UUID userID;
+    private List<Group> currentGroups;
+    private List<User> friendList;
+    private ID<User> userID;
 
-    public UUID getUserID()
+    public ID<User> getUserID()
     {
         return userID;
     }
 
-    public void setUserID(UUID userID)
+    public void setUserID(ID<User> userID)
     {
         this.userID = userID;
     }
 
-    public User(String email, String name, String section, ArrayList<Group> currentGroups, ArrayList<User> friendList)
+    public User(String email, String name, String section, List<Group> currentGroups, List<User> friendList)
     {
         this.email = email;
         this.name = name;
         this.Section = section;
-        if(currentGroups != null)
-        {
-            this.currentGroups = new ArrayList<>(currentGroups);
-        }
-        if(friendList != null)
-        {
-            this.friendList = new ArrayList<>(friendList);
-        }
-
-        this.userID = UUID.randomUUID();
+        this.currentGroups = new ArrayList<>(currentGroups);
+        this.friendList = new ArrayList<>(friendList);
+        this.userID = new ID<>(UUID.randomUUID().toString());
 
     }
+
+    public User() {}
+
 
     public String getEmail()
     {//TODO TEST
@@ -72,7 +68,7 @@ public class User
         Section = section;
     }
 
-    public ArrayList<Group> getCurrentGroups()
+    public List<Group> getCurrentGroups()
     {
         if(currentGroups != null)
         {
@@ -84,12 +80,12 @@ public class User
         }
     }
 
-    public ArrayList<User> getFriendList()
+    public List<User> getFriendList()
     {
         return friendList;
     }
 
-    public void setFriendList(ArrayList<User> friendList)
+    public void setFriendList(List<User> friendList)
     {
         if(friendList != null)
         {
@@ -99,7 +95,7 @@ public class User
     }
 
     //TODO why do we want this method?? Maybe have an add to group method or something like that?
-    public void setCurrentGroups(ArrayList<Group> currentGroups)
+    public void setCurrentGroups(List<Group> currentGroups)
     {
         this.currentGroups = currentGroups;
     }
