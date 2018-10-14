@@ -44,7 +44,7 @@ public class GroupsUnitTests
 
         assertEquals(group.getParticipantNumber(), group2.getParticipantNumber());
         assertEquals(group.getCourse().getCourseName(), group2.getCourse().getCourseName());
-        assertEquals(group.getMaxParticipantNumber(), group2.getMaxParticipantNumber());
+        assertEquals(group.getMaxNoUsers(), group2.getMaxNoUsers());
     }
 
     @Test
@@ -60,7 +60,7 @@ public class GroupsUnitTests
     {
         addUsers();
         Group group = new Group(4, dummy_course, "fr", participants);
-        assertEquals(4, group.getMaxParticipantNumber());
+        assertEquals(4, group.getMaxNoUsers());
     }
 
     @Test
@@ -68,8 +68,8 @@ public class GroupsUnitTests
     {
         addUsers();
         Group group = new Group(4, dummy_course, "fr", participants);
-        group.setMaxParticipantNumber(5);
-        assertEquals(5, group.getMaxParticipantNumber());
+        group.setMaxNoUsers(5);
+        assertEquals(5, group.getMaxNoUsers());
     }
 
     @Test

@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class GroupsRecyclerAdapter extends RecyclerView.Adapter<GroupsRecyclerAdapter.MyViewHolder>
@@ -55,9 +54,9 @@ public class GroupsRecyclerAdapter extends RecyclerView.Adapter<GroupsRecyclerAd
         TextView newGroupCourseTextView = holder.groupCourseTextView;
         newGroupCourseTextView.setText(group.getCourse().getCourseName());
         TextView newGroupLanguageTextView = holder.groupLanguageTextView;
-        newGroupLanguageTextView.setText(group.getLanguage());
+        newGroupLanguageTextView.setText(group.getLang());
         TextView newGroupParticipantInfoTextView = holder.groupParticipantInfoTextView;
-        newGroupParticipantInfoTextView.setText(("Particip: " + group.getParticipantNumber() + "/" + group.getMaxParticipantNumber()));
+        newGroupParticipantInfoTextView.setText(("Particip: " + group.getParticipantNumber() + "/" + group.getMaxNoUsers()));
 
 
         Button button = holder.messageButton;

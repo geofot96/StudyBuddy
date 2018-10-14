@@ -25,7 +25,7 @@
                 android:value=".activities.MainActivity" />
         </activity>
         <activity
-            android:name=".CreateGroup"
+            android:name=".activities.CreateGroupActivity"
             android:parentActivityName=".activities.GroupsActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
