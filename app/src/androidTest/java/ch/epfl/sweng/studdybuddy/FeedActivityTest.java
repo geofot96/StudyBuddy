@@ -7,7 +7,7 @@ import org.junit.runners.JUnit4;
 
 @RunWith(JUnit4.class)
 public class FeedActivityTest {
-    @Test
+    /*@Test
     void pullingTheFeedDownRefreshes() {
 
     }
@@ -50,6 +50,6 @@ public class FeedActivityTest {
     @Test
     void onGroupJoinUpdate() {
 
-    }
+    }*/
 
 }

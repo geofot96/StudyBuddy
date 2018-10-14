@@ -6,7 +6,7 @@ public class FirebaseWrapperTest {
 
     DatabaseWrapper db;
 
-    @Test
+    /*@Test
     void dataBaseReferenceFailure() {
 
     }
@@ -116,7 +116,7 @@ public class FirebaseWrapperTest {
     @Test
     void deleteFriends() {
 
-    }
+    }*/
 
 
 }
