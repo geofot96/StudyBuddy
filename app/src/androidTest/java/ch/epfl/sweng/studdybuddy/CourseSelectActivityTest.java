@@ -70,9 +70,6 @@ public class CourseSelectActivityTest {
     @Test
     public void doneIsHiddenIfNoCourseSelected() {
         onView(withId(R.id.doneButton)).check(matches(not(isEnabled())));
-        //select a course
-        //delete a course
-        //type a course
     }
 
 
@@ -89,19 +86,19 @@ public class CourseSelectActivityTest {
         onView(withId(R.id.coursesSet)).check(matches(hasDescendant(withText(mockCourse))));
     }
 
-    @Test
+    /*@Test
     public void clickOnCourseSuggestionAddsCourseToList() {
         onView(withId(R.id.courseComplete)).perform(click());
-        onData(equalTo(mockCourse)).inRoot(RootMatchers.isPlatformPopup()).perform(click());
-        //onView(withId(R.id.coursesSet)).check(matches(hasDescendant(withText(mockCourse))));
-    }
+        onData(equalTo(mockCourse)).perform(click());
+        onView(withId(R.id.coursesSet)).inRoot(RootMatchers.isPlatformPopup()).check(matches(hasDescendant(withText(mockCourse))));
+    }*/
 
     //swipe on course
     @Test
     public void swipeOnCourseDeletesIt() {
-        onView(withId(R.id.courseComplete)).perform(click(), typeText(mockCourse), pressKey(KeyEvent.KEYCODE_ENTER));
+        onView(withId(R.id.courseComplete)).perform(click(), typeText(mockCourse), pressKey(KeyEvent.KEYCODE_ENTER), pressImeActionButton());
         onView(allOf(is(instanceOf(TextView.class)), withText(mockCourse), isDescendantOfA(withId(R.id.coursesSet)))).perform(withCustomConstraints(swipeLeft(), isDisplayingAtLeast(1)));
-        //onView(withId(R.id.courseComplete)).check(matches(not(hasDescendant(withText(mockCourse)))));
+        onView(withId(R.id.courseComplete)).check(matches(not(hasDescendant(withText(mockCourse)))));
     }
 
     public static ViewAction withCustomConstraints(final ViewAction action, final Matcher<View> constraints) {
