@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.view.View;
 
 import ch.epfl.sweng.studdybuddy.CreateGroup;
@@ -21,7 +22,7 @@ public class GroupsActivity extends AppCompatActivity
         setContentView(R.layout.activity_groups);
         Intent other = getIntent();
 
-        RecyclerView rv = (RecyclerView) findViewById(R.id.testRecycleViewer);
+        RecyclerView rv = (RecyclerView) findViewById(R.id.feedRecycleViewer);//TODO check if it should be removed
         rv.setHasFixedSize(true);
 
         RecyclerView.LayoutManager lm = new LinearLayoutManager(this);
@@ -30,6 +31,21 @@ public class GroupsActivity extends AppCompatActivity
 
         GroupsRecyclerAdapter mAdapter = new GroupsRecyclerAdapter(MainActivity.groupList1);
         rv.setAdapter(mAdapter);
+
+        SearchView  sv= (SearchView) findViewById(R.id.feed_search);
+        sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String query) {
+                //FILTER AS YOU TYPE
+                mAdapter.getFilter().filter(query);
+                return false;
+            }
+        });
 
     }
 
