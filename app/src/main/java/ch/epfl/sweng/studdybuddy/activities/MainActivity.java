@@ -20,6 +20,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import ch.epfl.sweng.studdybuddy.Course;
+import ch.epfl.sweng.studdybuddy.DatabaseWrapper;
 import ch.epfl.sweng.studdybuddy.DummyCourses;
 import ch.epfl.sweng.studdybuddy.FirebaseReference;
 import ch.epfl.sweng.studdybuddy.FirebaseWrapper;
@@ -34,15 +35,6 @@ import static ch.epfl.sweng.studdybuddy.DummyCourses.MATHEMATICS;
 
 public class MainActivity extends AppCompatActivity
 {
-    //TODO Temporary items, will be removed
-    static DummyCourses dummy = new DummyCourses();
-    User u1 = new User("xxx@yyy.zzz", "User 1", MATHEMATICS, new ArrayList<Group>(),new ArrayList<User>());
-    Group g1 = new Group(5, new Course(DummyCourses.getListOfCourses()[0]),DummyCourses.getListOfLanguages()[0], new ArrayList<User>());
-    Group g2 = new Group(7, new Course(DummyCourses.getListOfCourses()[3]),DummyCourses.getListOfLanguages()[2], new ArrayList<User>());
-
-    public static ArrayList<User> usersList1 = new ArrayList<>();
-    public static ArrayList<Group> groupList1 = new ArrayList<>(); //made it public for create group which complained
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState)

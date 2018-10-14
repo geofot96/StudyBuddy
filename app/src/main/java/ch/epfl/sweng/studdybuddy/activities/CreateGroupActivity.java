@@ -1,4 +1,4 @@
-package ch.epfl.sweng.studdybuddy;
+package ch.epfl.sweng.studdybuddy.activities;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -10,14 +10,21 @@ import android.widget.AutoCompleteTextView;
 import android.widget.NumberPicker;
 import android.widget.Spinner;
 
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import ch.epfl.sweng.studdybuddy.Course;
+import ch.epfl.sweng.studdybuddy.DummyCourses;
+import ch.epfl.sweng.studdybuddy.FirebaseReference;
+import ch.epfl.sweng.studdybuddy.Group;
+import ch.epfl.sweng.studdybuddy.R;
 import ch.epfl.sweng.studdybuddy.activities.GroupsActivity;
 import ch.epfl.sweng.studdybuddy.activities.MainActivity;
 
-public class CreateGroup extends AppCompatActivity implements AdapterView.OnItemSelectedListener
+public class CreateGroupActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener
 {
     private String selectedCourse;
     private String selectedLanguage;
@@ -104,7 +111,10 @@ public class CreateGroup extends AppCompatActivity implements AdapterView.OnItem
 
     public void addtoGroups(View view)
     {
-        MainActivity.groupList1.add(new Group(maxParticipants, new Course(selectedCourse),selectedLanguage, MainActivity.usersList1));//TODO add only logged in user
+
+        FirebaseReference firebase = new FirebaseReference(FirebaseDatabase.getInstance().getReference());
+        Group g = new Group(maxParticipants, new Course(selectedCourse),selectedLanguage, new ArrayList<>());
+        firebase.select("groups").select(g.getGroupID()).setVal(g);
         Intent intent = new Intent(this, GroupsActivity.class);
         startActivity(intent);
     }
