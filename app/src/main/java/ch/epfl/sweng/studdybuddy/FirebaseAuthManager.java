@@ -22,13 +22,13 @@ public class FirebaseAuthManager implements AuthManager{
     private GoogleSignInClient client;
     private Activity ctx;
 
-    public FirebaseAuthManager(Activity ctx, String clientid){
-        this.ctx = ctx;
+    public FirebaseAuthManager(Activity currentActivity, String clientID){
+        this.ctx = currentActivity;
         GoogleSignInOptions gso =  new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(clientid)
+                .requestIdToken(clientID)
                 .requestEmail()
                 .build();
-        this.client = GoogleSignIn.getClient(ctx, gso);
+        this.client = GoogleSignIn.getClient(currentActivity, gso);
     }
 
     public void login(Account acct, OnLoginCallback f, String TAG){
