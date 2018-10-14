@@ -3,6 +3,7 @@ package ch.epfl.sweng.studdybuddy;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -72,7 +73,7 @@ public class GroupsUnitTests
         assertEquals(5, group.getMaxNoUsers());
     }
 
-    @Test
+    /*@Test
     public void increaseParticipantNumberWorks()
     {
         addUsers();
@@ -91,7 +92,7 @@ public class GroupsUnitTests
         group.increaseParticipantNumber();
         assertEquals(2, group.getParticipantNumber());
     }
-
+*/
     @Test
     public void getCourseWorks()
     {
@@ -133,7 +134,7 @@ public class GroupsUnitTests
         Group group = new Group(3, dummy_course, "fr", participants);
         User user2 = new User("2", "Mr Potato 2", "SC", null, null);
         group.addParticipant(user2);
-        ArrayList<User> part = group.getParticipants();
+        List<User> part = group.getParticipants();
         assertEquals(user.getName(), part.get(0).getName());
         assertEquals(user2.getName(), part.get(1).getName());
     }
@@ -146,7 +147,7 @@ public class GroupsUnitTests
         User user2 = new User("2", "Mr Potato 2", "SC", null, null);
         group.addParticipant(user2);
         group.removeParticipant(user2);
-        ArrayList<User> part = group.getParticipants();
+        List<User> part = group.getParticipants();
         assertEquals(user.getName(), part.get(0).getName());
         assertEquals(1, group.getParticipantNumber());
     }
