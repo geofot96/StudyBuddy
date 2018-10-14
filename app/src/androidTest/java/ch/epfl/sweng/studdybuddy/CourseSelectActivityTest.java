@@ -6,6 +6,8 @@ import android.support.test.espresso.action.GeneralLocation;
 import android.support.test.espresso.action.GeneralSwipeAction;
 import android.support.test.espresso.action.Press;
 import android.support.test.espresso.action.Swipe;
+import android.support.test.espresso.intent.Intents;
+import android.support.test.espresso.intent.rule.IntentsTestRule;
 import android.support.test.espresso.matcher.RootMatchers;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
@@ -60,10 +62,17 @@ public class CourseSelectActivityTest {
     public final ActivityTestRule<CourseSelectActivity> mActivityRule =
             new ActivityTestRule<>(CourseSelectActivity.class);
 
+    /*@Rule
+    public IntentsTestRule<CourseSelectActivity> intentsTestRule =
+            new IntentsTestRule<>(CourseSelectActivity.class);*/
+
+
     @Test
     public void skipLeadsToMainActivity() {
-        //onView(withId(R.id.skipButton)).perform(click());
-        //intended(toPackage(MainActivity.class.getName()));
+        Intents.init();
+        onView(withId(R.id.skipButton)).perform(click());
+        intended(hasComponent(GroupsActivity.class.getName()));
+        Intents.release();
     }
 
 
@@ -86,12 +95,12 @@ public class CourseSelectActivityTest {
         onView(withId(R.id.coursesSet)).check(matches(hasDescendant(withText(mockCourse))));
     }
 
-    /*@Test
+    @Test
     public void clickOnCourseSuggestionAddsCourseToList() {
         onView(withId(R.id.courseComplete)).perform(click());
         onData(equalTo(mockCourse)).perform(click());
         onView(withId(R.id.coursesSet)).inRoot(RootMatchers.isPlatformPopup()).check(matches(hasDescendant(withText(mockCourse))));
-    }*/
+    }
 
     //swipe on course
     @Test
