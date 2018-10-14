@@ -14,7 +14,7 @@ public class GroupsUnitTests
 {
     private static Course dummy_course = new Course("test");
     private static DummyCourses courses = new DummyCourses();
-    private static User user = new User("xxx@yyy.com", "Mr Potato", "IN", null, null);
+    private static User user = new User("xxx@yyy.com", "Mr Potato", "IN", new ArrayList<>(), new ArrayList<>());
     private ArrayList<User> participants = new ArrayList();
 
     private void addUsers()
@@ -117,7 +117,7 @@ public class GroupsUnitTests
     public void setParticipantsWorks()
     {
         addUsers();
-        User user2 = new User("2", "Mr Potato 2", "SC", null, null);
+        User user2 = new User("2", "Mr Potato 2", "SC", new ArrayList<>(), new ArrayList<>());
         Group group = new Group(3, dummy_course, "fr", participants);
         ArrayList<User> part = new ArrayList<>(2);
         part.add(user);
@@ -132,7 +132,7 @@ public class GroupsUnitTests
     {
         addUsers();
         Group group = new Group(3, dummy_course, "fr", participants);
-        User user2 = new User("2", "Mr Potato 2", "SC", null, null);
+        User user2 = new User("2", "Mr Potato 2", "SC", new ArrayList<>(), new ArrayList<>());
         group.addParticipant(user2);
         List<User> part = group.getParticipants();
         assertEquals(user.getName(), part.get(0).getName());
@@ -144,7 +144,7 @@ public class GroupsUnitTests
     {
         addUsers();
         Group group = new Group(3, dummy_course, "fr", participants);
-        User user2 = new User("2", "Mr Potato 2", "SC", null, null);
+        User user2 = new User("2", "Mr Potato 2", "SC", new ArrayList<>(), new ArrayList<>());
         group.addParticipant(user2);
         group.removeParticipant(user2);
         List<User> part = group.getParticipants();
