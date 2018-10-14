@@ -70,7 +70,7 @@ public class FirebaseWrapper implements DatabaseWrapper {
 
     @Override
     public void removeGroup(ID<Group> id) {
-        databaseBackend.select("groups").select(id.getID()).clear();
+        databaseBackend.select("groups").select(id.getId()).clear();
     }
 
     @Override

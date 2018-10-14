@@ -6,7 +6,7 @@ import java.util.UUID;
 import ch.epfl.sweng.studdybuddy.Course;
 import ch.epfl.sweng.studdybuddy.Group;
 
-interface DatabaseWrapper {
+public interface DatabaseWrapper {
 
     /**
      * This interface describes the database core API
