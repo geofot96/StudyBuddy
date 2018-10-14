@@ -8,9 +8,16 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.view.View;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+
 import ch.epfl.sweng.studdybuddy.CreateGroup;
+import ch.epfl.sweng.studdybuddy.Group;
 import ch.epfl.sweng.studdybuddy.GroupsRecyclerAdapter;
 import ch.epfl.sweng.studdybuddy.R;
+
+import ch.epfl.sweng.studdybuddy.GroupsRecyclerAdapter;
 
 public class GroupsActivity extends AppCompatActivity
 {
@@ -32,7 +39,7 @@ public class GroupsActivity extends AppCompatActivity
         GroupsRecyclerAdapter mAdapter = new GroupsRecyclerAdapter(MainActivity.groupList1);
         rv.setAdapter(mAdapter);
 
-        SearchView  sv= (SearchView) findViewById(R.id.feed_search);
+        SearchView sv = (SearchView) findViewById(R.id.feed_search);
         sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -53,5 +60,13 @@ public class GroupsActivity extends AppCompatActivity
     {
         Intent intent = new Intent(this, CreateGroup.class);
         startActivity(intent);
+    }
+
+    public void sortGroupCards(View view)
+    {
+        GroupsRecyclerAdapter mAdapter = new GroupsRecyclerAdapter(MainActivity.groupList1);
+        ArrayList<Group> groupList = mAdapter.getGroupList();
+        Collections.sort(groupList);
+        mAdapter.setGroupList(groupList);
     }
 }

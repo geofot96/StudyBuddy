@@ -1,5 +1,7 @@
 package ch.epfl.sweng.studdybuddy;
 
+import android.support.annotation.NonNull;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.UUID;
@@ -11,7 +13,7 @@ import java.util.UUID;
  * course is the course for which the group is created
  * participants is the actual group members
  */
-public class Group
+public class Group implements Comparable<Group>
 {
     private int participantNumber;
     private int maxParticipantNumber;
@@ -167,4 +169,21 @@ public class Group
         }
     }
 
+
+    @Override
+    public int compareTo(Group group)
+    {
+        if(this.getCreationDate().before(group.getCreationDate()))
+        {
+            return 1;
+        }
+        else if(this.getCreationDate().after(group.getCreationDate()))
+        {
+            return -1;
+        }
+        else
+        {
+            return 0;
+        }
+    }
 }
