@@ -68,7 +68,7 @@ public class CourseSelectActivityTest {
 
 
     @Test
-    public void skipLeadsToMainActivity() {
+    public void skipLeadsToGroupsActivity() {
         Intents.init();
         onView(withId(R.id.skipButton)).perform(click());
         intended(hasComponent(GroupsActivity.class.getName()));
@@ -98,8 +98,8 @@ public class CourseSelectActivityTest {
     @Test
     public void clickOnCourseSuggestionAddsCourseToList() {
         onView(withId(R.id.courseComplete)).perform(click());
-        onData(equalTo(mockCourse)).perform(click());
-        onView(withId(R.id.coursesSet)).inRoot(RootMatchers.isPlatformPopup()).check(matches(hasDescendant(withText(mockCourse))));
+        onData(equalTo(mockCourse)).inRoot(RootMatchers.isPlatformPopup()).perform(click());
+        onView(withId(R.id.coursesSet)).check(matches(hasDescendant(withText(mockCourse))));
     }
 
     //swipe on course
