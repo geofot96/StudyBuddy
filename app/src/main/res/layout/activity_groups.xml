@@ -12,34 +12,28 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
-        android:layout_marginStart="328dp"
         android:clickable="true"
         android:focusable="auto"
         android:onClick="gotoCreation"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:srcCompat="@color/colorAccent" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/feedRecycleViewer"
-        android:layout_width="384dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="368dp"
-        app:layout_constraintBottom_toTopOf="@+id/createGroup"
+        android:layout_marginTop="22dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/feed_search" />
 
     <android.support.v7.widget.SearchView
         android:id="@+id/feed_search"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginBottom="27dp"
-        android:layout_marginEnd="126dp"
-        android:layout_marginStart="127dp"
-        android:layout_marginTop="32dp"
-        app:defaultQueryHint="Search.."
-        app:layout_constraintBottom_toTopOf="@+id/feedRecycleViewer"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        app:defaultQueryHint="Search..."
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"></android.support.v7.widget.SearchView>
