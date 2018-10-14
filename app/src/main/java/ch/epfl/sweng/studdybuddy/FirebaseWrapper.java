@@ -51,13 +51,6 @@ public class FirebaseWrapper implements DatabaseWrapper {
     public List<Group> getAllGroups() {
         ReferenceWrapper group = databaseBackend.select("groups");
         List<Group> groups = new ArrayList<>();
-        group.get();
-        /*Map<String, Object> content = (HashMap<String, Object>)group.get();
-        for (Map.Entry<String, Object> e: content.entrySet()){
-            groups.add(getGroup(new ID<Group>(e.getKey())));
-        }*/
-
-
         return groups;
     }
 

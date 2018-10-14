@@ -9,8 +9,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 
@@ -64,20 +66,20 @@ public class FirebaseReference implements ReferenceWrapper {
     }
 
     @Override
-    public Map<String, Object> getAll() {
-       /* return  (Iterator<Pair<String, Map<String, Object>>>) {
-
-        }*/
-
-        Iterable<DataSnapshot> it = snapshot.getChildren();
-        Map<String, Object> elements = new HashMap<>();
-        it.forEach(new Consumer<DataSnapshot>() {
+    public <T> void getAll(Class<T> type, Consumer<List<T>> callback) {
+        List<T> elements = new ArrayList<>();
+        ref.addValueEventListener(new ValueEventListener() {
             @Override
-            public void accept(DataSnapshot dataSnapshot) {
-                Map<String, Object> m = (HashMap<String,Object>)dataSnapshot.getValue();
-                elements.putAll(m);
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for(DataSnapshot snap: dataSnapshot.getChildren())
+                    elements.add(snap.getValue(type));
+                callback.accept(elements);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
             }
         });
-        return elements;
     }
 }

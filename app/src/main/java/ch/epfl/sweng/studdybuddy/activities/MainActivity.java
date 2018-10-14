@@ -58,8 +58,8 @@ public class MainActivity extends AppCompatActivity
 
         firebase.putGroup(new Group(10, new Course("Computer Langage Processing"), "fr", new ArrayList<>()));
 
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
-firebase.getAllGroups();
+        //DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+//firebase.getAllGroups();
         /*ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
