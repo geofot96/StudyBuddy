@@ -10,7 +10,7 @@ android {
     buildToolsVersion "27.0.3"
     defaultConfig {
         applicationId "ch.epfl.sweng.studdybuddy"
-        minSdkVersion 24
+        minSdkVersion 15
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
@@ -28,10 +28,6 @@ android {
 
     }
     productFlavors {
-    }
-    compileOptions {
-        targetCompatibility JavaVersion.VERSION_1_8
-        sourceCompatibility JavaVersion.VERSION_1_8
     }
 }
 
