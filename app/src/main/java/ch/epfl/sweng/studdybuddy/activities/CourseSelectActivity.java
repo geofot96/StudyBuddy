@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -21,19 +22,25 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Consumer;
+import java.util.function.Predicate;
 
+import ch.epfl.sweng.studdybuddy.CourseAdapter;
 import ch.epfl.sweng.studdybuddy.CourseHolder;
+import ch.epfl.sweng.studdybuddy.FirebaseReference;
 import ch.epfl.sweng.studdybuddy.R;
 
 
 public class CourseSelectActivity extends AppCompatActivity
 {
 
-    private static final String coursesDB[] = new String[]{"Analysis", "Linear Algebra", "Algorithms", "Functionnal Programming",
-            "Computer Language Processing", "Computer Networks"};
+    private static List<String> coursesDB;
     //List of selected courses
     private static final List<String> courseSelection = new ArrayList<>();
 
@@ -49,14 +56,19 @@ public class CourseSelectActivity extends AppCompatActivity
         setContentView(R.layout.activity_course_select);
         
         Intent other = getIntent();
+        coursesDB = new ArrayList<>();
+        coursesDB.add("Untitled");
+
 
         Intent toMain = new Intent(this, GroupsActivity.class);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_dropdown_item_1line, coursesDB);
+
         Button skipButton = findViewById(R.id.skipButton);
         doneButton = findViewById(R.id.doneButton);
         doneButton.setEnabled(false);
         autocomplete = (AutoCompleteTextView) findViewById(R.id.courseComplete);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_dropdown_item_1line, coursesDB);
+
         autocomplete.setAdapter(adapter);
         autocomplete.setThreshold(0);
         autocomplete.setOnClickListener(new View.OnClickListener()
@@ -150,6 +162,23 @@ public class CourseSelectActivity extends AppCompatActivity
                 //tie courses to account
                 //intent to main
                 startActivity(toMain);
+            }
+        });
+
+        FirebaseReference firebase = new FirebaseReference(FirebaseDatabase.getInstance().getReference());
+        firebase.select("courses").getAll(String.class, new Consumer<List<String>>() {
+            @Override
+            public void accept(List<String> strings) {
+                coursesDB.removeIf(new Predicate<String>() {
+                    @Override
+                    public boolean test(String s) {
+                        return true;
+                    }
+                });
+                coursesDB.addAll(strings);
+                ((ArrayAdapter)autocomplete.getAdapter()).notifyDataSetChanged();
+
+                //autocomplete.
             }
         });
     }
