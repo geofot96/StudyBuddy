@@ -3,11 +3,11 @@ package ch.epfl.sweng.studdybuddy;
 import com.google.android.gms.tasks.Task;
 
 import java.util.List;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.function.Consumer;
 
-interface ReferenceWrapper {
-
+public interface ReferenceWrapper {
     /**
      * Wraps the database instance
      */
@@ -18,13 +18,6 @@ interface ReferenceWrapper {
      * @return the child reference
      */
     ReferenceWrapper select(String key);
-
-    /**
-     * @return the object stored at the current level
-     */
-    Object get();
-
-
     /**
      * Sets the object at current level
      * @param o the new object
@@ -38,11 +31,11 @@ interface ReferenceWrapper {
      */
     Task<Void> clear();
 
+    <T> void get(Class<T> type, Consumer<T> callback);
 
     /**
      * Returns an iterator of the current level
      * @return an iterator
      */
      <T> void getAll(Class<T> type, Consumer<List<T>> callback);
-
 }

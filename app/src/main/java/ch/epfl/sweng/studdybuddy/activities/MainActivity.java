@@ -43,51 +43,12 @@ public class MainActivity extends AppCompatActivity
     public static ArrayList<User> usersList1 = new ArrayList<>();
     public static ArrayList<Group> groupList1 = new ArrayList<>(); //made it public for create group which complained
 
-    public String p(Object o, int i){
-        return ((ParameterizedType) o.getClass().getGenericSuperclass()).getActualTypeArguments()[i].getTypeName();
-    }
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        FirebaseWrapper firebase = new FirebaseWrapper(new FirebaseReference());
-
-        firebase.putGroup(new Group(10, new Course("Computer Langage Processing"), "fr", new ArrayList<>()));
-
-        //DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
-//firebase.getAllGroups();
-        /*ref.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                Log.i("TAG",dataSnapshot.child("groups").getChildren().iterator().next().getValue().getClass().toString());
-                Log.i("TAG",p(dataSnapshot.child("groups").getChildren().iterator().next().getValue().getClass(),0));
-                Log.i("TAG",p(dataSnapshot.child("groups").getChildren().iterator().next().getValue().getClass(),1));
-
-                Collection k = ((HashMap)(dataSnapshot.child("groups").getChildren().iterator().next().getValue())).keySet();
-                Collection v = ((HashMap)(dataSnapshot.child("groups").getChildren().iterator().next().getValue())).values();
-
-                k.forEach(x -> Log.i("TAG", x.getClass().toString()));
-                v.forEach(x -> Log.i("TAG", x.getClass().toString()));
-
-
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {}
-        });*/
-        //mDatabase.child("tests").setValue("test1");
-        if(groupList1.isEmpty())
-        {//TODO Temporary items, will be removed after the demo
-            g1.addParticipant(u1);
-            groupList1.add(g1);
-            groupList1.add(g2);
-            usersList1.add(u1);
-        }
     }
 
 

@@ -32,19 +32,20 @@ public class FirebaseWrapper implements DatabaseWrapper {
 
     @Override
     public List<Course> getCourses() {
-        return aggregateCourses(databaseBackend.select("courses").get());
+        return new ArrayList<>();//aggregateCourses(databaseBackend.select("courses").get());
     }
 
     @Override
     public Group getGroup(ID<Group> id) {
-        ReferenceWrapper group = databaseBackend.select("groups").select(id.getID());
+        /*ReferenceWrapper group = databaseBackend.select("groups").select(id.getID());
         int maxNoUsers = Integer.parseInt(group.select("maxNoUsers").toString());
         String courseName = databaseBackend.select("courses").select(group.select("courseID").get().toString()).toString();
         //TODO
         //We should avoid passing references as parameters
         //Pass IDs instead
         ArrayList<User> participants = new ArrayList<>();
-        return new Group(maxNoUsers, new Course(courseName), group.select("lang").get().toString(), participants );
+        return new Group(maxNoUsers, new Course(courseName), group.select("lang").get().toString(), participants );*/
+        return new Group(0, new Course("a"), "fr", new ArrayList<>());
     }
 
     @Override
