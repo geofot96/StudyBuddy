@@ -79,10 +79,10 @@ public class FirebaseReference implements ReferenceWrapper {
 
     @Override
     public <T> void getAll(Class<T> type, Consumer<List<T>> callback) {
-        List<T> elements = new ArrayList<>();
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                List<T> elements = new ArrayList<>();
                 for(DataSnapshot snap: dataSnapshot.getChildren())
                     elements.add(snap.getValue(type));
                 callback.accept(elements);

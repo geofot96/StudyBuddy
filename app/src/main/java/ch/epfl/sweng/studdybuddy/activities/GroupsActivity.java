@@ -7,6 +7,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.Adapter;
 
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.database.FirebaseDatabase;
@@ -19,6 +20,8 @@ import ch.epfl.sweng.studdybuddy.FirebaseReference;
 import ch.epfl.sweng.studdybuddy.Group;
 import ch.epfl.sweng.studdybuddy.GroupsRecyclerAdapter;
 import ch.epfl.sweng.studdybuddy.R;
+
+import static ch.epfl.sweng.studdybuddy.ReferenceWrapper.adapterConsumer;
 
 public class GroupsActivity extends AppCompatActivity
 {
@@ -40,13 +43,8 @@ public class GroupsActivity extends AppCompatActivity
         List<Group> groupSet = new ArrayList<>();
         GroupsRecyclerAdapter mAdapter = new GroupsRecyclerAdapter(groupSet);
         rv.setAdapter(mAdapter);
-        firebase.select("groups").getAll(Group.class, new Consumer<List<Group>>() {
-            @Override
-            public void accept(List<Group> groups) {
-                groupSet.addAll(groups);
-                mAdapter.notifyDataSetChanged();
-            }
-        });
+
+        firebase.select("groups").getAll(Group.class, adapterConsumer(Group.class, groupSet, mAdapter));
     }
 
     public void gotoCreation(View view)
@@ -54,4 +52,5 @@ public class GroupsActivity extends AppCompatActivity
         Intent intent = new Intent(this, CreateGroupActivity.class);
         startActivity(intent);
     }
+
 }

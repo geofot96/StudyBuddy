@@ -1,5 +1,7 @@
 package ch.epfl.sweng.studdybuddy;
 
+import android.support.v7.widget.RecyclerView;
+
 import com.google.android.gms.tasks.Task;
 
 import java.util.List;
@@ -38,4 +40,15 @@ public interface ReferenceWrapper {
      * @return an iterator
      */
      <T> void getAll(Class<T> type, Consumer<List<T>> callback);
+
+     static <T> Consumer<List<T>> adapterConsumer(Class<T> type, List<T> set, RecyclerView.Adapter adapter) {
+         return new Consumer<List<T>>() {
+             @Override
+             public void accept(List<T> groups) {
+                 groups.removeAll(set);
+                 set.addAll(groups);
+                 adapter.notifyDataSetChanged();
+             }
+         };
+     }
 }
