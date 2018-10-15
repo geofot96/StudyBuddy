@@ -60,16 +60,56 @@ public class CourseSelectActivity extends AppCompatActivity
         coursesDB.add("Untitled");
 
 
-        Intent toMain = new Intent(this, GroupsActivity.class);
+        //courseSelection.add("Wine tasting");
+
+
+
+        //Update listener when pressing ENTER
+
+
+       
+
+
+    }
+
+    private void setUpButtons() {
+
+        final Intent toMain = new Intent(this, GroupsActivity.class);
 
         Button skipButton = findViewById(R.id.skipButton);
+        skipButton.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                //
+                //intent to main
+                startActivity(toMain);
+            }
+        });
+
+
         doneButton = findViewById(R.id.doneButton);
         doneButton.setEnabled(false);
-        autocomplete = (AutoCompleteTextView) findViewById(R.id.courseComplete);
+        doneButton.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                //tie courses to account
+                //intent to main
+                startActivity(toMain);
+            }
+        });
+    }
+
+    private void setUpAutoComplete(){
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_dropdown_item_1line, coursesDB);
 
+        autocomplete = (AutoCompleteTextView) findViewById(R.id.courseComplete);
         autocomplete.setAdapter(adapter);
+
         autocomplete.setThreshold(0);
         autocomplete.setOnClickListener(new View.OnClickListener()
         {
@@ -91,35 +131,6 @@ public class CourseSelectActivity extends AppCompatActivity
                     addCourse(textInput);
             }
         });
-        //courseSelection.add("Wine tasting");
-
-        final RecyclerView selectedCourses = (RecyclerView) findViewById(R.id.coursesSet);
-
-        selectedCourses.setLayoutManager(new LinearLayoutManager(this));
-
-        selectedCourses.setAdapter(new CourseAdapter(courseSelection));
-        ItemTouchHelper mIth = new ItemTouchHelper(
-                new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP | ItemTouchHelper.DOWN,
-                        ItemTouchHelper.RIGHT)
-                {
-                    @Override
-                    public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder viewHolder1)
-                    {
-                        return false;
-                    }
-
-                    @Override
-                    public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int i)
-                    {
-                        CourseHolder cc = (CourseHolder) viewHolder;
-                        courseSelection.remove(courseSelection.indexOf(cc.get()));
-                        selectedCourses.getAdapter().notifyDataSetChanged();
-                        if(courseSelection.size() == 0)
-                            doneButton.setEnabled(false);
-                    }
-                });
-        mIth.attachToRecyclerView(selectedCourses);
-        //Update listener when pressing ENTER
         autocomplete.setOnEditorActionListener(new TextView.OnEditorActionListener()
         {
             @Override
@@ -143,45 +154,55 @@ public class CourseSelectActivity extends AppCompatActivity
                 return true;
             }
         });
+   }
 
-        skipButton.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                //
-                //intent to main
-                startActivity(toMain);
-            }
-        });
-        doneButton.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                //tie courses to account
-                //intent to main
-                startActivity(toMain);
-            }
-        });
+   private void setUpSelectedCourses() {
 
-        FirebaseReference firebase = new FirebaseReference(FirebaseDatabase.getInstance().getReference());
-        firebase.select("courses").getAll(String.class, new Consumer<List<String>>() {
-            @Override
-            public void accept(List<String> strings) {
-                coursesDB.removeIf(new Predicate<String>() {
-                    @Override
-                    public boolean test(String s) {
-                        return true;
-                    }
-                });
-                coursesDB.addAll(strings);
-                ((ArrayAdapter)autocomplete.getAdapter()).notifyDataSetChanged();
+       final RecyclerView selectedCourses = (RecyclerView) findViewById(R.id.coursesSet);
+       selectedCourses.setLayoutManager(new LinearLayoutManager(this));
 
-                //autocomplete.
-            }
-        });
-    }
+       selectedCourses.setAdapter(new CourseAdapter(courseSelection));
+       ItemTouchHelper mIth = new ItemTouchHelper(
+               new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP | ItemTouchHelper.DOWN,
+                       ItemTouchHelper.RIGHT)
+               {
+                   @Override
+                   public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder viewHolder1)
+                   {
+                       return false;
+                   }
+
+                   @Override
+                   public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int i)
+                   {
+                       CourseHolder cc = (CourseHolder) viewHolder;
+                       courseSelection.remove(courseSelection.indexOf(cc.get()));
+                       selectedCourses.getAdapter().notifyDataSetChanged();
+                       if(courseSelection.size() == 0)
+                           doneButton.setEnabled(false);
+                   }
+               });
+       mIth.attachToRecyclerView(selectedCourses);
+   }
+
+   private void setUpDb() {
+       FirebaseReference firebase = new FirebaseReference(FirebaseDatabase.getInstance().getReference());
+       firebase.select("courses").getAll(String.class, new Consumer<List<String>>() {
+           @Override
+           public void accept(List<String> strings) {
+               coursesDB.removeIf(new Predicate<String>() {
+                   @Override
+                   public boolean test(String s) {
+                       return true;
+                   }
+               });
+               coursesDB.addAll(strings);
+               ((ArrayAdapter)autocomplete.getAdapter()).notifyDataSetChanged();
+
+               //autocomplete.
+           }
+       });
+   }
 
     private void addCourse(String course)
     {

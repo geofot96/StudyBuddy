@@ -44,9 +44,9 @@ public interface ReferenceWrapper {
      static <T> Consumer<List<T>> adapterConsumer(Class<T> type, List<T> set, RecyclerView.Adapter adapter) {
          return new Consumer<List<T>>() {
              @Override
-             public void accept(List<T> groups) {
-                 groups.removeAll(set);
-                 set.addAll(groups);
+             public void accept(List<T> list) {
+                 set.removeAll(set);
+                 set.addAll(list);
                  adapter.notifyDataSetChanged();
              }
          };
