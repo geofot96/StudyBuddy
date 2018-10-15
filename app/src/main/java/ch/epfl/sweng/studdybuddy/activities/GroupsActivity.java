@@ -7,6 +7,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.view.View;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -21,7 +22,7 @@ import ch.epfl.sweng.studdybuddy.GroupsRecyclerAdapter;
 
 public class GroupsActivity extends AppCompatActivity
 {
-
+    GroupsRecyclerAdapter mAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -36,7 +37,7 @@ public class GroupsActivity extends AppCompatActivity
         rv.setLayoutManager(lm);
 
 
-        GroupsRecyclerAdapter mAdapter = new GroupsRecyclerAdapter(MainActivity.groupList1);
+         mAdapter = new GroupsRecyclerAdapter(MainActivity.groupList1);
         rv.setAdapter(mAdapter);
 
         SearchView sv = (SearchView) findViewById(R.id.feed_search);
@@ -64,9 +65,10 @@ public class GroupsActivity extends AppCompatActivity
 
     public void sortGroupCards(View view)
     {
-        GroupsRecyclerAdapter mAdapter = new GroupsRecyclerAdapter(MainActivity.groupList1);
+
         ArrayList<Group> groupList = mAdapter.getGroupList();
         Collections.sort(groupList);
         mAdapter.setGroupList(groupList);
+        mAdapter.notifyDataSetChanged();
     }
 }
