@@ -11,12 +11,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
-import java.util.function.Consumer;
-import java.util.Iterator;
 
 public class FirebaseReference implements ReferenceWrapper {
     //pass it
@@ -56,21 +51,11 @@ public class FirebaseReference implements ReferenceWrapper {
     }
 
     @Override
-    public <T> void get(Class<T> type, Consumer<T> callback) {
-        ref.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                callback.accept(dataSnapshot.getValue(type));
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
+    public <T> void get(final Class<T> type, final Consumer<T> callback) {
+        ref.addValueEventListener(getValueEventListener(type, callback));
     }
 
-    private <T> ValueEventListener getAllValueEventListener(Class<T> type, Consumer<List<T>> callback) {
+    private <T> ValueEventListener getAllValueEventListener(final Class<T> type, final Consumer<List<T>> callback) {
         return new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -87,7 +72,7 @@ public class FirebaseReference implements ReferenceWrapper {
         };
     }
 
-    private <T> ValueEventListener getValueEventListener(Class<T> type, Consumer<T> callback) {
+    private <T> ValueEventListener getValueEventListener(final Class<T> type, final Consumer<T> callback) {
              return new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {

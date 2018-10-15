@@ -16,12 +16,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
+import ch.epfl.sweng.studdybuddy.AdapterConsumer;
 import ch.epfl.sweng.studdybuddy.FirebaseReference;
 import ch.epfl.sweng.studdybuddy.Group;
 import ch.epfl.sweng.studdybuddy.GroupsRecyclerAdapter;
 import ch.epfl.sweng.studdybuddy.R;
 
-import static ch.epfl.sweng.studdybuddy.ReferenceWrapper.adapterConsumer;
 
 public class GroupsActivity extends AppCompatActivity
 {
@@ -44,7 +44,7 @@ public class GroupsActivity extends AppCompatActivity
         GroupsRecyclerAdapter mAdapter = new GroupsRecyclerAdapter(groupSet);
         rv.setAdapter(mAdapter);
 
-        firebase.select("groups").getAll(Group.class, adapterConsumer(Group.class, groupSet, mAdapter));
+        firebase.select("groups").getAll(Group.class, AdapterConsumer.adapterConsumer(Group.class, groupSet, mAdapter));
     }
 
     public void gotoCreation(View view)

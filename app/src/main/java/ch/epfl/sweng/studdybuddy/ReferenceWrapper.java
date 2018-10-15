@@ -5,9 +5,6 @@ import android.support.v7.widget.RecyclerView;
 import com.google.android.gms.tasks.Task;
 
 import java.util.List;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.function.Consumer;
 
 public interface ReferenceWrapper {
     /**
@@ -40,15 +37,4 @@ public interface ReferenceWrapper {
      * @return an iterator
      */
      <T> void getAll(Class<T> type, Consumer<List<T>> callback);
-
-     static <T> Consumer<List<T>> adapterConsumer(Class<T> type, List<T> set, RecyclerView.Adapter adapter) {
-         return new Consumer<List<T>>() {
-             @Override
-             public void accept(List<T> list) {
-                 set.removeAll(set);
-                 set.addAll(list);
-                 adapter.notifyDataSetChanged();
-             }
-         };
-     }
 }

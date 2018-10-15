@@ -31,10 +31,12 @@ import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
+import ch.epfl.sweng.studdybuddy.AdapterConsumer;
 import ch.epfl.sweng.studdybuddy.CourseAdapter;
 import ch.epfl.sweng.studdybuddy.CourseHolder;
 import ch.epfl.sweng.studdybuddy.FirebaseReference;
 import ch.epfl.sweng.studdybuddy.R;
+
 
 
 public class CourseSelectActivity extends AppCompatActivity
@@ -58,17 +60,10 @@ public class CourseSelectActivity extends AppCompatActivity
         Intent other = getIntent();
         coursesDB = new ArrayList<>();
         coursesDB.add("Untitled");
-
-
-        //courseSelection.add("Wine tasting");
-
-
-
-        //Update listener when pressing ENTER
-
-
-       
-
+        setUpButtons();
+        ;
+        setUpSelectedCourses();
+        setUpDb(setUpAutoComplete());
 
     }
 
@@ -103,7 +98,7 @@ public class CourseSelectActivity extends AppCompatActivity
         });
     }
 
-    private void setUpAutoComplete(){
+    private ArrayAdapter<String> setUpAutoComplete(){
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_dropdown_item_1line, coursesDB);
 
@@ -154,6 +149,7 @@ public class CourseSelectActivity extends AppCompatActivity
                 return true;
             }
         });
+        return adapter;
    }
 
    private void setUpSelectedCourses() {
@@ -185,23 +181,9 @@ public class CourseSelectActivity extends AppCompatActivity
        mIth.attachToRecyclerView(selectedCourses);
    }
 
-   private void setUpDb() {
+   private void setUpDb(ArrayAdapter<String> adapter) {
        FirebaseReference firebase = new FirebaseReference(FirebaseDatabase.getInstance().getReference());
-       firebase.select("courses").getAll(String.class, new Consumer<List<String>>() {
-           @Override
-           public void accept(List<String> strings) {
-               coursesDB.removeIf(new Predicate<String>() {
-                   @Override
-                   public boolean test(String s) {
-                       return true;
-                   }
-               });
-               coursesDB.addAll(strings);
-               ((ArrayAdapter)autocomplete.getAdapter()).notifyDataSetChanged();
-
-               //autocomplete.
-           }
-       });
+       firebase.select("courses").getAll(String.class, AdapterConsumer.adapterConsumer(String.class, coursesDB, adapter));
    }
 
     private void addCourse(String course)

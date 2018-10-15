@@ -15,16 +15,15 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.function.Consumer;
-import java.util.function.Predicate;
 
+import ch.epfl.sweng.studdybuddy.AdapterConsumer;
 import ch.epfl.sweng.studdybuddy.Course;
 import ch.epfl.sweng.studdybuddy.DummyCourses;
 import ch.epfl.sweng.studdybuddy.FirebaseReference;
 import ch.epfl.sweng.studdybuddy.Group;
 import ch.epfl.sweng.studdybuddy.R;
-import ch.epfl.sweng.studdybuddy.activities.GroupsActivity;
-import ch.epfl.sweng.studdybuddy.activities.MainActivity;
+import ch.epfl.sweng.studdybuddy.User;
+
 
 public class CreateGroupActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener
 {
@@ -48,7 +47,7 @@ public class CreateGroupActivity extends AppCompatActivity implements AdapterVie
 
         Intent intent = getIntent();
 
-        firebase = new FirebaseReference(FirebaseDatabase.getInstance().getReference());
+        firebase = new FirebaseReference();
         //Language spinner
         Spinner spinnerLanguage = (Spinner) findViewById(R.id.spinnerLanguage);
         spinnerLanguage.setOnItemSelectedListener(this);
@@ -90,21 +89,7 @@ public class CreateGroupActivity extends AppCompatActivity implements AdapterVie
 
             }
         });
-        firebase.select("courses").getAll(String.class, new Consumer<List<String>>() {
-            @Override
-            public void accept(List<String> strings) {
-                coursesDB.removeIf(new Predicate<String>() {
-                    @Override
-                    public boolean test(String s) {
-                        return true;
-                    }
-                });
-                coursesDB.addAll(strings);
-                ((ArrayAdapter)textView.getAdapter()).notifyDataSetChanged();
-
-                //autocomplete.
-            }
-        });
+        firebase.select("courses").getAll(String.class, AdapterConsumer.adapterConsumer(String.class, coursesDB, adapter));
 
     }
 
@@ -133,7 +118,7 @@ public class CreateGroupActivity extends AppCompatActivity implements AdapterVie
     public void addtoGroups(View view)
     {
 
-        Group g = new Group(maxParticipants, new Course(selectedCourse),selectedLanguage, new ArrayList<>());
+        Group g = new Group(maxParticipants, new Course(selectedCourse),selectedLanguage, new ArrayList<User>());
         firebase.select("groups").select(g.getGroupID()).setVal(g);
         Intent intent = new Intent(this, GroupsActivity.class);
         startActivity(intent);
