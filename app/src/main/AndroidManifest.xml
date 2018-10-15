@@ -20,6 +20,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".DummyMainActivity"></activity>
+        <activity android:name=".DummyGoogleSignInActivity"></activity>
     </application>
 
 </manifest>

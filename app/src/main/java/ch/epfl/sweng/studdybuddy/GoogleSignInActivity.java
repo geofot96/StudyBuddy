@@ -18,7 +18,8 @@ public class GoogleSignInActivity extends AppCompatActivity {
     private static final int RC_SIGN_IN = 1;
     private static final String TAG = "GoogleActivity";
 
-    private AuthManager fbAuthManager;
+    private AuthManager mAuth = null;
+    private boolean onTest = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,11 +27,14 @@ public class GoogleSignInActivity extends AppCompatActivity {
         setContentView(R.layout.activity_google_sign_in);
 
         SignInButton mGoogleBtn = findViewById(R.id.googleBtn);
-        fbAuthManager = new FirebaseAuthManager(this, getString(R.string.default_web_client_id));
         mGoogleBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                fbAuthManager.startLoginScreen();
+                if(onTest){
+                    onActivityResult(1,0,null);
+                }else{
+                    getAuthManager().startLoginScreen();
+                }
             }
         });
     }
@@ -40,7 +44,7 @@ public class GoogleSignInActivity extends AppCompatActivity {
         super.onStart();
         // Check for existing Google Sign In account, if the user is already signed in
         // the GoogleSignInAccount will be non-null.
-        Account acct = fbAuthManager.getCurrentUser();
+        Account acct = getAuthManager().getCurrentUser();
         if (acct != null) {
             String personName = acct.getDisplayName();
             //appears only when the user is connected
@@ -58,12 +62,19 @@ public class GoogleSignInActivity extends AppCompatActivity {
 
         // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
         if (requestCode == RC_SIGN_IN) {
-            Task<GoogleSignInAccount> task = GoogleSignInWrapper.getTask(data);
+            GoogleSignInWrapper gsw = new GoogleSignInWrapper(onTest);
+            Task<GoogleSignInAccount> task = gsw.getTask(data);
             try {
                 // Google Sign In was successful, authenticate with Firebase
-                GoogleSignInAccount acct = task.getResult(ApiException.class);
-                Account account = Account.from(acct);
-                fbAuthManager.login(account, new OnLoginCallback() {
+                Account account;
+                if(!onTest){
+                    GoogleSignInAccount acct = task.getResult(ApiException.class);
+                    account = Account.from(acct);
+                } else{
+                    account = new Account();
+                }
+
+                getAuthManager().login(account, new OnLoginCallback() {
                     @Override
                     public void then(Account acct) {
                         if (acct != null) {
@@ -83,5 +94,16 @@ public class GoogleSignInActivity extends AppCompatActivity {
 
             }
         }
+    }
+
+    public void setOnTest(boolean onTest){
+        this.onTest = onTest;
+    }
+    
+    public AuthManager getAuthManager(){
+        if (mAuth == null){
+            mAuth = new FirebaseAuthManager(this, getString(R.string.default_web_client_id));
+        }
+        return mAuth;
     }
 }
