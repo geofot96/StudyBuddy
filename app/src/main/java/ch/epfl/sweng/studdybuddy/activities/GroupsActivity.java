@@ -23,6 +23,7 @@ import ch.epfl.sweng.studdybuddy.GroupsRecyclerAdapter;
 public class GroupsActivity extends AppCompatActivity
 {
     GroupsRecyclerAdapter mAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -37,18 +38,21 @@ public class GroupsActivity extends AppCompatActivity
         rv.setLayoutManager(lm);
 
 
-         mAdapter = new GroupsRecyclerAdapter(MainActivity.groupList1);
+        mAdapter = new GroupsRecyclerAdapter(MainActivity.groupList1);
         rv.setAdapter(mAdapter);
 
         SearchView sv = (SearchView) findViewById(R.id.feed_search);
-        sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+        sv.setOnQueryTextListener(new SearchView.OnQueryTextListener()
+        {
             @Override
-            public boolean onQueryTextSubmit(String query) {
+            public boolean onQueryTextSubmit(String query)
+            {
                 return false;
             }
 
             @Override
-            public boolean onQueryTextChange(String query) {
+            public boolean onQueryTextChange(String query)
+            {
                 //FILTER AS YOU TYPE
                 mAdapter.getFilter().filter(query);
                 return false;
@@ -65,7 +69,6 @@ public class GroupsActivity extends AppCompatActivity
 
     public void sortGroupCards(View view)
     {
-
         ArrayList<Group> groupList = mAdapter.getGroupList();
         Collections.sort(groupList);
         mAdapter.setGroupList(groupList);

@@ -20,6 +20,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import ch.epfl.sweng.studdybuddy.activities.CourseSelectActivity;
+import ch.epfl.sweng.studdybuddy.activities.GroupsActivity;
 
 import static android.support.test.espresso.Espresso.onData;
 import static android.support.test.espresso.Espresso.onView;
@@ -51,78 +52,17 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 
-//Suggestions refers to courses database
-
 @RunWith(AndroidJUnit4.class)
-public class CourseSelectActivityTest
+public class GroupsActivityTest
 {
-    public static final String mockCourse = "Algorithms";
     @Rule
-    public final ActivityTestRule<CourseSelectActivity> mActivityRule =
-            new ActivityTestRule<>(CourseSelectActivity.class);
+    public final ActivityTestRule<GroupsActivity> mActivityRule =
+            new ActivityTestRule<>(GroupsActivity.class);
 
     @Test
-    public void skipLeadsToMainActivity()
+    public void plusButtonLeadsToCreateGroupActivity()
     {
-        //onView(withId(R.id.skipButton)).perform(click());
-        //intended(toPackage(MainActivity.class.getName()));
-    }
-
-
-    @Test
-    public void doneIsHiddenIfNoCourseSelected()
-    {
-        onView(withId(R.id.doneButton)).check(matches(not(isEnabled())));
-        //select a course
-        //delete a course
-        //type a course
-    }
-
-
-    @Test //()
-    public void courseNotAddedIfGibberish() {
-        onView(withId(R.id.courseComplete)).perform(click(), typeText("yxcvbn"), pressImeActionButton());
-        onView(withId(R.id.coursesSet)).check(matches(not(hasDescendant(withText("yxcvbn")))));
-    }
-
-    @Test //()
-    public void enterOnValidInputAddsCourseToList() {
-        //Change to soft coded value
-        onView(withId(R.id.courseComplete)).perform(click(), typeText(mockCourse), pressKey(KeyEvent.KEYCODE_ENTER), pressImeActionButton());
-        onView(withId(R.id.coursesSet)).check(matches(hasDescendant(withText(mockCourse))));
-    }
-
-    @Test
-    public void clickOnCourseSuggestionAddsCourseToList() {
-        onView(withId(R.id.courseComplete)).perform(click());
-        onData(equalTo(mockCourse)).inRoot(RootMatchers.isPlatformPopup()).perform(click());
-        onView(withId(R.id.coursesSet)).check(matches(hasDescendant(withText(mockCourse))));
-    }
-
-    //swipe on course
-    @Test
-    public void swipeOnCourseDeletesIt() {
-        onView(withId(R.id.courseComplete)).perform(click(), typeText(mockCourse), pressKey(KeyEvent.KEYCODE_ENTER));
-        onView(allOf(is(instanceOf(TextView.class)), withText(mockCourse), isDescendantOfA(withId(R.id.coursesSet)))).perform(withCustomConstraints(swipeLeft(), isDisplayingAtLeast(1)));
-        onView(withId(R.id.courseComplete)).check(matches(not(hasDescendant(withText(mockCourse)))));
-    }
-
-    public static ViewAction withCustomConstraints(final ViewAction action, final Matcher<View> constraints) {
-        return new ViewAction() {
-            @Override
-            public Matcher<View> getConstraints() {
-                return constraints;
-            }
-
-            @Override
-            public String getDescription() {
-                return action.getDescription();
-            }
-
-            @Override
-            public void perform(UiController uiController, View view) {
-                action.perform(uiController, view);
-            }
-        };
+        //onView(withId(R.id.createGroup)).perform(click());
+        //intended(hasComponent(CreateGroup.class.getName()));
     }
 }
