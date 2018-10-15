@@ -70,27 +70,8 @@ public class FirebaseReference implements ReferenceWrapper {
         });
     }
 
-    @Override
-    public <T> void getAll(Class<T> type, Consumer<List<T>> callback) {
-        ref.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                List<T> elements = new ArrayList<>();
-                for(DataSnapshot snap: dataSnapshot.getChildren())
-                    elements.add(snap.getValue(type));
-                callback.accept(elements);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-    }
-
-
-    public <T> ValueEventListener getAllMock(Class<T> type, Consumer<List<T>> callback) {
-        ValueEventListener res = new ValueEventListener() {
+    private <T> ValueEventListener getValueEventListener(Class<T> type, Consumer<List<T>> callback) {
+        return new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 List<T> elements = new ArrayList<>();
@@ -104,6 +85,16 @@ public class FirebaseReference implements ReferenceWrapper {
 
             }
         };
+    }
+
+    @Override
+    public <T> void getAll(Class<T> type, Consumer<List<T>> callback) {
+        ref.addValueEventListener(getValueEventListener(type, callback));
+    }
+
+
+    public <T> ValueEventListener getAllMock(Class<T> type, Consumer<List<T>> callback) {
+        ValueEventListener res = getValueEventListener(type, callback);
         ref.addValueEventListener(res);
         return res;
     }
