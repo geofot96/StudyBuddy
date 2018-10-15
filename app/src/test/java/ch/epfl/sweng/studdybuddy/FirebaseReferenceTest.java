@@ -54,6 +54,7 @@ public class FirebaseReferenceTest {
         when(dataSnapshot.getChildren()).thenReturn(Arrays.asList(dataSnapshot));
         ArgumentCaptor<ValueEventListener> argument = ArgumentCaptor.forClass(ValueEventListener.class);
 
+        //verify(testref).addListenerForSingleValueEvent(argument.capture());
         //argument.getValue().onDataChange(dataSnapshot);
         FirebaseReference ref  =new FirebaseReference(testref);
         ref.getAllMock(Group.class, new Consumer<List<Group>>() {
@@ -67,12 +68,7 @@ public class FirebaseReferenceTest {
             }
         }).onDataChange(dataSnapshot);
         //
-        //verify(testref).addListenerForSingleValueEvent(argument.capture());
 
-    }
-
-    @Test
-    public void getAllWithConsumer() {
 
     }
 
@@ -110,4 +106,12 @@ public class FirebaseReferenceTest {
         assertTrue(box[0].toString().equals(clp.toString()));
     }
 
+    /*@Test//(expected = IndexOutOfBoundsException.class)
+    public void selectOfNoChildBehaves() {
+        DatabaseReference testRef = mock(DatabaseReference.class);
+        DatabaseReference childRef = mock(DatabaseReference.class);
+        when(testRef.child("child")).thenReturn(childRef);
+        FirebaseReference ref = new FirebaseReference(testRef);
+        FirebaseReference res = (FirebaseReference) ref.select("xyz");
+    }*/
 }
