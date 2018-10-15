@@ -87,4 +87,24 @@ public class FirebaseReference implements ReferenceWrapper {
             }
         });
     }
+
+
+    public <T> ValueEventListener getAllMock(Class<T> type, Consumer<List<T>> callback) {
+        ValueEventListener res = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                List<T> elements = new ArrayList<>();
+                for(DataSnapshot snap: dataSnapshot.getChildren())
+                    elements.add(snap.getValue(type));
+                callback.accept(elements);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        };
+        ref.addValueEventListener(res);
+        return res;
+    }
 }
