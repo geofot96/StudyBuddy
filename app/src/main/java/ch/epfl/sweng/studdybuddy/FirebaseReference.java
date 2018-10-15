@@ -38,6 +38,8 @@ public class FirebaseReference implements ReferenceWrapper {
         this.ref = firebaseRef;
     }
 
+    public DatabaseReference getRef() { return ref; }
+
     @Override
     public ReferenceWrapper select(String key) {
         return new FirebaseReference(ref.child(key));
