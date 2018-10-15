@@ -42,27 +42,18 @@ public class CreateGroupActivity extends AppCompatActivity implements AdapterVie
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_group);
-        coursesDB = new ArrayList<>();
-        coursesDB.add("untitled");
 
         Intent intent = getIntent();
-
+        setUpLang();
+        setUpNumberPicker();
         firebase = new FirebaseReference();
-        //Language spinner
-        Spinner spinnerLanguage = (Spinner) findViewById(R.id.spinnerLanguage);
-        spinnerLanguage.setOnItemSelectedListener(this);
-        List<String> languagesList = Arrays.asList(DummyCourses.getListOfLanguages());
-        ArrayAdapter<String> dataAdapterLanguages = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, languagesList);
-        dataAdapterLanguages.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerLanguage.setAdapter(dataAdapterLanguages);
+        firebase.select("courses").getAll(String.class, AdapterConsumer.adapterConsumer(String.class, coursesDB, setUpAutoComplete()));
 
-        //Number picker
-        NumberPicker np = findViewById(R.id.numberPicker);
-        np.setMinValue(2);
-        np.setMaxValue(10);
-        np.setOnValueChangedListener(onValueChangeListener);
+    }
 
-        //FRED
+    ArrayAdapter<String> setUpAutoComplete() {
+        coursesDB = new ArrayList<>();
+        coursesDB.add("untitled");
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_dropdown_item_1line, coursesDB);
         textView = (AutoCompleteTextView) findViewById(R.id.courseComplete2);
@@ -70,8 +61,7 @@ public class CreateGroupActivity extends AppCompatActivity implements AdapterVie
         textView.setThreshold(0);
         textView.setOnClickListener(new View.OnClickListener()
         {
-            @Override
-            public void onClick(View v)
+            @Override public void onClick(View v)
             {
                 AutoCompleteTextView textView = (AutoCompleteTextView)
                         findViewById(R.id.courseComplete2);
@@ -80,17 +70,31 @@ public class CreateGroupActivity extends AppCompatActivity implements AdapterVie
         });
         textView.setOnItemClickListener(new AdapterView.OnItemClickListener()
         {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+            @Override public void onItemClick(AdapterView<?> parent, View view, int position, long id)
             {
                 String textInput = parent.getItemAtPosition(position).toString();
                 selectedCourse = textInput;
-
-
             }
         });
-        firebase.select("courses").getAll(String.class, AdapterConsumer.adapterConsumer(String.class, coursesDB, adapter));
+        return adapter;
+    }
 
+    void setUpNumberPicker() {
+        //Number picker
+        NumberPicker np = findViewById(R.id.numberPicker);
+        np.setMinValue(2);
+        np.setMaxValue(10);
+        np.setOnValueChangedListener(onValueChangeListener);
+    }
+
+    void setUpLang() {
+        //Language spinner
+        Spinner spinnerLanguage = (Spinner) findViewById(R.id.spinnerLanguage);
+        spinnerLanguage.setOnItemSelectedListener(this);
+        List<String> languagesList = Arrays.asList(DummyCourses.getListOfLanguages());
+        ArrayAdapter<String> dataAdapterLanguages = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, languagesList);
+        dataAdapterLanguages.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerLanguage.setAdapter(dataAdapterLanguages);
     }
 
 

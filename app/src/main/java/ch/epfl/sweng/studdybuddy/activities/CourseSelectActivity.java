@@ -99,12 +99,9 @@ public class CourseSelectActivity extends AppCompatActivity
     }
 
     private ArrayAdapter<String> setUpAutoComplete(){
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_dropdown_item_1line, coursesDB);
-
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, coursesDB);
         autocomplete = (AutoCompleteTextView) findViewById(R.id.courseComplete);
         autocomplete.setAdapter(adapter);
-
         autocomplete.setThreshold(0);
         autocomplete.setOnClickListener(new View.OnClickListener()
         {
@@ -133,16 +130,10 @@ public class CourseSelectActivity extends AppCompatActivity
             {
                 //Check ENTER pressed
                 if(event == null)
-                {
-                    if(actionId != EditorInfo.IME_ACTION_DONE && actionId != EditorInfo.IME_ACTION_NEXT)
-                        return false;
-                }
+                    if(actionId != EditorInfo.IME_ACTION_DONE && actionId != EditorInfo.IME_ACTION_NEXT) return false;
                 else if(actionId == EditorInfo.IME_NULL)
-                {
                     if(event.getAction() != KeyEvent.ACTION_DOWN) return true;
-                }
                 else return false;
-                //Protection
                 String textInput = autocomplete.getText().toString();
                 if(Arrays.asList(coursesDB).contains(textInput) && !courseSelection.contains(textInput))
                     addCourse(textInput);
