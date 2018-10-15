@@ -35,6 +35,7 @@ import static android.support.test.espresso.intent.Intents.intended;
 import static android.support.test.espresso.intent.Intents.intending;
 import static android.support.test.espresso.intent.matcher.IntentMatchers.hasComponent;
 import static android.support.test.espresso.intent.matcher.IntentMatchers.toPackage;
+import static android.support.test.espresso.matcher.RootMatchers.isPlatformPopup;
 import static android.support.test.espresso.matcher.RootMatchers.withDecorView;
 import static android.support.test.espresso.matcher.ViewMatchers.hasDescendant;
 import static android.support.test.espresso.matcher.ViewMatchers.isChecked;
@@ -47,6 +48,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.CoreMatchers.allOf;
 import static org.hamcrest.CoreMatchers.anyOf;
+import static org.hamcrest.CoreMatchers.anything;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
@@ -98,7 +100,10 @@ public class CourseSelectActivityTest {
     @Test
     public void clickOnCourseSuggestionAddsCourseToList() {
         onView(withId(R.id.courseComplete)).perform(click());
-        onData(equalTo(mockCourse)).inRoot(RootMatchers.isPlatformPopup()).perform(click());
+        onView(withId(R.id.courseComplete)).perform(click());
+        onData(equalTo(mockCourse)).inRoot(isPlatformPopup()).perform(click());
+        //onView(withText(mockCourse)).perform(click());
+        //onData(anything()).atPosition(0).perform(click());
         onView(withId(R.id.coursesSet)).check(matches(hasDescendant(withText(mockCourse))));
     }
 
