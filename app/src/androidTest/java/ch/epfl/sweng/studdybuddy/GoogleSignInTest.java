@@ -23,14 +23,11 @@ public class GoogleSignInTest {
     public IntentsTestRule<DummyGoogleSignInActivity> gIntentRule =
             new IntentsTestRule<>(DummyGoogleSignInActivity.class);
 
-    @Before
-    public void setUp(){
-        gIntentRule.getActivity().setOnTest(true);
-    }
 
     @Test
     public void LoginShouldGoToMainActivity(){
         onView(withId(R.id.googleBtn)).perform(click());
         intended(hasComponent(new ComponentName(getTargetContext(), MainActivity.class)));
     }
+
 }

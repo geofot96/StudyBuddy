@@ -15,6 +15,7 @@ public class MainActivity extends AppCompatActivity
 {
     private AuthManager mAuth = null;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {

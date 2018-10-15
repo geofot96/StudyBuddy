@@ -3,6 +3,7 @@ package ch.epfl.sweng.studdybuddy;
 import com.google.android.gms.tasks.Task;
 
 public class DummyGoogleSignInActivity extends GoogleSignInActivity {
+
     @Override
     public AuthManager getAuthManager(){
         return new AuthManager() {
@@ -27,6 +28,11 @@ public class DummyGoogleSignInActivity extends GoogleSignInActivity {
             }
 
         };
+    }
+
+    @Override
+    public boolean onTest(){
+        return true;
     }
 
 }

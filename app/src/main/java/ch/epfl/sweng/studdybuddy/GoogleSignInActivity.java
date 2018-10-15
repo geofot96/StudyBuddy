@@ -19,7 +19,7 @@ public class GoogleSignInActivity extends AppCompatActivity {
     private static final String TAG = "GoogleActivity";
 
     private AuthManager mAuth = null;
-    private boolean onTest = false;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,7 +30,7 @@ public class GoogleSignInActivity extends AppCompatActivity {
         mGoogleBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(onTest){
+                if(onTest()){
                     onActivityResult(1,0,null);
                 }else{
                     getAuthManager().startLoginScreen();
@@ -45,7 +45,7 @@ public class GoogleSignInActivity extends AppCompatActivity {
         // Check for existing Google Sign In account, if the user is already signed in
         // the GoogleSignInAccount will be non-null.
         Account acct = getAuthManager().getCurrentUser();
-        if (acct != null) {
+        if (acct != null ) {
             String personName = acct.getDisplayName();
             //appears only when the user is connected
             Toast.makeText(this, "Welcome " + personName, Toast.LENGTH_SHORT).show();
@@ -62,12 +62,12 @@ public class GoogleSignInActivity extends AppCompatActivity {
 
         // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
         if (requestCode == RC_SIGN_IN) {
-            GoogleSignInWrapper gsw = new GoogleSignInWrapper(onTest);
+            GoogleSignInWrapper gsw = new GoogleSignInWrapper(onTest());
             Task<GoogleSignInAccount> task = gsw.getTask(data);
             try {
                 // Google Sign In was successful, authenticate with Firebase
                 Account account;
-                if(!onTest){
+                if(!onTest()){
                     GoogleSignInAccount acct = task.getResult(ApiException.class);
                     account = Account.from(acct);
                 } else{
@@ -96,14 +96,16 @@ public class GoogleSignInActivity extends AppCompatActivity {
         }
     }
 
-    public void setOnTest(boolean onTest){
-        this.onTest = onTest;
-    }
-    
+
     public AuthManager getAuthManager(){
         if (mAuth == null){
             mAuth = new FirebaseAuthManager(this, getString(R.string.default_web_client_id));
         }
         return mAuth;
     }
+
+    public boolean onTest(){
+        return false;
+    }
+
 }

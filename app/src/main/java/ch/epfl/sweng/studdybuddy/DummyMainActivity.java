@@ -12,6 +12,8 @@ import com.google.android.gms.tasks.Task;
 import java.util.concurrent.Executor;
 
 public class DummyMainActivity extends MainActivity{
+    private boolean online = true;
+
     @Override
     public AuthManager getAuthManager(){
         return new AuthManager() {
@@ -107,9 +109,13 @@ public class DummyMainActivity extends MainActivity{
 
             @Override
             public Account getCurrentUser() {
-                return new Account();
-            }
+                if (online) {
+                    return new Account();
 
+                }else{
+                    return null;
+                }
+            }
         };
     }
 }
