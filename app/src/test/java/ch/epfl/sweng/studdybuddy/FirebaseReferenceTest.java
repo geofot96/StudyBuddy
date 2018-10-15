@@ -4,8 +4,16 @@ import android.provider.ContactsContract;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
+import android.renderscript.Sampler;
+import android.support.annotation.NonNull;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import static org.hamcrest.CoreMatchers.any;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
@@ -14,7 +22,6 @@ import static org.mockito.ArgumentMatchers.refEq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-
 import org.junit.Assert;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
@@ -24,6 +31,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Consumer;
+import static org.junit.Assert.*;
 
 public class FirebaseReferenceTest {
 
@@ -75,16 +87,27 @@ public class FirebaseReferenceTest {
     }
 
 
-    @Test
-    public void setValOnStringsetsVal() {
 
+
+    @Test
+    public void getReturnsData(){
+        DatabaseReference db = mock(DatabaseReference.class);
+        FirebaseReference fb = new FirebaseReference(db);
+
+        DataSnapshot ds = mock(DataSnapshot.class);
+        Group clp = new Group(10,new Course("CLP"), "EN", new ArrayList<>());
+
+
+        when(ds.getValue(Group.class)).thenReturn(clp);
+         Group[] box = new Group[1];
+
+       fb.getMock(Group.class, new Consumer<Group>() {
+           @Override
+           public void accept(Group group) {
+               box[0]= group;
+           }
+       }).onDataChange(ds);
+        assertTrue(box[0].toString().equals(clp.toString()));
     }
-    /*@Test//(expected = IndexOutOfBoundsException.class)
-    public void selectOfNoChildBehaves() {
-        DatabaseReference testRef = mock(DatabaseReference.class);
-        DatabaseReference childRef = mock(DatabaseReference.class);
-        when(testRef.child("child")).thenReturn(childRef);
-        FirebaseReference ref = new FirebaseReference(testRef);
-        FirebaseReference res = (FirebaseReference) ref.select("xyz");
-    }*/
+
 }
