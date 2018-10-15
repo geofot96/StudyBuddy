@@ -61,12 +61,6 @@
             android:layout_width="match_parent"
             android:layout_height="117dp" />
 
-        <Button
-            android:id="@+id/sign_out_btn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Sign Out" />
-
     </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>
