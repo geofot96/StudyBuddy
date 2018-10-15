@@ -32,15 +32,6 @@ public class FirebaseReference implements ReferenceWrapper {
 
     public FirebaseReference() {
         ref = FirebaseDatabase.getInstance().getReference();
-        ref.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                snapshot = dataSnapshot;
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {}
-        });
     }
 
     public FirebaseReference(DatabaseReference firebaseRef) {
