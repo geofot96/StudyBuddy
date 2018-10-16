@@ -1,4 +1,4 @@
-package ch.epfl.sweng.studdybuddy.activities;
+package ch.epfl.sweng.studdybuddy;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;

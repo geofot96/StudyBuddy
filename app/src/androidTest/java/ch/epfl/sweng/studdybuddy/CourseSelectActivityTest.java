@@ -24,7 +24,7 @@ import static org.hamcrest.Matchers.not;
 //Suggestions refers to courses database
 
 @RunWith(AndroidJUnit4.class)
-public class CourseSelectActivityTest
+public class       CourseSelectActivityTest
 {
     public static final String mockCourse = "Algorithms";
     @Rule

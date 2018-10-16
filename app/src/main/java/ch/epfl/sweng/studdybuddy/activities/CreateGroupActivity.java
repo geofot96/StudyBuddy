@@ -1,4 +1,4 @@
-package ch.epfl.sweng.studdybuddy;
+package ch.epfl.sweng.studdybuddy.activities;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -10,22 +10,34 @@ import android.widget.AutoCompleteTextView;
 import android.widget.NumberPicker;
 import android.widget.Spinner;
 
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import ch.epfl.sweng.studdybuddy.activities.GroupsActivity;
-import ch.epfl.sweng.studdybuddy.activities.MainActivity;
+import ch.epfl.sweng.studdybuddy.AdapterConsumer;
+import ch.epfl.sweng.studdybuddy.ArrayAdapterAdapter;
+import ch.epfl.sweng.studdybuddy.Course;
+import ch.epfl.sweng.studdybuddy.DummyCourses;
+import ch.epfl.sweng.studdybuddy.FirebaseReference;
+import ch.epfl.sweng.studdybuddy.Group;
+import ch.epfl.sweng.studdybuddy.R;
+import ch.epfl.sweng.studdybuddy.RecyclerAdapterAdapter;
+import ch.epfl.sweng.studdybuddy.User;
 
-public class CreateGroup extends AppCompatActivity implements AdapterView.OnItemSelectedListener
+
+public class CreateGroupActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener
 {
     private String selectedCourse;
     private String selectedLanguage;
     private int maxParticipants = 2;//default value
-    private static final List<String> coursesDB = new ArrayList<>(Arrays.asList(DummyCourses.getListOfCourses()));
+    private static List<String> coursesDB;
 
     private static final List<String> courseSelection = new ArrayList<>();
     private static AutoCompleteTextView textView;
+
+    FirebaseReference firebase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -34,23 +46,17 @@ public class CreateGroup extends AppCompatActivity implements AdapterView.OnItem
         setContentView(R.layout.activity_create_group);
 
         Intent intent = getIntent();
+        setUpLang();
+        setUpNumberPicker();
+        firebase = new FirebaseReference();
+        coursesDB = new ArrayList<>();
+        coursesDB.add("untitled");
+        firebase.select("courses").getAll(String.class, AdapterConsumer.adapterConsumer(String.class, coursesDB, new ArrayAdapterAdapter(setUpAutoComplete())));
 
+    }
 
-        //Language spinner
-        Spinner spinnerLanguage = (Spinner) findViewById(R.id.spinnerLanguage);
-        spinnerLanguage.setOnItemSelectedListener(this);
-        List<String> languagesList = Arrays.asList(DummyCourses.getListOfLanguages());
-        ArrayAdapter<String> dataAdapterLanguages = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, languagesList);
-        dataAdapterLanguages.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerLanguage.setAdapter(dataAdapterLanguages);
+    ArrayAdapter<String> setUpAutoComplete() {
 
-        //Number picker
-        NumberPicker np = findViewById(R.id.numberPicker);
-        np.setMinValue(2);
-        np.setMaxValue(10);
-        np.setOnValueChangedListener(onValueChangeListener);
-
-        //FRED
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_dropdown_item_1line, coursesDB);
         textView = (AutoCompleteTextView) findViewById(R.id.courseComplete2);
@@ -58,8 +64,7 @@ public class CreateGroup extends AppCompatActivity implements AdapterView.OnItem
         textView.setThreshold(0);
         textView.setOnClickListener(new View.OnClickListener()
         {
-            @Override
-            public void onClick(View v)
+            @Override public void onClick(View v)
             {
                 AutoCompleteTextView textView = (AutoCompleteTextView)
                         findViewById(R.id.courseComplete2);
@@ -68,16 +73,31 @@ public class CreateGroup extends AppCompatActivity implements AdapterView.OnItem
         });
         textView.setOnItemClickListener(new AdapterView.OnItemClickListener()
         {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+            @Override public void onItemClick(AdapterView<?> parent, View view, int position, long id)
             {
                 String textInput = parent.getItemAtPosition(position).toString();
                 selectedCourse = textInput;
-
-
             }
         });
+        return adapter;
+    }
 
+    void setUpNumberPicker() {
+        //Number picker
+        NumberPicker np = findViewById(R.id.numberPicker);
+        np.setMinValue(2);
+        np.setMaxValue(10);
+        np.setOnValueChangedListener(onValueChangeListener);
+    }
+
+    void setUpLang() {
+        //Language spinner
+        Spinner spinnerLanguage = (Spinner) findViewById(R.id.spinnerLanguage);
+        spinnerLanguage.setOnItemSelectedListener(this);
+        List<String> languagesList = Arrays.asList(DummyCourses.getListOfLanguages());
+        ArrayAdapter<String> dataAdapterLanguages = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, languagesList);
+        dataAdapterLanguages.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerLanguage.setAdapter(dataAdapterLanguages);
     }
 
 
@@ -104,7 +124,9 @@ public class CreateGroup extends AppCompatActivity implements AdapterView.OnItem
 
     public void addtoGroups(View view)
     {
-        MainActivity.groupList1.add(new Group(maxParticipants, new Course(selectedCourse),selectedLanguage, MainActivity.usersList1));//TODO add only logged in user
+
+        Group g = new Group(maxParticipants, new Course(selectedCourse),selectedLanguage, new ArrayList<User>());
+        firebase.select("groups").select(g.getGroupID()).setVal(g);
         Intent intent = new Intent(this, GroupsActivity.class);
         startActivity(intent);
     }
@@ -118,4 +140,7 @@ public class CreateGroup extends AppCompatActivity implements AdapterView.OnItem
             maxParticipants = numberPicker.getValue();
         }
     };
+
+    public static class GroupID {
+    }
 }
