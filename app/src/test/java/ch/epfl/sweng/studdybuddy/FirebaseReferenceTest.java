@@ -30,12 +30,6 @@ import org.mockito.Mock;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.function.Consumer;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.function.Consumer;
-import static org.junit.Assert.*;
 
 public class FirebaseReferenceTest {
 
@@ -49,7 +43,7 @@ public class FirebaseReferenceTest {
         DataSnapshot dataSnapshot = mock(DataSnapshot.class);
         //when(testref.setValue("key")).th;
 
-        Group emptyGroup = new Group(3, new Course("SDP"), "fr", new ArrayList<>());
+        Group emptyGroup = new Group(3, new Course("SDP"), "fr", new ArrayList<User>());
         when(dataSnapshot.getValue(Group.class)).thenReturn(emptyGroup);
         when(dataSnapshot.getChildren()).thenReturn(Arrays.asList(dataSnapshot));
         ArgumentCaptor<ValueEventListener> argument = ArgumentCaptor.forClass(ValueEventListener.class);
@@ -91,7 +85,7 @@ public class FirebaseReferenceTest {
         FirebaseReference fb = new FirebaseReference(db);
 
         DataSnapshot ds = mock(DataSnapshot.class);
-        Group clp = new Group(10,new Course("CLP"), "EN", new ArrayList<>());
+        final Group clp = new Group(10,new Course("CLP"), "EN", new ArrayList<User>());
 
 
         when(ds.getValue(Group.class)).thenReturn(clp);
@@ -100,10 +94,10 @@ public class FirebaseReferenceTest {
        fb.getMock(Group.class, new Consumer<Group>() {
            @Override
            public void accept(Group group) {
-               box[0]= group;
+               assertTrue(group.toString().equals(clp.toString()));
            }
        }).onDataChange(ds);
-        assertTrue(box[0].toString().equals(clp.toString()));
+
     }
 
     /*@Test//(expected = IndexOutOfBoundsException.class)

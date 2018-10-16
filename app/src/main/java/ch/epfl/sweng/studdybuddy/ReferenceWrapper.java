@@ -1,7 +1,5 @@
 package ch.epfl.sweng.studdybuddy;
 
-import android.support.v7.widget.RecyclerView;
-
 import com.google.android.gms.tasks.Task;
 
 import java.util.List;
