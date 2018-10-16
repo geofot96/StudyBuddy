@@ -24,12 +24,11 @@ public class ProfileTab extends AppCompatActivity {
 
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile_tab);
         usersCourses.add("Linear Algebra");
         usersCourses.add("Algorithms");
-        usersCourses.add("Computer Networks");
 
         final RecyclerView recyclerView_courses = (RecyclerView) findViewById(R.id.courses_list);
         recyclerView_courses.setLayoutManager(new LinearLayoutManager(this));
@@ -39,17 +38,13 @@ public class ProfileTab extends AppCompatActivity {
         recyclerView_groups.setLayoutManager(new LinearLayoutManager(this));
         recyclerView_groups.setAdapter(new CourseAdapter(usersGroups));
 
-        ItemTouchHelper mIth = new ItemTouchHelper(
-            new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP | ItemTouchHelper.DOWN, ItemTouchHelper.RIGHT)
-            {
+        ItemTouchHelper mIth = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP | ItemTouchHelper.DOWN, ItemTouchHelper.RIGHT){
                 @Override
-                public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder viewHolder1)
-                {
+                public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder viewHolder1){
                     return false;
                 }
                 @Override
-                public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int i)
-                {
+                public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int i){
                     CourseHolder cc = (CourseHolder) viewHolder;
                     usersCourses.remove(usersCourses.indexOf(cc.get()));
                     recyclerView_courses.getAdapter().notifyDataSetChanged();
