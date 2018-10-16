@@ -38,30 +38,21 @@ public class GroupsActivity extends AppCompatActivity
 		static List<Group> groupSet;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_groups);
-        Intent other = getIntent();
-
         RecyclerView rv = (RecyclerView) findViewById(R.id.feedRecycleViewer);//TODO check if it should be removed
         rv.setHasFixedSize(true);
-
-        RecyclerView.LayoutManager lm = new LinearLayoutManager(this);
-        rv.setLayoutManager(lm);
-        FirebaseApp.initializeApp(getApplicationContext());
+        rv.setLayoutManager(new LinearLayoutManager(this));
         FirebaseReference firebase = new FirebaseReference(FirebaseDatabase.getInstance().getReference());
         groupSet = new ArrayList<>();
-
-
         mAdapter = new GroupsRecyclerAdapter(groupSet);
         rv.setAdapter(mAdapter);
-				firebase.select("groups").getAll(Group.class, AdapterConsumer.adapterConsumer(Group.class, groupSet, new RecyclerAdapterAdapter(mAdapter)));
+        firebase.select("groups").getAll(Group.class, AdapterConsumer.adapterConsumer(Group.class, groupSet, new RecyclerAdapterAdapter(mAdapter)));
         SearchView sv = (SearchView) findViewById(R.id.feed_search);
         sv.onActionViewExpanded();
         sv.clearFocus();
-        sv.setOnQueryTextListener(new SearchView.OnQueryTextListener()
-        {
+        sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query)
             {
@@ -69,10 +60,8 @@ public class GroupsActivity extends AppCompatActivity
             }
 
             @Override
-            public boolean onQueryTextChange(String query)
-            {
-                //FILTER AS YOU TYPE
-                mAdapter.getFilter().filter(query);
+            public boolean onQueryTextChange(String query) {
+                mAdapter.getFilter().filter(query); //FILTER AS YOU TYPE
                 return false;
             }
         });
