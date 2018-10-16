@@ -2,6 +2,8 @@ package ch.epfl.sweng.studdybuddy;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresPermission;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
@@ -20,10 +22,7 @@ public class FirebaseReference implements ReferenceWrapper {
      */
 
     //Reference to firebase
-    private DatabaseReference ref;
-
-    //Last update snapshot
-    private DataSnapshot snapshot;
+    private final DatabaseReference ref;
 
     public FirebaseReference() {
         ref = FirebaseDatabase.getInstance().getReference();

@@ -36,20 +36,21 @@ import ch.epfl.sweng.studdybuddy.CourseAdapter;
 import ch.epfl.sweng.studdybuddy.CourseHolder;
 import ch.epfl.sweng.studdybuddy.FirebaseReference;
 import ch.epfl.sweng.studdybuddy.R;
-
+import ch.epfl.sweng.studdybuddy.ReferenceWrapper;
 
 
 public class CourseSelectActivity extends AppCompatActivity
 {
 
-    private static List<String> coursesDB;
+    static List<String> coursesDB;
     //List of selected courses
-    private static final List<String> courseSelection = new ArrayList<>();
+    static final List<String> courseSelection = new ArrayList<>();
 
 
-    private static AutoCompleteTextView autocomplete;
-
-    private static Button doneButton;
+    static AutoCompleteTextView autocomplete;
+    static ReferenceWrapper firebase;
+    static ArrayAdapter<String> adapter;
+    static Button doneButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -60,17 +61,15 @@ public class CourseSelectActivity extends AppCompatActivity
         Intent other = getIntent();
         coursesDB = new ArrayList<>();
         coursesDB.add("Untitled");
-        setUpButtons();
-        ;
-        setUpSelectedCourses();
+
         setUpDb(setUpAutoComplete());
+        setUpButtons();
+        setUpSelectedCourses();
 
     }
 
     private void setUpButtons() {
-
         final Intent toMain = new Intent(this, GroupsActivity.class);
-
         Button skipButton = findViewById(R.id.skipButton);
         skipButton.setOnClickListener(new View.OnClickListener()
         {
@@ -82,8 +81,6 @@ public class CourseSelectActivity extends AppCompatActivity
                 startActivity(toMain);
             }
         });
-
-
         doneButton = findViewById(R.id.doneButton);
         doneButton.setEnabled(false);
         doneButton.setOnClickListener(new View.OnClickListener()
@@ -99,7 +96,7 @@ public class CourseSelectActivity extends AppCompatActivity
     }
 
     private ArrayAdapter<String> setUpAutoComplete(){
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, coursesDB);
+        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, coursesDB);
         autocomplete = (AutoCompleteTextView) findViewById(R.id.courseComplete);
         autocomplete.setAdapter(adapter);
         autocomplete.setOnClickListener(new View.OnClickListener()
@@ -120,30 +117,7 @@ public class CourseSelectActivity extends AppCompatActivity
                 if(!courseSelection.contains(textInput)) { addCourse(textInput); }
             }
         });
-        autocomplete.setOnEditorActionListener(addOnEnter());
         return adapter;
-   }
-
-   private TextView.OnEditorActionListener addOnEnter() {
-        return new TextView.OnEditorActionListener()
-        {
-            @Override
-            public boolean onEditorAction(TextView view, int actionId, KeyEvent event)
-            {
-                //Check ENTER pressed
-                if(event == null) {
-                    if(actionId != EditorInfo.IME_ACTION_DONE && actionId != EditorInfo.IME_ACTION_NEXT) return false;
-                    else if(actionId == EditorInfo.IME_NULL && event.getAction() != KeyEvent.ACTION_DOWN) return true;
-                    else return false;
-                }
-                else {
-                    String textInput = autocomplete.getText().toString();
-                    if(Arrays.asList(coursesDB).contains(textInput) && !courseSelection.contains(textInput))
-                        addCourse(textInput);
-                    return true;
-                }
-            }
-        };
    }
 
    private void setUpSelectedCourses() {
@@ -176,7 +150,8 @@ public class CourseSelectActivity extends AppCompatActivity
    }
 
    private void setUpDb(ArrayAdapter<String> adapter) {
-       FirebaseReference firebase = new FirebaseReference(FirebaseDatabase.getInstance().getReference());
+       firebase = new FirebaseReference(FirebaseDatabase.getInstance().getReference());
+       firebase.select("test").setVal("connexion test");
        firebase.select("courses").getAll(String.class, AdapterConsumer.adapterConsumer(String.class, coursesDB, adapter));
    }
 

@@ -1,6 +1,7 @@
 package ch.epfl.sweng.studdybuddy;
 
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.widget.ArrayAdapter;
 
 import java.util.List;
@@ -14,6 +15,7 @@ final public class AdapterConsumer {
             public void accept(List<T> list) {
                 set.removeAll(set);
                 set.addAll(list);
+                Log.i("MSG", "MSG");
                 adapter.notifyDataSetChanged();
             }
         };
@@ -24,6 +26,8 @@ final public class AdapterConsumer {
             public void accept(List<T> list) {
                 set.removeAll(set);
                 set.addAll(list);
+                Log.i("MSG", "MSG");
+
                 adapter.notifyDataSetChanged();
             }
         };
