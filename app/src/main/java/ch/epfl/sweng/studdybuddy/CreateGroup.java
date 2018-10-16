@@ -9,6 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.NumberPicker;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -19,7 +20,7 @@ import ch.epfl.sweng.studdybuddy.activities.MainActivity;
 
 public class CreateGroup extends AppCompatActivity implements AdapterView.OnItemSelectedListener
 {
-    private String selectedCourse;
+    private String selectedCourse="";
     private String selectedLanguage;
     private int maxParticipants = 2;//default value
     private static final List<String> coursesDB = new ArrayList<>(Arrays.asList(DummyCourses.getListOfCourses()));
@@ -56,8 +57,7 @@ public class CreateGroup extends AppCompatActivity implements AdapterView.OnItem
         textView = (AutoCompleteTextView) findViewById(R.id.courseComplete2);
         textView.setAdapter(adapter);
         textView.setThreshold(0);
-        textView.setOnClickListener(new View.OnClickListener()
-        {
+        textView.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v)
             {
@@ -104,9 +104,16 @@ public class CreateGroup extends AppCompatActivity implements AdapterView.OnItem
 
     public void addtoGroups(View view)
     {
-        MainActivity.groupList1.add(new Group(maxParticipants, new Course(selectedCourse),selectedLanguage, MainActivity.usersList1));//TODO add only logged in user
-        Intent intent = new Intent(this, GroupsActivity.class);
-        startActivity(intent);
+        if(!selectedCourse.isEmpty() &&coursesDB.contains(selectedCourse)) {
+            MainActivity.groupList1.add(new Group(maxParticipants, new Course(selectedCourse), selectedLanguage, MainActivity.usersList1));//TODO add only logged in user
+            Intent intent = new Intent(this, GroupsActivity.class);
+            startActivity(intent);
+        }
+        else {
+
+            Toast.makeText(view.getContext(), "The course selected doesn't exist",
+                    Toast.LENGTH_LONG).show();
+        }
     }
 
     NumberPicker.OnValueChangeListener onValueChangeListener = new NumberPicker.OnValueChangeListener()
