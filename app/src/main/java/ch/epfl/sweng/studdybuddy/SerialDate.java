@@ -50,12 +50,24 @@ public class SerialDate {
     int day;
     int month;
     int year;
+    private final Date d;
     public SerialDate() {
-        Date d  = new Date();
+        d  = new Date();
         day = d.getDay();
         year = d.getYear();
         month = d.getMonth();
         minutes = d.getMinutes();
         seconds = d.getSeconds();
+    }
+
+    protected Date getDate() {
+        return d;
+    }
+
+    public boolean before(SerialDate when) {
+        return d.before(when.getDate());
+    }
+    public boolean after(SerialDate when) {
+        return d.after(when.getDate());
     }
 }

@@ -5,6 +5,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+
+import java.util.Collections;
+import java.util.Comparator;
+import android.support.v7.widget.SearchView;
+import android.widget.Toast;
 import android.util.Log;
 import android.view.View;
 import android.widget.Adapter;
@@ -25,29 +30,42 @@ import ch.epfl.sweng.studdybuddy.R;
 import ch.epfl.sweng.studdybuddy.RecyclerAdapterAdapter;
 
 
+import ch.epfl.sweng.studdybuddy.GroupsRecyclerAdapter;
+
 public class GroupsActivity extends AppCompatActivity
 {
-    static List<Group> groupSet;
+    GroupsRecyclerAdapter mAdapter;
+		static List<Group> groupSet;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_groups);
-        Intent other = getIntent();
-
-        RecyclerView rv = (RecyclerView) findViewById(R.id.testRecycleViewer);
+        RecyclerView rv = (RecyclerView) findViewById(R.id.feedRecycleViewer);//TODO check if it should be removed
         rv.setHasFixedSize(true);
-
-        RecyclerView.LayoutManager lm = new LinearLayoutManager(this);
-        rv.setLayoutManager(lm);
-        FirebaseApp.initializeApp(getApplicationContext());
+        rv.setLayoutManager(new LinearLayoutManager(this));
         FirebaseReference firebase = new FirebaseReference(FirebaseDatabase.getInstance().getReference());
         groupSet = new ArrayList<>();
-
-        GroupsRecyclerAdapter mAdapter = new GroupsRecyclerAdapter(groupSet);
+        mAdapter = new GroupsRecyclerAdapter(groupSet);
         rv.setAdapter(mAdapter);
         firebase.select("groups").getAll(Group.class, AdapterConsumer.adapterConsumer(Group.class, groupSet, new RecyclerAdapterAdapter(mAdapter)));
+        SearchView sv = (SearchView) findViewById(R.id.feed_search);
+        sv.onActionViewExpanded();
+        sv.clearFocus();
+        sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query)
+            {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String query) {
+                mAdapter.getFilter().filter(query); //FILTER AS YOU TYPE
+                return false;
+            }
+        });
+
     }
 
     public void gotoCreation(View view)
@@ -56,4 +74,11 @@ public class GroupsActivity extends AppCompatActivity
         startActivity(intent);
     }
 
+    public void sortGroupCards(View view)
+    {
+        List<Group> groupList = mAdapter.getGroupList();
+        Collections.sort(groupList);
+        mAdapter.setGroupList(groupList);
+        mAdapter.notifyDataSetChanged();
+    }
 }

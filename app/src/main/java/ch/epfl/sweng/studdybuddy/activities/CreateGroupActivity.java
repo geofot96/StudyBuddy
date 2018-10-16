@@ -9,6 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.NumberPicker;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -29,7 +30,7 @@ import ch.epfl.sweng.studdybuddy.User;
 
 public class CreateGroupActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener
 {
-    private String selectedCourse;
+    private String selectedCourse="";
     private String selectedLanguage;
     private int maxParticipants = 2;//default value
     private static List<String> coursesDB;
@@ -62,9 +63,9 @@ public class CreateGroupActivity extends AppCompatActivity implements AdapterVie
         textView = (AutoCompleteTextView) findViewById(R.id.courseComplete2);
         textView.setAdapter(adapter);
         textView.setThreshold(0);
-        textView.setOnClickListener(new View.OnClickListener()
-        {
-            @Override public void onClick(View v)
+        textView.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v)
             {
                 AutoCompleteTextView textView = (AutoCompleteTextView)
                         findViewById(R.id.courseComplete2);
@@ -124,11 +125,18 @@ public class CreateGroupActivity extends AppCompatActivity implements AdapterVie
 
     public void addtoGroups(View view)
     {
+        if(!selectedCourse.isEmpty() &&coursesDB.contains(selectedCourse)) {
+					//Comunnicate through fb
+            Group g = new Group(maxParticipants, new Course(selectedCourse),selectedLanguage, new ArrayList<User>());
+		        firebase.select("groups").select(g.getGroupID()).setVal(g);
+		        Intent intent = new Intent(this, GroupsActivity.class);
+		        startActivity(intent);
+        }
+        else {
 
-        Group g = new Group(maxParticipants, new Course(selectedCourse),selectedLanguage, new ArrayList<User>());
-        firebase.select("groups").select(g.getGroupID()).setVal(g);
-        Intent intent = new Intent(this, GroupsActivity.class);
-        startActivity(intent);
+            Toast.makeText(view.getContext(), "The course selected doesn't exist",
+                    Toast.LENGTH_LONG).show();
+        }
     }
 
     NumberPicker.OnValueChangeListener onValueChangeListener = new NumberPicker.OnValueChangeListener()
