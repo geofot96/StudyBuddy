@@ -42,6 +42,8 @@ public class GroupsActivity extends AppCompatActivity
         rv.setAdapter(mAdapter);
 
         SearchView sv = (SearchView) findViewById(R.id.feed_search);
+        sv.onActionViewExpanded();
+        sv.clearFocus();
         sv.setOnQueryTextListener(new SearchView.OnQueryTextListener()
         {
             @Override
