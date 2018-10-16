@@ -27,7 +27,6 @@ public class ProfileTab extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile_tab);
-
         usersCourses.add("Linear Algebra");
         usersCourses.add("Algorithms");
         usersCourses.add("Computer Networks");
@@ -40,18 +39,14 @@ public class ProfileTab extends AppCompatActivity {
         recyclerView_groups.setLayoutManager(new LinearLayoutManager(this));
         recyclerView_groups.setAdapter(new CourseAdapter(usersGroups));
 
-
-
         ItemTouchHelper mIth = new ItemTouchHelper(
-            new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP | ItemTouchHelper.DOWN,
-                    ItemTouchHelper.RIGHT)
+            new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP | ItemTouchHelper.DOWN, ItemTouchHelper.RIGHT)
             {
                 @Override
                 public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder viewHolder1)
                 {
                     return false;
                 }
-
                 @Override
                 public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int i)
                 {
