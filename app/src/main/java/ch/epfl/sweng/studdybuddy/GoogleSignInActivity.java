@@ -63,36 +63,27 @@ public class GoogleSignInActivity extends AppCompatActivity {
         if (requestCode == RC_SIGN_IN) {
             GoogleSignInWrapper gsw = new GoogleSignInWrapper(onTest());
             Task<GoogleSignInAccount> task = gsw.getTask(data);
-            OnLoginCallback loginCallback = new OnLoginCallback() {
-                @Override
-                public void then(Account acct) {
-                    if (acct != null) {
-                        String personName = acct.getDisplayName();
-                        //appears only when the user is connected
-                        //Toast.makeText(this, "Welcome" + personName, Toast.LENGTH_SHORT).show();
-                        startActivity(new Intent(GoogleSignInActivity.this, MainActivity.class));
-                    }/* else {
-                            //appears only when the user isn't connected to the app
-                            Toast.makeText(this, "No User", Toast.LENGTH_SHORT).show();
-                        }*/
-                }
-            };
-
-            if(!onTest()){
-                try {
-                    // Google Sign In was successful, authenticate with Firebase
+            try {
+                // Google Sign In was successful, authenticate with Firebase
+                Account account = new Account();
+                if(!onTest()){
                     GoogleSignInAccount acct = task.getResult(ApiException.class);
-                    Account account = Account.from(acct);
-                    getAuthManager().login(account, loginCallback, TAG);
-                } catch (ApiException e) {
-                    // Google Sign In failed, update UI appropriately
-                    Log.w(TAG, "Google sign in failed", e);
-
+                    account = Account.from(acct);
                 }
-            } else {
-                getAuthManager().login(new Account(), loginCallback, TAG);
-            }
 
+                getAuthManager().login(account, new OnLoginCallback() {
+                    @Override
+                    public void then(Account acct) {
+                        if (acct != null) {
+                            startActivity(new Intent(GoogleSignInActivity.this, MainActivity.class));
+                        }
+                    }
+                }, TAG);
+            } catch (ApiException e) {
+                // Google Sign In failed, update UI appropriately
+                Log.w(TAG, "Google sign in failed", e);
+
+            }
         }
     }
 
