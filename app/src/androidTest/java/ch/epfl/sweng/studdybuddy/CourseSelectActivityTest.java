@@ -7,8 +7,6 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import ch.epfl.sweng.studdybuddy.activities.CourseSelectActivity;
-
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.pressKey;
 import static android.support.test.espresso.intent.Intents.intended;
@@ -35,7 +33,7 @@ public class CourseSelectActivityTest
     public void skipLeadsToMainActivity()
     {
         //onView(withId(R.id.skipButton)).perform(click());
-        //intended(toPackage(MainActivity.class.getName()));
+        //intended(toPackage(SecondActivity.class.getName()));
     }
 
 /*

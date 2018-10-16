@@ -14,9 +14,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import ch.epfl.sweng.studdybuddy.activities.GroupsActivity;
-import ch.epfl.sweng.studdybuddy.activities.MainActivity;
-
 public class CreateGroup extends AppCompatActivity implements AdapterView.OnItemSelectedListener
 {
     private String selectedCourse;
@@ -104,7 +101,7 @@ public class CreateGroup extends AppCompatActivity implements AdapterView.OnItem
 
     public void addtoGroups(View view)
     {
-        MainActivity.groupList1.add(new Group(maxParticipants, new Course(selectedCourse),selectedLanguage, MainActivity.usersList1));//TODO add only logged in user
+        SecondActivity.groupList1.add(new Group(maxParticipants, new Course(selectedCourse),selectedLanguage, SecondActivity.usersList1));//TODO add only logged in user
         Intent intent = new Intent(this, GroupsActivity.class);
         startActivity(intent);
     }

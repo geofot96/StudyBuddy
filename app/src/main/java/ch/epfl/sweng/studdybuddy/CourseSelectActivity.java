@@ -1,4 +1,4 @@
-package ch.epfl.sweng.studdybuddy.activities;
+package ch.epfl.sweng.studdybuddy;
 
 import android.content.Context;
 
@@ -24,9 +24,6 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import ch.epfl.sweng.studdybuddy.CourseHolder;
-import ch.epfl.sweng.studdybuddy.R;
 
 
 public class CourseSelectActivity extends AppCompatActivity

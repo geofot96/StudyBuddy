@@ -1,4 +1,4 @@
-package ch.epfl.sweng.studdybuddy.activities;
+package ch.epfl.sweng.studdybuddy;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -6,10 +6,6 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-
-import ch.epfl.sweng.studdybuddy.CreateGroup;
-import ch.epfl.sweng.studdybuddy.GroupsRecyclerAdapter;
-import ch.epfl.sweng.studdybuddy.R;
 
 public class GroupsActivity extends AppCompatActivity
 {
@@ -27,7 +23,7 @@ public class GroupsActivity extends AppCompatActivity
         RecyclerView.LayoutManager lm = new LinearLayoutManager(this);
         rv.setLayoutManager(lm);
 
-        GroupsRecyclerAdapter mAdapter = new GroupsRecyclerAdapter(MainActivity.groupList1);
+        GroupsRecyclerAdapter mAdapter = new GroupsRecyclerAdapter(SecondActivity.groupList1);
         rv.setAdapter(mAdapter);
     }
 

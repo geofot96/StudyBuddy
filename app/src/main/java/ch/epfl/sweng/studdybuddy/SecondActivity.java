@@ -1,21 +1,25 @@
-package ch.epfl.sweng.studdybuddy.activities;
+package ch.epfl.sweng.studdybuddy;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 
 import java.util.ArrayList;
 
 import ch.epfl.sweng.studdybuddy.Course;
+import ch.epfl.sweng.studdybuddy.CourseSelectActivity;
 import ch.epfl.sweng.studdybuddy.DummyCourses;
 import ch.epfl.sweng.studdybuddy.Group;
+import ch.epfl.sweng.studdybuddy.GroupsActivity;
+import ch.epfl.sweng.studdybuddy.ProfileTab;
 import ch.epfl.sweng.studdybuddy.R;
 import ch.epfl.sweng.studdybuddy.User;
 
 import static ch.epfl.sweng.studdybuddy.DummyCourses.MATHEMATICS;
 
-public class MainActivity extends AppCompatActivity
+public class SecondActivity extends AppCompatActivity
 {
     //TODO Temporary items, will be removed
     static DummyCourses dummy = new DummyCourses();
@@ -40,6 +44,8 @@ public class MainActivity extends AppCompatActivity
             groupList1.add(g2);
             usersList1.add(u1);
         }
+
+        createFred();
     }
 
 
@@ -49,10 +55,17 @@ public class MainActivity extends AppCompatActivity
         startActivity(intent);
     }
 
-    public void gotoFred(View view)
+    public void createFred()
     {
-        Intent intent = new Intent(this, CourseSelectActivity.class);
-        startActivity(intent);
+        Button fred = (Button)findViewById(R.id.courseButton);
+        final Intent intent = new Intent(this, CourseSelectActivity.class);
+
+        fred.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(intent);
+            }
+        });
     }
 
     public void goToProfileTabred(View view)

@@ -6,7 +6,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.tasks.Task;
 
-class GoogleSignInWrapper {
+public class GoogleSignInWrapper {
     private boolean onTest;
 
     public GoogleSignInWrapper(boolean onTest){
