@@ -52,12 +52,12 @@ public class ProfileTabTest
         intended(toPackage(LoginActivity.class)).hasComponent();
     }*/
 
-    /*@Test
+    @Test
     public void signOutButtonDisconnects() {
 
-    }*/
+    }
 
-    @Test
+    /*@Test
     public void profileListHasCorrectData() {
         onView(withId(R.id.courses_list)).check(matches(hasDescendant(withText("Linear Algebra"))));
         onView(withId(R.id.courses_list)).check(matches(hasDescendant(withText("Algorithms"))));
@@ -68,7 +68,7 @@ public class ProfileTabTest
     public void groupListHasCorrectData() {
         onView(withId(R.id.groups_list)).check(matches(hasDescendant(withText("Linear Algebra"))));
         onView(withId(R.id.groups_list)).check(matches(hasDescendant(withText("Algorithms"))));
-    }
+    }*/
 
 }
 
