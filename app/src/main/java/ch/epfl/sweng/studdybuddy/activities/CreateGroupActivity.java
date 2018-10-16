@@ -17,11 +17,13 @@ import java.util.Arrays;
 import java.util.List;
 
 import ch.epfl.sweng.studdybuddy.AdapterConsumer;
+import ch.epfl.sweng.studdybuddy.ArrayAdapterAdapter;
 import ch.epfl.sweng.studdybuddy.Course;
 import ch.epfl.sweng.studdybuddy.DummyCourses;
 import ch.epfl.sweng.studdybuddy.FirebaseReference;
 import ch.epfl.sweng.studdybuddy.Group;
 import ch.epfl.sweng.studdybuddy.R;
+import ch.epfl.sweng.studdybuddy.RecyclerAdapterAdapter;
 import ch.epfl.sweng.studdybuddy.User;
 
 
@@ -47,7 +49,7 @@ public class CreateGroupActivity extends AppCompatActivity implements AdapterVie
         setUpLang();
         setUpNumberPicker();
         firebase = new FirebaseReference();
-        firebase.select("courses").getAll(String.class, AdapterConsumer.adapterConsumer(String.class, coursesDB, setUpAutoComplete()));
+        firebase.select("courses").getAll(String.class, AdapterConsumer.adapterConsumer(String.class, coursesDB, new ArrayAdapterAdapter(setUpAutoComplete())));
 
     }
 

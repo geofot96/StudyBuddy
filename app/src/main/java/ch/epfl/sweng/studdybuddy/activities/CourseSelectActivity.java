@@ -32,6 +32,7 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 import ch.epfl.sweng.studdybuddy.AdapterConsumer;
+import ch.epfl.sweng.studdybuddy.ArrayAdapterAdapter;
 import ch.epfl.sweng.studdybuddy.CourseAdapter;
 import ch.epfl.sweng.studdybuddy.CourseHolder;
 import ch.epfl.sweng.studdybuddy.FirebaseReference;
@@ -152,7 +153,7 @@ public class CourseSelectActivity extends AppCompatActivity
    private void setUpDb(ArrayAdapter<String> adapter) {
        firebase = new FirebaseReference(FirebaseDatabase.getInstance().getReference());
        firebase.select("test").setVal("connexion test");
-       firebase.select("courses").getAll(String.class, AdapterConsumer.adapterConsumer(String.class, coursesDB, adapter));
+       firebase.select("courses").getAll(String.class, AdapterConsumer.adapterConsumer(String.class, coursesDB, new ArrayAdapterAdapter(adapter)));
    }
 
     private void addCourse(String course)
