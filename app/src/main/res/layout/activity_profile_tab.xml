@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activities.ProfileTab">
+
+    <LinearLayout
+        android:id="@+id/linearLayout3"
+        android:layout_width="385dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:orientation="vertical"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/profile_tab_name"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:text="Profile"
+            android:textAlignment="center"
+            android:textSize="28sp" />
+
+        <TextView
+            android:id="@+id/profile_name_text"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:text="Student Name"
+            android:textAlignment="center"
+            android:textSize="22sp" />
+
+        <TextView
+            android:id="@+id/courses_field_title"
+            android:layout_width="match_parent"
+            android:layout_height="66dp"
+            android:text="My Courses"
+            android:textAlignment="center"
+            android:textSize="22sp" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/courses_list"
+            android:layout_width="match_parent"
+            android:layout_height="194dp" />
+
+        <TextView
+            android:id="@+id/groups_field_title"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:text="My Groups"
+            android:textAlignment="center"
+            android:textSize="22sp" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/groups_list"
+            android:layout_width="match_parent"
+            android:layout_height="173dp" />
+
+    </LinearLayout>
+
+</android.support.constraint.ConstraintLayout>

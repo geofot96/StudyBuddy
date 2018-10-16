@@ -4,7 +4,6 @@ import android.support.annotation.StringDef;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
-import java.util.ArrayList;
 
 public class DummyCourses
 {
@@ -31,6 +30,15 @@ public class DummyCourses
     {
 
         return coursesDB;
+    }
+
+    public static class MeetingID {
+    }
+
+    public static class UserID {
+    }
+
+    public static class FriendshipID {
     }
 }
 

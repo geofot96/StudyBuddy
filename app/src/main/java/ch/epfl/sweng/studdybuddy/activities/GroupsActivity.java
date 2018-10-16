@@ -5,24 +5,37 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SearchView;
-import android.view.View;
-import android.widget.Toast;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import android.support.v7.widget.SearchView;
+import android.widget.Toast;
+import android.util.Log;
+import android.view.View;
+import android.widget.Adapter;
 
-import ch.epfl.sweng.studdybuddy.CreateGroup;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Consumer;
+
+import ch.epfl.sweng.studdybuddy.AdapterConsumer;
+import ch.epfl.sweng.studdybuddy.Course;
+import ch.epfl.sweng.studdybuddy.FirebaseReference;
 import ch.epfl.sweng.studdybuddy.Group;
 import ch.epfl.sweng.studdybuddy.GroupsRecyclerAdapter;
 import ch.epfl.sweng.studdybuddy.R;
+import ch.epfl.sweng.studdybuddy.RecyclerAdapterAdapter;
+
 
 import ch.epfl.sweng.studdybuddy.GroupsRecyclerAdapter;
 
 public class GroupsActivity extends AppCompatActivity
 {
     GroupsRecyclerAdapter mAdapter;
+		static List<Group> groupSet;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -36,11 +49,14 @@ public class GroupsActivity extends AppCompatActivity
 
         RecyclerView.LayoutManager lm = new LinearLayoutManager(this);
         rv.setLayoutManager(lm);
+        FirebaseApp.initializeApp(getApplicationContext());
+        FirebaseReference firebase = new FirebaseReference(FirebaseDatabase.getInstance().getReference());
+        groupSet = new ArrayList<>();
 
 
-        mAdapter = new GroupsRecyclerAdapter(MainActivity.groupList1);
+        mAdapter = new GroupsRecyclerAdapter(groupSet);
         rv.setAdapter(mAdapter);
-
+				firebase.select("groups").getAll(Group.class, AdapterConsumer.adapterConsumer(Group.class, groupSet, new RecyclerAdapterAdapter(mAdapter)));
         SearchView sv = (SearchView) findViewById(R.id.feed_search);
         sv.onActionViewExpanded();
         sv.clearFocus();
@@ -65,13 +81,13 @@ public class GroupsActivity extends AppCompatActivity
 
     public void gotoCreation(View view)
     {
-        Intent intent = new Intent(this, CreateGroup.class);
+        Intent intent = new Intent(this, CreateGroupActivity.class);
         startActivity(intent);
     }
 
     public void sortGroupCards(View view)
     {
-        ArrayList<Group> groupList = mAdapter.getGroupList();
+        List<Group> groupList = mAdapter.getGroupList();
         Collections.sort(groupList);
         mAdapter.setGroupList(groupList);
         mAdapter.notifyDataSetChanged();

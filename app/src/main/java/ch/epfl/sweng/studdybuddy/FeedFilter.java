@@ -3,12 +3,13 @@ package ch.epfl.sweng.studdybuddy;
 import android.widget.Filter;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class FeedFilter extends Filter {
     GroupsRecyclerAdapter adapter;
-    private ArrayList<Group>  filterList;
+    private List<Group>  filterList;
 
-    public FeedFilter(GroupsRecyclerAdapter adapter, ArrayList<Group> filterList) {
+    public FeedFilter(GroupsRecyclerAdapter adapter, List<Group> filterList) {
         this.adapter = adapter;
         this.filterList = filterList;
     }
@@ -47,7 +48,7 @@ public class FeedFilter extends Filter {
 
     @Override
     protected void publishResults(CharSequence constraint, FilterResults results) {
-        adapter.setGroupList((ArrayList<Group>) results.values);
+        adapter.setGroupList((List<Group>) results.values);
 
         //REFRESH
         adapter.notifyDataSetChanged();

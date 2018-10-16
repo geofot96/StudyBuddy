@@ -11,10 +11,11 @@ import android.widget.Filterable;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class GroupsRecyclerAdapter extends RecyclerView.Adapter<GroupsRecyclerAdapter.MyViewHolder> implements Filterable
 {
-    private ArrayList<Group> groupList, filterList;
+    private List<Group> groupList, filterList;
     FeedFilter filter;
 
 
@@ -37,17 +38,17 @@ public class GroupsRecyclerAdapter extends RecyclerView.Adapter<GroupsRecyclerAd
         }
     }
 
-    public GroupsRecyclerAdapter(ArrayList<Group> groupList)
+    public GroupsRecyclerAdapter(List<Group> groupList)
     {
         this.groupList = groupList;
         this.filterList=groupList;
     }
 
-    public ArrayList<Group> getGroupList() {
+    public List<Group> getGroupList() {
         return new ArrayList<>(groupList);
     }
 
-    public void setGroupList(ArrayList<Group> groupList) {
+    public void setGroupList(List<Group> groupList) {
         this.groupList = new ArrayList<>(groupList);
     }
 
@@ -68,9 +69,9 @@ public class GroupsRecyclerAdapter extends RecyclerView.Adapter<GroupsRecyclerAd
         TextView newGroupCourseTextView = holder.groupCourseTextView;
         newGroupCourseTextView.setText(group.getCourse().getCourseName());
         TextView newGroupLanguageTextView = holder.groupLanguageTextView;
-        newGroupLanguageTextView.setText(group.getLanguage());
+        newGroupLanguageTextView.setText(group.getLang());
         TextView newGroupParticipantInfoTextView = holder.groupParticipantInfoTextView;
-        newGroupParticipantInfoTextView.setText(("Particip: " + group.getParticipantNumber() + "/" + group.getMaxParticipantNumber()));
+        newGroupParticipantInfoTextView.setText(("Particip: " + group.getParticipantNumber() + "/" + group.getMaxNoUsers()));
 
 
         Button button = holder.messageButton;
