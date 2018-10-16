@@ -27,10 +27,8 @@ public class GroupsActivity extends AppCompatActivity
         RecyclerView.LayoutManager lm = new LinearLayoutManager(this);
         rv.setLayoutManager(lm);
 
-
         GroupsRecyclerAdapter mAdapter = new GroupsRecyclerAdapter(MainActivity.groupList1);
         rv.setAdapter(mAdapter);
-
     }
 
     public void gotoCreation(View view)

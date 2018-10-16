@@ -10,7 +10,6 @@
         android:id="@+id/gotoGroups"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-<<<<<<< HEAD
         android:text="Hello World!"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -27,10 +26,7 @@
         android:layout_marginBottom="48dp"
         android:layout_marginTop="8dp"
         android:text="@string/sign_out"
-=======
-        android:layout_marginTop="47dp"
         android:onClick="gotoGroups"
-        android:text="goToGroups"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -55,11 +51,9 @@
         android:layout_marginBottom="62dp"
         android:onClick="goToProfileTabred"
         android:text="Profile"
->>>>>>> master
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView"
         app:layout_constraintVertical_bias="0.905" />
 
 </android.support.constraint.ConstraintLayout>
