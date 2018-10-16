@@ -21,10 +21,14 @@ import org.junit.runner.RunWith;
 
 import ch.epfl.sweng.studdybuddy.activities.CourseSelectActivity;
 
+import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.pressKey;
+import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.intent.Intents.intended;
 import static android.support.test.espresso.intent.matcher.IntentMatchers.hasComponent;
+import static android.support.test.espresso.intent.matcher.IntentMatchers.toPackage;
+import static android.support.test.espresso.matcher.ViewMatchers.hasDescendant;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.CoreMatchers.allOf;
@@ -41,11 +45,29 @@ public class ProfileTabTest
     public final ActivityTestRule<ProfileTab> mActivityRule =
             new ActivityTestRule<>(ProfileTab.class);
 
+
+    /*@Test
+    public void signOutButtonLeadsToLogin() {
+        onView(withId(R.id.signout)).perform(click());
+        intended(toPackage(LoginActivity.class)).hasComponent();
+    }*/
+
+    /*@Test
+    public void signOutButtonDisconnects() {
+
+    }*/
+
     @Test
-    public void skipLeadsToProfileTab()
-    {
-        //onView(withId(R.id.go_to_profile_btn)).perform(click());
-        //intended(toPackage(ProfileTab.class.getName()));
+    public void profileListHasCorrectData() {
+        onView(withId(R.id.courses_list)).check(matches(hasDescendant(withText("Linear Algebra"))));
+        onView(withId(R.id.courses_list)).check(matches(hasDescendant(withText("Algorithms"))));
+        onView(withId(R.id.courses_list)).check(matches(hasDescendant(withText("Computer Networks"))));
+    }
+
+    @Test
+    public void groupListHasCorrectData() {
+        onView(withId(R.id.groups_list)).check(matches(hasDescendant(withText("Linear Algebra"))));
+        onView(withId(R.id.groups_list)).check(matches(hasDescendant(withText("Algorithms"))));
     }
 
 }
