@@ -101,7 +101,7 @@ public class CreateGroup extends AppCompatActivity implements AdapterView.OnItem
 
     public void addtoGroups(View view)
     {
-        SecondActivity.groupList1.add(new Group(maxParticipants, new Course(selectedCourse),selectedLanguage, SecondActivity.usersList1));//TODO add only logged in user
+        MainActivity.groupList1.add(new Group(maxParticipants, new Course(selectedCourse),selectedLanguage, MainActivity.usersList1));//TODO add only logged in user
         Intent intent = new Intent(this, GroupsActivity.class);
         startActivity(intent);
     }

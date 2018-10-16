@@ -24,12 +24,12 @@
 
         <activity
             android:name=".GroupsActivity"
-            android:parentActivityName=".SecondActivity">
+            android:parentActivityName=".MainActivity">
 
             <!-- The meta-data tag is required if you support API level 15 and lower -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".SecondActivity" />
+                android:value=".MainActivity" />
         </activity>
         <activity
             android:name=".CreateGroup"
@@ -40,7 +40,7 @@
         </activity>
         <activity
             android:name=".CourseSelectActivity"
-            android:parentActivityName=".SecondActivity">
+            android:parentActivityName=".MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".CourseSelectActivity" />
@@ -48,7 +48,6 @@
         <activity android:name=".ProfileTab" />
         <activity android:name=".DummyGoogleSignInActivity" />
         <activity android:name=".DummyMainActivity" />
-        <activity android:name=".SecondActivity" />
 
     </application>
 

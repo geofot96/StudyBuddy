@@ -33,7 +33,7 @@ public class CourseSelectActivityTest
     public void skipLeadsToMainActivity()
     {
         //onView(withId(R.id.skipButton)).perform(click());
-        //intended(toPackage(SecondActivity.class.getName()));
+        //intended(toPackage(MainActivity.class.getName()));
     }
 
 /*
