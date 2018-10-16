@@ -123,7 +123,12 @@ public class CourseSelectActivity extends AppCompatActivity
                     addCourse(textInput);
             }
         });
-        autocomplete.setOnEditorActionListener(new TextView.OnEditorActionListener()
+        autocomplete.setOnEditorActionListener(addOnEnter());
+        return adapter;
+   }
+
+   private TextView.OnEditorActionListener addOnEnter() {
+        return new TextView.OnEditorActionListener()
         {
             @Override
             public boolean onEditorAction(TextView view, int actionId, KeyEvent event)
@@ -131,16 +136,15 @@ public class CourseSelectActivity extends AppCompatActivity
                 //Check ENTER pressed
                 if(event == null)
                     if(actionId != EditorInfo.IME_ACTION_DONE && actionId != EditorInfo.IME_ACTION_NEXT) return false;
-                else if(actionId == EditorInfo.IME_NULL)
-                    if(event.getAction() != KeyEvent.ACTION_DOWN) return true;
-                else return false;
+                    else if(actionId == EditorInfo.IME_NULL)
+                        if(event.getAction() != KeyEvent.ACTION_DOWN) return true;
+                        else return false;
                 String textInput = autocomplete.getText().toString();
                 if(Arrays.asList(coursesDB).contains(textInput) && !courseSelection.contains(textInput))
                     addCourse(textInput);
                 return true;
             }
-        });
-        return adapter;
+        };
    }
 
    private void setUpSelectedCourses() {
