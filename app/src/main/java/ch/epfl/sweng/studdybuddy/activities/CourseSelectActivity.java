@@ -102,7 +102,6 @@ public class CourseSelectActivity extends AppCompatActivity
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, coursesDB);
         autocomplete = (AutoCompleteTextView) findViewById(R.id.courseComplete);
         autocomplete.setAdapter(adapter);
-        autocomplete.setThreshold(0);
         autocomplete.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -116,11 +115,9 @@ public class CourseSelectActivity extends AppCompatActivity
         autocomplete.setOnItemClickListener(new AdapterView.OnItemClickListener()
         {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id)
-            {
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String textInput = parent.getAdapter().getItem(position).toString();
-                if(!courseSelection.contains(textInput))
-                    addCourse(textInput);
+                if(!courseSelection.contains(textInput)) { addCourse(textInput); }
             }
         });
         autocomplete.setOnEditorActionListener(addOnEnter());
@@ -134,15 +131,17 @@ public class CourseSelectActivity extends AppCompatActivity
             public boolean onEditorAction(TextView view, int actionId, KeyEvent event)
             {
                 //Check ENTER pressed
-                if(event == null)
+                if(event == null) {
                     if(actionId != EditorInfo.IME_ACTION_DONE && actionId != EditorInfo.IME_ACTION_NEXT) return false;
-                    else if(actionId == EditorInfo.IME_NULL)
-                        if(event.getAction() != KeyEvent.ACTION_DOWN) return true;
-                        else return false;
-                String textInput = autocomplete.getText().toString();
-                if(Arrays.asList(coursesDB).contains(textInput) && !courseSelection.contains(textInput))
-                    addCourse(textInput);
-                return true;
+                    else if(actionId == EditorInfo.IME_NULL && event.getAction() != KeyEvent.ACTION_DOWN) return true;
+                    else return false;
+                }
+                else {
+                    String textInput = autocomplete.getText().toString();
+                    if(Arrays.asList(coursesDB).contains(textInput) && !courseSelection.contains(textInput))
+                        addCourse(textInput);
+                    return true;
+                }
             }
         };
    }
