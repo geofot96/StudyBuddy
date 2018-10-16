@@ -65,7 +65,7 @@ public class GoogleSignInActivity extends AppCompatActivity {
             Task<GoogleSignInAccount> task = gsw.getTask(data);
             try {
                 // Google Sign In was successful, authenticate with Firebase
-                Account account = onTest() ? new Account() : Account.from(task.getResult(ApiException.class));
+                Account account = getRightAccount(task);
                 getAuthManager().login(account, new OnLoginCallback() {
                     @Override
                     public void then(Account acct) {
@@ -93,4 +93,7 @@ public class GoogleSignInActivity extends AppCompatActivity {
         return false;
     }
 
+    private Account getRightAccount(Task<GoogleSignInAccount> task) throws ApiException {
+        return onTest() ? new Account() : Account.from(task.getResult(ApiException.class));
+    }
 }
