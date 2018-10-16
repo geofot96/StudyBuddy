@@ -30,5 +30,11 @@ public class MainActivity extends AppCompatActivity
         startActivity(intent);
     }
 
+    public void goToProfileTabred(View view)
+    {
+        Intent intent = new Intent(this, ProfileTab.class);
+        startActivity(intent);
+    }
+
 
 }
