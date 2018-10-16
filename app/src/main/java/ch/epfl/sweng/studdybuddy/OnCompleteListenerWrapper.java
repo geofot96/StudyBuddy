@@ -6,7 +6,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
 
-public class OnCompleteListenerWrapper<TResult> implements OnCompleteListener<TResult> {
+class OnCompleteListenerWrapper<TResult> implements OnCompleteListener<TResult> {
     private Account acct;
     private OnLoginCallback f;
     private String TAG;

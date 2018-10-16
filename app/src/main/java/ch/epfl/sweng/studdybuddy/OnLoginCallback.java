@@ -1,5 +1,5 @@
 package ch.epfl.sweng.studdybuddy;
 
-public interface OnLoginCallback {
+interface OnLoginCallback {
     public void then(Account acct);
 }

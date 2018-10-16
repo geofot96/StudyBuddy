@@ -7,7 +7,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
-import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
@@ -64,47 +63,48 @@ public class GoogleSignInActivity extends AppCompatActivity {
         if (requestCode == RC_SIGN_IN) {
             GoogleSignInWrapper gsw = new GoogleSignInWrapper(onTest());
             Task<GoogleSignInAccount> task = gsw.getTask(data);
-            try {
-                // Google Sign In was successful, authenticate with Firebase
-                Account account;
-                if(!onTest()){
-                    GoogleSignInAccount acct = task.getResult(ApiException.class);
-                    account = Account.from(acct);
-                } else{
-                    account = new Account();
-                }
-
-                getAuthManager().login(account, new OnLoginCallback() {
-                    @Override
-                    public void then(Account acct) {
-                        if (acct != null) {
-                            String personName = acct.getDisplayName();
-                            //appears only when the user is connected
-                            //Toast.makeText(this, "Welcome" + personName, Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent(GoogleSignInActivity.this, MainActivity.class));
-                        }/* else {
+            OnLoginCallback loginCallback = new OnLoginCallback() {
+                @Override
+                public void then(Account acct) {
+                    if (acct != null) {
+                        String personName = acct.getDisplayName();
+                        //appears only when the user is connected
+                        //Toast.makeText(this, "Welcome" + personName, Toast.LENGTH_SHORT).show();
+                        startActivity(new Intent(GoogleSignInActivity.this, MainActivity.class));
+                    }/* else {
                             //appears only when the user isn't connected to the app
                             Toast.makeText(this, "No User", Toast.LENGTH_SHORT).show();
                         }*/
-                    }
-                }, TAG);
-            } catch (ApiException e) {
-                // Google Sign In failed, update UI appropriately
-                Log.w(TAG, "Google sign in failed", e);
+                }
+            };
 
+            if(!onTest()){
+                try {
+                    // Google Sign In was successful, authenticate with Firebase
+                    GoogleSignInAccount acct = task.getResult(ApiException.class);
+                    Account account = Account.from(acct);
+                    getAuthManager().login(account, loginCallback, TAG);
+                } catch (ApiException e) {
+                    // Google Sign In failed, update UI appropriately
+                    Log.w(TAG, "Google sign in failed", e);
+
+                }
+            } else {
+                getAuthManager().login(new Account(), loginCallback, TAG);
             }
+
         }
     }
 
 
-    public AuthManager getAuthManager(){
+    AuthManager getAuthManager(){
         if (mAuth == null){
             mAuth = new FirebaseAuthManager(this, getString(R.string.default_web_client_id));
         }
         return mAuth;
     }
 
-    public boolean onTest(){
+    boolean onTest(){
         return false;
     }
 

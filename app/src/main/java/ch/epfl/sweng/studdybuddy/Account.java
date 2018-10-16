@@ -7,7 +7,7 @@ public class Account {
     private String displayName;
     private String uid;
     private String idToken;
-    public Account(String displayName, String uid, String idToken){
+    private Account(String displayName, String uid, String idToken){
         this.displayName = displayName;
         this.uid = uid;
         this.idToken = idToken;
