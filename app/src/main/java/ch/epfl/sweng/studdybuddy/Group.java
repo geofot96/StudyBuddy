@@ -21,6 +21,16 @@ public class Group
     private List<User> participants;
     private ID<Group> groupID; //TODO add getters and setters
     private String language;
+
+    public SerialDate getCreationDate() {
+        return creationDate;
+    }
+
+    public void setCreationDate(SerialDate creationDate) {
+        this.creationDate = creationDate;
+    }
+
+    private SerialDate creationDate;
     //TODO add schedule and Chat
     //private commonSchedule;
     //private groupChat;
@@ -51,6 +61,7 @@ public class Group
         this.course = course;
         this.participants = participants;
         this.language = lang;
+        this.creationDate = new SerialDate();
     }
 
     public Group(Group sourceGroup)

@@ -49,13 +49,14 @@ public class CreateGroupActivity extends AppCompatActivity implements AdapterVie
         setUpLang();
         setUpNumberPicker();
         firebase = new FirebaseReference();
+        coursesDB = new ArrayList<>();
+        coursesDB.add("untitled");
         firebase.select("courses").getAll(String.class, AdapterConsumer.adapterConsumer(String.class, coursesDB, new ArrayAdapterAdapter(setUpAutoComplete())));
 
     }
 
     ArrayAdapter<String> setUpAutoComplete() {
-        coursesDB = new ArrayList<>();
-        coursesDB.add("untitled");
+
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_dropdown_item_1line, coursesDB);
         textView = (AutoCompleteTextView) findViewById(R.id.courseComplete2);

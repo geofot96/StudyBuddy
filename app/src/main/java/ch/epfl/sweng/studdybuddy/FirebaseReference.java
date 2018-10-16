@@ -59,8 +59,9 @@ public class FirebaseReference implements ReferenceWrapper {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 List<T> elements = new ArrayList<>();
-                for(DataSnapshot snap: dataSnapshot.getChildren())
+                for(DataSnapshot snap: dataSnapshot.getChildren()) {
                     elements.add(snap.getValue(type));
+                }
                 callback.accept(elements);
             }
 

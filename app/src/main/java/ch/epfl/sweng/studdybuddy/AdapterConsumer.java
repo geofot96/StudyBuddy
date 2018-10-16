@@ -14,9 +14,11 @@ final public class AdapterConsumer {
         return new Consumer<List<T>>() {
             @Override
             public void accept(List<T> list) {
-                set.removeAll(set);
-                set.addAll(list);
-                adapter.update();
+                if(list != null) { // set == null is a programmer error so we let excpetion be thrown
+                    set.removeAll(set);
+                    set.addAll(list);
+                    adapter.update();
+                }
             }
         };
     }
