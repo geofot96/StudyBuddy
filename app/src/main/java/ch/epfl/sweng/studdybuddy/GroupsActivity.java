@@ -31,6 +31,7 @@ import ch.epfl.sweng.studdybuddy.RecyclerAdapterAdapter;
 
 
 import ch.epfl.sweng.studdybuddy.GroupsRecyclerAdapter;
+import ch.epfl.sweng.studdybuddy.activities.CreateGroupActivity;
 
 public class GroupsActivity extends AppCompatActivity
 {

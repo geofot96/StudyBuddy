@@ -1,6 +1,7 @@
 package ch.epfl.sweng.studdybuddy;
 
 import com.google.android.gms.tasks.Task;
+import ch.epfl.sweng.studdybuddy.activities.*;
 
 public class DummyMainActivity extends MainActivity{
 
