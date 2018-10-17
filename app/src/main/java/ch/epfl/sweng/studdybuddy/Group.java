@@ -1,55 +1,68 @@
 package ch.epfl.sweng.studdybuddy;
 
+import android.support.annotation.NonNull;
+import android.widget.ListView;
+
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 /**
  * class representing a group
  * participantNumber is the current number of participants
- * maxParticipantNumber is the maximum capacity of the group
+ * maxNoUsers is the maximum capacity of the group
  * course is the course for which the group is created
  * participants is the actual group members
  */
-public class Group
+public class Group implements Comparable<Group>
 {
-    private int participantNumber;
-    private int maxParticipantNumber;
+    private int maxNoUsers;
     private Course course;
-    private ArrayList<User> participants;
-    private UUID groupID; //TODO add getters and setters
-    private Date creationDate;
+    private List<User> participants;
+    private ID<Group> groupID; //TODO add getters and setters
     private String language;
+
+    public SerialDate getCreationDate() {
+        return creationDate;
+    }
+
+    public void setCreationDate(SerialDate creationDate) {
+        this.creationDate = creationDate;
+    }
+
+    private SerialDate creationDate;
     //TODO add schedule and Chat
     //private commonSchedule;
     //private groupChat;
 
+    public Group() {}
 
-    public Group(int maxParticipantNumber, Course course, String language, ArrayList<User> participants)
+
+    public Group(int maxNoUsers, Course course, String lang, List<User> participants)
     {
-        this.participantNumber = participants.size();
-        if(maxParticipantNumber <= 0)
+        if(maxNoUsers <= 0)
         {
             throw new IllegalArgumentException("Participants number must be > 0 and maximum number of participants must be positive");
         }
 
 
-        if(participants.size() > maxParticipantNumber)
+        if(participants.size() > maxNoUsers)
         {
             throw new IllegalArgumentException("You can't have more than the maximum number of participants");
         }
 
-        if(maxParticipantNumber < participantNumber)
+        if(maxNoUsers < participants.size())
         {
             throw new IllegalArgumentException("Max number of participants can't be less than actual number of participants");
         }
 
-        this.groupID = UUID.randomUUID();
-        this.creationDate = new Date();
-        this.maxParticipantNumber = maxParticipantNumber;
+        this.groupID = new ID<>(UUID.randomUUID().toString());
+        this.maxNoUsers = maxNoUsers;
         this.course = course;
         this.participants = participants;
-        this.language = language;
+        this.language = lang;
+        this.creationDate = new SerialDate();
     }
 
     public Group(Group sourceGroup)
@@ -57,48 +70,40 @@ public class Group
         //TODO why do we need this constructor and what do we do with the date
         this.course = sourceGroup.getCourse();
         this.participants = new ArrayList<>(sourceGroup.participants);
-        this.participantNumber = sourceGroup.getParticipantNumber();
-        this.maxParticipantNumber = sourceGroup.getMaxParticipantNumber();
-        this.creationDate = sourceGroup.creationDate;
+        this.maxNoUsers = sourceGroup.getMaxNoUsers();
         this.language = sourceGroup.language;
     }
 
-    public UUID getGroupID()
+    public String getGroupID()
     {
-        return groupID;
+        return groupID.getId();
     }
 
-    public void setGroupID(UUID groupID)
+    public void setGroupID(String groupID)
     {
-        this.groupID = groupID;
+        this.groupID = new ID<>(groupID);
     }
 
     public int getParticipantNumber()
     {
-        return participantNumber;
-    }
-
-    public void increaseParticipantNumber()
-    {
-        if(this.participantNumber < maxParticipantNumber)
-            this.participantNumber++;
+        if(participants != null)
+        return participants.size();
         else
-            //TODO handle this case
-            throw new IllegalArgumentException("You can't have more than Max Num participants");
+            return 0;
     }
 
-    public int getMaxParticipantNumber()
+    public int getMaxNoUsers()
     {
-        return maxParticipantNumber;
+        return maxNoUsers;
     }
 
-    public void setMaxParticipantNumber(int maxParticipantNumber)
+    public void setMaxNoUsers(int maxNoUsers)
     {
-        if(maxParticipantNumber <= 0)
+        if(maxNoUsers <= 0)
         {
             throw new IllegalArgumentException("Maximum number of participants must be positive");
         }
-        this.maxParticipantNumber = maxParticipantNumber;
+        this.maxNoUsers = maxNoUsers;
     }
 
     public Course getCourse()
@@ -111,45 +116,34 @@ public class Group
         this.course = new Course(course);
     }
 
-    public ArrayList<User> getParticipants()
+    public List<User> getParticipants()
     {
         return new ArrayList<>(participants); //TODO return a collections.unmodifiableList
     }
 
-    public void setParticipants(ArrayList<User> participants)
+    public void setParticipants(List<User> participants)
     {
         this.participants = new ArrayList<>(participants);
     }
 
-    public Date getCreationDate()
-    {//TODO test for these 4
-        return creationDate;
-    }
-
-    public void setCreationDate(Date creationDate)
-    {
-        this.creationDate = creationDate;
-    }
-
-    public String getLanguage()
+    public String getLang()
     {
         return language;
     }
 
-    public void setLanguage(String language)
+    public void setLang(String language)
     {
         this.language = language;
     }
 
     public void addParticipant(User newParticipant)
     {
-        if(participants.size() < maxParticipantNumber)
+        if(participants.size() < maxNoUsers)
         {
             participants.add(newParticipant);
-            ArrayList<Group> currentGroups = newParticipant.getCurrentGroups();
+            List<Group> currentGroups = newParticipant.getCurrentGroups();
             if(currentGroups != null)
                 currentGroups.add(this);
-            this.participantNumber += 1;
         }
         else
         {
@@ -163,8 +157,24 @@ public class Group
         if(participants.size() >= 2 && participants.contains(leavingParticipant))
         {
             participants.remove(leavingParticipant);
-            participantNumber -= 1;
         }
     }
 
+
+    @Override
+    public int compareTo(Group group)
+    {
+        if(this.getCreationDate().before(group.getCreationDate()))
+        {
+            return 1;
+        }
+        else if(this.getCreationDate().after(group.getCreationDate()))
+        {
+            return -1;
+        }
+        else
+        {
+            return 0;
+        }
+    }
 }

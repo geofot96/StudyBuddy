@@ -10,6 +10,11 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
+
+import ch.epfl.sweng.studdybuddy.CourseAdapter;
+import ch.epfl.sweng.studdybuddy.CourseHolder;
+import ch.epfl.sweng.studdybuddy.R;
 
 public class ProfileTab extends AppCompatActivity {
 
