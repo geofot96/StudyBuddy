@@ -91,19 +91,13 @@ public class CourseSelectActivity extends AppCompatActivity
                     }
                 });
     }
+
+
+
     private void initTextView(AutoCompleteTextView textView, ArrayAdapter<String>  adapter){
         textView.setAdapter(adapter);
         textView.setThreshold(0);
-        textView.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                AutoCompleteTextView textView = (AutoCompleteTextView)
-                        findViewById(R.id.courseComplete);
-                textView.showDropDown();
-            }
-        });
+
         textView.setOnItemClickListener(new AdapterView.OnItemClickListener()
         {
             @Override
@@ -115,6 +109,23 @@ public class CourseSelectActivity extends AppCompatActivity
             }
         });
 
+
+    }
+
+    private void setOnClickListener(AutoCompleteTextView textView){
+        textView.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                AutoCompleteTextView textView = (AutoCompleteTextView)
+                        findViewById(R.id.courseComplete);
+                textView.showDropDown();
+            }
+        });
+    }
+
+    private void setActionListener(AutoCompleteTextView textView){
         textView.setOnEditorActionListener(new TextView.OnEditorActionListener()
         {
             @Override
@@ -137,6 +148,7 @@ public class CourseSelectActivity extends AppCompatActivity
                 return true;
             }
         });
+
     }
     private void buttonListenerIntent(Button button, Intent target){
         button.setOnClickListener(new View.OnClickListener() {
