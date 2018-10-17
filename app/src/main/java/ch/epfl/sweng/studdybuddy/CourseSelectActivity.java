@@ -15,6 +15,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -53,6 +54,44 @@ public class CourseSelectActivity extends AppCompatActivity
         doneButton = findViewById(R.id.doneButton);
         doneButton.setEnabled(false);
         textView = (AutoCompleteTextView) findViewById(R.id.courseComplete);
+        initTextView(textView, adapter);
+        //courseSelection.add("Wine tasting");
+        final RecyclerView recyclerView = (RecyclerView) findViewById(R.id.coursesSet);
+
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        recyclerView.setAdapter(new CourseAdapter(courseSelection));
+        ItemTouchHelper mIth = itemTouchHelper(recyclerView, doneButton);
+        mIth.attachToRecyclerView(recyclerView);
+
+
+        buttonListenerIntent(skipButton, toMain);
+
+        buttonListenerIntent(doneButton, toMain);
+    }
+    private ItemTouchHelper itemTouchHelper(RecyclerView recyclerView, Button button){
+        return new ItemTouchHelper(
+                new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP | ItemTouchHelper.DOWN,
+                        ItemTouchHelper.RIGHT)
+                {
+                    @Override
+                    public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder viewHolder1)
+                    {
+                        return false;
+                    }
+
+                    @Override
+                    public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int i)
+                    {
+                        CourseHolder cc = (CourseHolder) viewHolder;
+                        courseSelection.remove(courseSelection.indexOf(cc.get()));
+                        recyclerView.getAdapter().notifyDataSetChanged();
+                        if(courseSelection.size() == 0)
+                            button.setEnabled(false);
+                    }
+                });
+    }
+    private void initTextView(AutoCompleteTextView textView, ArrayAdapter<String>  adapter){
         textView.setAdapter(adapter);
         textView.setThreshold(0);
         textView.setOnClickListener(new View.OnClickListener()
@@ -75,33 +114,7 @@ public class CourseSelectActivity extends AppCompatActivity
                     addCourse(textInput);
             }
         });
-        //courseSelection.add("Wine tasting");
-        final RecyclerView recyclerView = (RecyclerView) findViewById(R.id.coursesSet);
 
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-        recyclerView.setAdapter(new CourseAdapter(courseSelection));
-        ItemTouchHelper mIth = new ItemTouchHelper(
-                new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP | ItemTouchHelper.DOWN,
-                        ItemTouchHelper.RIGHT)
-                {
-                    @Override
-                    public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder viewHolder1)
-                    {
-                        return false;
-                    }
-
-                    @Override
-                    public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int i)
-                    {
-                        CourseHolder cc = (CourseHolder) viewHolder;
-                        courseSelection.remove(courseSelection.indexOf(cc.get()));
-                        recyclerView.getAdapter().notifyDataSetChanged();
-                        if(courseSelection.size() == 0)
-                            doneButton.setEnabled(false);
-                    }
-                });
-        mIth.attachToRecyclerView(recyclerView);
         textView.setOnEditorActionListener(new TextView.OnEditorActionListener()
         {
             @Override
@@ -124,29 +137,15 @@ public class CourseSelectActivity extends AppCompatActivity
                 return true;
             }
         });
-
-        skipButton.setOnClickListener(new View.OnClickListener()
-        {
+    }
+    private void buttonListenerIntent(Button button, Intent target){
+        button.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
-                //
-                //intent to main
-                startActivity(toMain);
-            }
-        });
-        doneButton.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                //tie courses to account
-                //intent to main
-                startActivity(toMain);
+            public void onClick(View v) {
+                startActivity(target);
             }
         });
     }
-
     private void addCourse(String course)
     {
         courseSelection.add(course);
