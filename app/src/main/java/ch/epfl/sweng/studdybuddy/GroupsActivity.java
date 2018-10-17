@@ -1,4 +1,4 @@
-package ch.epfl.sweng.studdybuddy.activities;
+package ch.epfl.sweng.studdybuddy;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -31,6 +31,7 @@ import ch.epfl.sweng.studdybuddy.RecyclerAdapterAdapter;
 
 
 import ch.epfl.sweng.studdybuddy.GroupsRecyclerAdapter;
+import ch.epfl.sweng.studdybuddy.activities.CreateGroupActivity;
 
 public class GroupsActivity extends AppCompatActivity
 {

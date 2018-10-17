@@ -9,15 +9,18 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activities.MainActivity">
+
+        <activity android:name=".GoogleSignInActivity">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
-            android:name=".activities.GroupsActivity"
+            android:name=".GroupsActivity"
             android:parentActivityName=".activities.MainActivity">
 
             <!-- The meta-data tag is required if you support API level 15 and lower -->
@@ -27,19 +30,22 @@
         </activity>
         <activity
             android:name=".activities.CreateGroupActivity"
-            android:parentActivityName=".activities.GroupsActivity">
+            android:parentActivityName=".GroupsActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activities.GroupsActivity" />
+                android:value=".GroupsActivity" />
         </activity>
         <activity
-            android:name=".activities.CourseSelectActivity"
+            android:name=".CourseSelectActivity"
             android:parentActivityName=".activities.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activities.CourseSelectActivity" />
+                android:value=".CourseSelectActivity" />
         </activity>
-        <activity android:name=".activities.ProfileTab" />
+        <activity android:name=".ProfileTab" />
+        <activity android:name=".DummyGoogleSignInActivity" />
+        <activity android:name=".DummyMainActivity" />
+        <activity android:name=".activities.MainActivity"></activity>
     </application>
 
 </manifest>

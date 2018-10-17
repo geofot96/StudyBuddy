@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">StuddyBuddy</string>
+    <string name="sign_out">Sign Out</string>
     <string name="title_activity_groups">GroupsActivity</string>
 </resources>
