@@ -104,5 +104,4 @@ public class FirebaseReference implements ReferenceWrapper {
         return res;
     }
 
-
 }
