@@ -4,37 +4,37 @@ import java.util.UUID;
 
 public class UserGroupJoin {
     private ID<UserGroupJoin> id;
-    private String groupID;
-    private String userID;
+    private ID<Group> groupID;
+    private ID<User> userID;
 
 
     public UserGroupJoin(){}
 
     public UserGroupJoin(ID<UserGroupJoin> id, String groupID, String userID) {
         this.id = id;
-        this.groupID = groupID;
-        this.userID = userID;
+        this.groupID = new ID<Group>(groupID);
+        this.userID = new ID<User>(userID);
     }
 
     public UserGroupJoin(String groupID, String userID) {
         this.id = new ID<UserGroupJoin>(UUID.randomUUID().toString());
-        this.groupID = groupID;
-        this.userID = userID;
+        setGroupID(groupID);
+        setUserID(serID);
     }
-    public String getGroupID() {
+    public ID<Group> getGroupID() {
         return groupID;
     }
 
     public void setGroupID(String groupID) {
-        this.groupID = groupID;
+        this.groupID = new ID<Group>(groupID);
     }
 
-    public String getUserID() {
+    public ID<User> getUserID() {
         return userID;
     }
 
     public void setUserID(String userID) {
-        this.userID = userID;
+        this.userID = new ID<User>(userID);
     }
 
 

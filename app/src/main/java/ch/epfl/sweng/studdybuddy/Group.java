@@ -19,7 +19,7 @@ public class Group implements Comparable<Group>
 {
     private int maxNoUsers;
     private Course course;
-    private List<User> participants;
+
     private ID<Group> groupID; //TODO add getters and setters
     private String language;
 
@@ -118,7 +118,32 @@ public class Group implements Comparable<Group>
 
     public List<User> getParticipants()
     {
-        return new ArrayList<>(participants); //TODO return a collections.unmodifiableList
+        List<User> participants=  new ArrayList<>();
+        List<ID<User>> userIds = new ArrayList<>();
+        //TODO return a collections.unmodifiableList
+
+        FirebaseReference ref = new FirebaseReference();
+        ref.select("groupsTable").getAll(UserGroupJoin.class, new Consumer<List<UserGroupJoin>>() {
+            @Override
+            public void accept(List<UserGroupJoin> join) {
+                for(UserGroupJoin j: join){
+                    if(j.getGroupID().equals(groupID)){
+                        userIds.add(j.getUserID());
+                    }
+                }
+
+                FirebaseReference parent = ref.getParent();
+                for(ID<User> id: userIds){
+                    parent.select("users").select(id.toString()).get(User.class, new Consumer<User>() {
+                        @Override
+                        public void accept(User user) {
+                            participants.add(user);
+                        }
+                    });
+                }
+            }
+        });
+        return participants;
     }
 
     public void setParticipants(List<User> participants)

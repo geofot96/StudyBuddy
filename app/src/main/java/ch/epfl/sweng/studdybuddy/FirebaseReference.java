@@ -1,5 +1,6 @@
 package ch.epfl.sweng.studdybuddy;
 
+import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresPermission;
 import android.support.v7.widget.RecyclerView;
@@ -28,11 +29,14 @@ public class FirebaseReference implements ReferenceWrapper {
         ref = FirebaseDatabase.getInstance().getReference();
     }
 
+
     public FirebaseReference(DatabaseReference firebaseRef) {
         this.ref = firebaseRef;
     }
 
     public DatabaseReference getRef() { return ref; }
+
+    public FirebaseReference getParent() { return new FirebaseReference(ref.getParent());}
 
     @Override
     public ReferenceWrapper select(String key) {
