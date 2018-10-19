@@ -73,25 +73,18 @@ public class CourseSelectActivity extends AppCompatActivity
     private void setUpButtons() {
         final Intent toMain = new Intent(this, GroupsActivity.class);
         Button skipButton = findViewById(R.id.skipButton);
-        skipButton.setOnClickListener(new View.OnClickListener()
-        {
+        skipButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
-                //
-                //intent to main
+            public void onClick(View v)  {
                 startActivity(toMain);
             }
         });
         doneButton = findViewById(R.id.doneButton);
         doneButton.setEnabled(false);
-        doneButton.setOnClickListener(new View.OnClickListener()
-        {
+        doneButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
-                //tie courses to account
-                //intent to main
+            public void onClick(View v) {
+                ((StudyBuddy) CourseSelectActivity.this.getApplication()).getAuthendifiedUser().setCoursesPreset(courseSelection);
                 startActivity(toMain);
             }
         });
@@ -101,18 +94,15 @@ public class CourseSelectActivity extends AppCompatActivity
         adapter = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, coursesDB);
         autocomplete = (AutoCompleteTextView) findViewById(R.id.courseComplete);
         autocomplete.setAdapter(adapter);
-        autocomplete.setOnClickListener(new View.OnClickListener()
-        {
+        autocomplete.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 AutoCompleteTextView textView = (AutoCompleteTextView)
                         findViewById(R.id.courseComplete);
                 textView.showDropDown();
             }
         });
-        autocomplete.setOnItemClickListener(new AdapterView.OnItemClickListener()
-        {
+        autocomplete.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String textInput = parent.getAdapter().getItem(position).toString();
