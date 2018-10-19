@@ -29,6 +29,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
@@ -92,6 +93,12 @@ public class CourseSelectActivity extends AppCompatActivity
             {
                 //tie courses to account
                 //intent to main
+                AuthManager mAuth = new FirebaseAuthManager(CourseSelectActivity.this, getString(R.string.default_web_client_id));
+
+                for(String course : courseSelection){
+                    UserGroupJoin join = new UserGroupJoin(course, mAuth.getCurrentUser().getId() );
+                    firebase.select("groupTable").select(join.getGroupID()).setVal(join);
+                }
                 startActivity(toMain);
             }
         });
