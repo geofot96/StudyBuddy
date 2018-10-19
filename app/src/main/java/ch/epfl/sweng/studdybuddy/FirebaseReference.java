@@ -95,6 +95,11 @@ public class FirebaseReference implements ReferenceWrapper {
         ref.addValueEventListener(getAllValueEventListener(type, callback));
     }
 
+    @Override
+    public ReferenceWrapper parent() {
+        return new FirebaseReference(ref.getParent());
+    }
+
 
     public <T> ValueEventListener getAllMock(Class<T> type, Consumer<List<T>> callback) {
         ValueEventListener res = getAllValueEventListener(type, callback);
@@ -107,6 +112,5 @@ public class FirebaseReference implements ReferenceWrapper {
         ref.addValueEventListener(res);
         return res;
     }
-
 
 }

@@ -19,7 +19,7 @@ public class UserGroupJoin {
     public UserGroupJoin(String groupID, String userID) {
         this.id = new ID<UserGroupJoin>(UUID.randomUUID().toString());
         setGroupID(groupID);
-        setUserID(serID);
+        setUserID(userID);
     }
     public ID<Group> getGroupID() {
         return groupID;

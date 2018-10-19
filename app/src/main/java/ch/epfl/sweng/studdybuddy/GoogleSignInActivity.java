@@ -11,6 +11,9 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
+
+import java.util.ArrayList;
+
 import ch.epfl.sweng.studdybuddy.activities.*;
 
 public class GoogleSignInActivity extends AppCompatActivity {
@@ -71,7 +74,7 @@ public class GoogleSignInActivity extends AppCompatActivity {
                     @Override
                     public void then(Account acct) {
                         if (acct != null) {
-                            startActivity(new Intent(GoogleSignInActivity.this, MainActivity.class));
+                            fetchUserAndStart(acct);
                         }
                     }
                 }, TAG);
@@ -80,6 +83,25 @@ public class GoogleSignInActivity extends AppCompatActivity {
                 Log.w(TAG, "Google sign in failed", e);
             }
         }
+    }
+
+    void fetchUserAndStart(Account acct) {
+        FirebaseReference fb = new FirebaseReference();
+        fb.select("users").get(User.class, new Consumer<User>() {
+            @Override
+            public void accept(User user) {
+                StudyBuddy app = ((StudyBuddy) GoogleSignInActivity.this.getApplication());
+                if(user == null) { //create a new user and put in db
+                    ID<User> userID = new ID<>(acct.getId());
+                    app.setAuthendifiedUser(new User(acct.getDisplayName(), userID, new ArrayList<>()));
+                    fb.select("users").select(userID.getId()).setVal(app.getAuthendifiedUser());
+                }
+                else {
+                    app.setAuthendifiedUser(user);
+                }
+                startActivity(new Intent(GoogleSignInActivity.this, CourseSelectActivity.class));
+            }
+        });
     }
 
 

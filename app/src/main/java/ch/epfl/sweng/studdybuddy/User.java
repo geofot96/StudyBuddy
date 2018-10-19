@@ -4,15 +4,20 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class User
+final public class User
 {
-    private String email;
     private String name;
-    private String Section;
-    //private Schedule schedule;
-    private List<Group> currentGroups;
-    private List<User> friendList;
     private ID<User> userID;
+
+    public List<String> getCoursesPreset() {
+        return coursesPreset;
+    }
+
+    public void setCoursesPreset(List<String> coursesPreset) {
+        this.coursesPreset = coursesPreset;
+    }
+
+    private List<String> coursesPreset;
 
     public ID<User> getUserID()
     {
@@ -24,29 +29,15 @@ public class User
         this.userID = userID;
     }
 
-    public User(String email, String name, String section, List<Group> currentGroups, List<User> friendList)
+    public User(String name, ID<User> userId, List<String> coursesPreset)
     {
-        this.email = email;
         this.name = name;
-        this.Section = section;
-        this.currentGroups = new ArrayList<>(currentGroups);
-        this.friendList = new ArrayList<>(friendList);
-        this.userID = new ID<>(UUID.randomUUID().toString());
-
+        this.userID = userId;
+        this.coursesPreset = coursesPreset;
     }
 
     public User() {}
 
-
-    public String getEmail()
-    {//TODO TEST
-        return email;
-    }
-
-    public void setEmail(String email)
-    {
-        this.email = email;
-    }
 
     public String getName()
     {
@@ -58,45 +49,4 @@ public class User
         this.name = name;
     }
 
-    public String getSection()
-    {
-        return Section;
-    }
-
-    public void setSection(String section)
-    {
-        Section = section;
-    }
-
-    public List<Group> getCurrentGroups()
-    {
-        if(currentGroups != null)
-        {
-            return new ArrayList<>(currentGroups);
-        }
-        else
-        {
-            return null;
-        }
-    }
-
-    public List<User> getFriendList()
-    {
-        return friendList;
-    }
-
-    public void setFriendList(List<User> friendList)
-    {
-        if(friendList != null)
-        {
-            this.friendList = new ArrayList<>(friendList);
-        }
-
-    }
-
-    //TODO why do we want this method?? Maybe have an add to group method or something like that?
-    public void setCurrentGroups(List<Group> currentGroups)
-    {
-        this.currentGroups = currentGroups;
-    }
 }

@@ -22,7 +22,7 @@ public class Group implements Comparable<Group>
 
     private ID<Group> groupID; //TODO add getters and setters
     private String language;
-
+    private List<User> participants;
     public SerialDate getCreationDate() {
         return creationDate;
     }
@@ -166,9 +166,6 @@ public class Group implements Comparable<Group>
         if(participants.size() < maxNoUsers)
         {
             participants.add(newParticipant);
-            List<Group> currentGroups = newParticipant.getCurrentGroups();
-            if(currentGroups != null)
-                currentGroups.add(this);
         }
         else
         {

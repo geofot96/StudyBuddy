@@ -74,31 +74,29 @@ public class CourseSelectActivity extends AppCompatActivity
     private void setUpButtons() {
         final Intent toMain = new Intent(this, GroupsActivity.class);
         Button skipButton = findViewById(R.id.skipButton);
-        skipButton.setOnClickListener(new View.OnClickListener()
-        {
+        skipButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
-                //
-                //intent to main
+            public void onClick(View v)  {
                 startActivity(toMain);
             }
         });
         doneButton = findViewById(R.id.doneButton);
         doneButton.setEnabled(false);
-        doneButton.setOnClickListener(new View.OnClickListener()
-        {
+        doneButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v)
             {
                 //tie courses to account
                 //intent to main
-                AuthManager mAuth = new FirebaseAuthManager(CourseSelectActivity.this, getString(R.string.default_web_client_id));
+                User currentUser = ((StudyBuddy) CourseSelectActivity.this.getApplication()).getAuthendifiedUser();
+                AuthManager auth = new FirebaseAuthManager(CourseSelectActivity.this, getString(R.string.default_web_client_id));
 
                 for(String course : courseSelection){
-                    UserGroupJoin join = new UserGroupJoin(course, mAuth.getCurrentUser().getId() );
-                    firebase.select("groupTable").select(join.getGroupID()).setVal(join);
+                    UserCourseJoin join = new UserCourseJoin(course,auth.getCurrentUser().getId().toString());
+                    firebase.select("userCourse").select(join.getId().getId().toString()).setVal(join);
                 }
+                //Launches null pointer exception because the user is not fully initialized
+                //currentUser.setCoursesPreset(courseSelection);
                 startActivity(toMain);
             }
         });
@@ -108,18 +106,15 @@ public class CourseSelectActivity extends AppCompatActivity
         adapter = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, coursesDB);
         autocomplete = (AutoCompleteTextView) findViewById(R.id.courseComplete);
         autocomplete.setAdapter(adapter);
-        autocomplete.setOnClickListener(new View.OnClickListener()
-        {
+        autocomplete.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 AutoCompleteTextView textView = (AutoCompleteTextView)
                         findViewById(R.id.courseComplete);
                 textView.showDropDown();
             }
         });
-        autocomplete.setOnItemClickListener(new AdapterView.OnItemClickListener()
-        {
+        autocomplete.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String textInput = parent.getAdapter().getItem(position).toString();

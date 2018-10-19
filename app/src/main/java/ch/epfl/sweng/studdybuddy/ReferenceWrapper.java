@@ -35,4 +35,6 @@ public interface ReferenceWrapper {
      * @return an iterator
      */
      <T> void getAll(Class<T> type, Consumer<List<T>> callback);
+
+     ReferenceWrapper parent();
 }

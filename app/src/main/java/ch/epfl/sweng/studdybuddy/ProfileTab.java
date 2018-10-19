@@ -18,8 +18,8 @@ import ch.epfl.sweng.studdybuddy.R;
 
 public class ProfileTab extends AppCompatActivity {
 
-    private static final List<String> usersCourses = new ArrayList<>();
-    private static final List<String> usersGroups = Arrays.asList("Linear Algebra", "Algorithms");
+    private final List<String> usersCourses = ((StudyBuddy) this.getApplication()).getAuthendifiedUser().getCoursesPreset();
+    private final List<String> usersGroups = Arrays.asList("Linear Algebra", "Algorithms");
 
 
     @Override
