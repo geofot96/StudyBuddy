@@ -141,9 +141,6 @@ public class Group implements Comparable<Group>
         if(participants.size() < maxNoUsers)
         {
             participants.add(newParticipant);
-            List<Group> currentGroups = newParticipant.getCurrentGroups();
-            if(currentGroups != null)
-                currentGroups.add(this);
         }
         else
         {
