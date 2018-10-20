@@ -98,6 +98,13 @@ public class GroupsUnitTests
     public void compareToWorks()
     {
         Group g1 = new Group(5, new Course("test course"), "en", new ArrayList<>());
+        try
+        {
+            TimeUnit.SECONDS.sleep(1);
+        } catch(InterruptedException e)
+        {
+
+        }
         Group g2 = new Group(5, new Course("test course 2"), "en", new ArrayList<>());
         assertEquals(1, g1.compareTo(g2));
         assertEquals(-1, g2.compareTo(g1));
@@ -108,6 +115,13 @@ public class GroupsUnitTests
     public void setCreationDateWorks()
     {
         Group g1 = new Group(5, new Course("test course"), "en", new ArrayList<>());
+        try
+        {
+            TimeUnit.SECONDS.sleep(1);
+        } catch(InterruptedException e)
+        {
+
+        }
         Group g2 = new Group(5, new Course("test course 2"), "en", new ArrayList<>());
         assertEquals(1, g1.compareTo(g2));
         try
