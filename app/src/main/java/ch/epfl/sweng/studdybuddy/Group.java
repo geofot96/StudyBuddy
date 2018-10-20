@@ -3,6 +3,8 @@ package ch.epfl.sweng.studdybuddy;
 import android.support.annotation.NonNull;
 import android.widget.ListView;
 
+import com.google.firebase.database.DatabaseReference;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -39,7 +41,7 @@ public class Group implements Comparable<Group>
     public Group() {}
 
 
-    public Group(int maxNoUsers, Course course, String lang, List<User> participants)
+    public Group(int maxNoUsers, Course course, String lang, ArrayList<User> participants)
     {
         if(maxNoUsers <= 0)
         {
@@ -60,7 +62,7 @@ public class Group implements Comparable<Group>
         this.groupID = new ID<>(UUID.randomUUID().toString());
         this.maxNoUsers = maxNoUsers;
         this.course = course;
-        this.participants = participants;
+        this.participants = new ArrayList<User>(participants);
         this.language = lang;
         this.creationDate = new SerialDate();
     }
@@ -118,7 +120,8 @@ public class Group implements Comparable<Group>
 
     public List<User> getParticipants()
     {
-        List<User> participants=  new ArrayList<>();
+
+        List<User> paric=  new ArrayList<>();
         List<ID<User>> userIds = new ArrayList<>();
         //TODO return a collections.unmodifiableList
 
@@ -137,18 +140,19 @@ public class Group implements Comparable<Group>
                     parent.select("users").select(id.toString()).get(User.class, new Consumer<User>() {
                         @Override
                         public void accept(User user) {
-                            participants.add(user);
+                            paric.add(user);
                         }
                     });
                 }
             }
         });
-        return participants;
+        return paric;
     }
 
     public void setParticipants(List<User> participants)
     {
         this.participants = new ArrayList<>(participants);
+
     }
 
     public String getLang()
@@ -166,6 +170,11 @@ public class Group implements Comparable<Group>
         if(participants.size() < maxNoUsers)
         {
             participants.add(newParticipant);
+            FirebaseReference ref = new FirebaseReference();
+
+            UserGroupJoin pairUG=new UserGroupJoin(this.groupID.toString(),newParticipant.getUserID().toString());
+            ref.select("userGroup").select(pairUG.getId().toString()).setVal(pairUG);
+
         }
         else
         {

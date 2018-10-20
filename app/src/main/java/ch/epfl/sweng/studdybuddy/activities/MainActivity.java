@@ -39,13 +39,12 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onStart(){
         super.onStart();
-        Account currentUser = getAuthManager().getCurrentUser();
-        if(currentUser == null){
-            signOut();
-        }
+//        Account currentUser = getAuthManager().getCurrentUser();
+//        if(currentUser == null){
+//            signOut();
+//        }
 
     }
-
 
     private void signOut(){
         getAuthManager().logout().addOnCompleteListener(this,

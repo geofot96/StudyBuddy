@@ -88,7 +88,7 @@ public class CourseSelectActivity extends AppCompatActivity
                 AuthManager auth = new FirebaseAuthManager(CourseSelectActivity.this, getString(R.string.default_web_client_id));
 
                 for(String course : courseSelection){
-                    UserCourseJoin join = new UserCourseJoin(course,auth.getCurrentUser().getId().toString());
+                    UserCourseJoin join = new UserCourseJoin(course,auth.getCurrentUser().getId().toString());//TODO course id, right?
                     firebase.select("userCourse").select(join.getId().getId().toString()).setVal(join);
 
                 }

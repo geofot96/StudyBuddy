@@ -21,7 +21,7 @@ public class GroupsRecyclerAdapter extends RecyclerView.Adapter<GroupsRecyclerAd
 
     public static class MyViewHolder extends RecyclerView.ViewHolder
     {
-
+        public ID<Group> groupID;
         public TextView groupCourseTextView;
         public TextView groupParticipantInfoTextView;
         public TextView groupLanguageTextView;
@@ -66,6 +66,7 @@ public class GroupsRecyclerAdapter extends RecyclerView.Adapter<GroupsRecyclerAd
     public void onBindViewHolder(MyViewHolder holder, int position)
     {
         Group group = groupList.get(position);
+
         TextView newGroupCourseTextView = holder.groupCourseTextView;
         newGroupCourseTextView.setText(group.getCourse().getCourseName());
         TextView newGroupLanguageTextView = holder.groupLanguageTextView;
@@ -75,7 +76,18 @@ public class GroupsRecyclerAdapter extends RecyclerView.Adapter<GroupsRecyclerAd
 
 
         Button button = holder.messageButton;
-        button.setText("More info");
+        button.setText("Join");
+        //TODO replace with current user
+        User test=new User("xx",new ID("MLHENpkefnewBDFHQNy58plb8VE3"),new ArrayList<>());//TODO use actual current user
+
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                System.out.println(group.getParticipants());
+                group.addParticipant(test);
+
+            }
+        });
     }
 
     @Override
@@ -92,4 +104,5 @@ public class GroupsRecyclerAdapter extends RecyclerView.Adapter<GroupsRecyclerAd
 
         return filter;
     }
+
 }

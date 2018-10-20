@@ -22,10 +22,10 @@ public class FeedFilter extends Filter {
             results.values=filterList;
             return results;
         }
-        constraint=constraint.toString().toUpperCase(); //CHANGE TO UPPER
-        ArrayList<Group> filteredGroup=new ArrayList<>();//STORE OUR FILTERED PLAYERS
-        for (int i=0;i<filterList.size();i++) { //CHECK
-            if(filterList.get(i).getCourse().getCourseName().toUpperCase().contains(constraint)) { //ADD PLAYER TO FILTERED PLAYERS
+        constraint=constraint.toString().toUpperCase();
+        ArrayList<Group> filteredGroup=new ArrayList<>();
+        for (int i=0;i<filterList.size();i++) {
+            if(filterList.get(i).getCourse().getCourseName().toUpperCase().contains(constraint)) {
                 filteredGroup.add(filterList.get(i));
             }
         }
