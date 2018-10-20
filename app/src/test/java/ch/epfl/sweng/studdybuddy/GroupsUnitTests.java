@@ -134,4 +134,53 @@ public class GroupsUnitTests
         g1.setCreationDate(new SerialDate());
         assertEquals(1, g2.compareTo(g1));
     }
+
+    @Test
+    public void testEmptyConstructor()
+    {
+        Group group = new Group();
+    }
+
+    @Test
+    public void testSetGroupID()
+    {
+        Group group = new Group();
+        ID<Group> tempID = new ID<>();
+        group.setGroupID(tempID.getId());
+        assertEquals(tempID.getId(), group.getGroupID());
+    }
+
+    /*@Test
+    public void testGetParticipants()
+    {
+        ArrayList<User> list = new ArrayList<>();
+        User user1 = new User("1", new ID<>(), null);
+        User user2 = new User("2", new ID<>(), null);
+        User user3 = new User("3", new ID<>(), null);
+        list.add(user1);
+        list.add(user2);
+        list.add(user3);
+        Group group = new Group(5, new Course("test"), "en", list);
+
+        ArrayList<User> result = new ArrayList<>(group.getParticipants());
+        assertEquals(result.size(), list.size());
+        assertEquals(result.get(0).getUserID(), list.get(0).getUserID());
+        assertEquals(result.get(1).getUserID(), list.get(0).getUserID());
+        assertEquals(result.get(2).getUserID(), list.get(0).getUserID());
+    }*/
+
+    @Test
+    public void testGetLang()
+    {
+        Group group = new Group(5, new Course("test"), "gr", new ArrayList<>());
+        assertEquals("gr", group.getLang());
+    }
+
+    @Test
+    public void testSetLang()
+    {
+        Group group = new Group(5, new Course("test"), "gr", new ArrayList<>());
+        group.setLang("ch");
+        assertEquals("ch", group.getLang());
+    }
 }

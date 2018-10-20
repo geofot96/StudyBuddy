@@ -13,6 +13,7 @@ import ch.epfl.sweng.studdybuddy.activities.CreateGroupActivity;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
+import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.intent.Intents.intended;
 import static android.support.test.espresso.intent.matcher.IntentMatchers.hasComponent;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
@@ -41,4 +42,12 @@ public class GroupsActivityTest
         onView(withId(R.id.createGroup)).perform(click());
         intended(hasComponent(CreateGroupActivity.class.getName()));
     }
+
+    /*@Test
+    public void searchBarWorks()
+    {
+        onView(withId(R.id.feed_search)).perform(click());
+        onView(withId(R.id.feed_search)).perform(typeText("Topologie"));
+        //onView(withId(R.id.feedRecycleViewer)).
+    }*/
 }
