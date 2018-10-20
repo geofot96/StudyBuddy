@@ -1,4 +1,4 @@
-package ch.epfl.sweng.studdybuddy;
+package ch.epfl.sweng.studdybuddy.activities;
 
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -15,6 +15,7 @@ import java.util.Objects;
 import ch.epfl.sweng.studdybuddy.CourseAdapter;
 import ch.epfl.sweng.studdybuddy.CourseHolder;
 import ch.epfl.sweng.studdybuddy.R;
+import ch.epfl.sweng.studdybuddy.StudyBuddy;
 
 public class ProfileTab extends AppCompatActivity {
 

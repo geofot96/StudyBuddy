@@ -1,4 +1,4 @@
-package ch.epfl.sweng.studdybuddy;
+package ch.epfl.sweng.studdybuddy.activities;
 
 import android.content.Context;
 
@@ -11,35 +11,31 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
-import android.util.Log;
-import android.view.KeyEvent;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.TextView;
 
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.UUID;
-import java.util.function.Consumer;
-import java.util.function.Predicate;
 
 import ch.epfl.sweng.studdybuddy.AdapterConsumer;
 import ch.epfl.sweng.studdybuddy.ArrayAdapterAdapter;
+import ch.epfl.sweng.studdybuddy.AuthManager;
 import ch.epfl.sweng.studdybuddy.CourseAdapter;
 import ch.epfl.sweng.studdybuddy.CourseHolder;
+import ch.epfl.sweng.studdybuddy.FirebaseAuthManager;
 import ch.epfl.sweng.studdybuddy.FirebaseReference;
+import ch.epfl.sweng.studdybuddy.GroupsActivity;
 import ch.epfl.sweng.studdybuddy.R;
 import ch.epfl.sweng.studdybuddy.ReferenceWrapper;
+import ch.epfl.sweng.studdybuddy.StudyBuddy;
+import ch.epfl.sweng.studdybuddy.User;
+import ch.epfl.sweng.studdybuddy.UserCourseJoin;
 
 
 public class CourseSelectActivity extends AppCompatActivity
@@ -155,7 +151,6 @@ public class CourseSelectActivity extends AppCompatActivity
 
    private void setUpDb(ArrayAdapter<String> adapter) {
        firebase = new FirebaseReference(FirebaseDatabase.getInstance().getReference());
-       firebase.select("test").setVal("connexion test");
        firebase.select("courses").getAll(String.class, AdapterConsumer.adapterConsumer(String.class, coursesDB, new ArrayAdapterAdapter(adapter)));
    }
 
