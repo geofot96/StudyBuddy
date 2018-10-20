@@ -23,31 +23,31 @@
         android:id="@+id/feedRecycleViewer"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="22dp"
+        android:layout_marginBottom="312dp"
+        app:layout_constraintBottom_toTopOf="@id/sortButton"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/feed_search" />
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <android.support.v7.widget.SearchView
         android:id="@+id/feed_search"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="2dp"
+        android:layout_marginBottom="22dp"
         app:defaultQueryHint="Search..."
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"></android.support.v7.widget.SearchView>
+        app:layout_constraintBottom_toTopOf="@+id/feedRecycleViewer"
+        app:layout_constraintStart_toStartOf="parent"></android.support.v7.widget.SearchView>
 
     <Button
         android:id="@+id/sortButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="104dp"
-        android:layout_marginTop="158dp"
+        android:layout_marginTop="36dp"
         android:onClick="sortGroupCards"
         android:text="Sort"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/feedRecycleViewer" />
+        app:layout_constraintStart_toEndOf="@id/feed_search"
+        app:layout_constraintTop_toBottomOf="@+id/feedRecycleViewer"
+        app:layout_constraintVertical_bias="1.0" />
 </android.support.constraint.ConstraintLayout>

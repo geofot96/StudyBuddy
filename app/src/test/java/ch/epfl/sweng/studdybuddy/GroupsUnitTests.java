@@ -4,6 +4,7 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import static org.junit.Assert.*;
 
@@ -93,4 +94,30 @@ public class GroupsUnitTests
         //TODO check for the uid
     }
 
+    @Test
+    public void compareToWorks()
+    {
+        Group g1 = new Group(5, new Course("test course"), "en", new ArrayList<>());
+        Group g2 = new Group(5, new Course("test course 2"), "en", new ArrayList<>());
+        assertEquals(1, g1.compareTo(g2));
+        assertEquals(-1, g2.compareTo(g1));
+        assertEquals(0, g1.compareTo(g1));
+    }
+
+    @Test
+    public void setCreationDateWorks()
+    {
+        Group g1 = new Group(5, new Course("test course"), "en", new ArrayList<>());
+        Group g2 = new Group(5, new Course("test course 2"), "en", new ArrayList<>());
+        assertEquals(1, g1.compareTo(g2));
+        try
+        {
+            TimeUnit.SECONDS.sleep(1);
+        } catch(InterruptedException e)
+        {
+
+        }
+        g1.setCreationDate(new SerialDate());
+        assertEquals(1, g2.compareTo(g1));
+    }
 }
