@@ -46,7 +46,7 @@ public class UserCourseJoin {
 
     @Override
     public int hashCode(){
-        return courseID.hashCode() + userID.hashCode();
+        return (courseID.toString() + userID.toString()).hashCode();
     }
 
 

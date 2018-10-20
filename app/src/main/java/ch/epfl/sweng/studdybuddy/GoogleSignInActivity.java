@@ -52,6 +52,7 @@ public class GoogleSignInActivity extends AppCompatActivity {
             String personName = acct.getDisplayName();
             //appears only when the user is connected
             Toast.makeText(this, "Welcome " + personName, Toast.LENGTH_SHORT).show();
+            fetchUserAndStart(acct);
             startActivity(new Intent(GoogleSignInActivity.this, MainActivity.class));
         } else {
             //appears only when the user isn't connected to the app
@@ -87,12 +88,12 @@ public class GoogleSignInActivity extends AppCompatActivity {
 
     void fetchUserAndStart(Account acct) {
         FirebaseReference fb = new FirebaseReference();
-        fb.select("users").get(User.class, new Consumer<User>() {
+        final ID<User> userID = new ID<>(acct.getId());
+        fb.select("users").select(userID.getId()).get(User.class, new Consumer<User>() {
             @Override
             public void accept(User user) {
                 StudyBuddy app = ((StudyBuddy) GoogleSignInActivity.this.getApplication());
                 if(user == null) { //create a new user and put in db
-                    ID<User> userID = new ID<>(acct.getId());
                     app.setAuthendifiedUser(new User(acct.getDisplayName(), userID, new ArrayList<>()));
                     fb.select("users").select(userID.getId()).setVal(app.getAuthendifiedUser());
                 }

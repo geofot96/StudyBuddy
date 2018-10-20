@@ -90,7 +90,9 @@ public class CourseSelectActivity extends AppCompatActivity
                 for(String course : courseSelection){
                     UserCourseJoin join = new UserCourseJoin(course,auth.getCurrentUser().getId().toString());
                     firebase.select("userCourse").select(join.getId().getId().toString()).setVal(join);
+
                 }
+                currentUser.setCoursesPreset(courseSelection);
                 //Launches null pointer exception because the user is not fully initialized
                 //currentUser.setCoursesPreset(courseSelection);
                 startActivity(toMain);

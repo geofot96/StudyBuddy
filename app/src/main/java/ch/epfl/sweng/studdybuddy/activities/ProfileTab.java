@@ -19,7 +19,7 @@ import ch.epfl.sweng.studdybuddy.StudyBuddy;
 
 public class ProfileTab extends AppCompatActivity {
 
-    private final List<String> usersCourses = ((StudyBuddy) this.getApplication()).getAuthendifiedUser().getCoursesPreset();
+    private List<String> usersCourses;
     private final List<String> usersGroups = Arrays.asList("Linear Algebra", "Algorithms");
 
 
@@ -27,8 +27,9 @@ public class ProfileTab extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile_tab);
-        usersCourses.add("Linear Algebra");
-        usersCourses.add("Algorithms");
+        usersCourses = new ArrayList<>();
+        usersCourses.add("$no course");
+        usersCourses.addAll(((StudyBuddy) this.getApplication()).getAuthendifiedUser().getCoursesPreset());
 
         final RecyclerView recyclerView_courses = (RecyclerView) findViewById(R.id.courses_list);
         recyclerView_courses.setLayoutManager(new LinearLayoutManager(this));
