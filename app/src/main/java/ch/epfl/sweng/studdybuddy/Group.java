@@ -3,6 +3,7 @@ package ch.epfl.sweng.studdybuddy;
 import android.support.annotation.NonNull;
 import android.widget.ListView;
 
+import java.lang.ref.Reference;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -122,8 +123,9 @@ public class Group implements Comparable<Group>
         List<ID<User>> userIds = new ArrayList<>();
         //TODO return a collections.unmodifiableList
 
-        FirebaseReference ref = new FirebaseReference();
-        ref.select("groupsTable").getAll(UserGroupJoin.class, new Consumer<List<UserGroupJoin>>() {
+        ReferenceWrapper ref = new FirebaseReference();
+        ref.select("groupsTable").getAll(UserGroupJoin.class, new RefConsumer<List<UserGroupJoin>>() {
+
             @Override
             public void accept(List<UserGroupJoin> join) {
                 for(UserGroupJoin j: join){
@@ -132,9 +134,8 @@ public class Group implements Comparable<Group>
                     }
                 }
 
-                FirebaseReference parent = ref.getParent();
                 for(ID<User> id: userIds){
-                    parent.select("users").select(id.toString()).get(User.class, new Consumer<User>() {
+                    this.ref.select("users").select(id.toString()).get(User.class, new Consumer<User>() {
                         @Override
                         public void accept(User user) {
                             participants.add(user);
