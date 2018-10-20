@@ -14,7 +14,7 @@ public class GroupsUnitTests
 {
     private static Course dummy_course = new Course("test");
     private static DummyCourses courses = new DummyCourses();
-    private static User user = new User("xxx@yyy.com", "Mr Potato", "IN", new ArrayList<>(), new ArrayList<>());
+    private static User user = new User( "Mr Potato", new ID<>("dumbid"), new ArrayList<>());
     private ArrayList<User> participants = new ArrayList();
 
     private void addUsers()
@@ -73,26 +73,6 @@ public class GroupsUnitTests
         assertEquals(5, group.getMaxNoUsers());
     }
 
-    /*@Test
-    public void increaseParticipantNumberWorks()
-    {
-        addUsers();
-        Group group = new Group(4, dummy_course, "fr", participants);
-        group.increaseParticipantNumber();
-        assertEquals(2, group.getParticipantNumber());
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void increaseParticipantNumberFailsWhenOverMax()
-    {
-        addUsers();
-        Group group = new Group(3, dummy_course, "fr", participants);
-        group.increaseParticipantNumber();
-        group.increaseParticipantNumber();
-        group.increaseParticipantNumber();
-        assertEquals(2, group.getParticipantNumber());
-    }
-*/
     @Test
     public void getCourseWorks()
     {
@@ -112,45 +92,5 @@ public class GroupsUnitTests
         assertEquals(group.getCourse().getCourseName(), course.getCourseName());
         //TODO check for the uid
     }
-
-    @Test
-    public void setParticipantsWorks()
-    {
-        addUsers();
-        User user2 = new User("2", "Mr Potato 2", "SC", new ArrayList<>(), new ArrayList<>());
-        Group group = new Group(3, dummy_course, "fr", participants);
-        ArrayList<User> part = new ArrayList<>(2);
-        part.add(user);
-        part.add(user2);
-        group.setParticipants(part);
-        assertEquals(part.get(0).getName(), group.getParticipants().get(0).getName());
-        assertEquals(part.get(1).getName(), group.getParticipants().get(1).getName());
-    }
-
-    @Test
-    public void addParticipantWorks()
-    {
-        addUsers();
-        Group group = new Group(3, dummy_course, "fr", participants);
-        User user2 = new User("2", "Mr Potato 2", "SC", new ArrayList<>(), new ArrayList<>());
-        group.addParticipant(user2);
-        List<User> part = group.getParticipants();
-        assertEquals(user.getName(), part.get(0).getName());
-        assertEquals(user2.getName(), part.get(1).getName());
-    }
-
-    @Test
-    public void removeParticipantWorks()
-    {
-        addUsers();
-        Group group = new Group(3, dummy_course, "fr", participants);
-        User user2 = new User("2", "Mr Potato 2", "SC", new ArrayList<>(), new ArrayList<>());
-        group.addParticipant(user2);
-        group.removeParticipant(user2);
-        List<User> part = group.getParticipants();
-        assertEquals(user.getName(), part.get(0).getName());
-        assertEquals(1, group.getParticipantNumber());
-    }
-
 
 }
