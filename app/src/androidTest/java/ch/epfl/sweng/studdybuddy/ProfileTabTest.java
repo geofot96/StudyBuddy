@@ -22,13 +22,13 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 
-@RunWith(AndroidJUnit4.class)
+//@RunWith(AndroidJUnit4.class)
 public class ProfileTabTest
 {
-    public static final String mockCourse = "Algorithms";
+    /*public static final String mockCourse = "Algorithms";
     @Rule
     public final ActivityTestRule<ProfileTab> mActivityRule =
-            new ActivityTestRule<>(ProfileTab.class);
+            new ActivityTestRule<>(ProfileTab.class);*/
 
 
     /*@Test
@@ -37,7 +37,7 @@ public class ProfileTabTest
         intended(toPackage(LoginActivity.class)).hasComponent();
     }*/
 
-    @Test
+    /*@Test
     public void signOutButtonDisconnects() {
 
     }

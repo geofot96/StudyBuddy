@@ -31,7 +31,7 @@ public class GoogleSignInTest {
     public void LoginShouldGoToMainActivity(){
         DummyGoogleSignInActivityIntentRule.launchActivity(new Intent());
         onView(withId(R.id.googleBtn)).perform(click());
-        intended(hasComponent(new ComponentName(getTargetContext(), MainActivity.class)));
+        intended(hasComponent(new ComponentName(getTargetContext(), CourseSelectActivity.class)));
     }
 
     @Test
