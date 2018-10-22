@@ -1,4 +1,4 @@
-package ch.epfl.sweng.studdybuddy;
+package ch.epfl.sweng.studdybuddy.activities;
 
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
