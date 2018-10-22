@@ -1,3 +1,4 @@
+/*
 package ch.epfl.sweng.studdybuddy;
 
 
@@ -67,8 +68,7 @@ public class CreateGroupTest
     @Test
     public void CreateDefaultGroup()
     {
-    }
-/*        mActivityTestRule.launchActivity(new Intent());
+        mActivityTestRule.launchActivity(new Intent());
         ViewInteraction appCompatButton = onView(withId(R.id.gotoGroups));
         appCompatButton.perform(click());
 
@@ -80,41 +80,45 @@ public class CreateGroupTest
         checkRecyclerview("", "Particip: 1/2", "Computer Science", "en");
     }
 
-    *//*
-        @Test
-        public void ChoosingACourse(){
-            mActivityTestRule.launchActivity(new Intent());
-            ViewInteraction appCompatButton = onView(withId(R.id.gotoGroups));
-            appCompatButton.perform(click());
 
-            ViewInteraction floatingActionButton = onView(withId(R.id.createGroup));
-            floatingActionButton.perform(click());
-
-            onView(withId(R.id.courseComplete2)).perform(click(), typeText("Ana"));
-            onData(equalTo("Analysis 1")).inRoot(RootMatchers.isPlatformPopup()).perform(click(),closeSoftKeyboard());
-            onView(withId(R.id.confirmGroupCreation)).perform(click());
-
-            checkRecyclerview("Analysis 1", "Particip 1/2", "Computer Science", "en");
-        }
-
-        @Test
-        public void WrongInputLeadsToAGroupWithoutCourse(){
-            mActivityTestRule.launchActivity(new Intent());
-            ViewInteraction appCompatButton = onView(withId(R.id.gotoGroups));
-            appCompatButton.perform(click());
-
-            ViewInteraction floatingActionButton = onView(withId(R.id.createGroup));
-            floatingActionButton.perform(click());
-
-            onView(withId(R.id.courseComplete2)).perform(click(), typeText("Ana"));
-            onData(equalTo("Analysis 1")).inRoot(RootMatchers.isPlatformPopup()).perform(click(),closeSoftKeyboard());
-            onView(withId(R.id.confirmGroupCreation)).perform(click());
-
-            checkRecyclerview("", "Particip 1/2", "Computer Science", "en");
-
-*//*
     @Test
-    public void CanInteractWithNumberPicker() {
+    public void ChoosingACourse()
+    {
+        mActivityTestRule.launchActivity(new Intent());
+        ViewInteraction appCompatButton = onView(withId(R.id.gotoGroups));
+        appCompatButton.perform(click());
+
+        ViewInteraction floatingActionButton = onView(withId(R.id.createGroup));
+        floatingActionButton.perform(click());
+
+        onView(withId(R.id.courseComplete2)).perform(click(), typeText("Ana"));
+        onData(equalTo("Analysis 1")).inRoot(RootMatchers.isPlatformPopup()).perform(click(), closeSoftKeyboard());
+        onView(withId(R.id.confirmGroupCreation)).perform(click());
+
+        checkRecyclerview("Analysis 1", "Particip 1/2", "Computer Science", "en");
+    }
+
+    @Test
+    public void WrongInputLeadsToAGroupWithoutCourse()
+    {
+        mActivityTestRule.launchActivity(new Intent());
+        ViewInteraction appCompatButton = onView(withId(R.id.gotoGroups));
+        appCompatButton.perform(click());
+
+        ViewInteraction floatingActionButton = onView(withId(R.id.createGroup));
+        floatingActionButton.perform(click());
+
+        onView(withId(R.id.courseComplete2)).perform(click(), typeText("Ana"));
+        onData(equalTo("Analysis 1")).inRoot(RootMatchers.isPlatformPopup()).perform(click(), closeSoftKeyboard());
+        onView(withId(R.id.confirmGroupCreation)).perform(click());
+
+        checkRecyclerview("", "Particip 1/2", "Computer Science", "en");
+    }
+
+
+    @Test
+    public void CanInteractWithNumberPicker()
+    {
         mActivityTestRule.launchActivity(new Intent());
         ViewInteraction appCompatButton = onView(withId(R.id.gotoGroups));
         appCompatButton.perform(click());
@@ -127,7 +131,8 @@ public class CreateGroupTest
     }
 
     @Test
-    public void CanChooseSection() {
+    public void CanChooseSection()
+    {
         mActivityTestRule.launchActivity(new Intent());
         ViewInteraction appCompatButton = onView(withId(R.id.gotoGroups));
         appCompatButton.perform(click());
@@ -143,7 +148,8 @@ public class CreateGroupTest
     }
 
     @Test
-    public void CanChooseLanguage(){
+    public void CanChooseLanguage()
+    {
         mActivityTestRule.launchActivity(new Intent());
         ViewInteraction appCompatButton = onView(withId(R.id.gotoGroups));
         appCompatButton.perform(click());
@@ -159,7 +165,8 @@ public class CreateGroupTest
 
     }
 
-    private void checkRecyclerview(String txt1, String txt2, String txt3, String txt4) {
+    private void checkRecyclerview(String txt1, String txt2, String txt3, String txt4)
+    {
 
         ViewInteraction textView = onView(
                 allOf(withId(R.id.group_course_name),
@@ -204,17 +211,21 @@ public class CreateGroupTest
     }
 
     private static Matcher<View> childAtPosition(
-            final Matcher<View> parentMatcher, final int position) {
+            final Matcher<View> parentMatcher, final int position)
+    {
 
-        return new TypeSafeMatcher<View>() {
+        return new TypeSafeMatcher<View>()
+        {
             @Override
-            public void describeTo(Description description) {
+            public void describeTo(Description description)
+            {
                 description.appendText("Child at position " + position + " in parent ");
                 parentMatcher.describeTo(description);
             }
 
             @Override
-            public boolean matchesSafely(View view) {
+            public boolean matchesSafely(View view)
+            {
                 ViewParent parent = view.getParent();
                 return parent instanceof ViewGroup && parentMatcher.matches(parent)
                         && view.equals(((ViewGroup) parent).getChildAt(position));
@@ -222,22 +233,27 @@ public class CreateGroupTest
         };
     }
 
-    public static ViewAction setNumber(final int n) {
-        return new ViewAction() {
+    public static ViewAction setNumber(final int n)
+    {
+        return new ViewAction()
+        {
             @Override
-            public void perform(UiController uiController, View view) {
+            public void perform(UiController uiController, View view)
+            {
                 ((NumberPicker) view).setValue(n);
             }
 
             @Override
-            public String getDescription() {
+            public String getDescription()
+            {
                 return "Set NumberPicker value";
             }
 
             @Override
-            public Matcher<View> getConstraints() {
+            public Matcher<View> getConstraints()
+            {
                 return ViewMatchers.isAssignableFrom(NumberPicker.class);
             }
         };
-    }*/
-}
+    }
+}*/
