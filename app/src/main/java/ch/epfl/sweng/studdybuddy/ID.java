@@ -11,6 +11,10 @@ public class ID<T> {
         this.id = id;
     }
 
+    public ID(ID<T> id){
+        this.id = id.getId();
+    }
+
     //public String getID(){ return id;}
 
     public String getId() { return id; }

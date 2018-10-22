@@ -18,8 +18,8 @@ public class UserCourseJoin {
     }
 
     public UserCourseJoin(String courseID, String userID) {
-        setCourseID(courseID);
-        setUserID(userID);
+        this.courseID = new ID<Course>(courseID);
+        this.userID = new ID<User>(userID);
         this.id = new ID<UserCourseJoin>(Integer.toString(hashCode()));
 
     }
@@ -27,7 +27,7 @@ public class UserCourseJoin {
         return courseID;
     }
 
-    public void setCourseID(String courseID) {
+    public void setCourseID(ID<Course> courseID) {
         this.courseID = new ID<Course>(courseID);
     }
 
@@ -35,7 +35,7 @@ public class UserCourseJoin {
         return userID;
     }
 
-    public void setUserID(String userID) {
+    public void setUserID(ID<User> userID) {
         this.userID = new ID<User>(userID);
     }
 

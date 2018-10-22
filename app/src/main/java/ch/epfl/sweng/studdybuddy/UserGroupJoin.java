@@ -41,14 +41,20 @@ public class UserGroupJoin {
     }
 
     public UserGroupJoin(String groupID, String userID) {
-        this.id = new ID<UserGroupJoin>(UUID.randomUUID().toString());
         setGroupID(new ID<>(groupID));
         setUserID(new ID<>(userID));
+
     }
 
     public UserGroupJoin(ID<Group> groupID, ID<User> userID) {
-        this.id = new ID<UserGroupJoin>(UUID.randomUUID().toString());
         setGroupID(groupID);
         setUserID(userID);
+        this.id = new ID<UserGroupJoin>(Integer.toString(hashCode()));
+
+    }
+
+    @Override
+    public int hashCode() {
+        return (groupID.toString() + getUserID().toString()).hashCode();
     }
 }

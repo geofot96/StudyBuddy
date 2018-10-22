@@ -26,6 +26,7 @@ import java.util.List;
 import ch.epfl.sweng.studdybuddy.AdapterConsumer;
 import ch.epfl.sweng.studdybuddy.ArrayAdapterAdapter;
 import ch.epfl.sweng.studdybuddy.AuthManager;
+import ch.epfl.sweng.studdybuddy.Course;
 import ch.epfl.sweng.studdybuddy.CourseAdapter;
 import ch.epfl.sweng.studdybuddy.CourseHolder;
 import ch.epfl.sweng.studdybuddy.FirebaseAuthManager;
@@ -43,7 +44,7 @@ public class CourseSelectActivity extends AppCompatActivity
 
     static List<String> coursesDB;
     //List of selected courses
-    static final List<String> courseSelection = new ArrayList<>();
+    static final List<Course> courseSelection = new ArrayList<>();
 
 
     static AutoCompleteTextView autocomplete;
@@ -87,9 +88,9 @@ public class CourseSelectActivity extends AppCompatActivity
                 User currentUser = ((StudyBuddy) CourseSelectActivity.this.getApplication()).getAuthendifiedUser();
                 AuthManager auth = new FirebaseAuthManager(CourseSelectActivity.this, getString(R.string.default_web_client_id));
 
-                for(String course : courseSelection){
-                    UserCourseJoin join = new UserCourseJoin(course,auth.getCurrentUser().getId().toString());
-                    firebase.select("userCourse").select(join.getId().getId().toString()).setVal(join);
+                for(Course course : courseSelection){
+                    UserCourseJoin join = new UserCourseJoin(course.getCourseName(),auth.getCurrentUser().getId().toString());
+                    firebase.select("userCourse").select(join.getId().toString()).setVal(join);
 
                 }
                 //currentUser.setCoursesPreset(courseSelection);
@@ -116,7 +117,7 @@ public class CourseSelectActivity extends AppCompatActivity
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String textInput = parent.getAdapter().getItem(position).toString();
-                if(!courseSelection.contains(textInput)) { addCourse(textInput); }
+                if(!courseSelection.contains(textInput)) { addCourse(new Course(textInput)); }
             }
         });
         return adapter;
@@ -156,7 +157,7 @@ public class CourseSelectActivity extends AppCompatActivity
        firebase.select("courses").getAll(String.class, AdapterConsumer.adapterConsumer(String.class, coursesDB, new ArrayAdapterAdapter(adapter)));
    }
 
-    private void addCourse(String course)
+    private void addCourse(Course course)
     {
         courseSelection.add(course);
         //Dismiss KB
