@@ -93,7 +93,7 @@ public class ProfileTab extends AppCompatActivity {
         recyclerView_courses.setAdapter(adCourse);
         firebase.select("userCourse").getAll(UserCourseJoin.class, new Consumer<List<UserCourseJoin>>() {
             /*Right now courses are stored as a big array => we need to know the index, not the id which
-            is the course name right for the moment
+            is the course name for the moment
 
             @Override
             public void accept(List<UserCourseJoin> userCourseJoins) {
@@ -120,25 +120,26 @@ public class ProfileTab extends AppCompatActivity {
                 }*/
             @Override
             public void accept(List<UserCourseJoin> pairs) {
-                
-                for(UserCourseJoin p : pairs) {
-                    if (p.getUserID().toString().equals(userID)) {
-                        firebase.select("courses").getAll(String.class, new Consumer<List<String>>() {
-                            @Override
-                            public void accept(List<String> courses) {
+
+                firebase.select("courses").getAll(String.class, new Consumer<List<String>>() {
+                    @Override
+                    public void accept(List<String> courses) {
+                        for (UserCourseJoin p : pairs) {
+                            if (p.getUserID().toString().equals(userID)) {
                                 for (String c : courses) {
-                                    if(c.equals(p.getCourseID().getId())) {
+                                    if (c.equals(p.getCourseID().getId())) {
                                         userCourses.add(new Course(c));
                                     }
                                     adCourse.notifyDataSetChanged();
                                 }
-                                if(userCourses.size()==0){
+                                if (userCourses.size() == 0) {
                                     userCourses.add(new Course("No courses"));
                                 }
                             }
-                      });
+                        }
                     }
-                }
+                 });
+
             }
         });
 
