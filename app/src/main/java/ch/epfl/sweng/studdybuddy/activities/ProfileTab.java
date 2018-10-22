@@ -22,66 +22,83 @@ import ch.epfl.sweng.studdybuddy.Group;
 import ch.epfl.sweng.studdybuddy.GroupsRecyclerAdapter;
 import ch.epfl.sweng.studdybuddy.R;
 import ch.epfl.sweng.studdybuddy.StudyBuddy;
+import ch.epfl.sweng.studdybuddy.User;
+import ch.epfl.sweng.studdybuddy.UserCourseJoin;
 import ch.epfl.sweng.studdybuddy.UserGroupJoin;
 
 public class ProfileTab extends AppCompatActivity {
 
-    private List<String> usersCourses;
+    private List<String> usersCourses = new ArrayList<>();
     private final List<Group> usersGroups = new ArrayList<>();
-
+private RecyclerView recyclerView_groups;
+private RecyclerView recyclerView_courses;
     FirebaseReference firebase;
+    private GroupsRecyclerAdapter ad = new GroupsRecyclerAdapter(usersGroups);
+    private CourseAdapter adCourse = new CourseAdapter(usersCourses);
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile_tab);
-        usersCourses = new ArrayList<>();
-        usersCourses.add("$no course");
-    usersGroups.add(new Group(3, new Course("ok"), "fr"));
+        usersCourses.add("No courses");
+        usersGroups.add(new Group(3, new Course("ok"), "fr"));
         firebase = new FirebaseReference();
 
-        //usersCourses.addAll(((StudyBuddy) this.getApplication()).getAuthendifiedUser().getCoursesPreset());
+        //usersCourses.addAll(.getCoursesPreset());
 
-        final RecyclerView recyclerView_courses = (RecyclerView) findViewById(R.id.courses_list);
+        recyclerView_courses = (RecyclerView) findViewById(R.id.courses_list);
         recyclerView_courses.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView_courses.setAdapter(new CourseAdapter(usersCourses));
+        //setCoursesUp();
 
-        final RecyclerView recyclerView_groups = (RecyclerView) findViewById(R.id.groups_list);
+        recyclerView_groups = (RecyclerView) findViewById(R.id.groups_list);
         recyclerView_groups.setLayoutManager(new LinearLayoutManager(this));
-        GroupsRecyclerAdapter ad = new GroupsRecyclerAdapter(usersGroups);
+        setGroupsUp();
+    }
+    private void removeCourse(String course){
+        usersCourses.remove(course);
+    }
+
+    private void setGroupsUp() {
+
         recyclerView_groups.setAdapter(ad);
         firebase.select("userGroup").getAll(UserGroupJoin.class, new Consumer<List<UserGroupJoin>>() {
             @Override
             public void accept(List<UserGroupJoin> join) {
+                User u = ((StudyBuddy) ProfileTab.this.getApplication()).getAuthendifiedUser();
                 for(UserGroupJoin j: join){
-                    Log.i("debug", j.getGroupID().getId());
-                    firebase.select("groups").select(j.getGroupID().getId()).get(Group.class, new Consumer<Group>() {
-                        @Override
-                        public void accept(Group g) {
-                            Log.i("debug", g.getCourse().getCourseName());
-                            usersGroups.add(g);
-ad.notifyDataSetChanged();
-                        }
-                    });
+                    if(j.getUserID().getId().equals(u.getUserID().getId())) {
+                        firebase.select("groups").select(j.getGroupID().getId()).get(Group.class, new Consumer<Group>() {
+                            @Override
+                            public void accept(Group g) {
+                                usersGroups.add(g);
+                                ad.notifyDataSetChanged();
+                            }
+                        });
+                    }
+                }
+            }
+        });
+    }
+
+    private void setCoursesUp() {
+        recyclerView_courses.setAdapter(adCourse);
+        firebase.select("userCourse").getAll(UserCourseJoin.class, new Consumer<List<UserCourseJoin>>() {
+            @Override
+            public void accept(List<UserCourseJoin> userCourseJoins) {
+                User u = ((StudyBuddy) ProfileTab.this.getApplication()).getAuthendifiedUser();
+                for(UserCourseJoin j: userCourseJoins) {
+                    if(j.getUserID().getId().equals(u.getUserID().getId())) {
+                        firebase.select("courses").select(j.getCourseID().getId()).get(String.class, new Consumer<String>() {
+                            @Override
+                            public void accept(String s) {
+                                usersCourses.add(s);
+                                adCourse.notifyDataSetChanged();
+                            }
+                        });
+                    }
                 }
             }
         });
 
-        ItemTouchHelper mIth = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP | ItemTouchHelper.DOWN, ItemTouchHelper.RIGHT){
-                @Override
-                public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder viewHolder1){
-                    return false;
-                }
-                @Override
-                public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int i){
-                    CourseHolder cc = (CourseHolder) viewHolder;
-                    usersCourses.remove(usersCourses.indexOf(cc.get()));
-                    recyclerView_courses.getAdapter().notifyDataSetChanged();
-                }
-            });
-        mIth.attachToRecyclerView(recyclerView_courses);
-    }
-    private void removeCourse(String course){
-        usersCourses.remove(course);
     }
 
 }
