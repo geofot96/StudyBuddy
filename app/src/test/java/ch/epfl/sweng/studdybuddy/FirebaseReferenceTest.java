@@ -43,7 +43,7 @@ public class FirebaseReferenceTest {
         DataSnapshot dataSnapshot = mock(DataSnapshot.class);
         //when(testref.setValue("key")).th;
 
-        Group emptyGroup = new Group(3, new Course("SDP"), "fr", new ArrayList<User>());
+        Group emptyGroup = new Group(3, new Course("SDP"), "fr");
         when(dataSnapshot.getValue(Group.class)).thenReturn(emptyGroup);
         when(dataSnapshot.getChildren()).thenReturn(Arrays.asList(dataSnapshot));
         ArgumentCaptor<ValueEventListener> argument = ArgumentCaptor.forClass(ValueEventListener.class);
@@ -85,7 +85,7 @@ public class FirebaseReferenceTest {
         FirebaseReference fb = new FirebaseReference(db);
 
         DataSnapshot ds = mock(DataSnapshot.class);
-        final Group clp = new Group(10,new Course("CLP"), "EN", new ArrayList<User>());
+        final Group clp = new Group(10,new Course("CLP"), "EN");
 
 
         when(ds.getValue(Group.class)).thenReturn(clp);

@@ -8,12 +8,12 @@ import static org.junit.Assert.*;
 
 public class UserUnitTests
 {
-    private static User user = new User( "Mr Potato", new ID<>("dumbid"), new ArrayList<>());
+    private static User user = new User( "Mr Potato", new ID<>("dumbid"));
 
     @Test
     public void getNameWorksCorrectly()
     {
-        User user1 = new User( "Mr Potato", new ID<>("dumbid"), new ArrayList<>());
+        User user1 = new User( "Mr Potato", new ID<>("dumbid"));
         assertEquals("Mr Potato", user1.getName());
     }
 
