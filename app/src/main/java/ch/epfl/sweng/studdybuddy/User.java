@@ -9,15 +9,6 @@ final public class User
     private String name;
     private ID<User> userID;
 
-    public List<String> getCoursesPreset() {
-        return coursesPreset;
-    }
-
-    public void setCoursesPreset(List<String> coursesPreset) {
-        this.coursesPreset = coursesPreset;
-    }
-
-    private List<String> coursesPreset;
 
     public ID<User> getUserID()
     {
@@ -29,11 +20,10 @@ final public class User
         this.userID = userID;
     }
 
-    public User(String name, ID<User> userId, List<String> coursesPreset)
+    public User(String name, ID<User> userId)
     {
         this.name = name;
         this.userID = userId;
-        this.coursesPreset = coursesPreset;
     }
 
     public User() {}

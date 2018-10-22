@@ -16,14 +16,12 @@ import java.util.UUID;
  * course is the course for which the group is created
  * participants is the actual group members
  */
-public class Group implements Comparable<Group>
-{
+public class Group implements Comparable<Group> {
     private int maxNoUsers;
     private Course course;
 
     private ID<Group> groupID; //TODO add getters and setters
     private String language;
-    private List<User> participants;
     public SerialDate getCreationDate() {
         return creationDate;
     }
@@ -40,7 +38,7 @@ public class Group implements Comparable<Group>
     public Group() {}
 
 
-    public Group(int maxNoUsers, Course course, String lang, List<User> participants)
+    public Group(int maxNoUsers, Course course, String lang)
     {
         if(maxNoUsers <= 0)
         {
@@ -48,20 +46,9 @@ public class Group implements Comparable<Group>
         }
 
 
-        if(participants.size() > maxNoUsers)
-        {
-            throw new IllegalArgumentException("You can't have more than the maximum number of participants");
-        }
-
-        if(maxNoUsers < participants.size())
-        {
-            throw new IllegalArgumentException("Max number of participants can't be less than actual number of participants");
-        }
-
         this.groupID = new ID<>(UUID.randomUUID().toString());
         this.maxNoUsers = maxNoUsers;
         this.course = course;
-        this.participants = participants;
         this.language = lang;
         this.creationDate = new SerialDate();
     }
@@ -70,7 +57,6 @@ public class Group implements Comparable<Group>
     {
         //TODO why do we need this constructor and what do we do with the date
         this.course = sourceGroup.getCourse();
-        this.participants = new ArrayList<>(sourceGroup.participants);
         this.maxNoUsers = sourceGroup.getMaxNoUsers();
         this.language = sourceGroup.language;
     }
@@ -85,13 +71,6 @@ public class Group implements Comparable<Group>
         this.groupID = new ID<>(groupID);
     }
 
-    public int getParticipantNumber()
-    {
-        if(participants != null)
-        return participants.size();
-        else
-            return 0;
-    }
 
     public int getMaxNoUsers()
     {
@@ -147,11 +126,6 @@ public class Group implements Comparable<Group>
         return participants;
     }
 
-    public void setParticipants(List<User> participants)
-    {
-        this.participants = new ArrayList<>(participants);
-    }
-
     public String getLang()
     {
         return language;
@@ -162,26 +136,6 @@ public class Group implements Comparable<Group>
         this.language = language;
     }
 
-    public void addParticipant(User newParticipant)
-    {
-        if(participants.size() < maxNoUsers)
-        {
-            participants.add(newParticipant);
-        }
-        else
-        {
-            throw new IllegalArgumentException("You have attended the maximum number of participants");
-        }
-        //TODO handle this case differently?
-    }
-
-    public void removeParticipant(User leavingParticipant)
-    {
-        if(participants.size() >= 2 && participants.contains(leavingParticipant))
-        {
-            participants.remove(leavingParticipant);
-        }
-    }
 
 
     @Override

@@ -20,13 +20,17 @@ import java.util.List;
 import ch.epfl.sweng.studdybuddy.AdapterConsumer;
 import ch.epfl.sweng.studdybuddy.ArrayAdapterAdapter;
 import ch.epfl.sweng.studdybuddy.Course;
+import ch.epfl.sweng.studdybuddy.GoogleSignInActivity;
 import ch.epfl.sweng.studdybuddy.GroupsActivity;
 import ch.epfl.sweng.studdybuddy.DummyCourses;
 import ch.epfl.sweng.studdybuddy.FirebaseReference;
 import ch.epfl.sweng.studdybuddy.Group;
+import ch.epfl.sweng.studdybuddy.ID;
 import ch.epfl.sweng.studdybuddy.R;
 import ch.epfl.sweng.studdybuddy.RecyclerAdapterAdapter;
+import ch.epfl.sweng.studdybuddy.StudyBuddy;
 import ch.epfl.sweng.studdybuddy.User;
+import ch.epfl.sweng.studdybuddy.UserGroupJoin;
 
 
 public class CreateGroupActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener
@@ -128,8 +132,9 @@ public class CreateGroupActivity extends AppCompatActivity implements AdapterVie
     {
         if(!selectedCourse.isEmpty() &&coursesDB.contains(selectedCourse)) {
 					//Comunnicate through fb
-            Group g = new Group(maxParticipants, new Course(selectedCourse),selectedLanguage, new ArrayList<User>());
+            Group g = new Group(maxParticipants, new Course(selectedCourse),selectedLanguage);
 		        firebase.select("groups").select(g.getGroupID()).setVal(g);
+		        firebase.select("userGroup").select(g.getGroupID()).setVal(new UserGroupJoin(new ID<Group>(g.getGroupID()), ((StudyBuddy) CreateGroupActivity.this.getApplication()).authendifiedUser.getUserID()));
 		        Intent intent = new Intent(this, GroupsActivity.class);
 		        startActivity(intent);
         }

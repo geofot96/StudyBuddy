@@ -94,7 +94,7 @@ public class GoogleSignInActivity extends AppCompatActivity {
             public void accept(User user) {
                 StudyBuddy app = ((StudyBuddy) GoogleSignInActivity.this.getApplication());
                 if(user == null) { //create a new user and put in db
-                    app.setAuthendifiedUser(new User(acct.getDisplayName(), userID, new ArrayList<>()));
+                    app.setAuthendifiedUser(new User(acct.getDisplayName(), userID));
                     fb.select("users").select(userID.getId()).setVal(app.getAuthendifiedUser());
                 }
                 else {
