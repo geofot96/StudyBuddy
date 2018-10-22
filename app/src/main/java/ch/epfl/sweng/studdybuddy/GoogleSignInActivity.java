@@ -52,7 +52,7 @@ public class GoogleSignInActivity extends AppCompatActivity {
             String personName = acct.getDisplayName();
             //appears only when the user is connected
             Toast.makeText(this, "Welcome " + personName, Toast.LENGTH_SHORT).show();
-            fetchUserAndStart(acct);
+            fetchUserAndStart(acct, MainActivity.class);
             startActivity(new Intent(GoogleSignInActivity.this, MainActivity.class));
         } else {
             //appears only when the user isn't connected to the app
@@ -75,7 +75,7 @@ public class GoogleSignInActivity extends AppCompatActivity {
                     @Override
                     public void then(Account acct) {
                         if (acct != null) {
-                            fetchUserAndStart(acct);
+                            fetchUserAndStart(acct, CourseSelectActivity.class);
                         }
                     }
                 }, TAG);
@@ -86,7 +86,7 @@ public class GoogleSignInActivity extends AppCompatActivity {
         }
     }
 
-    void fetchUserAndStart(Account acct) {
+    void fetchUserAndStart(Account acct, Class destination) {
         FirebaseReference fb = new FirebaseReference();
         final ID<User> userID = new ID<>(acct.getId());
         fb.select("users").select(userID.getId()).get(User.class, new Consumer<User>() {
@@ -100,7 +100,7 @@ public class GoogleSignInActivity extends AppCompatActivity {
                 else {
                     app.setAuthendifiedUser(user);
                 }
-                startActivity(new Intent(GoogleSignInActivity.this, CourseSelectActivity.class));
+                startActivity(new Intent(GoogleSignInActivity.this, destination));
             }
         });
     }
