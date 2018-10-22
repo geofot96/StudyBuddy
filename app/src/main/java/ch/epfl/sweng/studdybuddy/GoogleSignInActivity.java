@@ -81,7 +81,7 @@ public class GoogleSignInActivity extends AppCompatActivity {
                 }, TAG);
             } catch (ApiException e) {
                 // Google Sign In failed, update UI appropriately
-                Log.w(TAG, "Google sign in failed", e);
+                Log.w(TAG, "Google sign in failed.", e);
             }
         }
     }
