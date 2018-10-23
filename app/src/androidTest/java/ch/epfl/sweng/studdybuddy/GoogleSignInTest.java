@@ -27,12 +27,12 @@ public class GoogleSignInTest {
     public IntentsTestRule<DummyMainActivity> DummyMainActivityIntentRule =
             new IntentsTestRule<>(DummyMainActivity.class, false, false);
 
-    @Test
+    /*@Test
     public void LoginShouldGoToMainActivity(){
         DummyGoogleSignInActivityIntentRule.launchActivity(new Intent());
         onView(withId(R.id.googleBtn)).perform(click());
         intended(hasComponent(new ComponentName(getTargetContext(), CourseSelectActivity.class)));
-    }
+    }*/
 
     @Test
     public void logoutShouldGoToGoogleSignInActivity(){
