@@ -103,7 +103,7 @@ public class Group implements Comparable<Group> {
         //TODO return a collections.unmodifiableList
 
         ReferenceWrapper ref = new FirebaseReference();
-        ref.select("groupsTable").getAll(UserGroupJoin.class, new RefConsumer<List<UserGroupJoin>>() {
+        ref.select("groupsTable").getAll(UserGroupJoin.class, new Consumer<List<UserGroupJoin>>() {
 
             @Override
             public void accept(List<UserGroupJoin> join) {
@@ -114,7 +114,7 @@ public class Group implements Comparable<Group> {
                 }
 
                 for(ID<User> id: userIds){
-                    this.ref.select("users").select(id.toString()).get(User.class, new Consumer<User>() {
+                    ref.select("users").select(id.toString()).get(User.class, new Consumer<User>() {
                         @Override
                         public void accept(User user) {
                             participants.add(user);

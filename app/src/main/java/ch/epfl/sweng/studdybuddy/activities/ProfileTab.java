@@ -7,6 +7,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
+import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -39,7 +40,7 @@ public class ProfileTab extends AppCompatActivity {
     private FirebaseReference firebase;
     private GroupsRecyclerAdapter ad;
     private CourseAdapter adCourse;
-    private User u;
+    private User user;
     private String userID;
 
     @Override
@@ -48,19 +49,11 @@ public class ProfileTab extends AppCompatActivity {
         setContentView(R.layout.activity_profile_tab);
 
         firebase = new FirebaseReference();
-        u = ((StudyBuddy) ProfileTab.this.getApplication()).getAuthendifiedUser();
-        userID = u.getUserID().toString();
+        user = ((StudyBuddy) ProfileTab.this.getApplication()).getAuthendifiedUser();
+        userID = user.getUserID().toString();
         //usersCourses.addAll(.getCoursesPreset());
-
-
-        adCourse = new CourseAdapter(userCourses);
-        recyclerView_courses = (RecyclerView) findViewById(R.id.courses_list);
-        recyclerView_courses.setLayoutManager(new LinearLayoutManager(this));
+        setUI();
         setCoursesUp();
-
-        ad = new GroupsRecyclerAdapter(userGroups);
-        recyclerView_groups = (RecyclerView) findViewById(R.id.groups_list);
-        recyclerView_groups.setLayoutManager(new LinearLayoutManager(this));
         setGroupsUp();
     }
     private void removeCourse(String course){
@@ -69,7 +62,6 @@ public class ProfileTab extends AppCompatActivity {
 
     private void setGroupsUp() {
 
-        recyclerView_groups.setAdapter(ad);
         firebase.select("userGroup").getAll(UserGroupJoin.class, new Consumer<List<UserGroupJoin>>() {
             @Override
             public void accept(List<UserGroupJoin> join) {
@@ -90,7 +82,6 @@ public class ProfileTab extends AppCompatActivity {
     }
 
     private void setCoursesUp() {
-        recyclerView_courses.setAdapter(adCourse);
         firebase.select("userCourse").getAll(UserCourseJoin.class, new Consumer<List<UserCourseJoin>>() {
             /*Right now courses are stored as a big array => we need to know the index, not the id which
             is the course name for the moment
@@ -143,6 +134,21 @@ public class ProfileTab extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void setUI(){
+        TextView nameView = (TextView) findViewById(R.id.profile_name_text);
+        nameView.setText(user.getName());
+
+        adCourse = new CourseAdapter(userCourses);
+        recyclerView_courses = (RecyclerView) findViewById(R.id.courses_list);
+        recyclerView_courses.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView_courses.setAdapter(adCourse);
+
+        ad = new GroupsRecyclerAdapter(userGroups);
+        recyclerView_groups = (RecyclerView) findViewById(R.id.groups_list);
+        recyclerView_groups.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView_groups.setAdapter(ad);
     }
 
 }
