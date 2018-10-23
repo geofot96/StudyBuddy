@@ -37,152 +37,30 @@ public class GroupsActivityLeadsToCreateGroup
     @Test
     public void addGroupButtonExists()
     {
-        // Added a sleep statement to match the app's execution delay.
-        // The recommended way to handle such scenarios is to use Espresso idling resources:
-        // https://google.github.io/android-testing-support-library/docs/espresso/idling-resource/index.html
-        try
-        {
-            Thread.sleep(7000);
-        } catch(InterruptedException e)
-        {
-            e.printStackTrace();
-        }
-
-        ViewInteraction appCompatButton = onView(
-                allOf(withId(R.id.gotoGroups), withText("Groups"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                0),
-                        isDisplayed()));
-        appCompatButton.perform(click());
-
-        // Added a sleep statement to match the app's execution delay.
-        // The recommended way to handle such scenarios is to use Espresso idling resources:
-        // https://google.github.io/android-testing-support-library/docs/espresso/idling-resource/index.html
-        try
-        {
-            Thread.sleep(7000);
-        } catch(InterruptedException e)
-        {
-            e.printStackTrace();
-        }
-
+        refactor();
         ViewInteraction linearLayout = onView(withId(R.id.createGroup));
         linearLayout.check(matches(isDisplayed()));
     }
     @Test
     public void searchBarExists()
     {
-        // Added a sleep statement to match the app's execution delay.
-        // The recommended way to handle such scenarios is to use Espresso idling resources:
-        // https://google.github.io/android-testing-support-library/docs/espresso/idling-resource/index.html
-        try
-        {
-            Thread.sleep(7000);
-        } catch(InterruptedException e)
-        {
-            e.printStackTrace();
-        }
-
-        ViewInteraction appCompatButton = onView(
-                allOf(withId(R.id.gotoGroups), withText("Groups"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                0),
-                        isDisplayed()));
-        appCompatButton.perform(click());
-
-        // Added a sleep statement to match the app's execution delay.
-        // The recommended way to handle such scenarios is to use Espresso idling resources:
-        // https://google.github.io/android-testing-support-library/docs/espresso/idling-resource/index.html
-        try
-        {
-            Thread.sleep(7000);
-        } catch(InterruptedException e)
-        {
-            e.printStackTrace();
-        }
-
+        refactor();
         ViewInteraction linearLayout = onView(withId(R.id.feed_search));
         linearLayout.check(matches(isDisplayed()));
     }
     @Test
     public void recyclerViewerExists()
     {
-        // Added a sleep statement to match the app's execution delay.
-        // The recommended way to handle such scenarios is to use Espresso idling resources:
-        // https://google.github.io/android-testing-support-library/docs/espresso/idling-resource/index.html
-        try
-        {
-            Thread.sleep(7000);
-        } catch(InterruptedException e)
-        {
-            e.printStackTrace();
-        }
-
-        ViewInteraction appCompatButton = onView(
-                allOf(withId(R.id.gotoGroups), withText("Groups"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                0),
-                        isDisplayed()));
-        appCompatButton.perform(click());
-
-        // Added a sleep statement to match the app's execution delay.
-        // The recommended way to handle such scenarios is to use Espresso idling resources:
-        // https://google.github.io/android-testing-support-library/docs/espresso/idling-resource/index.html
-        try
-        {
-            Thread.sleep(7000);
-        } catch(InterruptedException e)
-        {
-            e.printStackTrace();
-        }
-
+        refactor();
         ViewInteraction linearLayout = onView(withId(R.id.feedRecycleViewer));
         linearLayout.check(matches(isDisplayed()));
     }
     @Test
     public void sortButtonExists()
     {
-        // Added a sleep statement to match the app's execution delay.
-        // The recommended way to handle such scenarios is to use Espresso idling resources:
-        // https://google.github.io/android-testing-support-library/docs/espresso/idling-resource/index.html
-        try
-        {
-            Thread.sleep(7000);
-        } catch(InterruptedException e)
-        {
-            e.printStackTrace();
-        }
 
-        ViewInteraction appCompatButton = onView(
-                allOf(withId(R.id.gotoGroups), withText("Groups"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                0),
-                        isDisplayed()));
-        appCompatButton.perform(click());
 
-        // Added a sleep statement to match the app's execution delay.
-        // The recommended way to handle such scenarios is to use Espresso idling resources:
-        // https://google.github.io/android-testing-support-library/docs/espresso/idling-resource/index.html
-        try
-        {
-            Thread.sleep(7000);
-        } catch(InterruptedException e)
-        {
-            e.printStackTrace();
-        }
-
+        refactor();
         ViewInteraction linearLayout = onView(withId(R.id.sortButton));
         linearLayout.check(matches(isDisplayed()));
     }
@@ -190,32 +68,7 @@ public class GroupsActivityLeadsToCreateGroup
     @Test
     public void thereIsAlgorithmsGroup()
     {
-        try
-        {
-            Thread.sleep(7000);
-        } catch(InterruptedException e)
-        {
-            e.printStackTrace();
-        }
-
-        ViewInteraction appCompatButton = onView(
-                allOf(withId(R.id.gotoGroups), withText("Groups"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                0),
-                        isDisplayed()));
-        appCompatButton.perform(click());
-
-        try
-        {
-            Thread.sleep(7000);
-        } catch(InterruptedException e)
-        {
-            e.printStackTrace();
-        }
-
+        refactor();
         ViewInteraction textView = onView(
                 allOf(withId(R.id.group_course_name), withText("Algorithms CS-250"),
                         childAtPosition(
@@ -226,6 +79,33 @@ public class GroupsActivityLeadsToCreateGroup
                         isDisplayed()));
         textView.check(matches(withText("Algorithms CS-250")));
     }
+void refactor(){
+    try
+    {
+        Thread.sleep(7000);
+    } catch(InterruptedException e)
+    {
+        e.printStackTrace();
+    }
+
+    ViewInteraction appCompatButton = onView(
+            allOf(withId(R.id.gotoGroups), withText("Groups"),
+                    childAtPosition(
+                            childAtPosition(
+                                    withId(android.R.id.content),
+                                    0),
+                            0),
+                    isDisplayed()));
+    appCompatButton.perform(click());
+
+    try
+    {
+        Thread.sleep(7000);
+    } catch(InterruptedException e)
+    {
+        e.printStackTrace();
+    }
+}
 
     private static Matcher<View> childAtPosition(
             final Matcher<View> parentMatcher, final int position)
