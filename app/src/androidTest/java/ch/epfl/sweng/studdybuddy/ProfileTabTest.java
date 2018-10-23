@@ -11,7 +11,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 
-import ch.epfl.sweng.studdybuddy.activities.ProfileTab;
+import ch.epfl.sweng.studdybuddy.ProfileTab;
 
 import static android.support.test.InstrumentationRegistry.getInstrumentation;
 import static android.support.test.espresso.Espresso.onView;
