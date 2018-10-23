@@ -37,9 +37,6 @@ public class GroupsActivityLeadsToCreateGroup
     @Test
     public void addGroupButtonExists()
     {
-        // Added a sleep statement to match the app's execution delay.
-        // The recommended way to handle such scenarios is to use Espresso idling resources:
-        // https://google.github.io/android-testing-support-library/docs/espresso/idling-resource/index.html
         try
         {
             Thread.sleep(7000);
@@ -57,10 +54,6 @@ public class GroupsActivityLeadsToCreateGroup
                                 0),
                         isDisplayed()));
         appCompatButton.perform(click());
-
-        // Added a sleep statement to match the app's execution delay.
-        // The recommended way to handle such scenarios is to use Espresso idling resources:
-        // https://google.github.io/android-testing-support-library/docs/espresso/idling-resource/index.html
         try
         {
             Thread.sleep(7000);
@@ -113,76 +106,42 @@ public class GroupsActivityLeadsToCreateGroup
     @Test
     public void recyclerViewerExists()
     {
-        // Added a sleep statement to match the app's execution delay.
-        // The recommended way to handle such scenarios is to use Espresso idling resources:
-        // https://google.github.io/android-testing-support-library/docs/espresso/idling-resource/index.html
-        try
-        {
+        try {
             Thread.sleep(7000);
-        } catch(InterruptedException e)
-        {
+        } catch(InterruptedException e) {
             e.printStackTrace();
         }
-
         ViewInteraction appCompatButton = onView(
-                allOf(withId(R.id.gotoGroups), withText("Groups"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                0),
-                        isDisplayed()));
+                allOf(withId(R.id.gotoGroups), withText("Groups"), childAtPosition(
+                                childAtPosition(withId(android.R.id.content), 0),
+                                0), isDisplayed()));
         appCompatButton.perform(click());
-
-        // Added a sleep statement to match the app's execution delay.
-        // The recommended way to handle such scenarios is to use Espresso idling resources:
-        // https://google.github.io/android-testing-support-library/docs/espresso/idling-resource/index.html
-        try
-        {
+        try {
             Thread.sleep(7000);
-        } catch(InterruptedException e)
-        {
+        } catch(InterruptedException e) {
             e.printStackTrace();
         }
-
         ViewInteraction linearLayout = onView(withId(R.id.feedRecycleViewer));
         linearLayout.check(matches(isDisplayed()));
     }
     @Test
     public void sortButtonExists()
     {
-        // Added a sleep statement to match the app's execution delay.
-        // The recommended way to handle such scenarios is to use Espresso idling resources:
-        // https://google.github.io/android-testing-support-library/docs/espresso/idling-resource/index.html
-        try
-        {
+        try {
             Thread.sleep(7000);
-        } catch(InterruptedException e)
-        {
+        } catch(InterruptedException e) {
             e.printStackTrace();
         }
-
         ViewInteraction appCompatButton = onView(
-                allOf(withId(R.id.gotoGroups), withText("Groups"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                0),
+                allOf(withId(R.id.gotoGroups), withText("Groups"), childAtPosition(
+                                childAtPosition(withId(android.R.id.content), 0), 0),
                         isDisplayed()));
         appCompatButton.perform(click());
-
-        // Added a sleep statement to match the app's execution delay.
-        // The recommended way to handle such scenarios is to use Espresso idling resources:
-        // https://google.github.io/android-testing-support-library/docs/espresso/idling-resource/index.html
-        try
-        {
+        try {
             Thread.sleep(7000);
-        } catch(InterruptedException e)
-        {
+        } catch(InterruptedException e) {
             e.printStackTrace();
         }
-
         ViewInteraction linearLayout = onView(withId(R.id.sortButton));
         linearLayout.check(matches(isDisplayed()));
     }
@@ -190,40 +149,28 @@ public class GroupsActivityLeadsToCreateGroup
     @Test
     public void thereIsAlgorithmsGroup()
     {
-        try
-        {
+        try {
             Thread.sleep(7000);
-        } catch(InterruptedException e)
-        {
+        } catch(InterruptedException e) {
             e.printStackTrace();
         }
-
         ViewInteraction appCompatButton = onView(
                 allOf(withId(R.id.gotoGroups), withText("Groups"),
                         childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                0),
-                        isDisplayed()));
+                                childAtPosition(withId(android.R.id.content), 0),
+                                0), isDisplayed()));
         appCompatButton.perform(click());
-
-        try
-        {
+        try {
             Thread.sleep(7000);
-        } catch(InterruptedException e)
-        {
+        } catch(InterruptedException e) {
             e.printStackTrace();
         }
-
         ViewInteraction textView = onView(
                 allOf(withId(R.id.group_course_name), withText("Algorithms CS-250"),
                         childAtPosition(
                                 childAtPosition(
-                                        withId(R.id.feedRecycleViewer),
-                                        4),
-                                0),
-                        isDisplayed()));
+                                        withId(R.id.feedRecycleViewer), 4),
+                                0), isDisplayed()));
         textView.check(matches(withText("Algorithms CS-250")));
     }
 
