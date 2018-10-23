@@ -44,17 +44,16 @@ public class CourseSelectActivity extends AppCompatActivity
 
     static List<String> coursesDB;
     //List of selected courses
-    static final List<Course> courseSelection = new ArrayList<>();
+    public static final List<Course> courseSelection = new ArrayList<>();
 
 
     static AutoCompleteTextView autocomplete;
     static ReferenceWrapper firebase;
-    static ArrayAdapter<String> adapter;
+    public static ArrayAdapter<String> adapter;
     static Button doneButton;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_course_select);
 
