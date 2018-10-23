@@ -74,26 +74,30 @@ public class ProfileTab extends AppCompatActivity {
             @Override
             public void accept(List<Pair> pairs) {
                 if (pairs != null) {
-                    firebase.select("courses").getAll(String.class, new Consumer<List<String>>() {
-                        @Override
-                        public void accept(List<String> courses) {
-                            for (Pair pair : pairs) {
-                                if (pair.getKey().toString().equals(userID)) {
-                                    for (String course : courses) {
-                                        if (course.equals(pair.getValue())) {
-                                            userCourses.add(new Course(course));
-                                        }
-                                        adCourse.notifyDataSetChanged();
-                                    }
-                                }
-                            }
-                        }
-                    });
 
+aggregate(pairs);
                 }
             }
         });
 
+    }
+
+    private void aggregate(List<Pair> pairs) {
+        firebase.select("courses").getAll(String.class, new Consumer<List<String>>() {
+            @Override
+            public void accept(List<String> courses) {
+                for (Pair pair : pairs) {
+                    if (pair.getKey().toString().equals(userID)) {
+                        for (String course : courses) {
+                            if (course.equals(pair.getValue())) {
+                                userCourses.add(new Course(course));
+                            }
+                            adCourse.notifyDataSetChanged();
+                        }
+                    }
+                }
+            }
+        });
     }
 
     private void setUI(){
