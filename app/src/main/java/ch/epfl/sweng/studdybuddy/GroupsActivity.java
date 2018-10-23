@@ -47,6 +47,7 @@ public class GroupsActivity extends AppCompatActivity
         rv.setLayoutManager(new LinearLayoutManager(this));
         FirebaseReference firebase = new FirebaseReference(FirebaseDatabase.getInstance().getReference());
         groupSet = new ArrayList<>();
+        groupSet.add(new Group(3, new Course("-"), "fr"));
         mAdapter = new GroupsRecyclerAdapter(groupSet);
         rv.setAdapter(mAdapter);
         firebase.select("groups").getAll(Group.class, AdapterConsumer.adapterConsumer(Group.class, groupSet, new RecyclerAdapterAdapter(mAdapter)));

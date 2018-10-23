@@ -12,8 +12,8 @@ public class GoogleSignInWrapper {
     public GoogleSignInWrapper(boolean onTest){
         this.onTest = onTest;
     }
-    public Task<GoogleSignInAccount> getTask(Intent data){
-        if(onTest){
+    public Task<GoogleSignInAccount> getTask(Intent data) {
+        if(onTest) {
             return null;
         }
         return GoogleSignIn.getSignedInAccountFromIntent(data);

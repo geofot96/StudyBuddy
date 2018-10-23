@@ -96,36 +96,6 @@ public class Group implements Comparable<Group> {
         this.course = new Course(course);
     }
 
-    public List<User> getParticipants()
-    {
-        List<User> participants=  new ArrayList<>();
-        List<ID<User>> userIds = new ArrayList<>();
-        //TODO return a collections.unmodifiableList
-
-        ReferenceWrapper ref = new FirebaseReference();
-        ref.select("userGroup").getAll(Pair.class, new Consumer<List<Pair>>() {
-
-            @Override
-            public void accept(List<Pair> join) {
-                for(Pair j: join){
-                    if(j.getValue().equals(groupID)){
-                        userIds.add(new ID<>(j.getKey()));
-                    }
-                }
-
-                for(ID<User> id: userIds){
-                    ref.select("users").select(id.toString()).get(User.class, new Consumer<User>() {
-                        @Override
-                        public void accept(User user) {
-                            participants.add(user);
-                        }
-                    });
-                }
-            }
-        });
-        return participants;
-    }
-
     public String getLang()
     {
         return language;
