@@ -1,3 +1,4 @@
+/*
 package ch.epfl.sweng.studdybuddy;
 
 import android.app.Activity;
@@ -39,7 +40,8 @@ public class ProfileTabTest
 
 
 
-    /*    @Test
+    */
+/*    @Test
         public void signOutButtonLeadsToLogin() {
             onView(withId(R.id.signout)).perform(click());
             intended(toPackage(LoginActivity.class)).hasComponent();
@@ -47,7 +49,8 @@ public class ProfileTabTest
         @Test
         public void signOutButtonDisconnects() {
         }
-      */
+      *//*
+
     @Test
     public void profileListHasCorrectData() {
         onView(withId(R.id.courses_list)).check(matches(hasDescendant(withText("Linear Algebra"))));
@@ -62,3 +65,4 @@ public class ProfileTabTest
     }
 
 }
+*/
