@@ -4,6 +4,7 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import static org.junit.Assert.*;
 
@@ -73,26 +74,6 @@ public class GroupsUnitTests
         assertEquals(5, group.getMaxNoUsers());
     }
 
-    /*@Test
-    public void increaseParticipantNumberWorks()
-    {
-        addUsers();
-        Group group = new Group(4, dummy_course, "fr", participants);
-        group.increaseParticipantNumber();
-        assertEquals(2, group.getParticipantNumber());
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void increaseParticipantNumberFailsWhenOverMax()
-    {
-        addUsers();
-        Group group = new Group(3, dummy_course, "fr", participants);
-        group.increaseParticipantNumber();
-        group.increaseParticipantNumber();
-        group.increaseParticipantNumber();
-        assertEquals(2, group.getParticipantNumber());
-    }
-*/
     @Test
     public void getCourseWorks()
     {
@@ -114,43 +95,92 @@ public class GroupsUnitTests
     }
 
     @Test
-    public void setParticipantsWorks()
+    public void compareToWorks()
     {
-        addUsers();
-        User user2 = new User("2", "Mr Potato 2", "SC", new ArrayList<>(), new ArrayList<>());
-        Group group = new Group(3, dummy_course, "fr", participants);
-        ArrayList<User> part = new ArrayList<>(2);
-        part.add(user);
-        part.add(user2);
-        group.setParticipants(part);
-        assertEquals(part.get(0).getName(), group.getParticipants().get(0).getName());
-        assertEquals(part.get(1).getName(), group.getParticipants().get(1).getName());
+        Group g1 = new Group(5, new Course("test course"), "en", new ArrayList<>());
+        try
+        {
+            TimeUnit.SECONDS.sleep(1);
+        } catch(InterruptedException e)
+        {
+
+        }
+        Group g2 = new Group(5, new Course("test course 2"), "en", new ArrayList<>());
+        assertEquals(1, g1.compareTo(g2));
+        assertEquals(-1, g2.compareTo(g1));
+        assertEquals(0, g1.compareTo(g1));
     }
 
     @Test
-    public void addParticipantWorks()
+    public void setCreationDateWorks()
     {
-        addUsers();
-        Group group = new Group(3, dummy_course, "fr", participants);
-        User user2 = new User("2", "Mr Potato 2", "SC", new ArrayList<>(), new ArrayList<>());
-        group.addParticipant(user2);
-        List<User> part = group.getParticipants();
-        assertEquals(user.getName(), part.get(0).getName());
-        assertEquals(user2.getName(), part.get(1).getName());
+        Group g1 = new Group(5, new Course("test course"), "en", new ArrayList<>());
+        try
+        {
+            TimeUnit.SECONDS.sleep(1);
+        } catch(InterruptedException e)
+        {
+
+        }
+        Group g2 = new Group(5, new Course("test course 2"), "en", new ArrayList<>());
+        assertEquals(1, g1.compareTo(g2));
+        try
+        {
+            TimeUnit.SECONDS.sleep(1);
+        } catch(InterruptedException e)
+        {
+
+        }
+        g1.setCreationDate(new SerialDate());
+        assertEquals(1, g2.compareTo(g1));
     }
 
     @Test
-    public void removeParticipantWorks()
+    public void testEmptyConstructor()
     {
-        addUsers();
-        Group group = new Group(3, dummy_course, "fr", participants);
-        User user2 = new User("2", "Mr Potato 2", "SC", new ArrayList<>(), new ArrayList<>());
-        group.addParticipant(user2);
-        group.removeParticipant(user2);
-        List<User> part = group.getParticipants();
-        assertEquals(user.getName(), part.get(0).getName());
-        assertEquals(1, group.getParticipantNumber());
+        Group group = new Group();
     }
 
+    @Test
+    public void testSetGroupID()
+    {
+        Group group = new Group();
+        ID<Group> tempID = new ID<>();
+        group.setGroupID(tempID.getId());
+        assertEquals(tempID.getId(), group.getGroupID());
+    }
 
+    /*@Test
+    public void testGetParticipants()
+    {
+        ArrayList<User> list = new ArrayList<>();
+        User user1 = new User("1", new ID<>(), null);
+        User user2 = new User("2", new ID<>(), null);
+        User user3 = new User("3", new ID<>(), null);
+        list.add(user1);
+        list.add(user2);
+        list.add(user3);
+        Group group = new Group(5, new Course("test"), "en", list);
+
+        ArrayList<User> result = new ArrayList<>(group.getParticipants());
+        assertEquals(result.size(), list.size());
+        assertEquals(result.get(0).getUserID(), list.get(0).getUserID());
+        assertEquals(result.get(1).getUserID(), list.get(0).getUserID());
+        assertEquals(result.get(2).getUserID(), list.get(0).getUserID());
+    }*/
+
+    @Test
+    public void testGetLang()
+    {
+        Group group = new Group(5, new Course("test"), "gr", new ArrayList<>());
+        assertEquals("gr", group.getLang());
+    }
+
+    @Test
+    public void testSetLang()
+    {
+        Group group = new Group(5, new Course("test"), "gr", new ArrayList<>());
+        group.setLang("ch");
+        assertEquals("ch", group.getLang());
+    }
 }
