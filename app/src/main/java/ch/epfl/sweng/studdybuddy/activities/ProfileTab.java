@@ -85,9 +85,6 @@ public class ProfileTab extends AppCompatActivity {
                                         }
                                         adCourse.notifyDataSetChanged();
                                     }
-                                    if (userCourses.size() == 0) {
-                                        userCourses.add(new Course("No courses"));
-                                    }
                                 }
                             }
                         }
