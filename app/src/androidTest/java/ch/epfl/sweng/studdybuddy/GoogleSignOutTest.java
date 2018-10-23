@@ -1,9 +1,12 @@
 package ch.epfl.sweng.studdybuddy;
 
 import android.content.ComponentName;
+
 import android.content.Intent;
 import android.support.test.espresso.intent.rule.IntentsTestRule;
+import android.content.Intent;
 import android.support.test.runner.AndroidJUnit4;
+import android.support.test.espresso.intent.rule.IntentsTestRule;
 
 import org.junit.Rule;
 import org.junit.Test;
