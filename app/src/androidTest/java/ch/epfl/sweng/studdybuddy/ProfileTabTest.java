@@ -56,6 +56,7 @@ public class ProfileTabTest
     public void profileListHasCorrectData() {
         onView(withId(R.id.courses_list)).check(matches(hasDescendant(withText("Linear Algebra"))));
         onView(withId(R.id.courses_list)).check(matches(hasDescendant(withText("Algorithms"))));
+        onView(withId(R.id.courses_list)).check(matches(hasDescendant(withText("Computer Networks"))));
     }
 
     @Test
