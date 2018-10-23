@@ -5,7 +5,7 @@ import ch.epfl.sweng.studdybuddy.Pair;
 
 public class Helper {
 
-    static public String hashCode(Pair pair){
+    static public String hashCode(Pair pair) {
         return Integer.toString((pair.getKey() + pair.getValue()).hashCode());
     }
 }
