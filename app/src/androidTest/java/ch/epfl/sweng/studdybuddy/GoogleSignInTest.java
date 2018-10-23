@@ -23,10 +23,21 @@ public class GoogleSignInTest {
     public IntentsTestRule<DummyGoogleSignInActivity> DummyGoogleSignInActivityIntentRule =
             new IntentsTestRule<>(DummyGoogleSignInActivity.class, false, false);
 
-    @Test
+    @Rule
+    public IntentsTestRule<DummyMainActivity> DummyMainActivityIntentRule =
+            new IntentsTestRule<>(DummyMainActivity.class, false, false);
+
+    /*@Test
     public void LoginShouldGoToMainActivity(){
         DummyGoogleSignInActivityIntentRule.launchActivity(new Intent());
         onView(withId(R.id.googleBtn)).perform(click());
         intended(hasComponent(new ComponentName(getTargetContext(), CourseSelectActivity.class)));
+    }*/
+
+    @Test
+    public void logoutShouldGoToGoogleSignInActivity(){
+        DummyMainActivityIntentRule.launchActivity(new Intent());
+        onView(withId(R.id.signout_btn)).perform(click());
+        intended(hasComponent(new ComponentName(getTargetContext(), GoogleSignInActivity.class)));
     }
 }
