@@ -1,4 +1,4 @@
-package ch.epfl.sweng.studdybuddy.activities;
+package ch.epfl.sweng.studdybuddy.InstrumentationTests;
 
 
 import android.support.test.espresso.ViewInteraction;
@@ -17,11 +17,10 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import ch.epfl.sweng.studdybuddy.R;
+import ch.epfl.sweng.studdybuddy.activities.MainActivity;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
-import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
-import static android.support.test.espresso.action.ViewActions.replaceText;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
@@ -30,14 +29,14 @@ import static org.hamcrest.Matchers.allOf;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
-public class AlgoTest
+public class ThereIsAlgorithmsGroup
 {
 
     @Rule
     public ActivityTestRule<MainActivity> mActivityTestRule = new ActivityTestRule<>(MainActivity.class);
 
     @Test
-    public void algoTest()
+    public void thereIsAlgorithmsGroup()
     {
         // Added a sleep statement to match the app's execution delay.
         // The recommended way to handle such scenarios is to use Espresso idling resources:
@@ -71,67 +70,12 @@ public class AlgoTest
             e.printStackTrace();
         }
 
-        ViewInteraction searchAutoComplete = onView(
-                allOf(withId(R.id.search_src_text),
-                        childAtPosition(
-                                allOf(withId(R.id.search_plate),
-                                        childAtPosition(
-                                                withId(R.id.search_edit_frame),
-                                                1)),
-                                0),
-                        isDisplayed()));
-        searchAutoComplete.perform(replaceText("alg"), closeSoftKeyboard());
-
-        // Added a sleep statement to match the app's execution delay.
-        // The recommended way to handle such scenarios is to use Espresso idling resources:
-        // https://google.github.io/android-testing-support-library/docs/espresso/idling-resource/index.html
-        try
-        {
-            Thread.sleep(7000);
-        } catch(InterruptedException e)
-        {
-            e.printStackTrace();
-        }
-
-        ViewInteraction searchAutoComplete2 = onView(
-                allOf(withId(R.id.search_src_text), withText("alg"),
-                        childAtPosition(
-                                allOf(withId(R.id.search_plate),
-                                        childAtPosition(
-                                                withId(R.id.search_edit_frame),
-                                                1)),
-                                0),
-                        isDisplayed()));
-        searchAutoComplete2.perform(replaceText("algo"));
-
-        ViewInteraction searchAutoComplete3 = onView(
-                allOf(withId(R.id.search_src_text), withText("algo"),
-                        childAtPosition(
-                                allOf(withId(R.id.search_plate),
-                                        childAtPosition(
-                                                withId(R.id.search_edit_frame),
-                                                1)),
-                                0),
-                        isDisplayed()));
-        searchAutoComplete3.perform(closeSoftKeyboard());
-
-        // Added a sleep statement to match the app's execution delay.
-        // The recommended way to handle such scenarios is to use Espresso idling resources:
-        // https://google.github.io/android-testing-support-library/docs/espresso/idling-resource/index.html
-        try
-        {
-            Thread.sleep(5000);
-        } catch(InterruptedException e)
-        {
-            e.printStackTrace();
-        }
-
         ViewInteraction textView = onView(
                 allOf(withId(R.id.group_course_name), withText("Algorithms CS-250"),
                         childAtPosition(
                                 childAtPosition(
                                         withId(R.id.feedRecycleViewer),
-                                        0),
+                                        4),
                                 0),
                         isDisplayed()));
         textView.check(matches(withText("Algorithms CS-250")));
