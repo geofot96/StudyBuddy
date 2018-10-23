@@ -10,18 +10,14 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import ch.epfl.sweng.studdybuddy.activities.MainActivity;
+
 import static android.support.test.InstrumentationRegistry.getTargetContext;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.intent.Intents.intended;
 import static android.support.test.espresso.intent.matcher.IntentMatchers.hasComponent;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
-
-import ch.epfl.sweng.studdybuddy.DummyGoogleSignInActivity;
-import ch.epfl.sweng.studdybuddy.DummyMainActivity;
-import ch.epfl.sweng.studdybuddy.GoogleSignInActivity;
-import ch.epfl.sweng.studdybuddy.R;
-import ch.epfl.sweng.studdybuddy.activities.*;
 
 @RunWith(AndroidJUnit4.class)
 public class GoogleSignInTest {

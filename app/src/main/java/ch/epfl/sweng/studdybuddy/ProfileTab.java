@@ -28,6 +28,7 @@ public class ProfileTab extends AppCompatActivity {
         setContentView(R.layout.activity_profile_tab);
         usersCourses.add("Linear Algebra");
         usersCourses.add("Algorithms");
+        usersCourses.add("Computer Networks");
 
         final RecyclerView recyclerView_courses = (RecyclerView) findViewById(R.id.courses_list);
         recyclerView_courses.setLayoutManager(new LinearLayoutManager(this));
