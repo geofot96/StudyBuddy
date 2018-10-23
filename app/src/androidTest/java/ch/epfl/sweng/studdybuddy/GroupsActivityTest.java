@@ -1,4 +1,4 @@
-package ch.epfl.sweng.studdybuddy.activities;
+package ch.epfl.sweng.studdybuddy;
 
 import android.support.test.espresso.UiController;
 import android.support.test.espresso.ViewAction;
