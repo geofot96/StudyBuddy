@@ -83,20 +83,6 @@ public class CourseSelectActivity extends AppCompatActivity
             @Override
             public void onClick(View v)
             {
-                //tie courses to account
-                //intent to main
-                User currentUser = ((StudyBuddy) CourseSelectActivity.this.getApplication()).getAuthendifiedUser();
-                AuthManager auth = new FirebaseAuthManager(CourseSelectActivity.this, getString(R.string.default_web_client_id));
-
-                for(Course course : courseSelection){
-                    Pair pair = new Pair(currentUser.getUserID().toString(), course.getCourseID().toString());
-                    firebase.select("userCourse").select(Helper.hashCode(pair).toString()).setVal(pair);
-
-                }
-                //currentUser.setCoursesPreset(courseSelection);
-                //Launches null pointer exception because the user is not fully initialized
-                //currentUser.setCoursesPreset(courseSelection);
-                startActivity(toMain);
             }
         });
     }
