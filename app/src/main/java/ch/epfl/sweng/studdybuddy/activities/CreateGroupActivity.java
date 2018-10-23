@@ -128,7 +128,7 @@ public class CreateGroupActivity extends AppCompatActivity implements AdapterVie
         if(!selectedCourse.isEmpty() &&coursesDB.contains(selectedCourse)) {
 					//Comunnicate through fb
                 Group g = new Group(maxParticipants, new Course(selectedCourse),selectedLanguage);
-		        firebase.select("groups").select(g.getGroupID().toString()).setVal(g);
+		        firebase.select("groups").select(g.getGroupID().getId()).setVal(g);
 		        User user = ((StudyBuddy) CreateGroupActivity.this.getApplication()).authendifiedUser;
                 Pair pair = new Pair(user.getUserID().toString(),g.getGroupID().toString());
                 String id = Helper.hashCode(pair);

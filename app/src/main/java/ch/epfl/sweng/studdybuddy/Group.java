@@ -66,9 +66,9 @@ public class Group implements Comparable<Group> {
         return new ID<>(groupID);
     }
 
-    public void setGroupID(String groupID)
+    public void setGroupID(ID<Group> groupID)
     {
-        this.groupID = new ID<>(groupID);
+        this.groupID = groupID;
     }
 
 

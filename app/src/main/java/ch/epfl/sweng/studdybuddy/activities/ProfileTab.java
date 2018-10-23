@@ -113,5 +113,4 @@ public class ProfileTab extends AppCompatActivity {
         recyclerView_groups.setLayoutManager(new LinearLayoutManager(this));
         recyclerView_groups.setAdapter(ad);
     }
-
 }
