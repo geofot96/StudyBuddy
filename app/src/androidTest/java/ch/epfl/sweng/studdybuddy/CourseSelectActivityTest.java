@@ -38,7 +38,7 @@ import static org.hamcrest.Matchers.not;
 @RunWith(AndroidJUnit4.class)
 public class       CourseSelectActivityTest
 {
-    public static final String mockCourse = "Pharmacological chemistry CH-414";
+    public static final String mockCourse = "Untitled";
     @Rule
     public final IntentsTestRule<CourseSelectActivity> mActivityRule =
             new IntentsTestRule<>(CourseSelectActivity.class);
@@ -64,6 +64,4 @@ public class       CourseSelectActivityTest
          onData(equalTo(mockCourse)).inRoot(RootMatchers.isPlatformPopup()).perform(click());
          onView(withId(R.id.coursesSet)).check(matches(hasDescendant(withText(mockCourse))));
     }
-
-
 }
