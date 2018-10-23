@@ -17,15 +17,16 @@ import static android.support.test.espresso.intent.matcher.IntentMatchers.hasCom
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 
 @RunWith(AndroidJUnit4.class)
-public class GoogleSignOutTest {
+public class LogOutTest {
     @Rule
-    public IntentsTestRule<DummyMainActivity> DummyMainActivityIntentRule =
+    public IntentsTestRule<DummyMainActivity> mActivityRule =
             new IntentsTestRule<>(DummyMainActivity.class, false, false);
 
     @Test
-    public void logoutShouldGoToGoogleSignInActivity(){
-        DummyMainActivityIntentRule.launchActivity(new Intent());
+    public void logoutLeadGoogleSignInActivity(){
+        mActivityRule.launchActivity(new Intent());
         onView(withId(R.id.signout_btn)).perform(click());
         intended(hasComponent(new ComponentName(getTargetContext(), GoogleSignInActivity.class)));
     }
 }
+

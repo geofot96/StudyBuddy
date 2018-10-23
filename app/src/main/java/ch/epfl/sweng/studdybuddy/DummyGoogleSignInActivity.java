@@ -1,6 +1,10 @@
 package ch.epfl.sweng.studdybuddy;
 
+import android.content.Intent;
+
 import com.google.android.gms.tasks.Task;
+
+import ch.epfl.sweng.studdybuddy.activities.CourseSelectActivity;
 
 public class DummyGoogleSignInActivity extends GoogleSignInActivity {
 
@@ -30,6 +34,10 @@ public class DummyGoogleSignInActivity extends GoogleSignInActivity {
         };
     }
 
+    @Override
+    void fetchUserAndStart(Account acct, Class destination){
+        startActivity(new Intent(DummyGoogleSignInActivity.this, CourseSelectActivity.class));
+    }
     @Override
     public boolean onTest(){
         return true;
