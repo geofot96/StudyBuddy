@@ -32,11 +32,12 @@ import ch.epfl.sweng.studdybuddy.CourseHolder;
 import ch.epfl.sweng.studdybuddy.FirebaseAuthManager;
 import ch.epfl.sweng.studdybuddy.FirebaseReference;
 import ch.epfl.sweng.studdybuddy.GroupsActivity;
+import ch.epfl.sweng.studdybuddy.Pair;
 import ch.epfl.sweng.studdybuddy.R;
 import ch.epfl.sweng.studdybuddy.ReferenceWrapper;
 import ch.epfl.sweng.studdybuddy.StudyBuddy;
 import ch.epfl.sweng.studdybuddy.User;
-import ch.epfl.sweng.studdybuddy.UserCourseJoin;
+import ch.epfl.sweng.studdybuddy.util.Helper;
 
 
 public class CourseSelectActivity extends AppCompatActivity
@@ -89,8 +90,8 @@ public class CourseSelectActivity extends AppCompatActivity
                 AuthManager auth = new FirebaseAuthManager(CourseSelectActivity.this, getString(R.string.default_web_client_id));
 
                 for(Course course : courseSelection){
-                    UserCourseJoin join = new UserCourseJoin(course.getCourseName(),auth.getCurrentUser().getId().toString());
-                    firebase.select("userCourse").select(join.getId().toString()).setVal(join);
+                    Pair pair = new Pair(currentUser.getUserID().toString(), course.getCourseID().toString());
+                    firebase.select("userCourse").select(Helper.hashCode(pair).toString()).setVal(pair);
 
                 }
                 //currentUser.setCoursesPreset(courseSelection);

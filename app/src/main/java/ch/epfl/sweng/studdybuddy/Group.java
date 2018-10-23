@@ -61,9 +61,9 @@ public class Group implements Comparable<Group> {
         this.language = sourceGroup.language;
     }
 
-    public String getGroupID()
+    public ID<Group> getGroupID()
     {
-        return groupID.getId();
+        return new ID<>(groupID);
     }
 
     public void setGroupID(String groupID)
@@ -103,13 +103,13 @@ public class Group implements Comparable<Group> {
         //TODO return a collections.unmodifiableList
 
         ReferenceWrapper ref = new FirebaseReference();
-        ref.select("groupsTable").getAll(UserGroupJoin.class, new Consumer<List<UserGroupJoin>>() {
+        ref.select("userGroup").getAll(Pair.class, new Consumer<List<Pair>>() {
 
             @Override
-            public void accept(List<UserGroupJoin> join) {
-                for(UserGroupJoin j: join){
-                    if(j.getGroupID().equals(groupID)){
-                        userIds.add(j.getUserID());
+            public void accept(List<Pair> join) {
+                for(Pair j: join){
+                    if(j.getValue().equals(groupID)){
+                        userIds.add(new ID<>(j.getKey()));
                     }
                 }
 

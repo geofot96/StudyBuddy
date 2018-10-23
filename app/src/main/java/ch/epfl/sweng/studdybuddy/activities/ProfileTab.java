@@ -1,35 +1,24 @@
 package ch.epfl.sweng.studdybuddy.activities;
 
-import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.helper.ItemTouchHelper;
-import android.util.Log;
 import android.widget.TextView;
 
-import com.google.firebase.auth.FirebaseAuth;
-
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 
 import ch.epfl.sweng.studdybuddy.Consumer;
 import ch.epfl.sweng.studdybuddy.Course;
 import ch.epfl.sweng.studdybuddy.CourseAdapter;
-import ch.epfl.sweng.studdybuddy.CourseHolder;
-import ch.epfl.sweng.studdybuddy.FirebaseAuthManager;
 import ch.epfl.sweng.studdybuddy.FirebaseReference;
-import ch.epfl.sweng.studdybuddy.GoogleSignInActivity;
 import ch.epfl.sweng.studdybuddy.Group;
 import ch.epfl.sweng.studdybuddy.GroupsRecyclerAdapter;
+import ch.epfl.sweng.studdybuddy.Pair;
 import ch.epfl.sweng.studdybuddy.R;
 import ch.epfl.sweng.studdybuddy.StudyBuddy;
 import ch.epfl.sweng.studdybuddy.User;
-import ch.epfl.sweng.studdybuddy.UserCourseJoin;
-import ch.epfl.sweng.studdybuddy.UserGroupJoin;
 
 public class ProfileTab extends AppCompatActivity {
 
@@ -62,13 +51,12 @@ public class ProfileTab extends AppCompatActivity {
 
     private void setGroupsUp() {
 
-        firebase.select("userGroup").getAll(UserGroupJoin.class, new Consumer<List<UserGroupJoin>>() {
+        firebase.select("userGroup").getAll(Pair.class, new Consumer<List<Pair>>() {
             @Override
-            public void accept(List<UserGroupJoin> join) {
-                User u = ((StudyBuddy) ProfileTab.this.getApplication()).getAuthendifiedUser();
-                for(UserGroupJoin j: join){
-                    if(j.getUserID().getId().equals(userID)) {
-                        firebase.select("groups").select(j.getGroupID().getId()).get(Group.class, new Consumer<Group>() {
+            public void accept(List<Pair> pairs) {
+                for(Pair pair: pairs){
+                    if(pair.getKey().equals(userID)) {
+                        firebase.select("groups").select(pair.getValue()).get(Group.class, new Consumer<Group>() {
                             @Override
                             public void accept(Group g) {
                                 userGroups.add(g);
@@ -82,55 +70,30 @@ public class ProfileTab extends AppCompatActivity {
     }
 
     private void setCoursesUp() {
-        firebase.select("userCourse").getAll(UserCourseJoin.class, new Consumer<List<UserCourseJoin>>() {
-            /*Right now courses are stored as a big array => we need to know the index, not the id which
-            is the course name for the moment
-
+        firebase.select("userCourse").getAll(Pair.class, new Consumer<List<Pair>>() {
             @Override
-            public void accept(List<UserCourseJoin> userCourseJoins) {
-                userCourses.clear();
-                for(UserCourseJoin j: userCourseJoins) {
-
-                    /*if(j.getUserID().getId().equals(userID)) {
-                        firebase.select("courses").select(j.getCourseID().getId()).get(String.class, new Consumer<String>() {
-                            @Override
-                            public void accept(String s) {
-                                ///need to store courses as Course objects
-                                userCourses.add(new Course(s));
-                                adCourse.notifyDataSetChanged();
-                            }
-                        });
-                    }
-                     if(userCourses.size()==0){
-                    userCourses.add(new Course("No courses"));
-                }
-                Log.i("userCourses size is", Integer.toString(userCourses.size()));
-                adCourse.notifyDataSetChanged();
-            }
-        });
-                }*/
-            @Override
-            public void accept(List<UserCourseJoin> pairs) {
-
-                firebase.select("courses").getAll(String.class, new Consumer<List<String>>() {
-                    @Override
-                    public void accept(List<String> courses) {
-                        for (UserCourseJoin p : pairs) {
-                            if (p.getUserID().toString().equals(userID)) {
-                                for (String c : courses) {
-                                    if (c.equals(p.getCourseID().getId())) {
-                                        userCourses.add(new Course(c));
+            public void accept(List<Pair> pairs) {
+                if (pairs != null) {
+                    firebase.select("courses").getAll(String.class, new Consumer<List<String>>() {
+                        @Override
+                        public void accept(List<String> courses) {
+                            for (Pair pair : pairs) {
+                                if (pair.getKey().toString().equals(userID)) {
+                                    for (String course : courses) {
+                                        if (course.equals(pair.getValue())) {
+                                            userCourses.add(new Course(course));
+                                        }
+                                        adCourse.notifyDataSetChanged();
                                     }
-                                    adCourse.notifyDataSetChanged();
-                                }
-                                if (userCourses.size() == 0) {
-                                    userCourses.add(new Course("No courses"));
+                                    if (userCourses.size() == 0) {
+                                        userCourses.add(new Course("No courses"));
+                                    }
                                 }
                             }
                         }
-                    }
-                 });
+                    });
 
+                }
             }
         });
 
