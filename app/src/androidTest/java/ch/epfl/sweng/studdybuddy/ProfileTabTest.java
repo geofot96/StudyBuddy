@@ -37,16 +37,12 @@ public class ProfileTabTest
     }
 
     @Test
-    public void profileListHasCorrectData() {
+    public void profileAndGroupListHasCorrectData() {
         onView(withId(R.id.courses_list)).check(matches(hasDescendant(withText("Linear Algebra"))));
         onView(withId(R.id.courses_list)).check(matches(hasDescendant(withText("Algorithms"))));
-        //onView(withId(R.id.courses_list)).check(matches(hasDescendant(withText("Computer Networks"))));
-    }
-
-    @Test
-    public void groupListHasCorrectData() {
         onView(withId(R.id.groups_list)).check(matches(hasDescendant(withText("Linear Algebra"))));
         onView(withId(R.id.groups_list)).check(matches(hasDescendant(withText("Algorithms"))));
+        //onView(withId(R.id.courses_list)).check(matches(hasDescendant(withText("Computer Networks"))));
     }
 
 }
