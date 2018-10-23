@@ -1,4 +1,4 @@
-package ch.epfl.sweng.studdybuddy.activities;
+package ch.epfl.sweng.studdybuddy;
 
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -15,21 +15,20 @@ import java.util.Objects;
 import ch.epfl.sweng.studdybuddy.CourseAdapter;
 import ch.epfl.sweng.studdybuddy.CourseHolder;
 import ch.epfl.sweng.studdybuddy.R;
-import ch.epfl.sweng.studdybuddy.StudyBuddy;
 
 public class ProfileTab extends AppCompatActivity {
 
-    private List<String> usersCourses;
-    private final List<String> usersGroups = Arrays.asList("Linear Algebra", "Algorithms");
+    private static final List<String> usersCourses = new ArrayList<>();
+    private static final List<String> usersGroups = Arrays.asList("Linear Algebra", "Algorithms");
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile_tab);
-        usersCourses = new ArrayList<>();
-        usersCourses.add("$no course");
-        usersCourses.addAll(((StudyBuddy) this.getApplication()).getAuthendifiedUser().getCoursesPreset());
+        usersCourses.add("Linear Algebra");
+        usersCourses.add("Algorithms");
+        usersCourses.add("Computer Networks");
 
         final RecyclerView recyclerView_courses = (RecyclerView) findViewById(R.id.courses_list);
         recyclerView_courses.setLayoutManager(new LinearLayoutManager(this));
@@ -40,17 +39,17 @@ public class ProfileTab extends AppCompatActivity {
         recyclerView_groups.setAdapter(new CourseAdapter(usersGroups));
 
         ItemTouchHelper mIth = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP | ItemTouchHelper.DOWN, ItemTouchHelper.RIGHT){
-                @Override
-                public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder viewHolder1){
-                    return false;
-                }
-                @Override
-                public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int i){
-                    CourseHolder cc = (CourseHolder) viewHolder;
-                    usersCourses.remove(usersCourses.indexOf(cc.get()));
-                    recyclerView_courses.getAdapter().notifyDataSetChanged();
-                }
-            });
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder viewHolder1){
+                return false;
+            }
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int i){
+                CourseHolder cc = (CourseHolder) viewHolder;
+                usersCourses.remove(usersCourses.indexOf(cc.get()));
+                recyclerView_courses.getAdapter().notifyDataSetChanged();
+            }
+        });
         mIth.attachToRecyclerView(recyclerView_courses);
     }
     private void removeCourse(String course){
