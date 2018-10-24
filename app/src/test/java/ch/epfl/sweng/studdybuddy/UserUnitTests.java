@@ -39,4 +39,16 @@ public class UserUnitTests
         assertEquals("MA", user.getSection());
     }
 
+    @Test
+    public void getCurrentGroupsIfNull(){
+        user.setCurrentGroups(null);
+        assertEquals(null, user.getCurrentGroups());
+    }
+
+    @Test
+    public void getCurrentGroups(){
+        User user1 = new User("1", "Mr Potato", "IN", new ArrayList<>(), new ArrayList<>());
+        assertEquals(new ArrayList<>(), user1.getCurrentGroups());
+    }
+
 }
