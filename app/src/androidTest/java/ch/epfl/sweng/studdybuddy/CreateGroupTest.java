@@ -55,11 +55,18 @@ public class CreateGroupTest {
     public IntentsTestRule<GroupsActivity> mIntentsTestRule = new IntentsTestRule<>(GroupsActivity.class);
 
     @Test
-    public void createAGroupWillBeRegistered() throws InterruptedException {
+    public void clickCreateGroupButtonLeadsToCreateGroupsActivity(){
+        onView(withId(R.id.createGroup)).perform(click());
+        intended(hasComponent(new ComponentName(getTargetContext(), CreateGroupActivity.class)));
+    }
+
+    @Test
+    public void createAGroupWillBeRegistered() {
 
         onView(withId(R.id.createGroup)).perform(click());
-        onView(withId(R.id.courseComplete2)).perform(click(), typeText("algo"));
-        onData(equalTo("Concurrent algorithms CS-453")).inRoot(RootMatchers.isPlatformPopup()).perform(click()).perform(closeSoftKeyboard());
+        onView(withId(R.id.courseComplete2)).perform(click(), typeText("Concurrent algorithms CS-453"));
+        onData(equalTo("Concurrent algorithms CS-453")).inRoot(RootMatchers.isPlatformPopup()).perform(click());
+        onView(withId(R.id.courseComplete2)).perform(closeSoftKeyboard());
         onView(withId(R.id.confirmGroupCreation)).perform(click());
         intended(hasComponent(new ComponentName(getTargetContext(), GroupsActivity.class)));
 
