@@ -3,17 +3,10 @@ package ch.epfl.sweng.studdybuddy;
 import android.content.ComponentName;
 import android.support.test.espresso.UiController;
 import android.support.test.espresso.ViewAction;
-import android.support.test.espresso.action.GeneralLocation;
-import android.support.test.espresso.action.GeneralSwipeAction;
-import android.support.test.espresso.action.Press;
-import android.support.test.espresso.action.Swipe;
 import android.support.test.espresso.intent.rule.IntentsTestRule;
 import android.support.test.espresso.matcher.RootMatchers;
-import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
-import android.view.KeyEvent;
 import android.view.View;
-import android.widget.AutoCompleteTextView;
 import android.widget.TextView;
 
 import org.hamcrest.Matcher;
@@ -21,37 +14,24 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-
-import ch.epfl.sweng.studdybuddy.CourseSelectActivity;
-
 import static android.support.test.InstrumentationRegistry.getTargetContext;
 import static android.support.test.espresso.Espresso.onData;
 import static android.support.test.espresso.Espresso.onView;
-
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
-import static android.support.test.espresso.action.ViewActions.pressImeActionButton;
-import static android.support.test.espresso.action.ViewActions.pressKey;
-import static android.support.test.espresso.action.ViewActions.swipeLeft;
 import static android.support.test.espresso.action.ViewActions.swipeRight;
 import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.intent.Intents.intended;
-import static android.support.test.espresso.intent.Intents.intending;
 import static android.support.test.espresso.intent.matcher.IntentMatchers.hasComponent;
-import static android.support.test.espresso.intent.matcher.IntentMatchers.toPackage;
 import static android.support.test.espresso.matcher.ViewMatchers.hasDescendant;
-import static android.support.test.espresso.matcher.ViewMatchers.isChecked;
 import static android.support.test.espresso.matcher.ViewMatchers.isDescendantOfA;
-import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayingAtLeast;
 import static android.support.test.espresso.matcher.ViewMatchers.isEnabled;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.CoreMatchers.allOf;
-import static org.hamcrest.CoreMatchers.anyOf;
 import static org.hamcrest.CoreMatchers.instanceOf;
-import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
@@ -66,12 +46,16 @@ public class       CourseSelectActivityTest
     public final IntentsTestRule<CourseSelectActivity> mActivityRule =
             new IntentsTestRule<>(CourseSelectActivity.class);
 
+
     @Test
-    public void skipLeadsToGroupActivity()
-    {
+    public void skipLeadsToGroupActivity() throws InterruptedException {
+        Thread.sleep(500);
+        onView(withId(R.id.skipButton)).perform(closeSoftKeyboard());
+        Thread.sleep(500);
         onView(withId(R.id.skipButton)).perform(click());
         intended(hasComponent(new ComponentName(getTargetContext(), GroupsActivity.class)));
     }
+
 
 
     @Test
@@ -85,9 +69,10 @@ public class       CourseSelectActivityTest
 
 
     @Test //()
-    public void courseNotAddedIfGibberish() {
+    public void courseNotAddedIfGibberish() throws InterruptedException {
         onView(withId(R.id.courseComplete)).perform(click(), typeText("yxcvbn"));
         onView(withId(R.id.doneButton)).perform(closeSoftKeyboard());
+        Thread.sleep(500);
         onView(withId(R.id.doneButton)).check(matches(not(isEnabled())));
     }
 
@@ -99,24 +84,26 @@ public class       CourseSelectActivityTest
     }
 
     @Test
-    public void clickOnCourseSuggestionAddsCourseToList() {
-        /*onView(withId(R.id.courseComplete)).perform(click(), typeText("concurrent"));
+    public void clickOnCourseSuggestionAddsCourseToList() throws InterruptedException {
+        onView(withId(R.id.courseComplete)).perform(click(), typeText("concurrent"));
         onData(equalTo(mockCourse)).inRoot(RootMatchers.isPlatformPopup()).perform(click());
         onView(withId(R.id.courseComplete)).perform(closeSoftKeyboard());
-        onView(withId(R.id.coursesSet)).check(matches(hasDescendant(withText(mockCourse))));*/
+        Thread.sleep(500);
+        onView(withId(R.id.coursesSet)).check(matches(hasDescendant(withText(mockCourse))));
     }
 
     //swipe on course
     @Test
-    public void swipeOnCourseDeletesIt() {
-       /* onView(withId(R.id.courseComplete)).perform(click(), typeText("concurrent"));
+
+    public void swipeOnCourseDeletesIt() throws InterruptedException {
+        onView(withId(R.id.courseComplete)).perform(click(), typeText("concurrent"));
         onData(equalTo(mockCourse)).inRoot(RootMatchers.isPlatformPopup()).perform(click());
         onView(withId(R.id.courseComplete)).perform(closeSoftKeyboard());
+        Thread.sleep(500);
         onView(withId(R.id.coursesSet)).check(matches(hasDescendant(withText(mockCourse))));
         // onView(withId(R.id.courseComplete)).perform(click(), typeText(mockCourse), pressKey(KeyEvent.KEYCODE_ENTER));
         onView(allOf(is(instanceOf(TextView.class)), withText(mockCourse), isDescendantOfA(withId(R.id.coursesSet)))).perform(withCustomConstraints(swipeRight(), isDisplayingAtLeast(1)));
         onView(withId(R.id.courseComplete)).check(matches(not(hasDescendant(withText(mockCourse)))));
-        */
     }
 
     public static ViewAction withCustomConstraints(final ViewAction action, final Matcher<View> constraints) {
