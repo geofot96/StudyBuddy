@@ -48,35 +48,26 @@ public class GroupsActivityLeadsToCreateGroup
     @Test
     public void algoTest()
     {
-
         refactor();
-
         ViewInteraction searchAutoComplete3 = onView(
                 allOf(withId(R.id.search_src_text), withText("algo"),
                         childAtPosition(
                                 allOf(withId(R.id.search_plate),
-                                        childAtPosition(
-                                                withId(R.id.search_edit_frame),
-                                                1)),
-                                0),
+                                        childAtPosition(withId(R.id.search_edit_frame),
+                                                1)), 0),
                         isDisplayed()));
         searchAutoComplete3.perform(closeSoftKeyboard());
-
         try
         {
             Thread.sleep(5000);
-        } catch(InterruptedException e)
-        {
-            e.printStackTrace();
-        }
-
+        } catch(InterruptedException e) {
+            e.printStackTrace(); }
         ViewInteraction textView = onView(
                 allOf(withId(R.id.group_course_name), withText("Algorithms CS-250"),
                         childAtPosition(
                                 childAtPosition(
                                         withId(R.id.feedRecycleViewer),
-                                        0),
-                                0),
+                                        0), 0),
                         isDisplayed()));
         textView.check(matches(withText("Algorithms CS-250")));
     }
