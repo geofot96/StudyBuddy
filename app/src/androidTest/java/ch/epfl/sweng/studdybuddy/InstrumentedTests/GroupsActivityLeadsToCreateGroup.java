@@ -16,12 +16,14 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import ch.epfl.sweng.studdybuddy.DummyMainActivity;
 import ch.epfl.sweng.studdybuddy.R;
 import ch.epfl.sweng.studdybuddy.activities.MainActivity;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
+import static android.support.test.espresso.action.ViewActions.replaceText;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
@@ -34,7 +36,7 @@ public class GroupsActivityLeadsToCreateGroup
 {
 
     @Rule
-    public ActivityTestRule<MainActivity> mActivityTestRule = new ActivityTestRule<>(MainActivity.class);
+    public ActivityTestRule<MainActivity> mActivityTestRule = new ActivityTestRule(DummyMainActivity.class);
 
 
     @Test
@@ -44,34 +46,6 @@ public class GroupsActivityLeadsToCreateGroup
         ViewInteraction linearLayout = onView(withId(R.id.createGroup));
         linearLayout.check(matches(isDisplayed()));
     }
-
-    @Test
-    public void algoTest()
-    {
-        refactor();
-        ViewInteraction searchAutoComplete3 = onView(
-                allOf(withId(R.id.search_src_text), withText("algo"),
-                        childAtPosition(
-                                allOf(withId(R.id.search_plate),
-                                        childAtPosition(withId(R.id.search_edit_frame),
-                                                1)), 0),
-                        isDisplayed()));
-        searchAutoComplete3.perform(closeSoftKeyboard());
-        try
-        {
-            Thread.sleep(5000);
-        } catch(InterruptedException e) {
-            e.printStackTrace(); }
-        ViewInteraction textView = onView(
-                allOf(withId(R.id.group_course_name), withText("Algorithms CS-250"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(R.id.feedRecycleViewer),
-                                        0), 0),
-                        isDisplayed()));
-        textView.check(matches(withText("Algorithms CS-250")));
-    }
-
 
     @Test
     public void searchBarExists()
