@@ -89,6 +89,8 @@ public class       CourseSelectActivityTest
     //swipe on course
     @Test
     public void swipeOnCourseDeletesIt() {
+
+
 //        onView(withId(R.id.courseComplete)).perform(click(), typeText("concurrent"));
 //        onData(equalTo(mockCourse)).inRoot(RootMatchers.isPlatformPopup()).perform(click());
 //        onView(withId(R.id.courseComplete)).perform(closeSoftKeyboard());
