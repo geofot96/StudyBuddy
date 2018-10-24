@@ -46,6 +46,7 @@ public class       CourseSelectActivityTest
     public final IntentsTestRule<CourseSelectActivity> mActivityRule =
             new IntentsTestRule<>(CourseSelectActivity.class);
 
+
     @Test
     public void skipLeadsToGroupActivity() throws InterruptedException {
         Thread.sleep(500);
@@ -54,6 +55,7 @@ public class       CourseSelectActivityTest
         onView(withId(R.id.skipButton)).perform(click());
         intended(hasComponent(new ComponentName(getTargetContext(), GroupsActivity.class)));
     }
+
 
 
     @Test
@@ -92,6 +94,7 @@ public class       CourseSelectActivityTest
 
     //swipe on course
     @Test
+
     public void swipeOnCourseDeletesIt() throws InterruptedException {
         onView(withId(R.id.courseComplete)).perform(click(), typeText("concurrent"));
         onData(equalTo(mockCourse)).inRoot(RootMatchers.isPlatformPopup()).perform(click());
@@ -101,7 +104,6 @@ public class       CourseSelectActivityTest
         // onView(withId(R.id.courseComplete)).perform(click(), typeText(mockCourse), pressKey(KeyEvent.KEYCODE_ENTER));
         onView(allOf(is(instanceOf(TextView.class)), withText(mockCourse), isDescendantOfA(withId(R.id.coursesSet)))).perform(withCustomConstraints(swipeRight(), isDisplayingAtLeast(1)));
         onView(withId(R.id.courseComplete)).check(matches(not(hasDescendant(withText(mockCourse)))));
-
     }
 
     public static ViewAction withCustomConstraints(final ViewAction action, final Matcher<View> constraints) {
