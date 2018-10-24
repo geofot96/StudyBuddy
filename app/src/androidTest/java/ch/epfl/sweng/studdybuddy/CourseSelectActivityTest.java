@@ -47,8 +47,10 @@ public class       CourseSelectActivityTest
             new IntentsTestRule<>(CourseSelectActivity.class);
 
     @Test
-    public void skipLeadsToGroupActivity()
-    {
+    public void skipLeadsToGroupActivity() throws InterruptedException {
+        Thread.sleep(500);
+        onView(withId(R.id.skipButton)).perform(closeSoftKeyboard());
+        Thread.sleep(500);
         onView(withId(R.id.skipButton)).perform(click());
         intended(hasComponent(new ComponentName(getTargetContext(), GroupsActivity.class)));
     }
@@ -65,9 +67,10 @@ public class       CourseSelectActivityTest
 
 
     @Test //()
-    public void courseNotAddedIfGibberish() {
+    public void courseNotAddedIfGibberish() throws InterruptedException {
         onView(withId(R.id.courseComplete)).perform(click(), typeText("yxcvbn"));
         onView(withId(R.id.doneButton)).perform(closeSoftKeyboard());
+        Thread.sleep(500);
         onView(withId(R.id.doneButton)).check(matches(not(isEnabled())));
     }
 
@@ -79,19 +82,21 @@ public class       CourseSelectActivityTest
     }
 
     @Test
-    public void clickOnCourseSuggestionAddsCourseToList() {
+    public void clickOnCourseSuggestionAddsCourseToList() throws InterruptedException {
         onView(withId(R.id.courseComplete)).perform(click(), typeText("concurrent"));
         onData(equalTo(mockCourse)).inRoot(RootMatchers.isPlatformPopup()).perform(click());
         onView(withId(R.id.courseComplete)).perform(closeSoftKeyboard());
+        Thread.sleep(500);
         onView(withId(R.id.coursesSet)).check(matches(hasDescendant(withText(mockCourse))));
     }
 
     //swipe on course
     @Test
-    public void swipeOnCourseDeletesIt() {
+    public void swipeOnCourseDeletesIt() throws InterruptedException {
         onView(withId(R.id.courseComplete)).perform(click(), typeText("concurrent"));
         onData(equalTo(mockCourse)).inRoot(RootMatchers.isPlatformPopup()).perform(click());
         onView(withId(R.id.courseComplete)).perform(closeSoftKeyboard());
+        Thread.sleep(500);
         onView(withId(R.id.coursesSet)).check(matches(hasDescendant(withText(mockCourse))));
         // onView(withId(R.id.courseComplete)).perform(click(), typeText(mockCourse), pressKey(KeyEvent.KEYCODE_ENTER));
         onView(allOf(is(instanceOf(TextView.class)), withText(mockCourse), isDescendantOfA(withId(R.id.coursesSet)))).perform(withCustomConstraints(swipeRight(), isDisplayingAtLeast(1)));
