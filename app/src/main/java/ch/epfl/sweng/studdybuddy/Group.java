@@ -40,6 +40,7 @@ public class Group implements Comparable<Group> {
 
     public Group(int maxNoUsers, Course course, String lang)
     {
+        this();
         if(maxNoUsers <= 0)
         {
             throw new IllegalArgumentException("Participants number must be > 0 and maximum number of participants must be positive");
@@ -55,6 +56,7 @@ public class Group implements Comparable<Group> {
 
     public Group(Group sourceGroup)
     {
+        this();
         //TODO why do we need this constructor and what do we do with the date
         this.course = sourceGroup.getCourse();
         this.maxNoUsers = sourceGroup.getMaxNoUsers();

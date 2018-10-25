@@ -8,6 +8,7 @@ public class ID<T> {
     public ID() {}
 
     public ID(String id){
+        this();
         this.id = id;
     }
 
@@ -28,4 +29,15 @@ public class ID<T> {
 
     @Override
     public String toString(){ return this.id;}
+
+   /* @Override
+    public boolean equals(Object o) {
+        if (o == null || !(o instanceof ID)) {
+            return false;
+        }
+
+        ID<T> id = (ID<T>) o;
+        System.out.println(id.getId());
+        return id.getId().equals(((ID) o).getId());
+    }*/
 }

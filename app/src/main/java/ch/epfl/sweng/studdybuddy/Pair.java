@@ -7,6 +7,7 @@ public class Pair{
     public Pair(){}
 
     public Pair(String key, String value){
+        this();
         this.key = key;
         this.value = value;
     }

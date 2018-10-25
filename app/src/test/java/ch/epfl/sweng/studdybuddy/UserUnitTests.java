@@ -24,4 +24,11 @@ public class UserUnitTests
         assertEquals("Geo", user.getName());
     }
 
+    @Test
+    public void setUserIDWorksCorrectly(ID<User> userID){
+
+        user.setUserID(new ID<User>("foobar"));
+        assert(user.getUserID().equals("foobar"));
+    }
+
 }

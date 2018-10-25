@@ -13,6 +13,7 @@ public class Course
 
     public Course(String courseName)
     {
+        this();
         this.courseName = courseName;
         courseID = new ID<Course>(courseName);
     }

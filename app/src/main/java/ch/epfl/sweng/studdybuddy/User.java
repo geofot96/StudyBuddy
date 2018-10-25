@@ -23,6 +23,7 @@ final public class User
 
     public User(String name, ID<User> userId)
     {
+        this();
         this.name = name;
         this.userID = userId;
     }
