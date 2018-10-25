@@ -1,8 +1,10 @@
 package ch.epfl.sweng.studdybuddy;
 
+import android.app.Activity;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -22,9 +24,15 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 
-//@RunWith(AndroidJUnit4.class)
-public class ProfileTabTest
+@RunWith(AndroidJUnit4.class)
+public class ProfileTabTest extends ProfileTab
 {
+
+   /* @Before
+    public void setup(){
+    }*/
+
+
     /*public static final String mockCourse = "Algorithms";
     @Rule
     public final ActivityTestRule<ProfileTab> mActivityRule =
