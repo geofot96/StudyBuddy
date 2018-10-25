@@ -24,7 +24,9 @@ public class GroupTest {
     @Test
     public void comparetoWorks(){
         Group a = new Group(10,new Course("CLP"), "EN");
+        Group b = new Group(a);
         assert(a.compareTo(g) == -1);
         assert(g.compareTo(a) == 1);
+        assert(a.compareTo(a) == 0);
     }
 }
