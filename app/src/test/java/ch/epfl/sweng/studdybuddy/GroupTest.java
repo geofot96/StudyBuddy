@@ -24,9 +24,14 @@ public class GroupTest {
     @Test
     public void comparetoWorks(){
         Group a = new Group(10,new Course("CLP"), "EN");
+        try {
+            Thread.sleep(800);
+        }catch (Exception e){
+            System.out.println("Error during thread sleep: " + e.getMessage());
+        }
         Group b = new Group(a);
-        assert(a.compareTo(g) == -1);
-        assert(g.compareTo(a) == 1);
+        assert(a.compareTo(b) == 1);
+        assert(b.compareTo(a) == -1);
         assert(a.compareTo(a) == 0);
     }
 }
