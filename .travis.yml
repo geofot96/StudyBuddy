@@ -1,4 +1,5 @@
 language: android
+install: travis_wait mvn install
 android:
   components:
     # The BuildTools version used by your project
