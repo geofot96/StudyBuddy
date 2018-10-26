@@ -9,6 +9,7 @@ import android.widget.GridLayout;
 
 import ch.epfl.sweng.studdybuddy.R;
 
+
 public class CalendarActivity extends AppCompatActivity
 {
 
