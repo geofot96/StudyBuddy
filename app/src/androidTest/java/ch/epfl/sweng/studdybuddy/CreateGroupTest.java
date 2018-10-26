@@ -61,15 +61,17 @@ public class CreateGroupTest {
     }
 
     @Test
-    public void createAGroupWillBeRegistered() {
+    public void createAGroupWillBeRegistered() throws InterruptedException {
 
-       /* onView(withId(R.id.createGroup)).perform(click());
+        onView(withId(R.id.createGroup)).perform(click());
         onView(withId(R.id.courseComplete2)).perform(click(), typeText("Concurrent algorithms CS-453"));
+        Thread.sleep(500);
         onData(equalTo("Concurrent algorithms CS-453")).inRoot(RootMatchers.isPlatformPopup()).perform(click());
         onView(withId(R.id.courseComplete2)).perform(closeSoftKeyboard());
+        Thread.sleep(500);
         onView(withId(R.id.confirmGroupCreation)).perform(click());
         intended(hasComponent(new ComponentName(getTargetContext(), GroupsActivity.class)));
-*/
+
        /*// Added a sleep statement to match the app's execution delay.
         // The recommended way to handle such scenarios is to use Espresso idling resources:
         // https://google.github.io/android-testing-support-library/docs/espresso/idling-resource/index.html
