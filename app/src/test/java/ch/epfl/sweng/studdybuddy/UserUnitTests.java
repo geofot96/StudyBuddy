@@ -31,7 +31,7 @@ public class UserUnitTests
         assert(user.getUserID().getId().equals("foobar"));
     }
 
-    @Test
+   /* @Test
     public void getCurrentGroupIfNull(){
         user.setCurrentGroups(null);
         assertEquals(null, user.getCurrentGroups());
@@ -41,5 +41,5 @@ public class UserUnitTests
     public void getCurrentGroup(){
         User user1 = new User("1", "Mr Potato", "IN", new ArrayList<>(), new ArrayList<>());
         assertEquals(new ArrayList<>(), user.getCurrentGroups());
-    }
+    }*/
 }
