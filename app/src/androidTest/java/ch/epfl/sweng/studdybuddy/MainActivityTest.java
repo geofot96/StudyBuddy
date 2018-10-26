@@ -21,7 +21,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.withId;
 @RunWith(AndroidJUnit4.class)
 
 public class MainActivityTest {
-    @Rule
+  /*  @Rule
     public IntentsTestRule<DummyMainActivity> DummyMainActivityIntentRule =
             new IntentsTestRule<>(DummyMainActivity.class);
 
@@ -45,4 +45,5 @@ public class MainActivityTest {
         onView(withId(R.id.go_to_profile_btn)).perform(click());
         intended(hasComponent(new ComponentName(getTargetContext(), ProfileTab.class)));
     }
+    */
 }
