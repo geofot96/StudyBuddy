@@ -52,7 +52,7 @@ public class CreateGroupActivity extends AppCompatActivity implements AdapterVie
         firebase = new FirebaseReference();
         coursesDB = new ArrayList<>();
         coursesDB.add("untitled");
-        //firebase.select("courses").getAll(String.class, AdapterConsumer.adapterConsumer(String.class, coursesDB, new ArrayAdapterAdapter(setUpAutoComplete())));
+        firebase.select("courses").getAll(String.class, AdapterConsumer.adapterConsumer(String.class, coursesDB, new ArrayAdapterAdapter(setUpAutoComplete())));
 
     }
 
