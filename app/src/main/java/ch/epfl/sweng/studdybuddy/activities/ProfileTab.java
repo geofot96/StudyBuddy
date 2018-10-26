@@ -42,8 +42,8 @@ public class ProfileTab extends AppCompatActivity {
         userID = user.getUserID().toString();
         //usersCourses.addAll(.getCoursesPreset());
         setUI();
-        //setCoursesUp();
-        //setGroupsUp();
+        setCoursesUp();
+        setGroupsUp();
     }
     private void removeCourse(String course){
         userCourses.remove(course);
