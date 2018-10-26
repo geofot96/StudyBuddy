@@ -36,7 +36,7 @@ public class FirebaseReference implements ReferenceWrapper {
 
     public DatabaseReference getRef() { return ref; }
 
-    public FirebaseReference getParent() { return new FirebaseReference(ref.getParent());}
+    public FirebaseReference getParent() { return new FirebaseReference(ref.getParent()); }
 
     @Override
     public ReferenceWrapper select(String key) {
@@ -53,18 +53,16 @@ public class FirebaseReference implements ReferenceWrapper {
         return ref.removeValue();
     }
 
-    @Override
-    public <T> void get(final Class<T> type, final Consumer<T> callback) {
-        ref.addValueEventListener(getValueEventListener(type, callback));
-    }
 
     private <T> ValueEventListener getAllValueEventListener(final Class<T> type, final Consumer<List<T>> callback) {
         return new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 List<T> elements = new ArrayList<>();
+                System.out.println(dataSnapshot.getChildren().iterator().);
                 for(DataSnapshot snap: dataSnapshot.getChildren()) {
                     try {
+                        System.out.println(snap.getValue(type));
                         elements.add(snap.getValue(type));
                     }
                     catch (Exception e) {
@@ -85,7 +83,12 @@ public class FirebaseReference implements ReferenceWrapper {
              return new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    callback.accept(dataSnapshot.getValue(type));
+                    try {
+                        callback.accept(dataSnapshot.getValue(type));
+                    }
+                    catch (Exception e) {
+                        Log.e("FATAL ERROR", e.getMessage());
+                    }
                 }
 
                 @Override
@@ -96,23 +99,20 @@ public class FirebaseReference implements ReferenceWrapper {
     }
 
     @Override
-    public <T> void getAll(Class<T> type, Consumer<List<T>> callback) {
-        ref.addValueEventListener(getAllValueEventListener(type, callback));
-    }
-
-    @Override
     public ReferenceWrapper parent() {
         return new FirebaseReference(ref.getParent());
     }
 
 
-    public <T> ValueEventListener getAllMock(Class<T> type, Consumer<List<T>> callback) {
+    public <T> ValueEventListener getAll(Class<T> type, Consumer<List<T>> callback) {
         ValueEventListener res = getAllValueEventListener(type, callback);
-        ref.addValueEventListener(res);
+        if(ref != null) {
+            ref.addValueEventListener(res);
+        }
         return res;
     }
 
-    public <T> ValueEventListener getMock(Class<T> type, Consumer<T> callback) {
+    public <T> ValueEventListener get(Class<T> type, Consumer<T> callback) {
         ValueEventListener res = getValueEventListener(type, callback);
         ref.addValueEventListener(res);
         return res;

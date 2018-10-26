@@ -51,7 +51,7 @@ public class FirebaseReferenceTest {
         //verify(testref).addListenerForSingleValueEvent(argument.capture());
         //argument.getValue().onDataChange(dataSnapshot);
         FirebaseReference ref  =new FirebaseReference(testref);
-        ref.getAllMock(Group.class, new Consumer<List<Group>>() {
+        ref.getAll(Group.class, new Consumer<List<Group>>() {
             @Override
             public void accept(List<Group> groups) {
                 Group g = groups.get(0);
@@ -61,9 +61,6 @@ public class FirebaseReferenceTest {
                 //...
             }
         }).onDataChange(dataSnapshot);
-        //
-
-
     }
 
     @Test
@@ -91,7 +88,7 @@ public class FirebaseReferenceTest {
         when(ds.getValue(Group.class)).thenReturn(clp);
          Group[] box = new Group[1];
 
-       fb.getMock(Group.class, new Consumer<Group>() {
+       fb.get(Group.class, new Consumer<Group>() {
            @Override
            public void accept(Group group) {
                assertTrue(group.toString().equals(clp.toString()));
