@@ -1,39 +1,29 @@
 package ch.epfl.sweng.studdybuddy;
 
-import android.app.Activity;
 import android.support.test.rule.ActivityTestRule;
-import android.support.test.runner.AndroidJUnit4;
-
-import com.google.firebase.database.DatabaseReference;
 
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.Mockito.*;
-import static org.mockito.Mockito.when;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.stubbing.Answer;
 
+import java.util.ArrayList;
+import java.util.List;
 
 import ch.epfl.sweng.studdybuddy.activities.ProfileTab;
 
-import static android.support.test.espresso.action.ViewActions.click;
-import static android.support.test.espresso.action.ViewActions.pressKey;
-import static android.support.test.espresso.intent.Intents.intended;
-import static android.support.test.espresso.intent.matcher.IntentMatchers.hasComponent;
+import static android.support.test.espresso.Espresso.onView;
+import static android.support.test.espresso.assertion.ViewAssertions.matches;
+import static android.support.test.espresso.matcher.ViewMatchers.hasDescendant;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
-import static org.hamcrest.CoreMatchers.allOf;
-import static org.hamcrest.CoreMatchers.anyOf;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.any;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.not;
+import static org.mockito.Mockito.doAnswer;
 
-import java.util.List;
-
-@RunWith(AndroidJUnit4.class)
+@RunWith(MockitoJUnitRunner.class)
 public class ProfileTabTest
 {
 
@@ -78,21 +68,65 @@ public class ProfileTabTest
         onView(withId(R.id.groups_list)).check(matches(hasDescendant(withText("Algorithms"))));
     }
 */
-
-  /*  public final ActivityTestRule<ProfileTab> mActivityRule =
+    @Rule
+    public final ActivityTestRule<ProfileTab> mActivityRule =
             new ActivityTestRule<>(ProfileTab.class);
 
+    ProfileTab profile;
+    ReferenceWrapper fb;
+    Course c =  new Course("Maths");
+    Group group = new Group(10,c, "FR");
     @Before
-    public void setup(){
-        DatabaseReference db = Mockito.mock(DatabaseReference.class);
-        ReferenceWrapper fb = Mockito.mock(FirebaseReference.class);
+    public void setup() throws  Exception{
+
+        profile = mActivityRule.getActivity();
+        fb = Mockito.mock(FirebaseReference.class);
         Mockito.when(fb.select(Mockito.anyString())).thenReturn(fb);
-        Consumer<List<Pair>> g = Mockito.any();
-        when(fb.getAll(any(Pair.class), g));
-        mActivityRule.getActivity().setDB(fb);
-       // Mockito.when(db.addValueEventListener(any(Group.class), any(Consumer<>)))
+        profile.setDB(fb);
+        Consumer<Group>  groupConsumer= profile.groupConsumer();
+        doAnswer(new Answer() {
+            @Override
+            public Object answer(InvocationOnMock invocation) throws Throwable {
+                profile.groupConsumer().accept(group);
+                return null;
+            }
+        }).when(fb).get(Group.class, groupConsumer);
+
+        Consumer<List<Pair>> courseConsumer = profile.userCourseConsumer();
+        doAnswer(new Answer() {
+            @Override
+            public Object answer(InvocationOnMock invocation) throws Throwable {
+                List<Pair> pairs = new ArrayList<>();
+                pairs.add(new Pair("Default", c.getCourseID().toString()));
+                profile.userGroupConsumer().accept(pairs);
+                return null;
+            }
+        }).when(fb).getAll(Pair.class,  profile.userCourseConsumer());
 
 
-    }*/
+        Consumer<List<Pair>> userGroup = profile.userGroupConsumer();
+        doAnswer(new Answer() {
+            @Override
+            public Object answer(InvocationOnMock invocation) throws Throwable {
+                List<Pair> pairs = new ArrayList<>();
+                pairs.add(new Pair("Default","b"));
+                profile.userGroupConsumer().accept(pairs);
+                return null;
+            }
+        }).when(fb).getAll(Pair.class,  profile.groupConsumer );
+    }
+
+    @Test
+    public void test(){
+
+
+
+      //  profile.setCoursesUp();
+        profile.setGroupsUp();
+
+
+        onView(withId(R.id.groups_list)).check(matches(hasDescendant(withText("Maths"))));
+
+    }
 
 }
