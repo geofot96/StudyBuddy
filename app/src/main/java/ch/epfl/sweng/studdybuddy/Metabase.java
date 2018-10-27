@@ -11,9 +11,15 @@ import java.util.Map;
 public class Metabase {
 
     private ReferenceWrapper db;
+    AdapterAdapter ad; // eventually use option
 
     public Metabase(ReferenceWrapper db) {
+        this(db, null);
+    }
+
+    public Metabase(ReferenceWrapper db, AdapterAdapter ad) {
         this.db = db;
+        this.ad = ad;
     }
 
     public ReferenceWrapper getReference() {
@@ -54,6 +60,7 @@ public class Metabase {
                         userGroups.add(g);
                     }
                 }
+                ad.update();
             }
         });
     }
@@ -68,6 +75,7 @@ public class Metabase {
                         courses.add(p.getValue());
                     }
                 }
+                ad.update();
             }
         });
     }
@@ -83,6 +91,7 @@ public class Metabase {
                         sizes.put(groupID, 1 + sizes.getOrDefault(groupID, 0));
                     }
                 }
+                ad.update();
             }
         });
     }
@@ -114,8 +123,15 @@ public class Metabase {
                         groupUsers.add(u);
                     }
                 }
+                ad.update();
             }
         });
+    }
+
+    private void notif() {
+        if(ad != null) {
+            ad.update();
+        }
     }
 
     /*
