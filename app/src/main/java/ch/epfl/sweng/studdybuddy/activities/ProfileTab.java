@@ -1,22 +1,22 @@
 package ch.epfl.sweng.studdybuddy.activities;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.TextView;
 
+import com.google.firebase.database.ValueEventListener;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import ch.epfl.sweng.studdybuddy.Consumer;
 import ch.epfl.sweng.studdybuddy.Course;
 import ch.epfl.sweng.studdybuddy.CourseAdapter;
 import ch.epfl.sweng.studdybuddy.FirebaseReference;
 import ch.epfl.sweng.studdybuddy.Group;
 import ch.epfl.sweng.studdybuddy.GroupsRecyclerAdapter;
 import ch.epfl.sweng.studdybuddy.Metabase;
-import ch.epfl.sweng.studdybuddy.Pair;
 import ch.epfl.sweng.studdybuddy.R;
 import ch.epfl.sweng.studdybuddy.RecyclerAdapterAdapter;
 import ch.epfl.sweng.studdybuddy.ReferenceWrapper;
@@ -50,19 +50,23 @@ ProfileTab extends AppCompatActivity {
         //usersCourses.addAll(.getCoursesPreset());
         setUI();
         setCoursesUp();
-        setGroupsUp();
+        //setGroupsUp();
     }
     private void removeCourse(String course){
         userCourses.remove(course);
     }
 
-    private void setGroupsUp() {
+    public ValueEventListener setGroupsUp() {
         metabase.addListenner(new RecyclerAdapterAdapter(ad));
-        metabase.getUserGroups(userID, userGroups);
+        return metabase.getUserGroups(userID, userGroups);
     }
 
-    private void setCoursesUp() {
-        //metabase.getUserCourses(userID, userCourses);
+    public ValueEventListener setCoursesUp() {
+        List<String> courses  = new ArrayList<>();
+        for(Course c : userCourses){
+            courses.add(c.getCourseName());
+        }
+        return metabase.getUserCourses(userID, courses);
     }
 
     private void setUI(){
@@ -84,6 +88,5 @@ ProfileTab extends AppCompatActivity {
         return new FirebaseReference();
     }
 
-    public void setDB(ReferenceWrapper r){ this.firebase = r; }
-
+    public void setDB(ReferenceWrapper r){ this.metabase = new Metabase(r); }
 }

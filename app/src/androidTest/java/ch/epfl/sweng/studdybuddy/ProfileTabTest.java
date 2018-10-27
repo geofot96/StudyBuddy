@@ -2,13 +2,23 @@ package ch.epfl.sweng.studdybuddy;
 
 import android.support.test.rule.ActivityTestRule;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseReference;
+
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import java.util.Arrays;
+import java.util.List;
+
 import ch.epfl.sweng.studdybuddy.activities.ProfileTab;
+
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ProfileTabTest
@@ -56,39 +66,42 @@ public class ProfileTabTest
 
     ProfileTab profile;
     ReferenceWrapper fb;
-    Course c =  new Course("Maths");
-    Group group = new Group(10,c, "FR");
 
     @Before
     public void setup() throws  Exception{
-   /*     DatabaseReference ref = mock(DatabaseReference.class);
+
+        DatabaseReference ref = mock(DatabaseReference.class);
         DataSnapshot dataSnapshot = mock(DataSnapshot.class);
         ReferenceWrapper firebase = new FirebaseReference(ref);
         List<Pair> tuples = Arrays.asList(new Pair("Default", "ICC"), new Pair("Default", "ICC"));
         DataSnapshot userCourse= mock(DataSnapshot.class), userGroup = mock(DataSnapshot.class), groups = mock(DataSnapshot.class);
-        when(userCourse.getValue()).thenReturn(Arrays.asList(tuples.get(0)));
-        when(userGroup.getValue()).thenReturn(tuples.get(1));
-        when(groups.getValue()).thenReturn(new Group(2, new Course("ICC"),"FR"));
-        when(dataSnapshot.getValue(Pair.class)).thenReturn(null);
-        when(dataSnapshot.getChildren()).thenReturn(Arrays.asList(userGroup, userCourse));
-        when(ref.child(anyString())).thenReturn(ref);
-        ProfileTab profile = mActivityRule.getActivity();
-        DataSnapshot courses = mock(DataSnapshot.class);
-        when(courses.getValue()).thenReturn(Arrays.asList("ICC"));
-      //  profile.setDB(firebase);
-        profile.setCoursesUp().onDataChange(courses);
 
-*/
+        //values we work with when we call OnDataChange
+        when(userCourse.getValue(Pair.class)).thenReturn((tuples.get(0)));
+        when(userGroup.getValue(Pair.class)).thenReturn((tuples.get(1)));
+        when(groups.getValue(Group.class)).thenReturn(new Group(2, new Course("ICC"),"FR"));
+
+
+
+        //For the list in OndataChange
+        when(dataSnapshot.getChildren()).thenReturn(Arrays.asList(userCourse));
+        //For  firebase.select("")
+        when(ref.child(anyString())).thenReturn(ref);
+
+
+        ProfileTab profile = mActivityRule.getActivity();
+        profile.setDB(firebase);
+        profile.setCoursesUp().onDataChange(dataSnapshot);
     }
 
 
     @Test
     public void setCourseAndGroupsWorks(){
-    /*    try {
+        try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        onView(withId(R.id.courses_list)).check(matches(hasDescendant(withText("ICC"))));*/
+        //onView(withId(R.id.courses_list)).check(matches(hasDescendant(withText("ICC"))));
     }
 }
