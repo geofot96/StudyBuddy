@@ -17,16 +17,18 @@ import ch.epfl.sweng.studdybuddy.Group;
 import ch.epfl.sweng.studdybuddy.GroupsRecyclerAdapter;
 import ch.epfl.sweng.studdybuddy.Pair;
 import ch.epfl.sweng.studdybuddy.R;
+import ch.epfl.sweng.studdybuddy.ReferenceWrapper;
 import ch.epfl.sweng.studdybuddy.StudyBuddy;
 import ch.epfl.sweng.studdybuddy.User;
 
-public class ProfileTab extends AppCompatActivity {
+public class
+ProfileTab extends AppCompatActivity {
 
     private final List<Course> userCourses =  new ArrayList<>();
     private  final List<Group> userGroups = new ArrayList<>();
     private RecyclerView recyclerView_groups;
     private RecyclerView recyclerView_courses;
-    private FirebaseReference firebase;
+    protected ReferenceWrapper firebase;
     private GroupsRecyclerAdapter ad;
     private CourseAdapter adCourse;
     private User user;
@@ -37,7 +39,8 @@ public class ProfileTab extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile_tab);
 
-        firebase = new FirebaseReference();
+       //
+        firebase = getDB();
         user = ((StudyBuddy) ProfileTab.this.getApplication()).getAuthendifiedUser();
         userID = user.getUserID().toString();
         //usersCourses.addAll(.getCoursesPreset());
@@ -49,37 +52,51 @@ public class ProfileTab extends AppCompatActivity {
         userCourses.remove(course);
     }
 
-    private void setGroupsUp() {
+    public void setGroupsUp() {
+        firebase.select("userGroup").getAll(Pair.class, userGroupConsumer());
+    }
 
-        firebase.select("userGroup").getAll(Pair.class, new Consumer<List<Pair>>() {
+    public Consumer<List<Pair>> userGroupConsumer(){
+        return new Consumer<List<Pair>>() {
             @Override
             public void accept(List<Pair> pairs) {
-                for(Pair pair: pairs){
-                    if(pair.getKey().equals(userID)) {
-                        firebase.select("groups").select(pair.getValue()).get(Group.class, new Consumer<Group>() {
-                            @Override
-                            public void accept(Group g) {
-                                userGroups.add(g);
-                                ad.notifyDataSetChanged();
-                            }
-                        });
+                if(pairs != null){
+                    for(Pair pair: pairs){
+                        if(pair.getKey().equals(userID)) {
+                            firebase.select("groups").select(pair.getValue()).get(Group.class, groupConsumer());
+                        }
                     }
                 }
             }
-        });
+        };
     }
 
-    private void setCoursesUp() {
-        firebase.select("userCourse").getAll(Pair.class, new Consumer<List<Pair>>() {
+    public Consumer<Group> groupConsumer(){
+        return new Consumer<Group>() {
+            @Override
+            public void accept(Group g) {
+                userGroups.add(g);
+                ad.notifyDataSetChanged();
+            }
+        };
+    }
+
+
+    public void setCoursesUp() {
+        firebase.select("userCourse").getAll(Pair.class, userCourseConsumer());
+    }
+
+
+    public Consumer<List<Pair>> userCourseConsumer(){
+        return new Consumer<List<Pair>>() {
             @Override
             public void accept(List<Pair> pairs) {
                 if (pairs != null) {
 
-aggregate(pairs);
+                    aggregate(pairs);
                 }
             }
-        });
-
+        };
     }
 
     private void aggregate(List<Pair> pairs) {
@@ -114,4 +131,11 @@ aggregate(pairs);
         recyclerView_groups.setLayoutManager(new LinearLayoutManager(this));
         recyclerView_groups.setAdapter(ad);
     }
+
+    public ReferenceWrapper getDB(){
+        return new FirebaseReference();
+    }
+
+    public void setDB(ReferenceWrapper r){ this.firebase = r; }
+
 }

@@ -4,7 +4,11 @@ import android.app.Application;
 
 public class StudyBuddy extends Application {
     public User getAuthendifiedUser() {
-        return authendifiedUser;
+        if(authendifiedUser == null) {
+            return new User("Default", new ID<>("Default"));
+        }else {
+            return authendifiedUser;
+        }
     }
 
     public void setAuthendifiedUser(User authendifiedUser) {

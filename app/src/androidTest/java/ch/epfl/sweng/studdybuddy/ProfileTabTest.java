@@ -2,26 +2,12 @@ package ch.epfl.sweng.studdybuddy;
 
 import android.support.test.rule.ActivityTestRule;
 
-import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mockito;
-import org.mockito.invocation.InvocationOnMock;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.mockito.stubbing.Answer;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import ch.epfl.sweng.studdybuddy.activities.ProfileTab;
-
-import static android.support.test.espresso.Espresso.onView;
-import static android.support.test.espresso.assertion.ViewAssertions.matches;
-import static android.support.test.espresso.matcher.ViewMatchers.hasDescendant;
-import static android.support.test.espresso.matcher.ViewMatchers.withId;
-import static android.support.test.espresso.matcher.ViewMatchers.withText;
-import static org.mockito.Mockito.doAnswer;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ProfileTabTest
@@ -76,56 +62,25 @@ public class ProfileTabTest
     ReferenceWrapper fb;
     Course c =  new Course("Maths");
     Group group = new Group(10,c, "FR");
-    @Before
+
     public void setup() throws  Exception{
+        /*DatabaseReference ref = mock(DatabaseReference.class);
+        DataSnapshot dataSnapshot = mock(DataSnapshot.class);
+        ReferenceWrapper firebase = new FirebaseReference(ref);
+        List<Pair> tuples = Arrays.asList(new Pair("Default", "ICC"), new Pair("Default", "ICC"));
+        DataSnapshot userCourse= mock(DataSnapshot.class), userGroup = mock(DataSnapshot.class), groups = mock(DataSnapshot.class);
+        when(userCourse.getValue()).thenReturn(tuples.get(0));
+        when(userGroup.getValue()).thenReturn(tuples.get(1));
+        when(groups.getValue()).thenReturn(new Group(2, new Course("ICC"),"FR"));
+        when(dataSnapshot.getValue(Pair.class)).thenReturn(null);
+        when(dataSnapshot.getChildren()).thenReturn(Arrays.asList(userGroup, userCourse));
+        when(ref.child(anyString())).thenReturn(ref);
+        Map<String, Integer> sizes = new HashMap<>();
 
-        profile = mActivityRule.getActivity();
-        fb = Mockito.mock(FirebaseReference.class);
-        Mockito.when(fb.select(Mockito.anyString())).thenReturn(fb);
-        profile.setDB(fb);
-        Consumer<Group>  groupConsumer= profile.groupConsumer();
-        doAnswer(new Answer() {
-            @Override
-            public Object answer(InvocationOnMock invocation) throws Throwable {
-                profile.groupConsumer().accept(group);
-                return null;
-            }
-        }).when(fb).get(Group.class, groupConsumer);
+        ProfileTab profile = mActivityRule.getActivity();
+        profile.setDB(firebase);
+        profile.userGroupConsumer();*/
 
-        Consumer<List<Pair>> courseConsumer = profile.userCourseConsumer();
-        doAnswer(new Answer() {
-            @Override
-            public Object answer(InvocationOnMock invocation) throws Throwable {
-                List<Pair> pairs = new ArrayList<>();
-                pairs.add(new Pair("Default", c.getCourseID().toString()));
-                profile.userGroupConsumer().accept(pairs);
-                return null;
-            }
-        }).when(fb).getAll(Pair.class,  profile.userCourseConsumer());
-
-
-        Consumer<List<Pair>> userGroup = profile.userGroupConsumer();
-        doAnswer(new Answer() {
-            @Override
-            public Object answer(InvocationOnMock invocation) throws Throwable {
-                List<Pair> pairs = new ArrayList<>();
-                pairs.add(new Pair("Default","b"));
-                profile.userGroupConsumer().accept(pairs);
-                return null;
-            }
-        }).when(fb).getAll(Pair.class,  profile.groupConsumer );
-    }
-
-    @Test
-    public void test(){
-
-
-
-      //  profile.setCoursesUp();
-        profile.setGroupsUp();
-
-
-        onView(withId(R.id.groups_list)).check(matches(hasDescendant(withText("Maths"))));
 
     }
 
