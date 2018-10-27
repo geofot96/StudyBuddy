@@ -46,7 +46,7 @@ public class GroupsActivityLeadsToCreateGroup
         linearLayout.check(matches(isDisplayed()));
     }
 
-    @Test
+ /*   @Test
     public void algoTest()
     {
         refactor();
@@ -71,7 +71,7 @@ public class GroupsActivityLeadsToCreateGroup
                         isDisplayed()));
         textView.check(matches(withText("Algorithms CS-250")));
     }
-
+*/
     @Test
     public void searchBarExists()
     {
@@ -79,13 +79,13 @@ public class GroupsActivityLeadsToCreateGroup
         ViewInteraction linearLayout = onView(withId(R.id.feed_search));
         linearLayout.check(matches(isDisplayed()));
     }
-    @Test
+   /* @Test
     public void recyclerViewerExists()
     {
         refactor();
         ViewInteraction linearLayout = onView(withId(R.id.feedRecycleViewer));
         linearLayout.check(matches(isDisplayed()));
-    }
+    }*/
     @Test
     public void sortButtonExists()
     {

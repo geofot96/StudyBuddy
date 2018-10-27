@@ -1,11 +1,5 @@
 package ch.epfl.sweng.studdybuddy;
 
-import android.support.annotation.NonNull;
-import android.widget.ListView;
-
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 import java.util.UUID;
 
 /**
@@ -15,14 +9,12 @@ import java.util.UUID;
  * course is the course for which the group is created
  * participants is the actual group members
  */
-public class Group implements Comparable<Group>
-{
+public class Group implements Comparable<Group> {
     private int maxNoUsers;
     private Course course;
-    private List<User> participants;
+
     private ID<Group> groupID; //TODO add getters and setters
     private String language;
-
     public SerialDate getCreationDate() {
         return creationDate;
     }
@@ -39,58 +31,48 @@ public class Group implements Comparable<Group>
     public Group() {}
 
 
-    public Group(int maxNoUsers, Course course, String lang, List<User> participants)
+    public Group(int maxNoUsers, Course course, String lang)
     {
+        this(maxNoUsers, course, lang, UUID.randomUUID().toString());
+    }
+
+    public Group(int maxNoUsers, Course course, String lang, String gId)
+    {
+        this();
         if(maxNoUsers <= 0)
         {
             throw new IllegalArgumentException("Participants number must be > 0 and maximum number of participants must be positive");
         }
 
 
-        if(participants.size() > maxNoUsers)
-        {
-            throw new IllegalArgumentException("You can't have more than the maximum number of participants");
-        }
-
-        if(maxNoUsers < participants.size())
-        {
-            throw new IllegalArgumentException("Max number of participants can't be less than actual number of participants");
-        }
-
-        this.groupID = new ID<>(UUID.randomUUID().toString());
+        this.groupID = new ID<>(gId);
         this.maxNoUsers = maxNoUsers;
         this.course = course;
-        this.participants = participants;
         this.language = lang;
         this.creationDate = new SerialDate();
     }
 
-    public Group(Group sourceGroup)
+    /*public Group(Group sourceGroup)
     {
+        this();
         //TODO why do we need this constructor and what do we do with the date
         this.course = sourceGroup.getCourse();
-        this.participants = new ArrayList<>(sourceGroup.participants);
         this.maxNoUsers = sourceGroup.getMaxNoUsers();
         this.language = sourceGroup.language;
+        this.creationDate = new SerialDate();
+    }*/
+
+
+    public ID<Group> getGroupID()
+    {
+        return new ID<>(groupID);
     }
 
-    public String getGroupID()
+    public void setGroupID(ID<Group> groupID)
     {
-        return groupID.getId();
+        this.groupID = groupID;
     }
 
-    public void setGroupID(String groupID)
-    {
-        this.groupID = new ID<>(groupID);
-    }
-
-    public int getParticipantNumber()
-    {
-        if(participants != null)
-        return participants.size();
-        else
-            return 0;
-    }
 
     public int getMaxNoUsers()
     {
@@ -116,16 +98,6 @@ public class Group implements Comparable<Group>
         this.course = new Course(course);
     }
 
-    public List<User> getParticipants()
-    {
-        return new ArrayList<>(participants); //TODO return a collections.unmodifiableList
-    }
-
-    public void setParticipants(List<User> participants)
-    {
-        this.participants = new ArrayList<>(participants);
-    }
-
     public String getLang()
     {
         return language;
@@ -136,29 +108,6 @@ public class Group implements Comparable<Group>
         this.language = language;
     }
 
-    public void addParticipant(User newParticipant)
-    {
-        if(participants.size() < maxNoUsers)
-        {
-            participants.add(newParticipant);
-            List<Group> currentGroups = newParticipant.getCurrentGroups();
-            if(currentGroups != null)
-                currentGroups.add(this);
-        }
-        else
-        {
-            throw new IllegalArgumentException("You have attended the maximum number of participants");
-        }
-        //TODO handle this case differently?
-    }
-
-    public void removeParticipant(User leavingParticipant)
-    {
-        if(participants.size() >= 2 && participants.contains(leavingParticipant))
-        {
-            participants.remove(leavingParticipant);
-        }
-    }
 
 
     @Override

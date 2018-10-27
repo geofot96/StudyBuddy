@@ -8,22 +8,14 @@ import static org.junit.Assert.*;
 
 public class UserUnitTests
 {
-    private static User user = new User("1", "Mr Potato", "IN", new ArrayList<>(), new ArrayList<>());
+    private static User user = new User( "Mr Potato", new ID<>("dumbid"));
 
     @Test
     public void getNameWorksCorrectly()
     {
-        User user1 = new User("1", "Mr Potato", "IN", new ArrayList<>(), new ArrayList<>());
+        User user1 = new User( "Mr Potato", new ID<>("dumbid"));
         assertEquals("Mr Potato", user1.getName());
     }
-
-    @Test
-    public void getSectionWorksCorrectly()
-    {
-        User user1 = new User("1", "Mr Potato", "IN", new ArrayList<>(), new ArrayList<>());
-        assertEquals("IN", user1.getSection());
-    }
-
 
     @Test
     public void setNameWorksCorrectly()
@@ -33,13 +25,13 @@ public class UserUnitTests
     }
 
     @Test
-    public void setSectionWorksCorrectly()
-    {
-        user.setSection("MA");
-        assertEquals("MA", user.getSection());
+    public void setUserIDWorksCorrectly(){
+
+        user.setUserID(new ID<User>("foobar"));
+        assert(user.getUserID().getId().equals("foobar"));
     }
 
-    @Test
+   /* @Test
     public void getCurrentGroupIfNull(){
         user.setCurrentGroups(null);
         assertEquals(null, user.getCurrentGroups());
@@ -49,5 +41,5 @@ public class UserUnitTests
     public void getCurrentGroup(){
         User user1 = new User("1", "Mr Potato", "IN", new ArrayList<>(), new ArrayList<>());
         assertEquals(new ArrayList<>(), user.getCurrentGroups());
-    }
+    }*/
 }
