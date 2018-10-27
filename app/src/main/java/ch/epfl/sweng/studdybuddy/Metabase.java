@@ -1,5 +1,7 @@
 package ch.epfl.sweng.studdybuddy;
 
+import android.util.Log;
+
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.ValueEventListener;
 
@@ -11,7 +13,11 @@ import java.util.Map;
 public class Metabase {
 
     private ReferenceWrapper db;
-    AdapterAdapter ad; // eventually use option
+    private final List<AdapterAdapter> ads; // eventually use option
+
+    public Metabase() {
+        this(new FirebaseReference());
+    }
 
     public Metabase(ReferenceWrapper db) {
         this(db, null);
@@ -19,7 +25,12 @@ public class Metabase {
 
     public Metabase(ReferenceWrapper db, AdapterAdapter ad) {
         this.db = db;
-        this.ad = ad;
+        this.ads = new LinkedList<>();
+        if(ad != null) {this.ads.add(ad);}
+    }
+
+    public Metabase(AdapterAdapter ad) {
+        this(new FirebaseReference(), ad);
     }
 
     public ReferenceWrapper getReference() {
@@ -31,7 +42,7 @@ public class Metabase {
     }
 
     public ValueEventListener getUserGroups(String userId, List<String> gIds, List<Group> groups) {
-        return db.select("userGroups").getAll(Pair.class, new Consumer<List<Pair>>() {
+        return db.select("userGroup").getAll(Pair.class, new Consumer<List<Pair>>() {
             @Override
             public void accept(List<Pair> pairs) {
                 groups.clear();
@@ -42,6 +53,10 @@ public class Metabase {
                 getGroupsfromIds(gIds, groups);
             }
         });
+    }
+
+    public void addListenner(AdapterAdapter ad) {
+        this.ads.add(ad);
     }
 
     private void safeAddId(String ref, String neu, String val, List<String> ids) {
@@ -60,7 +75,7 @@ public class Metabase {
                         userGroups.add(g);
                     }
                 }
-                ad.update();
+                notif();
             }
         });
     }
@@ -75,7 +90,7 @@ public class Metabase {
                         courses.add(p.getValue());
                     }
                 }
-                ad.update();
+                notif();
             }
         });
     }
@@ -91,7 +106,7 @@ public class Metabase {
                         sizes.put(groupID, 1 + sizes.getOrDefault(groupID, 0));
                     }
                 }
-                ad.update();
+                notif();
             }
         });
     }
@@ -123,14 +138,15 @@ public class Metabase {
                         groupUsers.add(u);
                     }
                 }
-                ad.update();
+                notif();
             }
         });
     }
 
     private void notif() {
-        if(ad != null) {
-            ad.update();
+        if(ads != null) {
+            for(AdapterAdapter ad : ads)
+                ad.update();
         }
     }
 

@@ -15,8 +15,10 @@ import ch.epfl.sweng.studdybuddy.CourseAdapter;
 import ch.epfl.sweng.studdybuddy.FirebaseReference;
 import ch.epfl.sweng.studdybuddy.Group;
 import ch.epfl.sweng.studdybuddy.GroupsRecyclerAdapter;
+import ch.epfl.sweng.studdybuddy.Metabase;
 import ch.epfl.sweng.studdybuddy.Pair;
 import ch.epfl.sweng.studdybuddy.R;
+import ch.epfl.sweng.studdybuddy.RecyclerAdapterAdapter;
 import ch.epfl.sweng.studdybuddy.StudyBuddy;
 import ch.epfl.sweng.studdybuddy.User;
 
@@ -31,6 +33,7 @@ public class ProfileTab extends AppCompatActivity {
     private CourseAdapter adCourse;
     private User user;
     private String userID;
+    private Metabase metabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -40,6 +43,7 @@ public class ProfileTab extends AppCompatActivity {
         firebase = new FirebaseReference();
         user = ((StudyBuddy) ProfileTab.this.getApplication()).getAuthendifiedUser();
         userID = user.getUserID().toString();
+        metabase = new Metabase();
         //usersCourses.addAll(.getCoursesPreset());
         setUI();
         setCoursesUp();
@@ -50,8 +54,9 @@ public class ProfileTab extends AppCompatActivity {
     }
 
     private void setGroupsUp() {
-
-        firebase.select("userGroup").getAll(Pair.class, new Consumer<List<Pair>>() {
+        metabase.addListenner(new RecyclerAdapterAdapter(ad));
+        metabase.getUserGroups(userID, userGroups);
+        /*firebase.select("userGroup").getAll(Pair.class, new Consumer<List<Pair>>() {
             @Override
             public void accept(List<Pair> pairs) {
                 for(Pair pair: pairs){
@@ -66,23 +71,24 @@ public class ProfileTab extends AppCompatActivity {
                     }
                 }
             }
-        });
+        });*/
     }
 
     private void setCoursesUp() {
-        firebase.select("userCourse").getAll(Pair.class, new Consumer<List<Pair>>() {
+        //metabase.getUserCourses(userID, userCourses);
+        /*firebase.select("userCourse").getAll(Pair.class, new Consumer<List<Pair>>() {
             @Override
             public void accept(List<Pair> pairs) {
                 if (pairs != null) {
 
-aggregate(pairs);
+                    aggregate(pairs);
                 }
             }
-        });
+        });*/
 
     }
 
-    private void aggregate(List<Pair> pairs) {
+    /*private void aggregate(List<Pair> pairs) {
         firebase.select("courses").getAll(String.class, new Consumer<List<String>>() {
             @Override
             public void accept(List<String> courses) {
@@ -98,7 +104,7 @@ aggregate(pairs);
                 }
             }
         });
-    }
+    }*/
 
     private void setUI(){
         TextView nameView = (TextView) findViewById(R.id.profile_name_text);
