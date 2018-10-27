@@ -189,11 +189,12 @@ public class CreateGroupTest {
         textView2.check(matches(withText("Fr")));
 */
     }
-
+/*
     @Test
     public void createAGroupeWithoutSettings(){
         onView(withId(R.id.createGroup)).perform(click());
         onView(withId(R.id.confirmGroupCreation)).perform(click());
         intended(hasComponent(new ComponentName(getTargetContext(), CreateGroupActivity.class)));
     }
+    */
 }
