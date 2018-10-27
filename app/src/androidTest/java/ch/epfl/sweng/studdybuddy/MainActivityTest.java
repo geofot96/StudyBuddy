@@ -27,27 +27,23 @@ public class MainActivityTest {
 
     @Test
     public void clickGoToGroupsGoToGroupsActivity() {
+        testIntent(R.id.gotoGroups, GroupsActivity.class.getName());
+    }
+
+    public void testIntent(int id, String name) {
         try {
             Thread.sleep(1000);
-            onView(withId(R.id.gotoGroups)).perform(click());
-            intended(hasComponent(GroupsActivity.class.getName()));
+            onView(withId(id)).perform(click());
+            intended(hasComponent(name));
         }
         catch (Exception e) {
 
         }
     }
 
-
     @Test
     public void clickProfileButtonGoToCProfileTab() {
-        try {
-            Thread.sleep(1000);
-            onView(withId(R.id.go_to_profile_btn)).perform(click());
-            intended(hasComponent(ProfileTab.class.getName()));
-        }
-        catch (Exception e) {
-
-        }
+        testIntent(R.id.go_to_profile_btn, ProfileTab.class.getName());
     }
 
 }
