@@ -4,6 +4,7 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import static org.junit.Assert.*;
 
@@ -25,7 +26,8 @@ public class CalendarUnitTests {
             c.add(0);
         }
 
-        Calendar testCalendar = new Calendar();
+        ID<Group> groupID = new ID<>(UUID.randomUUID().toString());
+        Calendar testCalendar = new Calendar(groupID);
         List<Integer> result =  testCalendar.getSumOfTwoLists(a,b);
         assertEquals(c, result);
     }
@@ -42,7 +44,8 @@ public class CalendarUnitTests {
             c.add(2);
         }
 
-        Calendar testCalendar = new Calendar();
+        ID<Group> groupID = new ID<>(UUID.randomUUID().toString());
+        Calendar testCalendar = new Calendar(groupID);
         List<Integer> result =  testCalendar.getSumOfTwoLists(a,b);
         assertEquals(c, result);
     }
@@ -59,7 +62,8 @@ public class CalendarUnitTests {
             b.add(0);
         }
 
-        Calendar testCalendar = new Calendar();
+        ID<Group> groupID = new ID<>(UUID.randomUUID().toString());
+        Calendar testCalendar = new Calendar(groupID);
         List<Integer> result =  testCalendar.getIntegerListFromBooleanList(a);
         assertEquals(b, result);
     }
@@ -75,7 +79,8 @@ public class CalendarUnitTests {
             b.add(1);
         }
 
-        Calendar testCalendar = new Calendar();
+        ID<Group> groupID = new ID<>(UUID.randomUUID().toString());
+        Calendar testCalendar = new Calendar(groupID);
         List<Integer> result =  testCalendar.getIntegerListFromBooleanList(a);
         assertEquals(b, result);
     }
@@ -101,8 +106,10 @@ public class CalendarUnitTests {
         lists.add(b);
         lists.add(c);
 
-        Calendar testCalendar = new Calendar();
+        ID<Group> groupID = new ID<>(UUID.randomUUID().toString());
+        Calendar testCalendar = new Calendar(groupID);
         List<Integer> result =  testCalendar.sumFewBooleanLists(lists);
         assertEquals(d, result);
     }
+
 }

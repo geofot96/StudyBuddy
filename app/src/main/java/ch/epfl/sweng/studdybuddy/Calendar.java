@@ -11,10 +11,10 @@ public final class Calendar {
 
     //Till we connected FB I use custom lists
 
-    public void Calendar(ID<Group> id){
+    public Calendar(ID<Group> id){
 
         this.groupID = id;
-        this.manualInitialization();
+        
     }
 
     private void setCurrentAvailability(){
