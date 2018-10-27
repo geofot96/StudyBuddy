@@ -15,6 +15,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import static org.hamcrest.CoreMatchers.any;
 import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.eq;
@@ -79,6 +80,13 @@ public class FirebaseReferenceTest {
     }*/
 
     @Test
+    public void getRef() {
+        DatabaseReference db = mock(DatabaseReference.class);
+        FirebaseReference fb = new FirebaseReference(db);
+        assertEquals(db, fb.getRef());
+    }
+
+    @Test
     public void getReturnsData(){
         DatabaseReference db = mock(DatabaseReference.class);
         FirebaseReference fb = new FirebaseReference(db);
@@ -99,6 +107,14 @@ public class FirebaseReferenceTest {
 
     }
 
+    @Test
+    public void childParentChild() {
+        DatabaseReference mother = mock(DatabaseReference.class), daughter = mock(DatabaseReference.class);
+        FirebaseReference sub = new FirebaseReference(mother);
+        when(mother.child("child")).thenReturn(daughter);
+        when(daughter.getParent()).thenReturn(mother);
+        sub.select("child").parent().select("child");
+    }
     /*@Test//(expected = IndexOutOfBoundsException.class)
     public void selectOfNoChildBehaves() {
         DatabaseReference testRef = mock(DatabaseReference.class);
