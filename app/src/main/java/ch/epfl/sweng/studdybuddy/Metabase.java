@@ -86,28 +86,6 @@ public class Metabase {
         };
     }
 
-    /*public <T> ValueEventListener getIdsFromPairs(Class<T> type, String table, String id, List<String> ids, List<T> recipient) {
-        return db.select(table).getAll(Pair.class, new Consumer<List<Pair>>() {
-            @Override
-            public void accept(List<Pair> pairs) {
-                ids.clear();
-                recipient.clear();
-                for(Pair p: pairs) {
-                    String k = (type == Group.class) ? p.getValue() : p.getKey();
-                    String v = (type == Group.class) ? p.getKey() : p.getValue();
-                    safeAddId(id, k, v, ids);
-                }
-                if(type == Group.class) {
-                    getGroupsfromIds(ids, (List<Group>) recipient);
-                }
-                else {
-                    getUsersfromIds(ids, (List<User>) recipient);
-                }
-                notif();
-            }
-        });
-    }*/
-
     public ValueEventListener getUserCourses(String uId, List<String> courses) {
         return db.select("userCourses").getAll(Pair.class, new Consumer<List<Pair>>() {
             @Override
@@ -182,9 +160,4 @@ public class Metabase {
                 ad.update();
         }
     }
-
-    /*
-    public void getCourseUsers(String course){}
-    *
-    * */
 }
