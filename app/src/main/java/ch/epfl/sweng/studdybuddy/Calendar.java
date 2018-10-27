@@ -40,7 +40,7 @@ public final class Calendar {
 
     }*/
     
-    private List<Integer> sumFewBooleanLists(List<List<Boolean>> lists){
+    public List<Integer> sumFewBooleanLists(List<List<Boolean>> lists){
 
         int lists_len = lists.size();
         int one_list_len = lists.get(0).size();

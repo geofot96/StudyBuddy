@@ -79,4 +79,30 @@ public class CalendarUnitTests {
         List<Integer> result =  testCalendar.getIntegerListFromBooleanList(a);
         assertEquals(b, result);
     }
+
+    @Test
+    public void sumFewListsReturnCertainAnswer(){
+
+        List<Boolean> a = new ArrayList<>();
+        List<Boolean> b = new ArrayList<>();
+        List<Boolean> c = new ArrayList<>();
+        List<Integer> d = new ArrayList<>();
+
+        for (int i = 0; i < 5; i ++){
+            a.add(Boolean.TRUE);
+            b.add(Boolean.TRUE);
+            c.add(Boolean.FALSE);
+            d.add(2);
+        }
+
+        List<List<Boolean>> lists = new ArrayList<>();
+
+        lists.add(a);
+        lists.add(b);
+        lists.add(c);
+
+        Calendar testCalendar = new Calendar();
+        List<Integer> result =  testCalendar.sumFewBooleanLists(lists);
+        assertEquals(d, result);
+    }
 }
