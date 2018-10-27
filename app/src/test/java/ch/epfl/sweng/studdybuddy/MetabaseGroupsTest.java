@@ -1,8 +1,13 @@
 package ch.epfl.sweng.studdybuddy;
 
+import android.app.Activity;
 import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -10,6 +15,8 @@ import com.google.firebase.database.ValueEventListener;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Mockito;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -18,6 +25,9 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Executor;
+
+import ch.epfl.sweng.studdybuddy.util.Helper;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -27,10 +37,12 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doCallRealMethod;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 public class MetabaseGroupsTest {
-    DatabaseReference testref = mock(DatabaseReference.class);
+    DatabaseReference testref = mock(DatabaseReference.class, Mockito.RETURNS_DEEP_STUBS);
     DataSnapshot dataSnapshot = mock(DataSnapshot.class);
     List<Pair> tuples = Arrays.asList(new Pair("456", "123"), new Pair("789", "123"), new Pair("ghi", "abc"));
     DataSnapshot insaneSnapshot = mock(DataSnapshot.class);
@@ -163,5 +175,20 @@ public class MetabaseGroupsTest {
         mb.getGroupUsers("jbbfesdbo", ids, groupUsers).onDataChange(insaneSnapshot);
         mb.getUsersfromIds(ids, groupUsers).onDataChange(usrTbl);
         assertTrue(groupUsers.size() == 0);
+    }
+
+    @Test
+    public void pushGroupCallsWithWellFormedArgs() {
+        when(testref.child("userGroup")).thenReturn(testref);
+        when(testref.child("groups")).thenReturn(testref);
+        when(testref.setValue(any(Pair.class))).thenReturn(null);
+        when(testref.setValue(any(Group.class))).thenReturn(null);
+        mb.pushGroup(blankGroupWId("ab"), "123");
+        ArgumentCaptor<String> p = ArgumentCaptor.forClass(String.class);
+        verify(testref, times(4)).child(p.capture());
+        assertTrue(p.getAllValues().contains("ab"));
+        assertTrue(p.getAllValues().contains("groups"));
+        assertTrue(p.getAllValues().contains("userGroup"));
+        assertTrue(p.getAllValues().contains(Helper.hashCode(new Pair("123", "ab"))));
     }
 }

@@ -11,6 +11,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import ch.epfl.sweng.studdybuddy.activities.CreateGroupActivity;
+import ch.epfl.sweng.studdybuddy.util.Helper;
+
 public class Metabase {
 
 
@@ -152,6 +155,12 @@ public class Metabase {
                 notif();
             }
         });
+    }
+
+    public void pushGroup(Group g, String creatorId) {
+        db.select("groups").select(g.getGroupID().getId()).setVal(g);
+        Pair pair = new Pair(creatorId,g.getGroupID().toString());
+        db.select("userGroup").select(Helper.hashCode(pair)).setVal(pair);
     }
 
     private void notif() {

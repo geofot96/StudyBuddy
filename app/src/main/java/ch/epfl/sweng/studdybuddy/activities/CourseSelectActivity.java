@@ -38,6 +38,7 @@ import ch.epfl.sweng.studdybuddy.ReferenceWrapper;
 import ch.epfl.sweng.studdybuddy.StudyBuddy;
 import ch.epfl.sweng.studdybuddy.User;
 import ch.epfl.sweng.studdybuddy.util.Helper;
+import static ch.epfl.sweng.studdybuddy.ActivityHelper.showDropdown;
 
 
 public class CourseSelectActivity extends AppCompatActivity
@@ -101,14 +102,7 @@ public class CourseSelectActivity extends AppCompatActivity
         adapter = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, coursesDB);
         autocomplete = (AutoCompleteTextView) findViewById(R.id.courseComplete);
         autocomplete.setAdapter(adapter);
-        autocomplete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AutoCompleteTextView textView = (AutoCompleteTextView)
-                        findViewById(R.id.courseComplete);
-                textView.showDropDown();
-            }
-        });
+        autocomplete.setOnClickListener(showDropdown(autocomplete));
         autocomplete.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

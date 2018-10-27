@@ -39,6 +39,7 @@ import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.intent.Intents.intended;
 import static android.support.test.espresso.intent.matcher.IntentMatchers.hasComponent;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static android.support.test.espresso.matcher.ViewMatchers.isEnabled;
 import static android.support.test.espresso.matcher.ViewMatchers.withClassName;
 import static android.support.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
@@ -47,6 +48,7 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.anything;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.not;
 
 @RunWith(AndroidJUnit4.class)
 public class CreateGroupTest {
@@ -186,6 +188,11 @@ public class CreateGroupTest {
                         isDisplayed()));
         textView2.check(matches(withText("Fr")));
 */
+    }
+
+    @Test
+    public void createButtonDisabledIfNoCourseSelected() {
+        onView(withId(R.id.confirmGroupCreation)).check(matches(not(isEnabled())));
     }
 
     @Test
