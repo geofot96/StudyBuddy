@@ -4,6 +4,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -30,14 +31,17 @@ public class Metabase {
                 groups.clear();
                 gIds.clear();
                 for(Pair p : pairs) {
-                    String gId = p.getValue();
-                    if(p.getKey().equals(userId) && !gIds.contains(gId)) {
-                        gIds.add(gId);
-                    }
+                    safeAddId(userId, p.getKey(), p.getValue(), gIds);
                 }
                 getGroupsfromIds(gIds, groups);
             }
         });
+    }
+
+    private void safeAddId(String ref, String neu, String val, List<String> ids) {
+        if(ref.equals(neu) && !ids.contains(val)) {
+            ids.add(val);
+        }
     }
 
     //protected ?
@@ -83,23 +87,36 @@ public class Metabase {
         });
     }
 
-    /*public ValueEventListener getGroupUsers(String gId, List<String> uIds, List<User> groupUsers) {
+    public ValueEventListener getGroupUsers(String gId, List<User> groupUsers) {
+        return getGroupUsers(gId, new LinkedList<>(), groupUsers);
+    }
+
+    public ValueEventListener getGroupUsers(String gId, List<String> uIds, List<User> groupUsers) {
         return db.select("userGroups").getAll(Pair.class, new Consumer<List<Pair>>() {
             @Override
             public void accept(List<Pair> pairs) {
                 uIds.clear();
                 groupUsers.clear();
                 for(Pair p: pairs) {
-                    String uId = p.getKey();
-                    if()
+                    safeAddId(gId, p.getValue(), p.getKey(), uIds);
                 }
+                getUsersfromIds(uIds, groupUsers);
             }
         });
     }
 
     public ValueEventListener getUsersfromIds(List<String> uIds, List<User> groupUsers) {
-
-    }*/
+        return db.select("users").getAll(User.class, new Consumer<List<User>>() {
+            @Override
+            public void accept(List<User> users) {
+                for(User u: users) {
+                    if(uIds.contains(u.getUserID().toString())) {
+                        groupUsers.add(u);
+                    }
+                }
+            }
+        });
+    }
 
     /*
     public void getCourseUsers(String course){}

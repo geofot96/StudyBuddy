@@ -73,8 +73,10 @@ public class FirebaseReferenceTest {
         Assert.assertThat(res.getRef(), is(childRef));
     }
 
+    /*@Test
+    public void selectWhenNoChild() {
 
-
+    }*/
 
     @Test
     public void getReturnsData(){

@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -37,9 +38,15 @@ public class MetabaseGroupsTest {
     DataSnapshot groupTbl = mock(DataSnapshot.class);
     List<Group> gs = Arrays.asList(blankGroupWId("123"), blankGroupWId("abc"), blankGroupWId("v"), blankGroupWId("vv"));
     Metabase mb = new Metabase(new FirebaseReference(testref));
+    List<User> usrs = Arrays.asList(johnDoe("ghi"), johnDoe("789"), johnDoe("456"), johnDoe("k"), johnDoe("kk"));
+    DataSnapshot usrTbl = mock(DataSnapshot.class);
 
     private Group blankGroupWId(String id) {
         return new Group(1, new Course(""), "", id);
+    }
+
+    private User johnDoe(String id) {
+        return new User("John Doe", id);
     }
 
     @Before public void setup() {
@@ -65,7 +72,11 @@ public class MetabaseGroupsTest {
         when(groupTbl.getValue(Group.class)).thenReturn(null);
         when(groupTbl.getChildren()).thenReturn(groups);
 
-
+        List<DataSnapshot> usrSnaps = Arrays.asList(mock(DataSnapshot.class), mock(DataSnapshot.class), mock(DataSnapshot.class), mock(DataSnapshot.class), mock(DataSnapshot.class));
+        for(int i = 0; i < usrSnaps.size(); ++i) {
+            when(usrSnaps.get(i).getValue(User.class)).thenReturn(usrs.get(i));
+        }
+        when(usrTbl.getChildren()).thenReturn(usrSnaps);
     }
     @Test
     public void getAllGroupSizesWorksWhenNoGroup() {
@@ -109,6 +120,7 @@ public class MetabaseGroupsTest {
             assertTrue(presentIds.contains(uG.getGroupID().toString()));
     }
 
+    //Actually tests fbref?!.#@*-
     @Test
     public void getUserGroupsWhenDirtyDB() {
         List<Group> userGroups = new ArrayList<>();
@@ -117,7 +129,39 @@ public class MetabaseGroupsTest {
         when(brokenTbl.getChildren()).thenReturn(null);
         List<String> gIds = new ArrayList<>();
         mb.getUserGroups("k", gIds, userGroups).onDataChange(brokenTbl);
-        mb.getGroupsfromIds(gIds, userGroups);
+        mb.getGroupsfromIds(gIds, userGroups).onDataChange(groupTbl);
+
         assertTrue(userGroups.size() == 0);
+    }
+
+    @Test
+    public void getUserGroupsWhenUnemptyInput() {
+        List<Group> userGroups = new LinkedList<>();//Arrays.asList(blankGroupWId("bjdajkba"), blankGroupWId("bvdsjjd"));
+        List<String> ids = new ArrayList<>();
+        userGroups.add(blankGroupWId("bjdajkba"));
+        userGroups.add(blankGroupWId("bvdsjjd"));
+        mb.getUserGroups("ghi", ids, userGroups).onDataChange(dataSnapshot);
+        mb.getGroupsfromIds(ids, userGroups).onDataChange(groupTbl);
+        assertTrue(userGroups.size() == 1);
+    }
+
+    @Test
+    public void getGroupUsersWhenDoublon() {
+        List<User> groupUsers = new LinkedList<>();
+        List<String> ids = new ArrayList<>();
+        mb.getGroupUsers("v", ids, groupUsers).onDataChange(insaneSnapshot);
+        assertEquals(2, ids.size());
+        mb.getUsersfromIds(ids, groupUsers).onDataChange(usrTbl);
+        assertEquals(2, groupUsers.size());
+        //assertTrue(groupUsers.size() == 2);
+    }
+
+    @Test
+    public void getGroupUsersWhenNoUser() {
+        List<User> groupUsers = Arrays.asList();
+        List<String> ids = new ArrayList<>();
+        mb.getGroupUsers("jbbfesdbo", ids, groupUsers).onDataChange(insaneSnapshot);
+        mb.getUsersfromIds(ids, groupUsers).onDataChange(usrTbl);
+        assertTrue(groupUsers.size() == 0);
     }
 }

@@ -23,9 +23,14 @@ final public class User
 
     public User(String name, ID<User> userId)
     {
-        this();
+        //this();
         this.name = name;
         this.userID = userId;
+    }
+
+    public User(String name, String uId) {
+        this.name = name;
+        this.userID = new ID<>(uId);
     }
 
     public User() {}
