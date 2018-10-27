@@ -14,7 +14,7 @@ public final class Calendar {
     public Calendar(ID<Group> id){
 
         this.groupID = id;
-        
+
     }
 
     private void setCurrentAvailability(){

@@ -53,13 +53,13 @@ public class CreateGroupTest {
 
     @Rule
     public IntentsTestRule<GroupsActivity> mIntentsTestRule = new IntentsTestRule<>(GroupsActivity.class);
-
+/*
     @Test
     public void clickCreateGroupButtonLeadsToCreateGroupsActivity(){
         onView(withId(R.id.createGroup)).perform(click());
         intended(hasComponent(new ComponentName(getTargetContext(), CreateGroupActivity.class)));
     }
-
+*/
     @Test
     public void createAGroupWillBeRegistered() throws InterruptedException {
 
