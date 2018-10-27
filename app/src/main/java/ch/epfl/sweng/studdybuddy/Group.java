@@ -40,6 +40,11 @@ public class Group implements Comparable<Group> {
 
     public Group(int maxNoUsers, Course course, String lang)
     {
+        this(maxNoUsers, course, lang, UUID.randomUUID().toString());
+    }
+
+    public Group(int maxNoUsers, Course course, String lang, String gId)
+    {
         this();
         if(maxNoUsers <= 0)
         {
@@ -47,21 +52,21 @@ public class Group implements Comparable<Group> {
         }
 
 
-        this.groupID = new ID<>(UUID.randomUUID().toString());
+        this.groupID = new ID<>(gId);
         this.maxNoUsers = maxNoUsers;
         this.course = course;
         this.language = lang;
         this.creationDate = new SerialDate();
     }
 
-    public Group(Group sourceGroup)
+    /*public Group(Group sourceGroup)
     {
         this();
         //TODO why do we need this constructor and what do we do with the date
         this.course = sourceGroup.getCourse();
         this.maxNoUsers = sourceGroup.getMaxNoUsers();
         this.language = sourceGroup.language;
-    }
+    }*/
 
     public ID<Group> getGroupID()
     {
