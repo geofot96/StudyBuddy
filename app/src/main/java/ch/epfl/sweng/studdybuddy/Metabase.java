@@ -31,7 +31,7 @@ public class Metabase {
                 gIds.clear();
                 for(Pair p : pairs) {
                     String gId = p.getValue();
-                    if(gId != null && p.getKey().equals(userId) && !gIds.contains(gId)) {
+                    if(p.getKey().equals(userId) && !gIds.contains(gId)) {
                         gIds.add(gId);
                     }
                 }
@@ -53,9 +53,20 @@ public class Metabase {
             }
         });
     }
-    /*public ValueEventListener getUserCourses() {
 
-    }*/
+    public ValueEventListener getUserCourses(String uId, List<String> courses) {
+        return db.select("userCourses").getAll(Pair.class, new Consumer<List<Pair>>() {
+            @Override
+            public void accept(List<Pair> pairs) {
+                courses.clear();
+                for(Pair p: pairs) {
+                    if(p.getKey().equals(uId)) {
+                        courses.add(p.getValue());
+                    }
+                }
+            }
+        });
+    }
 
     public ValueEventListener getAllGroupSizes(Map<String, Integer> sizes) {
         return db.select("userGroups").getAll(Pair.class, new Consumer<List<Pair>>() {
@@ -71,4 +82,27 @@ public class Metabase {
             }
         });
     }
+
+    /*public ValueEventListener getGroupUsers(String gId, List<String> uIds, List<User> groupUsers) {
+        return db.select("userGroups").getAll(Pair.class, new Consumer<List<Pair>>() {
+            @Override
+            public void accept(List<Pair> pairs) {
+                uIds.clear();
+                groupUsers.clear();
+                for(Pair p: pairs) {
+                    String uId = p.getKey();
+                    if()
+                }
+            }
+        });
+    }
+
+    public ValueEventListener getUsersfromIds(List<String> uIds, List<User> groupUsers) {
+
+    }*/
+
+    /*
+    public void getCourseUsers(String course){}
+    *
+    * */
 }
