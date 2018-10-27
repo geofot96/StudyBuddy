@@ -111,7 +111,7 @@ public class Metabase {
         });
     }
 
-    public int getOrDefault(String key, Map<String, Integer> map) {
+    private int getOrDefault(String key, Map<String, Integer> map) {
         if(map.containsKey(key)) return map.get(key);
         else return 0;
     }
