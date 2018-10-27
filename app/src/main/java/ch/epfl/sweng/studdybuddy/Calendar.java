@@ -8,8 +8,7 @@ public final class Calendar {
     private ID<Group> groupID;
     private List<Integer> currentAvailability;
     private List<List<Boolean>> lists;
-
-    //Till we connected FB I use custom lists
+    
 
     public Calendar(ID<Group> id){
 
