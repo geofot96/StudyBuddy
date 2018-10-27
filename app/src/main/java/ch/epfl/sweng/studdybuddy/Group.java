@@ -1,12 +1,5 @@
 package ch.epfl.sweng.studdybuddy;
 
-import android.support.annotation.NonNull;
-import android.widget.ListView;
-
-import java.lang.ref.Reference;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 import java.util.UUID;
 
 /**
@@ -66,7 +59,9 @@ public class Group implements Comparable<Group> {
         this.course = sourceGroup.getCourse();
         this.maxNoUsers = sourceGroup.getMaxNoUsers();
         this.language = sourceGroup.language;
+        this.creationDate = new SerialDate();
     }*/
+
 
     public ID<Group> getGroupID()
     {

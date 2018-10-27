@@ -1,39 +1,15 @@
 package ch.epfl.sweng.studdybuddy;
 
-import android.app.Activity;
 import android.support.test.rule.ActivityTestRule;
-import android.support.test.runner.AndroidJUnit4;
 
-import com.google.firebase.database.DatabaseReference;
-
-import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.Mockito.*;
-import static org.mockito.Mockito.when;
-
+import org.mockito.junit.MockitoJUnitRunner;
 
 import ch.epfl.sweng.studdybuddy.activities.ProfileTab;
 
-import static android.support.test.espresso.action.ViewActions.click;
-import static android.support.test.espresso.action.ViewActions.pressKey;
-import static android.support.test.espresso.intent.Intents.intended;
-import static android.support.test.espresso.intent.matcher.IntentMatchers.hasComponent;
-import static android.support.test.espresso.matcher.ViewMatchers.withId;
-import static android.support.test.espresso.matcher.ViewMatchers.withText;
-import static org.hamcrest.CoreMatchers.allOf;
-import static org.hamcrest.CoreMatchers.anyOf;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.any;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.not;
-
-import java.util.List;
-
-@RunWith(AndroidJUnit4.class)
+@RunWith(MockitoJUnitRunner.class)
 public class ProfileTabTest
 {
 
@@ -78,21 +54,34 @@ public class ProfileTabTest
         onView(withId(R.id.groups_list)).check(matches(hasDescendant(withText("Algorithms"))));
     }
 */
-
-  /*  public final ActivityTestRule<ProfileTab> mActivityRule =
+    @Rule
+    public final ActivityTestRule<ProfileTab> mActivityRule =
             new ActivityTestRule<>(ProfileTab.class);
 
-    @Before
-    public void setup(){
-        DatabaseReference db = Mockito.mock(DatabaseReference.class);
-        ReferenceWrapper fb = Mockito.mock(FirebaseReference.class);
-        Mockito.when(fb.select(Mockito.anyString())).thenReturn(fb);
-        Consumer<List<Pair>> g = Mockito.any();
-        when(fb.getAll(any(Pair.class), g));
-        mActivityRule.getActivity().setDB(fb);
-       // Mockito.when(db.addValueEventListener(any(Group.class), any(Consumer<>)))
+    ProfileTab profile;
+    ReferenceWrapper fb;
+    Course c =  new Course("Maths");
+    Group group = new Group(10,c, "FR");
+
+    public void setup() throws  Exception{
+        /*DatabaseReference ref = mock(DatabaseReference.class);
+        DataSnapshot dataSnapshot = mock(DataSnapshot.class);
+        ReferenceWrapper firebase = new FirebaseReference(ref);
+        List<Pair> tuples = Arrays.asList(new Pair("Default", "ICC"), new Pair("Default", "ICC"));
+        DataSnapshot userCourse= mock(DataSnapshot.class), userGroup = mock(DataSnapshot.class), groups = mock(DataSnapshot.class);
+        when(userCourse.getValue()).thenReturn(tuples.get(0));
+        when(userGroup.getValue()).thenReturn(tuples.get(1));
+        when(groups.getValue()).thenReturn(new Group(2, new Course("ICC"),"FR"));
+        when(dataSnapshot.getValue(Pair.class)).thenReturn(null);
+        when(dataSnapshot.getChildren()).thenReturn(Arrays.asList(userGroup, userCourse));
+        when(ref.child(anyString())).thenReturn(ref);
+        Map<String, Integer> sizes = new HashMap<>();
+
+        ProfileTab profile = mActivityRule.getActivity();
+        profile.setDB(firebase);
+        profile.userGroupConsumer();*/
 
 
-    }*/
+    }
 
 }
