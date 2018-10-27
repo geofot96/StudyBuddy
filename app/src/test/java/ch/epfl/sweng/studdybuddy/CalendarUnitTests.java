@@ -46,4 +46,37 @@ public class CalendarUnitTests {
         List<Integer> result =  testCalendar.getSumOfTwoLists(a,b);
         assertEquals(c, result);
     }
+
+
+    @Test
+    public void falseBooleanListEqualZeroIntegerList(){
+
+        List<Boolean> a = new ArrayList<>();
+        List<Integer> b = new ArrayList<>();
+
+        for (int i = 0; i < 5; i ++){
+            a.add(Boolean.FALSE);
+            b.add(0);
+        }
+
+        Calendar testCalendar = new Calendar();
+        List<Integer> result =  testCalendar.getIntegerListFromBooleanList(a);
+        assertEquals(b, result);
+    }
+
+    @Test
+    public void trueBooleanListEqualOneFilledIntegerList(){
+
+        List<Boolean> a = new ArrayList<>();
+        List<Integer> b = new ArrayList<>();
+
+        for (int i = 0; i < 5; i ++){
+            a.add(Boolean.TRUE);
+            b.add(1);
+        }
+
+        Calendar testCalendar = new Calendar();
+        List<Integer> result =  testCalendar.getIntegerListFromBooleanList(a);
+        assertEquals(b, result);
+    }
 }
