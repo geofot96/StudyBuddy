@@ -103,12 +103,17 @@ public class Metabase {
                 for(Pair pair : pairs) {
                     if(pair != null) {
                         String groupID = pair.getValue();
-                        sizes.put(groupID, 1 + sizes.getOrDefault(groupID, 0));
+                        sizes.put(groupID, 1 + getOrDefault(groupID, sizes));
                     }
                 }
                 notif();
             }
         });
+    }
+
+    private int getOrDefault(String key, Map<String, Integer> map) {
+        if(map.containsKey(key)) return map.get(key);
+        else return 0;
     }
 
     public ValueEventListener getGroupUsers(String gId, List<User> groupUsers) {
