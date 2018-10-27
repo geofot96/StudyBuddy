@@ -52,5 +52,20 @@ public class CalendarActivity extends AppCompatActivity
             }
         }
     }
+    public  void confirmSlots(View view)
+    {
+        for(int i = 0; i < calendarGrid.getChildCount(); i++)
+        {
+            if(i%8!=0) {
+                boolean picked = false;
+                CardView cardView = (CardView) calendarGrid.getChildAt(i);
+                if (cardView.getCardBackgroundColor().getDefaultColor() != -1) picked = true;
+                pickedSlots[(i%8)-1][i/8] = picked;
+            }
 
+        }
+
+        Intent intent = new Intent(this, ProfileTab.class);
+        startActivity(intent);
+    }
 }
