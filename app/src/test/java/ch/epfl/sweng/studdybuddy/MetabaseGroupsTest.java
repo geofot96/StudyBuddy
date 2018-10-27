@@ -96,7 +96,6 @@ public class MetabaseGroupsTest {
         DataSnapshot dataSnapshot = mock(DataSnapshot.class);
         when(dataSnapshot.getValue(Pair.class)).thenReturn(null);
         when(dataSnapshot.getChildren()).thenReturn(Arrays.asList());
-        assertNotNull(mb.getReference());
         Map<String, Integer> sizes = new HashMap<>();
         mb.getAllGroupSizes(sizes).onDataChange(dataSnapshot);
         assertEquals(0, sizes.size());

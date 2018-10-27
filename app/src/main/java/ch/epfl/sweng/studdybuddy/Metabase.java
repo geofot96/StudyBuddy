@@ -38,10 +38,6 @@ public class Metabase {
         this(new FirebaseReference(), ad);
     }
 
-    public ReferenceWrapper getReference() {
-        return db;
-    }
-
     public ValueEventListener getUserGroups(String userId, List<Group> groups) {
         return getUserGroups(userId, new ArrayList<>(), groups);
     }
