@@ -9,7 +9,7 @@ public final class Calendar {
 
     //private List<Availability> currnetAvailability;
 
-    private List<Integer> getSumOfTwoLists(List<Integer> first_list, List<Integer> second_list){
+    public List<Integer> getSumOfTwoLists(List<Integer> first_list, List<Integer> second_list){
 
         int len = first_list.size();
         List<Integer> result = new ArrayList<>(len);
