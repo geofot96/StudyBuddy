@@ -7,9 +7,9 @@ public final class Calendar {
 
     private ID<Group> groupID;
 
-    //private List<Availability> currnetAvailability;
+    //private List<Availability> currentAvailability;
 
-    public List<Integer> getSumOfTwoLists(List<Integer> first_list, List<Integer> second_list){
+    public static List<Integer> getSumOfTwoLists(List<Integer> first_list, List<Integer> second_list){
 
         int len = first_list.size();
         List<Integer> result = new ArrayList<>(len);
@@ -21,7 +21,7 @@ public final class Calendar {
         return result;
     }
 
-    public List<Integer> getIntegerListFromBooleanList(List<Boolean> list){
+    public static List<Integer> getIntegerListFromBooleanList(List<Boolean> list){
 
         int len = list.size();
         List<Integer> result = new ArrayList<>(len);
@@ -38,9 +38,26 @@ public final class Calendar {
 
     /*private List<Availiability> getAvailabilityListsFromFB (){
 
-    }
-    
-    private List<Integer> getGroupAvailability(){
-
     }*/
+    
+    private List<Integer> getGroupAvailability(List<List<Boolean>> lists){
+
+        int lists_len = lists.size();
+        int one_list_len = lists.get(0).size();
+
+        List<Integer> result = new ArrayList<>(one_list_len);
+
+        for (int i = 0; i < one_list_len; i++){
+            result.add(0);
+        }
+
+        for (int j = 0; j < lists_len; j++){
+            List<Integer> current_list = getIntegerListFromBooleanList(lists.get(j));
+            result = getSumOfTwoLists(result, current_list);
+        }
+
+        return result;
+
+
+    }
 }
