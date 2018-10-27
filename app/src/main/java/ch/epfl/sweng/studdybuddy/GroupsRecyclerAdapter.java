@@ -1,5 +1,6 @@
 package ch.epfl.sweng.studdybuddy;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -26,6 +27,7 @@ public class GroupsRecyclerAdapter extends RecyclerView.Adapter<GroupsRecyclerAd
         public TextView groupParticipantInfoTextView;
         public TextView groupLanguageTextView;
         public Button messageButton;
+        public TextView groupCreationDateTextView;
 
         public MyViewHolder(View itemView)
         {
@@ -34,6 +36,7 @@ public class GroupsRecyclerAdapter extends RecyclerView.Adapter<GroupsRecyclerAd
             groupParticipantInfoTextView = (TextView) itemView.findViewById(R.id.group_participant_info);
             groupLanguageTextView = (TextView) itemView.findViewById(R.id.group_language);
             messageButton = (Button) itemView.findViewById(R.id.message_button);
+            groupCreationDateTextView = (TextView) itemView.findViewById(R.id.creation_date);
 
         }
     }
@@ -62,6 +65,7 @@ public class GroupsRecyclerAdapter extends RecyclerView.Adapter<GroupsRecyclerAd
         return vh;
     }
 
+    @SuppressLint("DefaultLocale")
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position)
     {
@@ -72,7 +76,8 @@ public class GroupsRecyclerAdapter extends RecyclerView.Adapter<GroupsRecyclerAd
         newGroupLanguageTextView.setText(group.getLang());
         TextView newGroupParticipantInfoTextView = holder.groupParticipantInfoTextView;
         newGroupParticipantInfoTextView.setText(("Particip: " + group.getParticipantNumber() + "/" + group.getMaxNoUsers()));
-
+        TextView newGroupCreationDateTextView = holder.groupCreationDateTextView;
+        newGroupCreationDateTextView.setText(String.format("%d:%d:%d", group.getCreationDate().getDay(), group.getCreationDate().getMonth(), group.getCreationDate().getYear()));
 
         Button button = holder.messageButton;
         button.setText("More info");
