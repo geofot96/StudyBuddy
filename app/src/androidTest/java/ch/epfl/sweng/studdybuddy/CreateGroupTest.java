@@ -192,7 +192,13 @@ public class CreateGroupTest {
 
     @Test
     public void createButtonDisabledIfNoCourseSelected() {
-        onView(withId(R.id.confirmGroupCreation)).check(matches(not(isEnabled())));
+        try {
+            Thread.sleep(100);
+            onView(withId(R.id.confirmGroupCreation)).check(matches(not(isEnabled())));
+        }
+        catch (Exception e) {
+
+        }
     }
 
     @Test
