@@ -153,10 +153,10 @@ public class Metabase {
             @Override
             public void accept(List<Pair> pairs) {
                 uIds.clear();
-                groupUsers.clear();
-                for(Pair p: pairs) {
-                    safeAddId(gId, p.getValue(), p.getKey(), uIds);
+                for(int i = 0; i < pairs.size(); ++i) {
+                    safeAddId(gId, pairs.get(i).getValue(), pairs.get(i).getKey(), uIds);
                 }
+                groupUsers.clear();
                 getUsersfromIds(uIds, groupUsers);
             }
         });
