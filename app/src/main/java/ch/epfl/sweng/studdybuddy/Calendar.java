@@ -6,8 +6,45 @@ import java.util.List;
 public final class Calendar {
 
     private ID<Group> groupID;
+    private List<Integer> currentAvailability;
+    private List<List<Boolean>> lists;
 
-    //private List<Availability> currentAvailability;
+    //Till we connected FB I use custom lists
+
+    public void Calendar(ID<Group> id){
+
+        this.groupID = id;
+        this.manualInitialization();
+    }
+
+    private void setCurrentAvailability(){
+        this.currentAvailability = sumFewBooleanLists(this.lists);
+    }
+
+    public List<Integer> getCurrentAvailability(){
+        return this.currentAvailability;
+    }
+
+    public void manualInitialization(){
+        List<Boolean> a = new ArrayList<>();
+        List<Boolean> b = new ArrayList<>();
+        List<Boolean> c = new ArrayList<>();
+
+        for (int i = 0; i < 5; i ++){
+            a.add(Boolean.TRUE);
+            b.add(Boolean.TRUE);
+            c.add(Boolean.FALSE);
+        }
+
+        List<List<Boolean>> lists_local = new ArrayList<>();
+
+        lists.add(a);
+        lists.add(b);
+        lists.add(c);
+
+        this.lists = lists_local;
+
+    }
 
     public static List<Integer> getSumOfTwoLists(List<Integer> first_list, List<Integer> second_list){
 
@@ -36,8 +73,9 @@ public final class Calendar {
         return result;
     }
 
-    /*private List<Availiability> getAvailabilityListsFromFB (){
-
+    /*private List<List<Boolean> getAvailabilityListsFromFB (){
+        //get from db
+        //this.setCurrentAvailability();
     }*/
     
     public List<Integer> sumFewBooleanLists(List<List<Boolean>> lists){
@@ -57,7 +95,5 @@ public final class Calendar {
         }
 
         return result;
-
-
     }
 }
