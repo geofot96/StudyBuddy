@@ -17,7 +17,7 @@ public class CalendarActivity extends AppCompatActivity
 {
 
     GridLayout calendarGrid;
-
+    boolean[][] pickedSlots=new boolean[7][11];
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -36,7 +36,7 @@ public class CalendarActivity extends AppCompatActivity
         {
             CardView cardView = (CardView) calendarGrid.getChildAt(i);
 
-
+            if(i%8!=0) {//Hours shouldn't be clickable
                 cardView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -49,7 +49,7 @@ public class CalendarActivity extends AppCompatActivity
                         }
                     }
                 });
-
+            }
         }
     }
 
