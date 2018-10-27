@@ -31,7 +31,6 @@ public class MainActivity extends AppCompatActivity
                 signOut(); //get signed out
             }
         });
-        createFred();
     }
 
 
@@ -62,19 +61,6 @@ public class MainActivity extends AppCompatActivity
             mAuth = new FirebaseAuthManager(this, getString(R.string.default_web_client_id));
         }
         return mAuth;
-    }
-
-    public void createFred()
-    {
-        Button fred = (Button)findViewById(R.id.courseButton);
-        final Intent intent = new Intent(this, CourseSelectActivity.class);
-
-        fred.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(intent);
-            }
-        });
     }
 
     public void goToProfileTabred(View view)

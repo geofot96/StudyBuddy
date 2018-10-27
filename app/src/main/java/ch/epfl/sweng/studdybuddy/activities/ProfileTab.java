@@ -41,8 +41,6 @@ ProfileTab extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile_tab);
-
-       //
         firebase = getDB();
         user = ((StudyBuddy) ProfileTab.this.getApplication()).getAuthendifiedUser();
         userID = user.getUserID().toString();
@@ -51,6 +49,17 @@ ProfileTab extends AppCompatActivity {
         setUI();
         setCoursesUp();
         //setGroupsUp();
+    }
+
+    public void setUserCourses(List<Course> courses) {
+        userCourses.clear();
+        userCourses.addAll(courses);
+        adCourse.notifyDataSetChanged();
+    }
+    public void setUserGroups(List<Group> groups) {
+        groups.clear();
+        groups.addAll(groups);
+//        ad.notifyDataSetChanged();
     }
     private void removeCourse(String course){
         userCourses.remove(course);
