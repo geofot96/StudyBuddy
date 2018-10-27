@@ -53,14 +53,14 @@ public class CreateGroupTest {
 
     @Rule
     public IntentsTestRule<GroupsActivity> mIntentsTestRule = new IntentsTestRule<>(GroupsActivity.class);
-/*
+
     @Test
     public void clickCreateGroupButtonLeadsToCreateGroupsActivity(){
         onView(withId(R.id.createGroup)).perform(click());
         intended(hasComponent(new ComponentName(getTargetContext(), CreateGroupActivity.class)));
     }
-*/
-   /* @Test
+
+    @Test
     public void createAGroupWillBeRegistered() throws InterruptedException {
 
         onView(withId(R.id.createGroup)).perform(click());
@@ -71,7 +71,7 @@ public class CreateGroupTest {
         Thread.sleep(500);
         onView(withId(R.id.confirmGroupCreation)).perform(click());
         intended(hasComponent(new ComponentName(getTargetContext(), GroupsActivity.class)));
-*/
+
        /*// Added a sleep statement to match the app's execution delay.
         // The recommended way to handle such scenarios is to use Espresso idling resources:
         // https://google.github.io/android-testing-support-library/docs/espresso/idling-resource/index.html
@@ -188,13 +188,13 @@ public class CreateGroupTest {
                         isDisplayed()));
         textView2.check(matches(withText("Fr")));
 */
- //   }
-/*
+    }
+
     @Test
     public void createAGroupeWithoutSettings(){
         onView(withId(R.id.createGroup)).perform(click());
         onView(withId(R.id.confirmGroupCreation)).perform(click());
         intended(hasComponent(new ComponentName(getTargetContext(), CreateGroupActivity.class)));
     }
-    */
+
 }
