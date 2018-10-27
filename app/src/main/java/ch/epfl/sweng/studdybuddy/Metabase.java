@@ -6,11 +6,13 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
 public class Metabase {
+
 
     private ReferenceWrapper db;
     private final List<AdapterAdapter> ads; // eventually use option
@@ -67,7 +69,11 @@ public class Metabase {
 
     //protected ?
     public ValueEventListener getGroupsfromIds(List<String> gIds, List<Group> userGroups) {
-        return db.select("groups").getAll(Group.class, new Consumer<List<Group>>() {
+        return db.select("groups").getAll(Group.class, groupsFromIds(gIds, userGroups));
+    }
+
+    private Consumer<List<Group>> groupsFromIds(List<String> gIds, List<Group> userGroups) {
+        return new Consumer<List<Group>>() {
             @Override
             public void accept(List<Group> groups) {
                 for(Group g : groups) {
@@ -77,8 +83,30 @@ public class Metabase {
                 }
                 notif();
             }
-        });
+        };
     }
+
+    /*public <T> ValueEventListener getIdsFromPairs(Class<T> type, String table, String id, List<String> ids, List<T> recipient) {
+        return db.select(table).getAll(Pair.class, new Consumer<List<Pair>>() {
+            @Override
+            public void accept(List<Pair> pairs) {
+                ids.clear();
+                recipient.clear();
+                for(Pair p: pairs) {
+                    String k = (type == Group.class) ? p.getValue() : p.getKey();
+                    String v = (type == Group.class) ? p.getKey() : p.getValue();
+                    safeAddId(id, k, v, ids);
+                }
+                if(type == Group.class) {
+                    getGroupsfromIds(ids, (List<Group>) recipient);
+                }
+                else {
+                    getUsersfromIds(ids, (List<User>) recipient);
+                }
+                notif();
+            }
+        });
+    }*/
 
     public ValueEventListener getUserCourses(String uId, List<String> courses) {
         return db.select("userCourses").getAll(Pair.class, new Consumer<List<Pair>>() {
@@ -138,9 +166,9 @@ public class Metabase {
         return db.select("users").getAll(User.class, new Consumer<List<User>>() {
             @Override
             public void accept(List<User> users) {
-                for(User u: users) {
-                    if(uIds.contains(u.getUserID().toString())) {
-                        groupUsers.add(u);
+                for(int i = 0; i < users.size(); ++i) {
+                    if(uIds.contains(users.get(i).getUserID().toString())) {
+                        groupUsers.add(users.get(i));
                     }
                 }
                 notif();
