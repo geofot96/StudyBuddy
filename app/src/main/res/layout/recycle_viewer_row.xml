@@ -8,19 +8,25 @@
 
     <TextView
         android:id="@+id/group_course_name"
-        android:layout_width="196dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1" />
 
     <TextView
         android:id="@+id/group_participant_info"
-        android:layout_width="196dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1" />
 
     <TextView
         android:id="@+id/group_language"
-        android:layout_width="143dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1" />
+
+    <TextView
+        android:id="@+id/creation_data_text"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1" />
 
@@ -31,4 +37,5 @@
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
         android:textSize="10sp" />
+
 </LinearLayout>
