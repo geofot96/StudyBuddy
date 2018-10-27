@@ -2,12 +2,19 @@ package ch.epfl.sweng.studdybuddy;
 
 import android.support.test.rule.ActivityTestRule;
 
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import ch.epfl.sweng.studdybuddy.activities.ProfileTab;
+
+import static android.support.test.espresso.Espresso.onView;
+import static android.support.test.espresso.assertion.ViewAssertions.matches;
+import static android.support.test.espresso.matcher.ViewMatchers.hasDescendant;
+import static android.support.test.espresso.matcher.ViewMatchers.withId;
+import static android.support.test.espresso.matcher.ViewMatchers.withText;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ProfileTabTest
@@ -17,11 +24,6 @@ public class ProfileTabTest
     public final ActivityTestRule<ProfileTab> mActivityRule =
             new ActivityTestRule<>(ProfileTab.class);
 */
-    @Test
-    public void emptyTest(){
-
-    }
-
    /* @Before
     public void setup(){
     }*/
@@ -63,25 +65,37 @@ public class ProfileTabTest
     Course c =  new Course("Maths");
     Group group = new Group(10,c, "FR");
 
+    @Before
     public void setup() throws  Exception{
-        /*DatabaseReference ref = mock(DatabaseReference.class);
+      /*  DatabaseReference ref = mock(DatabaseReference.class);
         DataSnapshot dataSnapshot = mock(DataSnapshot.class);
         ReferenceWrapper firebase = new FirebaseReference(ref);
         List<Pair> tuples = Arrays.asList(new Pair("Default", "ICC"), new Pair("Default", "ICC"));
         DataSnapshot userCourse= mock(DataSnapshot.class), userGroup = mock(DataSnapshot.class), groups = mock(DataSnapshot.class);
-        when(userCourse.getValue()).thenReturn(tuples.get(0));
+        when(userCourse.getValue()).thenReturn(Arrays.asList(tuples.get(0)));
         when(userGroup.getValue()).thenReturn(tuples.get(1));
         when(groups.getValue()).thenReturn(new Group(2, new Course("ICC"),"FR"));
         when(dataSnapshot.getValue(Pair.class)).thenReturn(null);
         when(dataSnapshot.getChildren()).thenReturn(Arrays.asList(userGroup, userCourse));
         when(ref.child(anyString())).thenReturn(ref);
         Map<String, Integer> sizes = new HashMap<>();
-
         ProfileTab profile = mActivityRule.getActivity();
-        profile.setDB(firebase);
-        profile.userGroupConsumer();*/
-
+        DataSnapshot courses = mock(DataSnapshot.class);
+        when(courses.getValue()).thenReturn(Arrays.asList("ICC"));
+      //  profile.setDB(firebase);
+        profile.setCoursesUp().onDataChange(courses);
+*/
 
     }
 
+
+    @Test
+    public void setCourseAndGroupsWorks(){
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        onView(withId(R.id.courses_list)).check(matches(hasDescendant(withText("ICC"))));
+    }
 }
