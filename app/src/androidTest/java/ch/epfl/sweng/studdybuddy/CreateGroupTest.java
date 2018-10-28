@@ -196,4 +196,5 @@ public class CreateGroupTest {
         onView(withId(R.id.confirmGroupCreation)).perform(click());
         intended(hasComponent(new ComponentName(getTargetContext(), CreateGroupActivity.class)));
     }
+
 }
