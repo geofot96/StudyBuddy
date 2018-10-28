@@ -11,7 +11,6 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-import ch.epfl.sweng.studdybuddy.Course;
 import ch.epfl.sweng.studdybuddy.CourseAdapter;
 import ch.epfl.sweng.studdybuddy.FirebaseReference;
 import ch.epfl.sweng.studdybuddy.Group;
@@ -26,7 +25,7 @@ import ch.epfl.sweng.studdybuddy.User;
 public class
 ProfileTab extends AppCompatActivity {
 
-    private final List<Course> userCourses =  new ArrayList<>();
+    private final List<String> userCourses =  new ArrayList<>();
     private  final List<Group> userGroups = new ArrayList<>();
     private RecyclerView recyclerView_groups;
     private RecyclerView recyclerView_courses;
@@ -48,10 +47,10 @@ ProfileTab extends AppCompatActivity {
         //usersCourses.addAll(.getCoursesPreset());
         setUI();
         setCoursesUp();
-        //setGroupsUp();
+        setGroupsUp();
     }
 
-    public void setUserCourses(List<Course> courses) {
+    public void setUserCourses(List<String> courses) {
         userCourses.clear();
         userCourses.addAll(courses);
         adCourse.notifyDataSetChanged();
@@ -71,11 +70,8 @@ ProfileTab extends AppCompatActivity {
     }
 
     public ValueEventListener setCoursesUp() {
-        List<String> courses  = new ArrayList<>();
-        for(Course c : userCourses){
-            courses.add(c.getCourseName());
-        }
-        return metabase.getUserCourses(userID, courses);
+        metabase.addListenner(new RecyclerAdapterAdapter(adCourse));
+        return metabase.getUserCourses(userID, userCourses);
     }
 
     private void setUI(){

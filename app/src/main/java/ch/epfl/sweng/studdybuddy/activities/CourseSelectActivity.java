@@ -1,13 +1,10 @@
 package ch.epfl.sweng.studdybuddy.activities;
 
 import android.content.Context;
-
 import android.content.Intent;
-
-import android.support.annotation.NonNull; //TODO what is this?
-
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
@@ -26,7 +23,6 @@ import java.util.List;
 import ch.epfl.sweng.studdybuddy.AdapterConsumer;
 import ch.epfl.sweng.studdybuddy.ArrayAdapterAdapter;
 import ch.epfl.sweng.studdybuddy.AuthManager;
-import ch.epfl.sweng.studdybuddy.Course;
 import ch.epfl.sweng.studdybuddy.CourseAdapter;
 import ch.epfl.sweng.studdybuddy.CourseHolder;
 import ch.epfl.sweng.studdybuddy.FirebaseAuthManager;
@@ -38,6 +34,7 @@ import ch.epfl.sweng.studdybuddy.ReferenceWrapper;
 import ch.epfl.sweng.studdybuddy.StudyBuddy;
 import ch.epfl.sweng.studdybuddy.User;
 import ch.epfl.sweng.studdybuddy.util.Helper;
+
 import static ch.epfl.sweng.studdybuddy.ActivityHelper.showDropdown;
 
 
@@ -46,7 +43,7 @@ public class CourseSelectActivity extends AppCompatActivity
 
     static List<String> coursesDB;
     //List of selected courses
-    public static final List<Course> courseSelection = new ArrayList<>();
+    public static final List<String> courseSelection = new ArrayList<>();
 
 
     static AutoCompleteTextView autocomplete;
@@ -86,8 +83,8 @@ public class CourseSelectActivity extends AppCompatActivity
             {
                 User currentUser = ((StudyBuddy) CourseSelectActivity.this.getApplication()).getAuthendifiedUser();
                 AuthManager auth = new FirebaseAuthManager(CourseSelectActivity.this, getString(R.string.default_web_client_id));
-                for(Course course : courseSelection){
-                    Pair pair = new Pair(currentUser.getUserID().toString(), course.getCourseID().toString());
+                for(String course : courseSelection){
+                    Pair pair = new Pair(currentUser.getUserID().toString(), course);
                     firebase.select("userCourse").select(Helper.hashCode(pair).toString()).setVal(pair);
                 }
                 //currentUser.setCoursesPreset(courseSelection);
@@ -107,7 +104,7 @@ public class CourseSelectActivity extends AppCompatActivity
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String textInput = parent.getAdapter().getItem(position).toString();
-                if(!courseSelection.contains(textInput)) { addCourse(new Course(textInput)); }
+                if(!courseSelection.contains(textInput)) { addCourse(textInput); }
             }
         });
         return adapter;
@@ -147,7 +144,7 @@ public class CourseSelectActivity extends AppCompatActivity
        firebase.select("courses").getAll(String.class, AdapterConsumer.adapterConsumer(String.class, coursesDB, new ArrayAdapterAdapter(adapter)));
    }
 
-    private void addCourse(Course course)
+    private void addCourse(String course)
     {
         courseSelection.add(course);
         //Dismiss KB
