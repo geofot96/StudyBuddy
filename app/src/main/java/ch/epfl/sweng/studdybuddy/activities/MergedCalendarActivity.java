@@ -11,7 +11,6 @@ import android.widget.GridLayout;
 import java.util.ArrayList;
 
 import ch.epfl.sweng.studdybuddy.GroupsActivity;
-import ch.epfl.sweng.studdybuddy.ProfileTab;
 import ch.epfl.sweng.studdybuddy.R;
 
 
