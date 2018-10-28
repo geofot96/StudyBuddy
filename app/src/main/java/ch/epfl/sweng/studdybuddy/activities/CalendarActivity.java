@@ -7,9 +7,6 @@ import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.view.View;
 import android.widget.GridLayout;
-
-import ch.epfl.sweng.studdybuddy.GroupsActivity;
-import ch.epfl.sweng.studdybuddy.ProfileTab;
 import ch.epfl.sweng.studdybuddy.R;
 
 
