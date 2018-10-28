@@ -43,7 +43,13 @@
         <activity android:name=".DummyGoogleSignInActivity" />
         <activity android:name=".activities.MainActivity" />
         <activity android:name=".GoogleSignInActivity" />
-        <activity android:name=".activities.CalendarActivity"></activity>
+
+        <activity android:name=".activities.CalendarActivity">
+        android:parentActivityName=".activities.MainActivity">
+        <meta-data
+            android:name="android.support.PARENT_ACTIVITY"
+            android:value=".CourseSelectActivity" />
+        </activity>
     </application>
 
 </manifest>
