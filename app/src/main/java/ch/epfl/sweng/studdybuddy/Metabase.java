@@ -1,17 +1,12 @@
 package ch.epfl.sweng.studdybuddy;
 
-import android.util.Log;
-
-import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import ch.epfl.sweng.studdybuddy.activities.CreateGroupActivity;
 import ch.epfl.sweng.studdybuddy.util.Helper;
 
 public class Metabase {
@@ -86,7 +81,7 @@ public class Metabase {
     }
 
     public ValueEventListener getUserCourses(String uId, List<String> courses) {
-        return db.select("userCourses").getAll(Pair.class, new Consumer<List<Pair>>() {
+        return db.select("userCourse").getAll(Pair.class, new Consumer<List<Pair>>() {
             @Override
             public void accept(List<Pair> pairs) {
                 courses.clear();
@@ -101,7 +96,7 @@ public class Metabase {
     }
 
     public ValueEventListener getAllGroupSizes(Map<String, Integer> sizes) {
-        return db.select("userGroups").getAll(Pair.class, new Consumer<List<Pair>>() {
+        return db.select("userGroup").getAll(Pair.class, new Consumer<List<Pair>>() {
             @Override
             public void accept(List<Pair> pairs) {
                 sizes.clear();
@@ -126,7 +121,7 @@ public class Metabase {
     }
 
     public ValueEventListener getGroupUsers(String gId, List<String> uIds, List<User> groupUsers) {
-        return db.select("userGroups").getAll(Pair.class, new Consumer<List<Pair>>() {
+        return db.select("userGroup").getAll(Pair.class, new Consumer<List<Pair>>() {
             @Override
             public void accept(List<Pair> pairs) {
                 uIds.clear();
