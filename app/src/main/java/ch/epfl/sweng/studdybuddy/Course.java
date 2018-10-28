@@ -13,8 +13,9 @@ public class Course
 
     public Course(String courseName)
     {
+        this();
         this.courseName = courseName;
-        courseID = new ID<Course>(UUID.randomUUID().toString());
+        courseID = new ID<Course>(courseName);
     }
 
     public Course(Course sourceCourse)
@@ -39,4 +40,6 @@ public class Course
     {
         this.courseID = courseID;
     }
+
+
 }

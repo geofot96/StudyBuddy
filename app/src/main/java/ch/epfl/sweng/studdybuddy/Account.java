@@ -8,7 +8,9 @@ public class Account {
     private String uid;
     private String idToken;
 
+
     private Account(String displayName, String uid, String idToken){
+        this();
         this.displayName = displayName;
         this.uid = uid;
         this.idToken = idToken;

@@ -1,6 +1,7 @@
 package ch.epfl.sweng.studdybuddy;
 
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.List;
 
@@ -28,11 +29,13 @@ public interface ReferenceWrapper {
      */
     Task<Void> clear();
 
-    <T> void get(Class<T> type, Consumer<T> callback);
+    <T> ValueEventListener get(Class<T> type, Consumer<T> callback);
 
     /**
      * Returns an iterator of the current level
      * @return an iterator
      */
-     <T> void getAll(Class<T> type, Consumer<List<T>> callback);
+     <T> ValueEventListener getAll(Class<T> type, Consumer<List<T>> callback);
+
+     ReferenceWrapper parent();
 }

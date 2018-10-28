@@ -15,6 +15,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import static org.hamcrest.CoreMatchers.any;
 import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.eq;
@@ -43,7 +44,7 @@ public class FirebaseReferenceTest {
         DataSnapshot dataSnapshot = mock(DataSnapshot.class);
         //when(testref.setValue("key")).th;
 
-        Group emptyGroup = new Group(3, new Course("SDP"), "fr", new ArrayList<User>());
+        Group emptyGroup = new Group(3, new Course("SDP"), "fr");
         when(dataSnapshot.getValue(Group.class)).thenReturn(emptyGroup);
         when(dataSnapshot.getChildren()).thenReturn(Arrays.asList(dataSnapshot));
         ArgumentCaptor<ValueEventListener> argument = ArgumentCaptor.forClass(ValueEventListener.class);
@@ -51,7 +52,7 @@ public class FirebaseReferenceTest {
         //verify(testref).addListenerForSingleValueEvent(argument.capture());
         //argument.getValue().onDataChange(dataSnapshot);
         FirebaseReference ref  =new FirebaseReference(testref);
-        ref.getAllMock(Group.class, new Consumer<List<Group>>() {
+        ref.getAll(Group.class, new Consumer<List<Group>>() {
             @Override
             public void accept(List<Group> groups) {
                 Group g = groups.get(0);
@@ -61,9 +62,6 @@ public class FirebaseReferenceTest {
                 //...
             }
         }).onDataChange(dataSnapshot);
-        //
-
-
     }
 
     @Test
@@ -76,8 +74,17 @@ public class FirebaseReferenceTest {
         Assert.assertThat(res.getRef(), is(childRef));
     }
 
+    /*@Test
+    public void selectWhenNoChild() {
 
+    }*/
 
+    @Test
+    public void getRef() {
+        DatabaseReference db = mock(DatabaseReference.class);
+        FirebaseReference fb = new FirebaseReference(db);
+        assertEquals(db, fb.getRef());
+    }
 
     @Test
     public void getReturnsData(){
@@ -85,13 +92,13 @@ public class FirebaseReferenceTest {
         FirebaseReference fb = new FirebaseReference(db);
 
         DataSnapshot ds = mock(DataSnapshot.class);
-        final Group clp = new Group(10,new Course("CLP"), "EN", new ArrayList<User>());
+        final Group clp = new Group(10,new Course("CLP"), "EN");
 
 
         when(ds.getValue(Group.class)).thenReturn(clp);
          Group[] box = new Group[1];
 
-       fb.getMock(Group.class, new Consumer<Group>() {
+       fb.get(Group.class, new Consumer<Group>() {
            @Override
            public void accept(Group group) {
                assertTrue(group.toString().equals(clp.toString()));
@@ -100,6 +107,14 @@ public class FirebaseReferenceTest {
 
     }
 
+    @Test
+    public void childParentChild() {
+        DatabaseReference mother = mock(DatabaseReference.class), daughter = mock(DatabaseReference.class);
+        FirebaseReference sub = new FirebaseReference(mother);
+        when(mother.child("child")).thenReturn(daughter);
+        when(daughter.getParent()).thenReturn(mother);
+        sub.select("child").parent().select("child");
+    }
     /*@Test//(expected = IndexOutOfBoundsException.class)
     public void selectOfNoChildBehaves() {
         DatabaseReference testRef = mock(DatabaseReference.class);

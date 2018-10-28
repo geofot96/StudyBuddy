@@ -75,7 +75,8 @@ public class GroupsRecyclerAdapter extends RecyclerView.Adapter<GroupsRecyclerAd
         TextView newGroupLanguageTextView = holder.groupLanguageTextView;
         newGroupLanguageTextView.setText(group.getLang());
         TextView newGroupParticipantInfoTextView = holder.groupParticipantInfoTextView;
-        newGroupParticipantInfoTextView.setText(("Particip: " + group.getParticipantNumber() + "/" + group.getMaxNoUsers()));
+
+        //newGroupParticipantInfoTextView.setText(("Particip: " + group.getParticipantNumber() + "/" + group.getMaxNoUsers()));
         TextView newGroupCreationDateTextView = holder.groupCreationDateTextView;
         newGroupCreationDateTextView.setText(String.format("%d:%d:%d", group.getCreationDate().getDay(), group.getCreationDate().getMonth(), group.getCreationDate().getYear()));
 
