@@ -7,11 +7,10 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.Button;
 import android.widget.NumberPicker;
 import android.widget.Spinner;
 import android.widget.Toast;
-
-import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -24,11 +23,13 @@ import ch.epfl.sweng.studdybuddy.GroupsActivity;
 import ch.epfl.sweng.studdybuddy.DummyCourses;
 import ch.epfl.sweng.studdybuddy.FirebaseReference;
 import ch.epfl.sweng.studdybuddy.Group;
+import ch.epfl.sweng.studdybuddy.Metabase;
+import ch.epfl.sweng.studdybuddy.Pair;
 import ch.epfl.sweng.studdybuddy.R;
-import ch.epfl.sweng.studdybuddy.RecyclerAdapterAdapter;
+import ch.epfl.sweng.studdybuddy.StudyBuddy;
 import ch.epfl.sweng.studdybuddy.User;
-
-
+import ch.epfl.sweng.studdybuddy.util.Helper;
+import static ch.epfl.sweng.studdybuddy.ActivityHelper.showDropdown;
 public class CreateGroupActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener
 {
     private String selectedCourse="";
@@ -40,13 +41,15 @@ public class CreateGroupActivity extends AppCompatActivity implements AdapterVie
     private static AutoCompleteTextView textView;
 
     FirebaseReference firebase;
+    Metabase mb;
+    Button create;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_group);
-
+        mb = new Metabase();
         Intent intent = getIntent();
         setUpLang();
         setUpNumberPicker();
@@ -54,31 +57,23 @@ public class CreateGroupActivity extends AppCompatActivity implements AdapterVie
         coursesDB = new ArrayList<>();
         coursesDB.add("untitled");
         firebase.select("courses").getAll(String.class, AdapterConsumer.adapterConsumer(String.class, coursesDB, new ArrayAdapterAdapter(setUpAutoComplete())));
-
+        create = (Button)findViewById(R.id.confirmGroupCreation);
+        create.setEnabled(false);
     }
 
     ArrayAdapter<String> setUpAutoComplete() {
-
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_dropdown_item_1line, coursesDB);
         textView = (AutoCompleteTextView) findViewById(R.id.courseComplete2);
         textView.setAdapter(adapter);
-        textView.setThreshold(0);
-        textView.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v)
-            {
-                AutoCompleteTextView textView = (AutoCompleteTextView)
-                        findViewById(R.id.courseComplete2);
-                textView.showDropDown();
-            }
-        });
+        textView.setOnClickListener(showDropdown(textView));
         textView.setOnItemClickListener(new AdapterView.OnItemClickListener()
         {
             @Override public void onItemClick(AdapterView<?> parent, View view, int position, long id)
             {
                 String textInput = parent.getItemAtPosition(position).toString();
                 selectedCourse = textInput;
+                create.setEnabled(true);
             }
         });
         return adapter;
@@ -126,18 +121,12 @@ public class CreateGroupActivity extends AppCompatActivity implements AdapterVie
 
     public void addtoGroups(View view)
     {
-        if(!selectedCourse.isEmpty() &&coursesDB.contains(selectedCourse)) {
-					//Comunnicate through fb
-            Group g = new Group(maxParticipants, new Course(selectedCourse),selectedLanguage, new ArrayList<User>());
-		        firebase.select("groups").select(g.getGroupID()).setVal(g);
+            Group g = new Group(maxParticipants, new Course(selectedCourse),selectedLanguage);
+
+            User user = ((StudyBuddy) CreateGroupActivity.this.getApplication()).authendifiedUser;
+            mb.pushGroup(g, user.getUserID().getId());
 		        Intent intent = new Intent(this, GroupsActivity.class);
 		        startActivity(intent);
-        }
-        else {
-
-            Toast.makeText(view.getContext(), "The course selected doesn't exist",
-                    Toast.LENGTH_LONG).show();
-        }
     }
 
     NumberPicker.OnValueChangeListener onValueChangeListener = new NumberPicker.OnValueChangeListener()

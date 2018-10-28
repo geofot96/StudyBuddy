@@ -12,10 +12,10 @@ import ch.epfl.sweng.studdybuddy.R;
 
 public class CourseAdapter extends RecyclerView.Adapter<CourseHolder>
 {
-    List<String> list;
+    List<Course> list;
 
     //ajouter un constructeur prenant en entrée une liste
-    public CourseAdapter(List<String> list)
+    public CourseAdapter(List<Course> list)
     {
         this.list = list;
     }
@@ -33,7 +33,7 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseHolder>
     @Override
     public void onBindViewHolder(CourseHolder holder, int position)
     {
-        String course = list.get(position);
+        Course course = list.get(position);
         holder.bind(course);
     }
 

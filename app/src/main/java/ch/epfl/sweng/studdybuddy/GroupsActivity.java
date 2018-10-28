@@ -36,7 +36,7 @@ import ch.epfl.sweng.studdybuddy.activities.CreateGroupActivity;
 public class GroupsActivity extends AppCompatActivity
 {
     GroupsRecyclerAdapter mAdapter;
-		static List<Group> groupSet;
+		static List<Group> groupSet  = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +46,7 @@ public class GroupsActivity extends AppCompatActivity
         rv.setHasFixedSize(true);
         rv.setLayoutManager(new LinearLayoutManager(this));
         FirebaseReference firebase = new FirebaseReference(FirebaseDatabase.getInstance().getReference());
-        groupSet = new ArrayList<>();
+        groupSet.add(new Group(3, new Course("-"), "fr"));
         mAdapter = new GroupsRecyclerAdapter(groupSet);
         rv.setAdapter(mAdapter);
         firebase.select("groups").getAll(Group.class, AdapterConsumer.adapterConsumer(Group.class, groupSet, new RecyclerAdapterAdapter(mAdapter)));
@@ -66,7 +66,6 @@ public class GroupsActivity extends AppCompatActivity
                 return false;
             }
         });
-
     }
 
     public void gotoCreation(View view)

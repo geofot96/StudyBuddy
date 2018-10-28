@@ -11,6 +11,9 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
+
+import java.util.ArrayList;
+
 import ch.epfl.sweng.studdybuddy.activities.*;
 
 public class GoogleSignInActivity extends AppCompatActivity {
@@ -49,6 +52,7 @@ public class GoogleSignInActivity extends AppCompatActivity {
             String personName = acct.getDisplayName();
             //appears only when the user is connected
             Toast.makeText(this, "Welcome " + personName, Toast.LENGTH_SHORT).show();
+            fetchUserAndStart(acct, MainActivity.class);
             startActivity(new Intent(GoogleSignInActivity.this, MainActivity.class));
         } else {
             //appears only when the user isn't connected to the app
@@ -71,7 +75,7 @@ public class GoogleSignInActivity extends AppCompatActivity {
                     @Override
                     public void then(Account acct) {
                         if (acct != null) {
-                            startActivity(new Intent(GoogleSignInActivity.this, MainActivity.class));
+                            fetchUserAndStart(acct, CourseSelectActivity.class);
                         }
                     }
                 }, TAG);
@@ -80,6 +84,25 @@ public class GoogleSignInActivity extends AppCompatActivity {
                 Log.w(TAG, "Google sign in failed.", e);
             }
         }
+    }
+
+    void fetchUserAndStart(Account acct, Class destination) {
+        FirebaseReference fb = new FirebaseReference();
+        final ID<User> userID = new ID<>(acct.getId());
+        fb.select("users").select(userID.getId()).get(User.class, new Consumer<User>() {
+            @Override
+            public void accept(User user) {
+                StudyBuddy app = ((StudyBuddy) GoogleSignInActivity.this.getApplication());
+                if(user == null) { //create a new user and put in db
+                    app.setAuthendifiedUser(new User(acct.getDisplayName(), userID));
+                    fb.select("users").select(userID.getId()).setVal(app.getAuthendifiedUser());
+                }
+                else {
+                    app.setAuthendifiedUser(user);
+                }
+                startActivity(new Intent(GoogleSignInActivity.this, destination));
+            }
+        });
     }
 
 
