@@ -50,7 +50,7 @@ ProfileTab extends AppCompatActivity {
         setGroupsUp();
     }
 
-    public void setUserCourses(List<String> courses) {
+   /* public void setUserCourses(List<String> courses) {
         userCourses.clear();
         userCourses.addAll(courses);
         adCourse.notifyDataSetChanged();
@@ -59,7 +59,7 @@ ProfileTab extends AppCompatActivity {
         groups.clear();
         groups.addAll(groups);
 //        ad.notifyDataSetChanged();
-    }
+    }*/
     private void removeCourse(String course){
         userCourses.remove(course);
     }
@@ -83,7 +83,7 @@ ProfileTab extends AppCompatActivity {
         recyclerView_courses.setLayoutManager(new LinearLayoutManager(this));
         recyclerView_courses.setAdapter(adCourse);
 
-        ad = new GroupsRecyclerAdapter(userGroups);
+        ad = new GroupsRecyclerAdapter(userGroups, userID);
         recyclerView_groups = (RecyclerView) findViewById(R.id.groups_list);
         recyclerView_groups.setLayoutManager(new LinearLayoutManager(this));
         recyclerView_groups.setAdapter(ad);

@@ -17,8 +17,8 @@ public class GroupsRecyclerAdapter extends RecyclerView.Adapter<GroupsRecyclerAd
 {
     private List<Group> groupList, filterList;
     FeedFilter filter;
-
-
+    private Metabase mb;
+    private String userId;
     public static class MyViewHolder extends RecyclerView.ViewHolder
     {
 
@@ -34,14 +34,17 @@ public class GroupsRecyclerAdapter extends RecyclerView.Adapter<GroupsRecyclerAd
             groupParticipantInfoTextView = (TextView) itemView.findViewById(R.id.group_participant_info);
             groupLanguageTextView = (TextView) itemView.findViewById(R.id.group_language);
             messageButton = (Button) itemView.findViewById(R.id.message_button);
-
         }
     }
 
-    public GroupsRecyclerAdapter(List<Group> groupList)
+    public GroupsRecyclerAdapter(List<Group> groupList, String userId)
     {
         this.groupList = groupList;
         this.filterList=groupList;
+        mb = new Metabase();
+        this.userId = userId;
+
+
     }
 
     public List<Group> getGroupList() {
@@ -75,7 +78,13 @@ public class GroupsRecyclerAdapter extends RecyclerView.Adapter<GroupsRecyclerAd
 
 
         Button button = holder.messageButton;
-        button.setText("More info");
+        button.setText("Join");
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mb.pushUserGroup(new Pair(userId, group.getGroupID().toString()));
+            }
+        });
     }
 
     @Override
