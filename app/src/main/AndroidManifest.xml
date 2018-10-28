@@ -44,6 +44,8 @@
         <activity android:name=".activities.MainActivity" />
         <activity android:name=".GoogleSignInActivity" />
         <activity android:name=".activities.CalendarActivity"></activity>
+        <activity android:name=".activities.MergedCalendarActivity"></activity>
+
     </application>
 
 </manifest>

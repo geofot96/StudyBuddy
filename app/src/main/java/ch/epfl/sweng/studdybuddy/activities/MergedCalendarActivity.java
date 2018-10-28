@@ -19,7 +19,6 @@ public class MergedCalendarActivity extends AppCompatActivity
 {
 
     GridLayout calendarGrid;
-    boolean[][] pickedSlots=new boolean[7][11];
     ArrayList<boolean[][]> calendars;
 
     @Override
@@ -66,12 +65,12 @@ public class MergedCalendarActivity extends AppCompatActivity
                 int timesSelected=0;
                 for (int j=0; j<calendars.size();j++)
                 {
-                    if(calendars.get(j)[(i-1)%7][i/7])timesSelected++;
+                    if(calendars.get(j)[(i%8)-1][i/8])timesSelected++;
 
                 }
 
                 if(timesSelected==0)cardView.setCardBackgroundColor(Color.WHITE);
-                else cardView.setCardBackgroundColor(Color.rgb(0,(int)((255.0/calendars.size())*timesSelected),0));
+                else cardView.setCardBackgroundColor(Color.rgb(0,(int)((((255.0/calendars.size())*(calendars.size()-timesSelected))+60)%255),0));
             }
         }
 
