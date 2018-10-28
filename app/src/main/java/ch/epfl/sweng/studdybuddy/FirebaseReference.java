@@ -1,8 +1,6 @@
 package ch.epfl.sweng.studdybuddy;
 
 import android.support.annotation.NonNull;
-import android.support.annotation.RequiresPermission;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 
 import com.google.android.gms.tasks.Task;
@@ -28,11 +26,14 @@ public class FirebaseReference implements ReferenceWrapper {
         ref = FirebaseDatabase.getInstance().getReference();
     }
 
+
     public FirebaseReference(DatabaseReference firebaseRef) {
         this.ref = firebaseRef;
     }
 
     public DatabaseReference getRef() { return ref; }
+
+    public FirebaseReference getParent() { return new FirebaseReference(ref.getParent()); }
 
     @Override
     public ReferenceWrapper select(String key) {
@@ -49,19 +50,22 @@ public class FirebaseReference implements ReferenceWrapper {
         return ref.removeValue();
     }
 
-    @Override
-    public <T> void get(final Class<T> type, final Consumer<T> callback) {
-        ref.addValueEventListener(getValueEventListener(type, callback));
-    }
 
     private <T> ValueEventListener getAllValueEventListener(final Class<T> type, final Consumer<List<T>> callback) {
         return new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 List<T> elements = new ArrayList<>();
-                for(DataSnapshot snap: dataSnapshot.getChildren()) {
-                    elements.add(snap.getValue(type));
-                }
+
+                    try {
+                        for(DataSnapshot snap: dataSnapshot.getChildren()) {
+                            elements.add(snap.getValue(type));
+                        }
+                    }
+                    catch (Exception e) {
+                        System.out.println(e.getMessage());
+                    }
+
                 callback.accept(elements);
             }
 
@@ -76,7 +80,12 @@ public class FirebaseReference implements ReferenceWrapper {
              return new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    callback.accept(dataSnapshot.getValue(type));
+                    try {
+                        callback.accept(dataSnapshot.getValue(type));
+                    }
+                    catch (Exception e) {
+                        Log.e("FATAL ERROR", e.getMessage());
+                    }
                 }
 
                 @Override
@@ -87,22 +96,23 @@ public class FirebaseReference implements ReferenceWrapper {
     }
 
     @Override
-    public <T> void getAll(Class<T> type, Consumer<List<T>> callback) {
-        ref.addValueEventListener(getAllValueEventListener(type, callback));
+    public ReferenceWrapper parent() {
+        return new FirebaseReference(ref.getParent());
     }
 
 
-    public <T> ValueEventListener getAllMock(Class<T> type, Consumer<List<T>> callback) {
+    public <T> ValueEventListener getAll(Class<T> type, Consumer<List<T>> callback) {
         ValueEventListener res = getAllValueEventListener(type, callback);
-        ref.addValueEventListener(res);
+        if(ref != null) {
+            ref.addValueEventListener(res);
+        }
         return res;
     }
 
-    public <T> ValueEventListener getMock(Class<T> type, Consumer<T> callback) {
+    public <T> ValueEventListener get(Class<T> type, Consumer<T> callback) {
         ValueEventListener res = getValueEventListener(type, callback);
         ref.addValueEventListener(res);
         return res;
     }
-
 
 }

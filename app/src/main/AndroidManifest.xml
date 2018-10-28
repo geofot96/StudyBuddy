@@ -3,6 +3,7 @@
     package="ch.epfl.sweng.studdybuddy">
 
     <application
+        android:name=".StudyBuddy"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -33,13 +34,13 @@
                 android:value=".GroupsActivity" />
         </activity>
         <activity
-            android:name=".CourseSelectActivity"
+            android:name=".activities.CourseSelectActivity"
             android:parentActivityName=".activities.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".CourseSelectActivity" />
+                android:value=".activities.CourseSelectActivity" />
         </activity>
-        <activity android:name=".ProfileTab" />
+        <activity android:name=".activities.ProfileTab" />
         <activity android:name=".DummyGoogleSignInActivity" />
         <activity android:name=".activities.MainActivity" />
         <activity android:name=".GoogleSignInActivity" />

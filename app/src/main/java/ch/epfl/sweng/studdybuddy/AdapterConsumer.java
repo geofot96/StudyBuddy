@@ -22,4 +22,6 @@ final public class AdapterConsumer {
             }
         };
     }
+
+
 }

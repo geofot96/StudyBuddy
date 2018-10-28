@@ -4,17 +4,11 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.content.Intent;
-import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
-import android.view.View;
 import android.widget.Button;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-
-import java.util.ArrayList;
 
 import ch.epfl.sweng.studdybuddy.R;
 import ch.epfl.sweng.studdybuddy.*;
@@ -37,7 +31,6 @@ public class MainActivity extends AppCompatActivity
                 signOut(); //get signed out
             }
         });
-        createFred();
     }
 
 
@@ -68,19 +61,6 @@ public class MainActivity extends AppCompatActivity
             mAuth = new FirebaseAuthManager(this, getString(R.string.default_web_client_id));
         }
         return mAuth;
-    }
-
-    public void createFred()
-    {
-        Button fred = (Button)findViewById(R.id.courseButton);
-        final Intent intent = new Intent(this, CourseSelectActivity.class);
-
-        fred.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(intent);
-            }
-        });
     }
 
     public void goToProfileTabred(View view)
