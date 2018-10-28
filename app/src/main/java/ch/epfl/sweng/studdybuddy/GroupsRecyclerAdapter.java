@@ -67,18 +67,15 @@ public class GroupsRecyclerAdapter extends RecyclerView.Adapter<GroupsRecyclerAd
 
     @SuppressLint("DefaultLocale")
     @Override
-    public void onBindViewHolder(MyViewHolder holder, int position)
-    {
+    public void onBindViewHolder(MyViewHolder holder, int position){
         Group group = groupList.get(position);
         TextView newGroupCourseTextView = holder.groupCourseTextView;
         newGroupCourseTextView.setText(group.getCourse().getCourseName());
         TextView newGroupLanguageTextView = holder.groupLanguageTextView;
         newGroupLanguageTextView.setText(group.getLang());
         TextView newGroupParticipantInfoTextView = holder.groupParticipantInfoTextView;
-
         //newGroupParticipantInfoTextView.setText(("Particip: " + group.getParticipantNumber() + "/" + group.getMaxNoUsers()));
         TextView newGroupCreationDateTextView = holder.groupCreationDateTextView;
-
 
         String string_day;
         String string_month;
@@ -98,7 +95,6 @@ public class GroupsRecyclerAdapter extends RecyclerView.Adapter<GroupsRecyclerAd
         }
         String string_date = string_day + "-" + string_month + "-" + string_year;
         newGroupCreationDateTextView.setText(string_date);
-
         Button button = holder.messageButton;
         button.setText("More info");
     }
