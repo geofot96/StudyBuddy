@@ -77,21 +77,19 @@ public class GroupsRecyclerAdapter extends RecyclerView.Adapter<GroupsRecyclerAd
         //newGroupParticipantInfoTextView.setText(("Particip: " + group.getParticipantNumber() + "/" + group.getMaxNoUsers()));
         TextView newGroupCreationDateTextView = holder.groupCreationDateTextView;
 
-        String string_day;
-        String string_month;
+        Integer day =  group.getCreationDate().day;
+        String string_day = day.toString();
+        Integer month =  group.getCreationDate().month;
+        String string_month = month.toString();
         Integer year = group.getCreationDate().getYear();
         String string_year = year.toString();
-        Integer day =  group.getCreationDate().day;
+
         if (day < 10){
             string_day = "0" + day.toString();
-        } else{
-            string_day = day.toString();
         }
-        Integer month =  group.getCreationDate().month;
+
         if (month < 10){
             string_month = "0" + month.toString();
-        } else{
-            string_month = month.toString();
         }
         String string_date = string_day + "-" + string_month + "-" + string_year;
         newGroupCreationDateTextView.setText(string_date);
