@@ -3,9 +3,8 @@ package ch.epfl.sweng.studdybuddy;
 import org.junit.Test;
 
 import java.util.ArrayList;
-import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Unit tests for Group class
@@ -13,7 +12,6 @@ import static org.junit.Assert.*;
 public class GroupsUnitTests
 {
     private static Course dummy_course = new Course("test");
-    private static DummyCourses courses = new DummyCourses();
     private static User user = new User( "Mr Potato", new ID<>("dumbid"));
     private ArrayList<User> participants = new ArrayList();
 

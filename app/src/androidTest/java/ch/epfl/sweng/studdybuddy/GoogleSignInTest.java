@@ -1,5 +1,6 @@
 package ch.epfl.sweng.studdybuddy;
 
+import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.support.test.espresso.intent.rule.IntentsTestRule;
@@ -29,20 +30,20 @@ public class GoogleSignInTest {
     public IntentsTestRule<DummyMainActivity> DummyMainActivityIntentRule =
             new IntentsTestRule<>(DummyMainActivity.class, false, false);
 
-    /*@Test
-    public void LoginShouldGoToMainActivity(){
-        DummyGoogleSignInActivityIntentRule.launchActivity(new Intent());
-        onView(withId(R.id.googleBtn)).perform(click());
-        intended(hasComponent(new ComponentName(getTargetContext(), CourseSelectActivity.class)));
-
-        onView(ViewMatchers.withId(R.id.googleBtn)).perform(click());
-        intended(hasComponent(new ComponentName(getTargetContext(), MainActivity.class)));
-    }
-*/
     @Test
-    public void logoutShouldGoToGoogleSignInActivity(){
-        DummyMainActivityIntentRule.launchActivity(new Intent());
-        onView(withId(R.id.signout_btn)).perform(click());
-        intended(hasComponent(new ComponentName(getTargetContext(), GoogleSignInActivity.class)));
+    public void SignInTest() {
+        try{
+        interaction(DummyGoogleSignInActivityIntentRule, R.id.googleBtn, CourseSelectActivity.class);
+        interaction(DummyMainActivityIntentRule, R.id.signout_btn, GoogleSignInActivity.class);
+        }catch(InterruptedException e){
+
+        }
+    }
+
+    public <T extends Activity, A extends Activity> void interaction(IntentsTestRule<T> rule, int button, Class<A> expected) throws InterruptedException {
+        rule.launchActivity(new Intent());
+        onView(withId(button)).perform(click());
+        intended(hasComponent(new ComponentName(getTargetContext(), expected)));
+        rule.finishActivity();
     }
 }

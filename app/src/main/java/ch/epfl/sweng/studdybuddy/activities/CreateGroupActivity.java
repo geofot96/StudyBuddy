@@ -1,8 +1,8 @@
 package ch.epfl.sweng.studdybuddy.activities;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -10,7 +10,6 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.NumberPicker;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -19,16 +18,16 @@ import java.util.List;
 import ch.epfl.sweng.studdybuddy.AdapterConsumer;
 import ch.epfl.sweng.studdybuddy.ArrayAdapterAdapter;
 import ch.epfl.sweng.studdybuddy.Course;
-import ch.epfl.sweng.studdybuddy.GroupsActivity;
-import ch.epfl.sweng.studdybuddy.DummyCourses;
 import ch.epfl.sweng.studdybuddy.FirebaseReference;
 import ch.epfl.sweng.studdybuddy.Group;
+import ch.epfl.sweng.studdybuddy.GroupsActivity;
 import ch.epfl.sweng.studdybuddy.Metabase;
-import ch.epfl.sweng.studdybuddy.Pair;
 import ch.epfl.sweng.studdybuddy.R;
 import ch.epfl.sweng.studdybuddy.StudyBuddy;
 import ch.epfl.sweng.studdybuddy.User;
-import ch.epfl.sweng.studdybuddy.util.Helper;
+import ch.epfl.sweng.studdybuddy.services.calendar.Availability;
+import ch.epfl.sweng.studdybuddy.services.calendar.ConnectedAvailability;
+
 import static ch.epfl.sweng.studdybuddy.ActivityHelper.showDropdown;
 public class CreateGroupActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener
 {
@@ -91,7 +90,7 @@ public class CreateGroupActivity extends AppCompatActivity implements AdapterVie
         //Language spinner
         Spinner spinnerLanguage = (Spinner) findViewById(R.id.spinnerLanguage);
         spinnerLanguage.setOnItemSelectedListener(this);
-        List<String> languagesList = Arrays.asList(DummyCourses.getListOfLanguages());
+        List<String> languagesList = Arrays.asList("En","Fr","De","It");
         ArrayAdapter<String> dataAdapterLanguages = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, languagesList);
         dataAdapterLanguages.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerLanguage.setAdapter(dataAdapterLanguages);
@@ -125,8 +124,9 @@ public class CreateGroupActivity extends AppCompatActivity implements AdapterVie
 
             User user = ((StudyBuddy) CreateGroupActivity.this.getApplication()).authendifiedUser;
             mb.pushGroup(g, user.getUserID().getId());
-		        Intent intent = new Intent(this, GroupsActivity.class);
-		        startActivity(intent);
+            createUserInitialAvailabilities(user.getUserID().getId(), g.getGroupID().getId());
+	        Intent intent = new Intent(this, GroupsActivity.class);
+	        startActivity(intent);
     }
 
     NumberPicker.OnValueChangeListener onValueChangeListener = new NumberPicker.OnValueChangeListener()
@@ -139,6 +139,7 @@ public class CreateGroupActivity extends AppCompatActivity implements AdapterVie
         }
     };
 
-    public static class GroupID {
+    private void createUserInitialAvailabilities(String user, String group){
+        Availability a = new ConnectedAvailability(user, group);
     }
 }

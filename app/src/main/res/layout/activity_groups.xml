@@ -11,6 +11,7 @@
         android:id="@+id/createGroup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
         android:layout_marginEnd="16dp"
         android:clickable="true"
         android:focusable="auto"
@@ -18,15 +19,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@color/colorAccent" />
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/feedRecycleViewer"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="22dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/feed_search" />
 
     <android.support.v7.widget.SearchView
         android:id="@+id/feed_search"
@@ -40,14 +32,26 @@
 
     <Button
         android:id="@+id/sortButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="104dp"
-        android:layout_marginTop="158dp"
+        android:layout_width="88dp"
+        android:layout_height="48dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
         android:onClick="sortGroupCards"
         android:text="Sort"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/createGroup"
+        app:layout_constraintHorizontal_bias="0.111"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/feedRecycleViewer"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/sortButton"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/feedRecycleViewer" />
+        app:layout_constraintTop_toBottomOf="@+id/feed_search" />
 </android.support.constraint.ConstraintLayout>

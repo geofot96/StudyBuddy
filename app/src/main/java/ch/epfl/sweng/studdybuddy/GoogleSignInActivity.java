@@ -52,8 +52,11 @@ public class GoogleSignInActivity extends AppCompatActivity {
             String personName = acct.getDisplayName();
             //appears only when the user is connected
             Toast.makeText(this, "Welcome " + personName, Toast.LENGTH_SHORT).show();
-            fetchUserAndStart(acct, MainActivity.class);
-            startActivity(new Intent(GoogleSignInActivity.this, MainActivity.class));
+            if(onTest()){
+                startActivity(new Intent(GoogleSignInActivity.this, MainActivity.class));
+            }else{
+                fetchUserAndStart(acct, MainActivity.class);
+            }
         } else {
             //appears only when the user isn't connected to the app
             Toast.makeText(this, "No User", Toast.LENGTH_SHORT).show();
@@ -75,7 +78,11 @@ public class GoogleSignInActivity extends AppCompatActivity {
                     @Override
                     public void then(Account acct) {
                         if (acct != null) {
-                            fetchUserAndStart(acct, CourseSelectActivity.class);
+                            if (onTest()) {
+                                startActivity(new Intent(GoogleSignInActivity.this, CourseSelectActivity.class));
+                            } else {
+                                fetchUserAndStart(acct, CourseSelectActivity.class);
+                            }
                         }
                     }
                 }, TAG);
