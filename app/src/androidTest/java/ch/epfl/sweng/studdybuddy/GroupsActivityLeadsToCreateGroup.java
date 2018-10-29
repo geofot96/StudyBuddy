@@ -90,11 +90,11 @@ public class GroupsActivityLeadsToCreateGroup
         refactor();
         ViewInteraction linearLayout = onView(withId(R.id.sortButton));
 
-        try{
+        /*try{
             Thread.sleep(2000);
         }catch (InterruptedException e ){
             e.printStackTrace();
-        }
+        }*/
 
         linearLayout.check(matches(isDisplayed()));
     }
@@ -114,13 +114,13 @@ public class GroupsActivityLeadsToCreateGroup
         textView.check(matches(withText("Algorithms CS-250")));*/
     }
     void refactor(){
-        try
+        /*try
         {
             Thread.sleep(7000);
         } catch(InterruptedException e)
         {
             e.printStackTrace();
-        }
+        }*/
 
         ViewInteraction appCompatButton = onView(
                 allOf(withId(R.id.gotoGroups), withText("Groups"),
@@ -132,13 +132,13 @@ public class GroupsActivityLeadsToCreateGroup
                         isDisplayed()));
         appCompatButton.perform(click());
 
-        try
+        /*try
         {
             Thread.sleep(7000);
         } catch(InterruptedException e)
         {
             e.printStackTrace();
-        }
+        }*/
     }
 
     static Matcher<View> childAtPosition(

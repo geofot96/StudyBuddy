@@ -26,6 +26,7 @@ import static android.support.test.espresso.intent.matcher.IntentMatchers.hasCom
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static ch.epfl.sweng.studdybuddy.GroupsActivityLeadsToCreateGroup.childAtPosition;
 import static org.hamcrest.Matchers.allOf;
 
 public class CalendarActivityTest
@@ -33,39 +34,6 @@ public class CalendarActivityTest
     @Rule
     public final IntentsTestRule<CalendarActivity> mActivityRule =
             new IntentsTestRule<>(CalendarActivity.class);
-
-//    public void standardStuff()
-//    {
-//        try
-//        {
-//            Thread.sleep(7000);
-//        } catch(InterruptedException e)
-//        {
-//            e.printStackTrace();
-//        }
-//
-//        ViewInteraction appCompatButton = onView(
-//                allOf(withId(R.id.calendarButton), withText("Calendar"),
-//                        childAtPosition(
-//                                childAtPosition(
-//                                        withId(android.R.id.content),
-//                                        0),
-//                                3),
-//                        isDisplayed()));
-//        appCompatButton.perform(click());
-//
-//        // Added a sleep statement to match the app's execution delay.
-//        // The recommended way to handle such scenarios is to use Espresso idling resources:
-//        // https://google.github.io/android-testing-support-library/docs/espresso/idling-resource/index.html
-//        try
-//        {
-//            Thread.sleep(7000);
-//        } catch(InterruptedException e)
-//        {
-//            e.printStackTrace();
-//        }
-//    }
-
 
     @Test
     public void confirmLeadsToProfile()
@@ -226,27 +194,27 @@ public class CalendarActivityTest
 
 
 
-    private static Matcher<View> childAtPosition(
-            final Matcher<View> parentMatcher, final int position)
-    {
-
-        return new TypeSafeMatcher<View>()
-        {
-            @Override
-            public void describeTo(Description description)
-            {
-                description.appendText("Child at position " + position + " in parent ");
-                parentMatcher.describeTo(description);
-            }
-
-            @Override
-            public boolean matchesSafely(View view)
-            {
-                ViewParent parent = view.getParent();
-                return parent instanceof ViewGroup && parentMatcher.matches(parent)
-                        && view.equals(((ViewGroup) parent).getChildAt(position));
-            }
-        };
-    }
+//    private static Matcher<View> childAtPosition(
+//            final Matcher<View> parentMatcher, final int position)
+//    {
+//
+//        return new TypeSafeMatcher<View>()
+//        {
+//            @Override
+//            public void describeTo(Description description)
+//            {
+//                description.appendText("Child at position " + position + " in parent ");
+//                parentMatcher.describeTo(description);
+//            }
+//
+//            @Override
+//            public boolean matchesSafely(View view)
+//            {
+//                ViewParent parent = view.getParent();
+//                return parent instanceof ViewGroup && parentMatcher.matches(parent)
+//                        && view.equals(((ViewGroup) parent).getChildAt(position));
+//            }
+//        };
+//    }
 
 }
