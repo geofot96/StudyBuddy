@@ -38,6 +38,7 @@ public class CalendarActivityTest
     @Test
     public void confirmLeadsToProfile()
     {
+        sleepFor7000millis();
         onView(withId(R.id.confirmSlots)).perform(closeSoftKeyboard(), click());
         intended(hasComponent(ProfileTab.class.getName()));
     }
@@ -45,6 +46,7 @@ public class CalendarActivityTest
     @Test
     public void testConfirmButtonExists()
     {
+        sleepFor7000millis();
         ViewInteraction button = onView(
                 allOf(withId(R.id.confirmSlots),
                         childAtPosition(
@@ -192,6 +194,13 @@ public class CalendarActivityTest
         textView7.check(matches(withText("Sun")));
     }
 
+
+    private void sleepFor7000millis()
+    {
+        try
+        { Thread.sleep(7000); } catch(InterruptedException e)
+        { e.printStackTrace(); }
+    }
 
 
 //    private static Matcher<View> childAtPosition(
