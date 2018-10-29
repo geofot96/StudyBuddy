@@ -81,7 +81,7 @@ public class GoogleSignInActivity extends AppCompatActivity {
                             if (onTest()) {
                                 startActivity(new Intent(GoogleSignInActivity.this, CourseSelectActivity.class));
                             } else {
-                                fetchUserAndStart(acct, CourseSelectActivity.class);
+                                fetchUserAndStart(mAuth.getCurrentUser(), CourseSelectActivity.class);
                             }
                         }
                     }
