@@ -58,6 +58,7 @@ public class MergedCalendarActivity extends AppCompatActivity
 
     private void mergeCalendars(GridLayout calendarGrid)
     {
+        int claendarNumber=calendars.size();
         for(int i = 0; i < calendarGrid.getChildCount(); i++) {
             if(i%8!=0) {
                 CardView cardView = (CardView) calendarGrid.getChildAt(i);
@@ -68,8 +69,16 @@ public class MergedCalendarActivity extends AppCompatActivity
 
                 }
 
-                if(timesSelected==0)cardView.setCardBackgroundColor(Color.WHITE);
-                else cardView.setCardBackgroundColor(Color.rgb(0,(int)((((255.0/calendars.size())*(calendars.size()-timesSelected))+60)%255),0));
+                if(timesSelected==0)
+                {
+                    cardView.setCardBackgroundColor(Color.WHITE);
+                }
+
+                else
+                {
+                    double gradient=(((255.0/claendarNumber)*(claendarNumber-timesSelected))+60)%255;
+                    cardView.setCardBackgroundColor(Color.rgb(0,(int)gradient,0));
+                }
             }
         }
 
