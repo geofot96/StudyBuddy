@@ -27,20 +27,9 @@ public class MergedCalendarActivity extends AppCompatActivity
             {false,false,false,false,false,false,false,true,false,false,false},
             {false,false,false,false,false,false,true,false,false,false,false},
             {false,false,false,false,false,true,false,false,false,false,false}};
-    boolean c2[][]={{true,true,false,false,false,false,false,false,false,false,false},
-            {false,false,false,false,false,true,false,false,false,false,false},
-            {false,false,false,false,false,false,true,false,false,false,false},
-            {false,false,false,false,false,false,false,true,false,false,false},
-            {false,false,false,false,false,false,false,false,true,false,false},
-            {false,false,false,false,false,false,false,false,false,true,false},
-            {false,false,false,false,false,false,false,false,false,false,true}};
-    boolean c3[][]={{true,false,false,false,false,false,false,false,false,false,false},
-            {false,false,false,false,false,false,false,true,false,false,false},
-            {false,false,false,false,false,false,false,true,false,false,false},
-            {false,false,false,false,false,false,false,true,false,false,false},
-            {false,false,false,false,false,false,false,true,false,false,false},
-            {false,false,false,false,false,false,false,true,false,false,false},
-            {false,false,false,false,false,false,false,true,false,false,false}};
+    boolean c2[][]=c1;
+
+    boolean c3[][]=c1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -49,6 +38,9 @@ public class MergedCalendarActivity extends AppCompatActivity
         setContentView(R.layout.activity_calendar);
         calendars=new ArrayList<>();
        //TODO Temporary, remove after
+        c2[0][1]=true;
+        c2[0][2]=true;
+        c3[0][2]=true;
         calendars.add(c1);
         calendars.add(c2);
         calendars.add(c3);

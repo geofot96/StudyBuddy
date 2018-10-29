@@ -56,8 +56,13 @@ public class CalendarActivity extends AppCompatActivity
             if(i%8!=0) {
                 boolean picked = false;
                 CardView cardView = (CardView) calendarGrid.getChildAt(i);
-                if (cardView.getCardBackgroundColor().getDefaultColor() != -1) picked = true;
-                pickedSlots[(i%8)-1][i/8] = picked;
+                if (cardView.getCardBackgroundColor().getDefaultColor() != -1)
+                {
+                    picked = true;
+                }
+                int column=i%8;
+                int row=i/8;
+                pickedSlots[column-1][row] = picked;
             }
 
         }
