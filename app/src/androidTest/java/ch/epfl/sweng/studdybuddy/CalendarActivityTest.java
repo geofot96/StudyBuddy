@@ -20,6 +20,7 @@ import ch.epfl.sweng.studdybuddy.activities.ProfileTab;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
+import static android.support.test.espresso.action.ViewActions.scrollTo;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.intent.Intents.intended;
 import static android.support.test.espresso.intent.matcher.IntentMatchers.hasComponent;
@@ -38,9 +39,9 @@ public class CalendarActivityTest
     @Test
     public void confirmLeadsToProfile()
     {
-//        sleepFor7000millis();
-//        onView(withId(R.id.confirmSlots)).perform(closeSoftKeyboard(), click());
-//        intended(hasComponent(ProfileTab.class.getName()));
+        sleepFor7000millis();
+        onView(withId(R.id.confirmSlots)).perform(scrollTo(),closeSoftKeyboard(), click());
+        intended(hasComponent(ProfileTab.class.getName()));
     }
 
     @Test
