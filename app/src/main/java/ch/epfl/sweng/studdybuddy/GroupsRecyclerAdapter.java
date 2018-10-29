@@ -65,18 +65,7 @@ public class GroupsRecyclerAdapter extends RecyclerView.Adapter<GroupsRecyclerAd
         return vh;
     }
 
-    @SuppressLint("DefaultLocale")
-    @Override
-    public void onBindViewHolder(MyViewHolder holder, int position){
-        Group group = groupList.get(position);
-        TextView newGroupCourseTextView = holder.groupCourseTextView;
-        newGroupCourseTextView.setText(group.getCourse().getCourseName());
-        TextView newGroupLanguageTextView = holder.groupLanguageTextView;
-        newGroupLanguageTextView.setText(group.getLang());
-        TextView newGroupParticipantInfoTextView = holder.groupParticipantInfoTextView;
-        //newGroupParticipantInfoTextView.setText(("Particip: " + group.getParticipantNumber() + "/" + group.getMaxNoUsers()));
-        TextView newGroupCreationDateTextView = holder.groupCreationDateTextView;
-
+    private String getCreationDate(Group group){
         Integer day =  group.getCreationDate().day;
         String string_day = day.toString();
         Integer month =  group.getCreationDate().month;
@@ -91,7 +80,22 @@ public class GroupsRecyclerAdapter extends RecyclerView.Adapter<GroupsRecyclerAd
         if (month < 10){
             string_month = "0" + month.toString();
         }
-        String string_date = string_day + "-" + string_month + "-" + string_year;
+        return string_day + "-" + string_month + "-" + string_year;
+    }
+
+    @SuppressLint("DefaultLocale")
+    @Override
+    public void onBindViewHolder(MyViewHolder holder, int position){
+        Group group = groupList.get(position);
+        TextView newGroupCourseTextView = holder.groupCourseTextView;
+        newGroupCourseTextView.setText(group.getCourse().getCourseName());
+        TextView newGroupLanguageTextView = holder.groupLanguageTextView;
+        newGroupLanguageTextView.setText(group.getLang());
+        TextView newGroupParticipantInfoTextView = holder.groupParticipantInfoTextView;
+        //newGroupParticipantInfoTextView.setText(("Particip: " + group.getParticipantNumber() + "/" + group.getMaxNoUsers()));
+        TextView newGroupCreationDateTextView = holder.groupCreationDateTextView;
+        String string_date = getCreationDate(group);
+
         newGroupCreationDateTextView.setText(string_date);
         Button button = holder.messageButton;
         button.setText("More info");
