@@ -75,13 +75,13 @@ public class GroupsActivityLeadsToCreateGroup
         ViewInteraction linearLayout = onView(withId(R.id.feed_search));
         linearLayout.check(matches(isDisplayed()));
     }
-   /* @Test
+    @Test
     public void recyclerViewerExists()
     {
         refactor();
         ViewInteraction linearLayout = onView(withId(R.id.feedRecycleViewer));
         linearLayout.check(matches(isDisplayed()));
-    }*/
+    }
     @Test
     public void sortButtonExists()
     {
