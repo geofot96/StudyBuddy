@@ -29,8 +29,8 @@ public class GroupsActivity extends AppCompatActivity
         rv.setHasFixedSize(true);
         rv.setLayoutManager(new LinearLayoutManager(this));
         FirebaseReference firebase = new FirebaseReference(FirebaseDatabase.getInstance().getReference());
-        groupSet.add(new Group(3, new Course("-"), "fr"));
-        String userId =  ((StudyBuddy) GroupsActivity.this.getApplication()).authendifiedUser.getUserID().toString();
+        //groupSet.add(new Group(3, new Course("-"), "fr"));
+        String userId =  ((StudyBuddy) GroupsActivity.this.getApplication()).getAuthendifiedUser().getUserID().toString();
         mAdapter = new GroupsRecyclerAdapter(groupSet,userId);
         rv.setAdapter(mAdapter);
         firebase.select("groups").getAll(Group.class, AdapterConsumer.adapterConsumer(Group.class, groupSet, new RecyclerAdapterAdapter(mAdapter)));

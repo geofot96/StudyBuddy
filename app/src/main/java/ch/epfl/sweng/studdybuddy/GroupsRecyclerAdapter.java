@@ -11,6 +11,7 @@ import android.widget.Filterable;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class GroupsRecyclerAdapter extends RecyclerView.Adapter<GroupsRecyclerAdapter.MyViewHolder> implements Filterable
@@ -19,6 +20,9 @@ public class GroupsRecyclerAdapter extends RecyclerView.Adapter<GroupsRecyclerAd
     FeedFilter filter;
     private Metabase mb;
     private String userId;
+    private List<Group> uGroups;
+    private HashMap<String, Integer> sizes;
+    private List<String> uGroupIds;
     public static class MyViewHolder extends RecyclerView.ViewHolder
     {
 
@@ -43,8 +47,12 @@ public class GroupsRecyclerAdapter extends RecyclerView.Adapter<GroupsRecyclerAd
         this.filterList=groupList;
         mb = new Metabase();
         this.userId = userId;
-
-
+        this.uGroups = new ArrayList<>();
+        this.sizes = new HashMap<>();
+        this.uGroupIds = new ArrayList<>();
+        mb.addListenner(new RecyclerAdapterAdapter(this));
+        mb.getUserGroups(userId, uGroupIds, uGroups);
+        mb.getAllGroupSizes(sizes);
     }
 
     public List<Group> getGroupList() {
@@ -73,18 +81,9 @@ public class GroupsRecyclerAdapter extends RecyclerView.Adapter<GroupsRecyclerAd
         newGroupCourseTextView.setText(group.getCourse().getCourseName());
         TextView newGroupLanguageTextView = holder.groupLanguageTextView;
         newGroupLanguageTextView.setText(group.getLang());
-        TextView newGroupParticipantInfoTextView = holder.groupParticipantInfoTextView;
-        //newGroupParticipantInfoTextView.setText(("Particip: " + group.getParticipantNumber() + "/" + group.getMaxNoUsers()));
+        setParticipantNumber(holder.groupParticipantInfoTextView, group);
+        setButton(holder.messageButton, group);
 
-
-        Button button = holder.messageButton;
-        button.setText("Join");
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mb.pushUserGroup(new Pair(userId, group.getGroupID().toString()));
-            }
-        });
     }
 
     @Override
@@ -100,5 +99,27 @@ public class GroupsRecyclerAdapter extends RecyclerView.Adapter<GroupsRecyclerAd
         }
 
         return filter;
+    }
+
+    private void setButton(Button button, Group group){
+        if(!uGroupIds.contains(group.getGroupID().getId())) {
+            button.setText("Join");
+            button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mb.pushUserGroup(new Pair(userId, group.getGroupID().toString()));
+                }
+            });
+        }else{
+            button.setText("More Info");
+        }
+    }
+
+    private void setParticipantNumber(TextView pNumber, Group group){
+        int count = 0;
+       if(sizes.get(group.getGroupID().toString()) != null){
+           count = sizes.get(group.getGroupID().toString());
+       }
+       pNumber.setText(("Particip: " + count+ "/" + group.getMaxNoUsers()));
     }
 }
