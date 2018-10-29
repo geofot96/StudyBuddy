@@ -151,12 +151,7 @@ public class Metabase {
     public void pushGroup(Group g, String creatorId) {
         db.select("groups").select(g.getGroupID().getId()).setVal(g);
         Pair pair = new Pair(creatorId,g.getGroupID().toString());
-        pushUserGroup(pair);
-    }
-
-    public void pushUserGroup(Pair pair){
         db.select("userGroup").select(Helper.hashCode(pair)).setVal(pair);
-
     }
 
     private void notif() {

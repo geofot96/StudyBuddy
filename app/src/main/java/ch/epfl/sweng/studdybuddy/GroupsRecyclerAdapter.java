@@ -14,11 +14,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import ch.epfl.sweng.studdybuddy.util.Helper;
+
 public class GroupsRecyclerAdapter extends RecyclerView.Adapter<GroupsRecyclerAdapter.MyViewHolder> implements Filterable
 {
     private List<Group> groupList, filterList;
     FeedFilter filter;
     private Metabase mb;
+    private ReferenceWrapper fb;
     private String userId;
     private List<Group> uGroups;
     private HashMap<String, Integer> sizes;
@@ -46,6 +49,7 @@ public class GroupsRecyclerAdapter extends RecyclerView.Adapter<GroupsRecyclerAd
         this.groupList = groupList;
         this.filterList=groupList;
         mb = new Metabase();
+        fb = new FirebaseReference();
         this.userId = userId;
         this.uGroups = new ArrayList<>();
         this.sizes = new HashMap<>();
@@ -107,7 +111,9 @@ public class GroupsRecyclerAdapter extends RecyclerView.Adapter<GroupsRecyclerAd
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    mb.pushUserGroup(new Pair(userId, group.getGroupID().toString()));
+                    Pair pair =new Pair(userId, group.getGroupID().toString());
+                    fb.select("userGroup").select(Helper.hashCode(pair)).setVal(pair);
+
                 }
             });
         }else{
