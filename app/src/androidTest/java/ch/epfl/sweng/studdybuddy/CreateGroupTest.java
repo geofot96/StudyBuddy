@@ -44,6 +44,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.withClassName;
 import static android.support.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static ch.epfl.sweng.studdybuddy.GroupsActivityLeadsToCreateGroup.childAtPosition;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.anything;
@@ -62,17 +63,17 @@ public class CreateGroupTest {
         intended(hasComponent(new ComponentName(getTargetContext(), CreateGroupActivity.class)));
     }
 
-    @Test
+    /*@Test
     public void createAGroupWillBeRegistered() {
 
-       /* onView(withId(R.id.createGroup)).perform(click());
+        onView(withId(R.id.createGroup)).perform(click());
         onView(withId(R.id.courseComplete2)).perform(click(), typeText("Concurrent algorithms CS-453"));
         onData(equalTo("Concurrent algorithms CS-453")).inRoot(RootMatchers.isPlatformPopup()).perform(click());
         onView(withId(R.id.courseComplete2)).perform(closeSoftKeyboard());
         onView(withId(R.id.confirmGroupCreation)).perform(click());
         intended(hasComponent(new ComponentName(getTargetContext(), GroupsActivity.class)));
-*/
-       /*// Added a sleep statement to match the app's execution delay.
+
+       // Added a sleep statement to match the app's execution delay.
         // The recommended way to handle such scenarios is to use Espresso idling resources:
         // https://google.github.io/android-testing-support-library/docs/espresso/idling-resource/index.html
         try {
@@ -187,8 +188,8 @@ public class CreateGroupTest {
                                 2),
                         isDisplayed()));
         textView2.check(matches(withText("Fr")));
-*/
-    }
+
+    }*/
 
     @Test
     public void createButtonDisabledIfNoCourseSelected() {
