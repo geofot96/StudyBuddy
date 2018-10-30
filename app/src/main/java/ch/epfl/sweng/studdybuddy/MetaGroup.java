@@ -1,5 +1,7 @@
 package ch.epfl.sweng.studdybuddy;
 
+import android.util.Log;
+
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
@@ -75,7 +77,7 @@ public class MetaGroup extends Metabase{
     }
 
     public ValueEventListener getUserCourses(String uId, List<String> courses) {
-        return db.select("userCourses").getAll(Pair.class, new Consumer<List<Pair>>() {
+        return db.select("userCourse").getAll(Pair.class, new Consumer<List<Pair>>() {
             @Override
             public void accept(List<Pair> pairs) {
                 courses.clear();

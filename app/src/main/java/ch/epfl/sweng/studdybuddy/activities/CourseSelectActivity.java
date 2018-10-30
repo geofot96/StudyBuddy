@@ -46,7 +46,7 @@ public class CourseSelectActivity extends AppCompatActivity
 
     static List<String> coursesDB;
     //List of selected courses
-    public static final List<Course> courseSelection = new ArrayList<>();
+    public static final List<String> courseSelection = new ArrayList<>();
 
 
     static AutoCompleteTextView autocomplete;
@@ -86,8 +86,8 @@ public class CourseSelectActivity extends AppCompatActivity
             {
                 User currentUser = ((StudyBuddy) CourseSelectActivity.this.getApplication()).getAuthendifiedUser();
                 AuthManager auth = new FirebaseAuthManager(CourseSelectActivity.this, getString(R.string.default_web_client_id));
-                for(Course course : courseSelection){
-                    Pair pair = new Pair(currentUser.getUserID().toString(), course.getCourseID().toString());
+                for(String course : courseSelection){
+                    Pair pair = new Pair(currentUser.getUserID().toString(), course);
                     firebase.select("userCourse").select(Helper.hashCode(pair).toString()).setVal(pair);
                 }
                 //currentUser.setCoursesPreset(courseSelection);
@@ -107,7 +107,7 @@ public class CourseSelectActivity extends AppCompatActivity
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String textInput = parent.getAdapter().getItem(position).toString();
-                if(!courseSelection.contains(textInput)) { addCourse(new Course(textInput)); }
+                if(!courseSelection.contains(textInput)) { addCourse(textInput); }
             }
         });
         return adapter;
@@ -147,7 +147,7 @@ public class CourseSelectActivity extends AppCompatActivity
        firebase.select("courses").getAll(String.class, AdapterConsumer.adapterConsumer(String.class, coursesDB, new ArrayAdapterAdapter(adapter)));
    }
 
-    private void addCourse(Course course)
+    private void addCourse(String course)
     {
         courseSelection.add(course);
         //Dismiss KB

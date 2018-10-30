@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.widget.TextView;
 
 import com.google.firebase.database.ValueEventListener;
@@ -26,7 +27,7 @@ import ch.epfl.sweng.studdybuddy.User;
 public class
 ProfileTab extends AppCompatActivity {
 
-    private final List<Course> userCourses =  new ArrayList<>();
+    private final List<String> userCourses =  new ArrayList<>();
     private  final List<Group> userGroups = new ArrayList<>();
     private RecyclerView recyclerView_groups;
     private RecyclerView recyclerView_courses;
@@ -36,7 +37,6 @@ ProfileTab extends AppCompatActivity {
     private User user;
     private String userID;
     private MetaGroup metabase;
-
     
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -51,31 +51,14 @@ ProfileTab extends AppCompatActivity {
         setGroupsUp();
     }
 
-    public void setUserCourses(List<Course> courses) {
-        userCourses.clear();
-        userCourses.addAll(courses);
-        adCourse.notifyDataSetChanged();
-    }
-    public void setUserGroups(List<Group> groups) {
-        groups.clear();
-        groups.addAll(groups);
-//        ad.notifyDataSetChanged();
-    }
-    private void removeCourse(String course){
-        userCourses.remove(course);
-    }
-
     public ValueEventListener setGroupsUp() {
         metabase.addListenner(new RecyclerAdapterAdapter(ad));
         return metabase.getUserGroups(userID, userGroups);
     }
 
     public ValueEventListener setCoursesUp() {
-        List<String> courses  = new ArrayList<>();
-        for(Course c : userCourses){
-            courses.add(c.getCourseName());
-        }
-        return metabase.getUserCourses(userID, courses);
+        metabase.addListenner(new RecyclerAdapterAdapter(adCourse));
+        return metabase.getUserCourses(userID, userCourses);
     }
 
     private void setUI(){
@@ -97,5 +80,4 @@ ProfileTab extends AppCompatActivity {
         return new FirebaseReference();
     }
 
-    public void setDB(ReferenceWrapper r){ this.metabase = new MetaGroup(r); }
 }
