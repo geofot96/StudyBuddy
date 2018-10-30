@@ -11,14 +11,14 @@
 
     <TextView
         android:id="@+id/group_course_name"
-        android:layout_width="196dp"
+        android:layout_width="180dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:paddingTop="15dp"/>
 
     <TextView
         android:id="@+id/group_participant_info"
-        android:layout_width="196dp"
+        android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:paddingTop="15dp"
@@ -26,10 +26,17 @@
 
     <TextView
         android:id="@+id/group_language"
-        android:layout_width="143dp"
+        android:layout_width="60dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:paddingTop="15dp"/>
+
+    <TextView
+        android:id="@+id/creation_date"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:textSize="10sp" />
 
     <Button
         android:id="@+id/message_button"
