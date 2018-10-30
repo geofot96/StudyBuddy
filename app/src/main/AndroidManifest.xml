@@ -3,7 +3,7 @@
     package="ch.epfl.sweng.studdybuddy">
 
     <application
-        android:name=".StudyBuddy"
+        android:name=".util.StudyBuddy"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -11,7 +11,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".GoogleSignInActivity">
+        <activity android:name=".auth.GoogleSignInActivity">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -21,7 +21,7 @@
         </activity>
 
         <activity
-            android:name=".GroupsActivity"
+            android:name=".activities.GroupsActivity"
             android:parentActivityName=".activities.MainActivity">
 
             <!-- The meta-data tag is required if you support API level 15 and lower -->
@@ -31,10 +31,10 @@
         </activity>
         <activity
             android:name=".activities.CreateGroupActivity"
-            android:parentActivityName=".GroupsActivity">
+            android:parentActivityName=".activities.GroupsActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".GroupsActivity" />
+                android:value=".activities.GroupsActivity" />
         </activity>
         <activity
             android:name=".activities.CourseSelectActivity"
@@ -44,8 +44,8 @@
                 android:value=".activities.CourseSelectActivity" />
         </activity>
         <activity android:name=".activities.ProfileTab" />
-        <activity android:name=".DummyGoogleSignInActivity" />
-        <activity android:name=".DummyMainActivity" />
+        <activity android:name=".auth.DummyGoogleSignInActivity" />
+        <activity android:name=".auth.DummyMainActivity" />
         <activity android:name=".activities.MainActivity"></activity>
     </application>
 

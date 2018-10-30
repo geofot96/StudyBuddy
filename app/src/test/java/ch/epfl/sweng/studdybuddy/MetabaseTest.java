@@ -10,6 +10,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import ch.epfl.sweng.studdybuddy.core.Pair;
+import ch.epfl.sweng.studdybuddy.firebase.FirebaseReference;
+import ch.epfl.sweng.studdybuddy.firebase.MetaGroup;
+
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;

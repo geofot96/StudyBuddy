@@ -15,19 +15,18 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import ch.epfl.sweng.studdybuddy.AdapterConsumer;
-import ch.epfl.sweng.studdybuddy.ArrayAdapterAdapter;
-import ch.epfl.sweng.studdybuddy.Course;
-import ch.epfl.sweng.studdybuddy.GroupsActivity;
+import ch.epfl.sweng.studdybuddy.util.AdapterConsumer;
+import ch.epfl.sweng.studdybuddy.util.ArrayAdapterAdapter;
+import ch.epfl.sweng.studdybuddy.core.Course;
 import ch.epfl.sweng.studdybuddy.DummyCourses;
-import ch.epfl.sweng.studdybuddy.FirebaseReference;
-import ch.epfl.sweng.studdybuddy.Group;
-import ch.epfl.sweng.studdybuddy.MetaGroup;
+import ch.epfl.sweng.studdybuddy.firebase.FirebaseReference;
+import ch.epfl.sweng.studdybuddy.core.Group;
+import ch.epfl.sweng.studdybuddy.firebase.MetaGroup;
 import ch.epfl.sweng.studdybuddy.R;
-import ch.epfl.sweng.studdybuddy.StudyBuddy;
-import ch.epfl.sweng.studdybuddy.User;
+import ch.epfl.sweng.studdybuddy.util.StudyBuddy;
+import ch.epfl.sweng.studdybuddy.core.User;
 
-import static ch.epfl.sweng.studdybuddy.ActivityHelper.showDropdown;
+import static ch.epfl.sweng.studdybuddy.util.ActivityHelper.showDropdown;
 public class CreateGroupActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener
 {
     private String selectedCourse="";

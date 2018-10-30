@@ -3,6 +3,8 @@ package ch.epfl.sweng.studdybuddy;
 import org.junit.Before;
 import org.junit.Test;
 
+import ch.epfl.sweng.studdybuddy.core.SerialDate;
+
 public class SerialDateTest {
     public SerialDate date;
     @Before

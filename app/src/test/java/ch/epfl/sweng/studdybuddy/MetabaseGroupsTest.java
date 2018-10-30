@@ -15,6 +15,12 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import ch.epfl.sweng.studdybuddy.core.Course;
+import ch.epfl.sweng.studdybuddy.core.Group;
+import ch.epfl.sweng.studdybuddy.core.Pair;
+import ch.epfl.sweng.studdybuddy.core.User;
+import ch.epfl.sweng.studdybuddy.firebase.FirebaseReference;
+import ch.epfl.sweng.studdybuddy.firebase.MetaGroup;
 import ch.epfl.sweng.studdybuddy.util.Helper;
 
 import static org.junit.Assert.assertEquals;
