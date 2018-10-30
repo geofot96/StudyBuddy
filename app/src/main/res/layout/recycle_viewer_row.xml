@@ -4,25 +4,32 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:paddingBottom="10dp"
-    android:paddingTop="10dp">
+    android:paddingTop="10dp"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp">
+
 
     <TextView
         android:id="@+id/group_course_name"
         android:layout_width="196dp"
-        android:layout_height="match_parent"
-        android:layout_weight="1" />
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:paddingTop="15dp"/>
 
     <TextView
         android:id="@+id/group_participant_info"
         android:layout_width="196dp"
         android:layout_height="wrap_content"
-        android:layout_weight="1" />
+        android:layout_weight="1"
+        android:paddingTop="15dp"
+        android:paddingLeft="5dp"/>
 
     <TextView
         android:id="@+id/group_language"
         android:layout_width="143dp"
         android:layout_height="wrap_content"
-        android:layout_weight="1" />
+        android:layout_weight="1"
+        android:paddingTop="15dp"/>
 
     <Button
         android:id="@+id/message_button"
