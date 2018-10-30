@@ -49,33 +49,35 @@ public class MergedCalendarActivity extends AppCompatActivity
         mergeCalendars(calendarGrid);
     }
 
+    public void editColor(int calendarNumber, int i)
+    {
+        CardView cardView = (CardView) calendarGrid.getChildAt(i);
+        int timesSelected=0;
+        for (int j=0; j<calendars.size();j++)
+        {
+            if(calendars.get(j)[(i%8)-1][i/8])timesSelected++;
+
+        }
+
+        if(timesSelected==0)
+        {
+            cardView.setCardBackgroundColor(Color.WHITE);
+        }
+
+        else
+        {
+            double gradient=(((255.0/calendarNumber)*(calendarNumber-timesSelected))+60)%255;
+            cardView.setCardBackgroundColor(Color.rgb(0,(int)gradient,0));
+        }
+    }
 
     private void mergeCalendars(GridLayout calendarGrid)
     {
-        int claendarNumber=calendars.size();
+        int calendarNumber=calendars.size();
         for(int i = 0; i < calendarGrid.getChildCount(); i++) {
             if(i%8!=0) {
-                CardView cardView = (CardView) calendarGrid.getChildAt(i);
-                int timesSelected=0;
-                for (int j=0; j<calendars.size();j++)
-                {
-                    if(calendars.get(j)[(i%8)-1][i/8])timesSelected++;
-
-                }
-
-                if(timesSelected==0)
-                {
-                    cardView.setCardBackgroundColor(Color.WHITE);
-                }
-
-                else
-                {
-                    double gradient=(((255.0/claendarNumber)*(claendarNumber-timesSelected))+60)%255;
-                    cardView.setCardBackgroundColor(Color.rgb(0,(int)gradient,0));
-                }
+                editColor(calendarNumber, i);
             }
         }
-
     }
-
 }
