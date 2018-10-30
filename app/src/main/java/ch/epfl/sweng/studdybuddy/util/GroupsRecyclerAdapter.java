@@ -19,9 +19,7 @@ import ch.epfl.sweng.studdybuddy.core.Group;
 import ch.epfl.sweng.studdybuddy.core.Pair;
 import ch.epfl.sweng.studdybuddy.firebase.FirebaseReference;
 import ch.epfl.sweng.studdybuddy.firebase.MetaGroup;
-import ch.epfl.sweng.studdybuddy.firebase.Metabase;
 import ch.epfl.sweng.studdybuddy.firebase.ReferenceWrapper;
-import ch.epfl.sweng.studdybuddy.util.Helper;
 
 public class GroupsRecyclerAdapter extends RecyclerView.Adapter<GroupsRecyclerAdapter.MyViewHolder> implements Filterable
 {
@@ -71,7 +69,7 @@ public class GroupsRecyclerAdapter extends RecyclerView.Adapter<GroupsRecyclerAd
     }
 
     public void setGroupList(List<Group> groupList) {
-        this.groupList = new ArrayList<>(groupList);
+        this.groupList = groupList  ;
     }
 
     @Override
@@ -113,14 +111,14 @@ public class GroupsRecyclerAdapter extends RecyclerView.Adapter<GroupsRecyclerAd
     }
 
     private void setButton(Button button, Group group){
-        if(!uGroupIds.contains(group.getGroupID().getId())) {
+        if(sizes.get(group.getGroupID().toString()).intValue() < group.getMaxNoUsers()
+                && !uGroupIds.contains(group.getGroupID().getId())) {
             button.setText("Join");
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Pair pair =new Pair(userId, group.getGroupID().toString());
                     fb.select("userGroup").select(Helper.hashCode(pair)).setVal(pair);
-
                 }
             });
         }else{
