@@ -11,7 +11,7 @@ import com.google.android.gms.tasks.Task;
 
 import java.util.concurrent.Executor;
 
-class EmptyTask extends Task<Void> {
+public class EmptyTask extends Task<Void> {
     @Override
     public boolean isComplete() {
         return true;

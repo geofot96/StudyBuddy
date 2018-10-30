@@ -20,22 +20,21 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.util.ArrayList;
 import java.util.List;
 
-import ch.epfl.sweng.studdybuddy.AdapterConsumer;
-import ch.epfl.sweng.studdybuddy.ArrayAdapterAdapter;
-import ch.epfl.sweng.studdybuddy.AuthManager;
-import ch.epfl.sweng.studdybuddy.CourseAdapter;
-import ch.epfl.sweng.studdybuddy.CourseHolder;
-import ch.epfl.sweng.studdybuddy.FirebaseAuthManager;
-import ch.epfl.sweng.studdybuddy.FirebaseReference;
-import ch.epfl.sweng.studdybuddy.GroupsActivity;
-import ch.epfl.sweng.studdybuddy.Pair;
+import ch.epfl.sweng.studdybuddy.util.AdapterConsumer;
+import ch.epfl.sweng.studdybuddy.util.ArrayAdapterAdapter;
+import ch.epfl.sweng.studdybuddy.auth.AuthManager;
+import ch.epfl.sweng.studdybuddy.util.CourseAdapter;
+import ch.epfl.sweng.studdybuddy.util.CourseHolder;
+import ch.epfl.sweng.studdybuddy.auth.FirebaseAuthManager;
+import ch.epfl.sweng.studdybuddy.firebase.FirebaseReference;
+import ch.epfl.sweng.studdybuddy.core.Pair;
 import ch.epfl.sweng.studdybuddy.R;
-import ch.epfl.sweng.studdybuddy.ReferenceWrapper;
-import ch.epfl.sweng.studdybuddy.StudyBuddy;
-import ch.epfl.sweng.studdybuddy.User;
+import ch.epfl.sweng.studdybuddy.firebase.ReferenceWrapper;
+import ch.epfl.sweng.studdybuddy.util.StudyBuddy;
+import ch.epfl.sweng.studdybuddy.core.User;
 import ch.epfl.sweng.studdybuddy.util.Helper;
 
-import static ch.epfl.sweng.studdybuddy.ActivityHelper.showDropdown;
+import static ch.epfl.sweng.studdybuddy.util.ActivityHelper.showDropdown;
 
 
 public class CourseSelectActivity extends AppCompatActivity

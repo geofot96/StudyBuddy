@@ -2,6 +2,8 @@ package ch.epfl.sweng.studdybuddy;
 
 import org.junit.Test;
 
+import ch.epfl.sweng.studdybuddy.core.Pair;
+
 import static org.junit.Assert.assertEquals;
 
 public class PairTest {

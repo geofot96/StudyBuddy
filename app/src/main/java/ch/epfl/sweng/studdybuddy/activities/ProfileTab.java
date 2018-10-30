@@ -11,16 +11,16 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-import ch.epfl.sweng.studdybuddy.CourseAdapter;
-import ch.epfl.sweng.studdybuddy.FirebaseReference;
-import ch.epfl.sweng.studdybuddy.Group;
-import ch.epfl.sweng.studdybuddy.GroupsRecyclerAdapter;
-import ch.epfl.sweng.studdybuddy.Metabase;
+import ch.epfl.sweng.studdybuddy.util.CourseAdapter;
+import ch.epfl.sweng.studdybuddy.firebase.FirebaseReference;
+import ch.epfl.sweng.studdybuddy.core.Group;
+import ch.epfl.sweng.studdybuddy.util.GroupsRecyclerAdapter;
+import ch.epfl.sweng.studdybuddy.firebase.MetaGroup;
 import ch.epfl.sweng.studdybuddy.R;
-import ch.epfl.sweng.studdybuddy.RecyclerAdapterAdapter;
-import ch.epfl.sweng.studdybuddy.ReferenceWrapper;
-import ch.epfl.sweng.studdybuddy.StudyBuddy;
-import ch.epfl.sweng.studdybuddy.User;
+import ch.epfl.sweng.studdybuddy.util.RecyclerAdapterAdapter;
+import ch.epfl.sweng.studdybuddy.firebase.ReferenceWrapper;
+import ch.epfl.sweng.studdybuddy.util.StudyBuddy;
+import ch.epfl.sweng.studdybuddy.core.User;
 
 public class
 ProfileTab extends AppCompatActivity {
@@ -34,8 +34,8 @@ ProfileTab extends AppCompatActivity {
     private CourseAdapter adCourse;
     private User user;
     private String userID;
-    private Metabase metabase;
-
+    private MetaGroup metabase;
+    
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -43,27 +43,11 @@ ProfileTab extends AppCompatActivity {
         firebase = getDB();
         user = ((StudyBuddy) ProfileTab.this.getApplication()).getAuthendifiedUser();
         userID = user.getUserID().toString();
-        metabase = new Metabase();
-        //usersCourses.addAll(.getCoursesPreset());
+        metabase = new MetaGroup();
         setUI();
         setCoursesUp();
         setGroupsUp();
     }
-
-   /* public void setUserCourses(List<String> courses) {
-        userCourses.clear();
-        userCourses.addAll(courses);
-        adCourse.notifyDataSetChanged();
-    }
-    public void setUserGroups(List<Group> groups) {
-        groups.clear();
-        groups.addAll(groups);
-//        ad.notifyDataSetChanged();
-    }
-    private void removeCourse(String course){
-        userCourses.remove(course);
-    }
-*/
     public ValueEventListener setGroupsUp() {
         metabase.addListenner(new RecyclerAdapterAdapter(ad));
         return metabase.getUserGroups(userID, userGroups);
@@ -93,5 +77,4 @@ ProfileTab extends AppCompatActivity {
         return new FirebaseReference();
     }
 
-  /*  public void setDB(ReferenceWrapper r){ this.metabase = new Metabase(r); }*/
 }
