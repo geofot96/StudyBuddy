@@ -26,8 +26,9 @@ public class GroupsActivityTest
             new IntentsTestRule<>(GroupsActivity.class);
 
     @Test
-    public void plusButtonLeadsToCreateGroupActivity()
+    public void plusButtonLeadsToCreateGroupActivity() throws InterruptedException
     {
+        Thread.sleep(1000);
         onView(withId(R.id.createGroup)).perform(click());
         intended(hasComponent(new ComponentName(getTargetContext(), CreateGroupActivity.class)));
     }

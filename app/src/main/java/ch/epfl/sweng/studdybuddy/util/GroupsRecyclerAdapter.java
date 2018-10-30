@@ -2,7 +2,6 @@ package ch.epfl.sweng.studdybuddy.util;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,7 +16,6 @@ import java.util.HashMap;
 import java.util.List;
 
 import ch.epfl.sweng.studdybuddy.R;
-import ch.epfl.sweng.studdybuddy.activities.CalendarActivity;
 import ch.epfl.sweng.studdybuddy.core.Group;
 import ch.epfl.sweng.studdybuddy.core.Pair;
 import ch.epfl.sweng.studdybuddy.firebase.FirebaseReference;
@@ -84,7 +82,7 @@ public class GroupsRecyclerAdapter extends RecyclerView.Adapter<GroupsRecyclerAd
     }
 
     public void setGroupList(List<Group> groupList) {
-        this.groupList = new ArrayList<>(groupList);
+        this.groupList = groupList;
     }
 
     @Override
@@ -145,7 +143,13 @@ public class GroupsRecyclerAdapter extends RecyclerView.Adapter<GroupsRecyclerAd
     }
 
     private void setButton(Button button, Group group){
-        if(!uGroupIds.contains(group.getGroupID().getId())) {
+        Integer gSize = sizes.get(group.getGroupID().toString());
+        int groupSize = 1;
+        if(gSize != null){
+            groupSize = gSize.intValue();
+        }
+        if(groupSize < group.getMaxNoUsers()
+                &&!uGroupIds.contains(group.getGroupID().getId())) {
             button.setText("Join");
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
