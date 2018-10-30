@@ -52,11 +52,7 @@ public class GoogleSignInActivity extends AppCompatActivity {
             String personName = acct.getDisplayName();
             //appears only when the user is connected
             Toast.makeText(this, "Welcome " + personName, Toast.LENGTH_SHORT).show();
-            if(onTest()){
-                startActivity(new Intent(GoogleSignInActivity.this, MainActivity.class));
-            }else{
-                fetchUserAndStart(acct, MainActivity.class);
-            }
+            fetchUserAndStart(acct, MainActivity.class);
         } else {
             //appears only when the user isn't connected to the app
             Toast.makeText(this, "No User", Toast.LENGTH_SHORT).show();

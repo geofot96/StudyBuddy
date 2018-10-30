@@ -21,19 +21,11 @@ public class ConcreteAvailability implements Availability{
     }
 
     public void addAvailability(int row, int column) throws ArrayIndexOutOfBoundsException{
-        if((row < 0) || (row >= rowsNum) || (column < 0) || (column >= columnsNum)){
-            throw new ArrayIndexOutOfBoundsException("the availability slot doesn't exist");
-        } else {
-            userAvailabilities.set(row*columnsNum+column, true);
-        }
+        modifyAvailability(row,column, true);
     }
 
     public void removeAvailability(int row, int column) throws ArrayIndexOutOfBoundsException{
-        if((row < 0) || (row >= rowsNum) || (column < 0) || (column >= columnsNum)){
-            throw new ArrayIndexOutOfBoundsException("the availability slot doesn't exist");
-        } else {
-            userAvailabilities.set(row*columnsNum+column, false);
-        }
+        modifyAvailability(row, column, false);
     }
 
     public List<Boolean> getUserAvailabilities() {
@@ -50,5 +42,13 @@ public class ConcreteAvailability implements Availability{
             x.add(false);
         }
         return x;
+    }
+
+    private void modifyAvailability(int row, int column, Boolean bool) throws ArrayIndexOutOfBoundsException{
+        if((row < 0) || (row >= rowsNum) || (column < 0) || (column >= columnsNum)){
+            throw new ArrayIndexOutOfBoundsException("the availability slot doesn't exist");
+        } else {
+            userAvailabilities.set(row*columnsNum+column, bool);
+        }
     }
 }
