@@ -59,11 +59,11 @@ ProfileTab extends AppCompatActivity {
         groups.clear();
         groups.addAll(groups);
 //        ad.notifyDataSetChanged();
-    }*/
+    }
     private void removeCourse(String course){
         userCourses.remove(course);
     }
-
+*/
     public ValueEventListener setGroupsUp() {
         metabase.addListenner(new RecyclerAdapterAdapter(ad));
         return metabase.getUserGroups(userID, userGroups);
@@ -93,5 +93,5 @@ ProfileTab extends AppCompatActivity {
         return new FirebaseReference();
     }
 
-    public void setDB(ReferenceWrapper r){ this.metabase = new Metabase(r); }
+  /*  public void setDB(ReferenceWrapper r){ this.metabase = new Metabase(r); }*/
 }
