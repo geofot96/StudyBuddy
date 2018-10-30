@@ -48,7 +48,7 @@ public class GroupsActivityLeadsToCreateGroup
     @Test
     public void algoTest()
     {
-        /*refactor();
+        refactor();
         try
         { Thread.sleep(7000); } catch(InterruptedException e)
         { e.printStackTrace(); }
@@ -69,7 +69,7 @@ public class GroupsActivityLeadsToCreateGroup
                 allOf(withId(R.id.group_course_name), withText("Algorithms CS-250"), childAtPosition(
                         childAtPosition(withId(R.id.feedRecycleViewer), 0), 0),
                         isDisplayed()));
-        textView.check(matches(withText("Algorithms CS-250")));*/
+        textView.check(matches(withText("Algorithms CS-250")));
     }
     @Test
     public void searchBarExists()
@@ -88,7 +88,7 @@ public class GroupsActivityLeadsToCreateGroup
     @Test
     public void sortButtonExists()
     {
-        /*refactor(); TODO update the UI so that the sorting button is never hidden
+        refactor(); //TODO update the UI so that the sorting button is never hidden
         ViewInteraction linearLayout = onView(withId(R.id.sortButton));
 
         try{
@@ -97,32 +97,10 @@ public class GroupsActivityLeadsToCreateGroup
             e.printStackTrace();
         }
 
-        linearLayout.check(matches(isDisplayed()));*/
+        linearLayout.check(matches(isDisplayed()));
     }
 
-    @Test
-    public void thereIsAlgorithmsGroup()
-    {
-        /*refactor();
-        ViewInteraction textView = onView(
-                allOf(withId(R.id.group_course_name), withText("Algorithms CS-250"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(R.id.feedRecycleViewer),
-                                        0),
-                                0),
-                        isDisplayed()));
-        textView.check(matches(withText("Algorithms CS-250")));*/
-    }
     void refactor(){
-        /*try
-        {
-            Thread.sleep(7000);
-        } catch(InterruptedException e)
-        {
-            e.printStackTrace();
-        }*/
-
         ViewInteraction appCompatButton = onView(
                 allOf(withId(R.id.gotoGroups), withText("Groups"),
                         childAtPosition(
@@ -132,14 +110,6 @@ public class GroupsActivityLeadsToCreateGroup
                                 0),
                         isDisplayed()));
         appCompatButton.perform(click());
-
-        /*try
-        {
-            Thread.sleep(7000);
-        } catch(InterruptedException e)
-        {
-            e.printStackTrace();
-        }*/
     }
 
     static Matcher<View> childAtPosition(
