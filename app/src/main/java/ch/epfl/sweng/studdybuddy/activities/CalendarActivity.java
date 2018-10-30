@@ -49,6 +49,16 @@ public class CalendarActivity extends AppCompatActivity
             }
         }
     }
+
+    private boolean colorCheck(CardView cardView, boolean picked)
+    {
+        if (cardView.getCardBackgroundColor().getDefaultColor() != -1)
+        {
+            picked = true;
+        }
+        return picked;
+    }
+
     public  void confirmSlots(View view)
     {
         for(int i = 0; i < calendarGrid.getChildCount(); i++)
@@ -56,10 +66,7 @@ public class CalendarActivity extends AppCompatActivity
             if(i%8!=0) {
                 boolean picked = false;
                 CardView cardView = (CardView) calendarGrid.getChildAt(i);
-                if (cardView.getCardBackgroundColor().getDefaultColor() != -1)
-                {
-                    picked = true;
-                }
+                picked = colorCheck(cardView, picked);
                 int column=i%8;
                 int row=i/8;
                 pickedSlots[column-1][row] = picked;
