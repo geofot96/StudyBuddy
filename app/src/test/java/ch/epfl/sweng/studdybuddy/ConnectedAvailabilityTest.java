@@ -2,14 +2,13 @@ package ch.epfl.sweng.studdybuddy;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mock;
 
+import ch.epfl.sweng.studdybuddy.firebase.FirebaseReference;
 import ch.epfl.sweng.studdybuddy.services.calendar.Availability;
 import ch.epfl.sweng.studdybuddy.services.calendar.ConcreteAvailability;
 import ch.epfl.sweng.studdybuddy.services.calendar.ConnectedAvailability;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.ArgumentMatchers.anyObject;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
