@@ -1,8 +1,8 @@
 package ch.epfl.sweng.studdybuddy.activities;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
@@ -14,6 +14,7 @@ import android.view.View;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import ch.epfl.sweng.studdybuddy.util.AdapterConsumer;
@@ -23,6 +24,8 @@ import ch.epfl.sweng.studdybuddy.core.Group;
 import ch.epfl.sweng.studdybuddy.util.GroupsRecyclerAdapter;
 import ch.epfl.sweng.studdybuddy.R;
 import ch.epfl.sweng.studdybuddy.util.RecyclerAdapterAdapter;
+import ch.epfl.sweng.studdybuddy.activities.CreateGroupActivity;
+import ch.epfl.sweng.studdybuddy.util.StudyBuddy;
 
 public class GroupsActivity extends AppCompatActivity
 {
@@ -37,8 +40,9 @@ public class GroupsActivity extends AppCompatActivity
         rv.setHasFixedSize(true);
         rv.setLayoutManager(new LinearLayoutManager(this));
         FirebaseReference firebase = new FirebaseReference(FirebaseDatabase.getInstance().getReference());
-        groupSet.add(new Group(3, new Course("-"), "fr"));
-        mAdapter = new GroupsRecyclerAdapter(groupSet);
+        //groupSet.add(new Group(3, new Course("-"), "fr"));
+        String userId =  ((StudyBuddy) GroupsActivity.this.getApplication()).getAuthendifiedUser().getUserID().toString();
+        mAdapter = new GroupsRecyclerAdapter(groupSet,userId);
         rv.setAdapter(mAdapter);
         firebase.select("groups").getAll(Group.class, AdapterConsumer.adapterConsumer(Group.class, groupSet, new RecyclerAdapterAdapter(mAdapter)));
         SearchView sv = (SearchView) findViewById(R.id.feed_search);

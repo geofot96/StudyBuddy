@@ -48,7 +48,6 @@ ProfileTab extends AppCompatActivity {
         setCoursesUp();
         setGroupsUp();
     }
-
     public ValueEventListener setGroupsUp() {
         metabase.addListenner(new RecyclerAdapterAdapter(ad));
         return metabase.getUserGroups(userID, userGroups);
@@ -68,7 +67,7 @@ ProfileTab extends AppCompatActivity {
         recyclerView_courses.setLayoutManager(new LinearLayoutManager(this));
         recyclerView_courses.setAdapter(adCourse);
 
-        ad = new GroupsRecyclerAdapter(userGroups);
+        ad = new GroupsRecyclerAdapter(userGroups, userID);
         recyclerView_groups = (RecyclerView) findViewById(R.id.groups_list);
         recyclerView_groups.setLayoutManager(new LinearLayoutManager(this));
         recyclerView_groups.setAdapter(ad);
