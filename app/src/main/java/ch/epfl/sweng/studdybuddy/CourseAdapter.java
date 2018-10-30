@@ -7,9 +7,6 @@ import android.view.ViewGroup;
 
 import java.util.List;
 
-import ch.epfl.sweng.studdybuddy.CourseHolder;
-import ch.epfl.sweng.studdybuddy.R;
-
 public class CourseAdapter extends RecyclerView.Adapter<CourseHolder>
 {
     List<String> list;

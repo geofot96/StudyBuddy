@@ -1,13 +1,10 @@
 package ch.epfl.sweng.studdybuddy.activities;
 
 import android.content.Context;
-
 import android.content.Intent;
-
-import android.support.annotation.NonNull; //TODO what is this?
-
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
@@ -26,7 +23,6 @@ import java.util.List;
 import ch.epfl.sweng.studdybuddy.AdapterConsumer;
 import ch.epfl.sweng.studdybuddy.ArrayAdapterAdapter;
 import ch.epfl.sweng.studdybuddy.AuthManager;
-import ch.epfl.sweng.studdybuddy.Course;
 import ch.epfl.sweng.studdybuddy.CourseAdapter;
 import ch.epfl.sweng.studdybuddy.CourseHolder;
 import ch.epfl.sweng.studdybuddy.FirebaseAuthManager;
@@ -38,6 +34,7 @@ import ch.epfl.sweng.studdybuddy.ReferenceWrapper;
 import ch.epfl.sweng.studdybuddy.StudyBuddy;
 import ch.epfl.sweng.studdybuddy.User;
 import ch.epfl.sweng.studdybuddy.util.Helper;
+
 import static ch.epfl.sweng.studdybuddy.ActivityHelper.showDropdown;
 
 

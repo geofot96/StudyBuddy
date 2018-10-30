@@ -14,6 +14,7 @@ abstract public class Metabase {
     }
 
 
+
     protected void notif() {
         if(ads != null) {
             for(AdapterAdapter ad : ads)
