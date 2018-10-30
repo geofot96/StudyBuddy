@@ -85,6 +85,7 @@ public class GroupsActivityLeadsToCreateGroup
     @Test
     public void sortButtonExists()
     {
+
         refactor();
         ViewInteraction linearLayout = onView(withId(R.id.sortButton));
 
