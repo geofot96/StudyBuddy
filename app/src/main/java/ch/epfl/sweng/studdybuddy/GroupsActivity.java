@@ -1,36 +1,19 @@
 package ch.epfl.sweng.studdybuddy;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-
-import java.util.Collections;
-import java.util.Comparator;
 import android.support.v7.widget.SearchView;
-import android.widget.Toast;
-import android.util.Log;
 import android.view.View;
-import android.widget.Adapter;
 
-import com.google.firebase.FirebaseApp;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
-import java.util.function.Consumer;
 
-import ch.epfl.sweng.studdybuddy.AdapterConsumer;
-import ch.epfl.sweng.studdybuddy.Course;
-import ch.epfl.sweng.studdybuddy.FirebaseReference;
-import ch.epfl.sweng.studdybuddy.Group;
-import ch.epfl.sweng.studdybuddy.GroupsRecyclerAdapter;
-import ch.epfl.sweng.studdybuddy.R;
-import ch.epfl.sweng.studdybuddy.RecyclerAdapterAdapter;
-
-
-import ch.epfl.sweng.studdybuddy.GroupsRecyclerAdapter;
 import ch.epfl.sweng.studdybuddy.activities.CreateGroupActivity;
 
 public class GroupsActivity extends AppCompatActivity
@@ -46,8 +29,9 @@ public class GroupsActivity extends AppCompatActivity
         rv.setHasFixedSize(true);
         rv.setLayoutManager(new LinearLayoutManager(this));
         FirebaseReference firebase = new FirebaseReference(FirebaseDatabase.getInstance().getReference());
-        groupSet.add(new Group(3, new Course("-"), "fr"));
-        mAdapter = new GroupsRecyclerAdapter(groupSet);
+        //groupSet.add(new Group(3, new Course("-"), "fr"));
+        String userId =  ((StudyBuddy) GroupsActivity.this.getApplication()).getAuthendifiedUser().getUserID().toString();
+        mAdapter = new GroupsRecyclerAdapter(groupSet,userId);
         rv.setAdapter(mAdapter);
         firebase.select("groups").getAll(Group.class, AdapterConsumer.adapterConsumer(Group.class, groupSet, new RecyclerAdapterAdapter(mAdapter)));
         SearchView sv = (SearchView) findViewById(R.id.feed_search);
