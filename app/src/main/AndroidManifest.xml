@@ -11,7 +11,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".auth.DummyMainActivity">
+        <activity android:name=".auth.GoogleSignInActivity">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -45,7 +45,7 @@
         </activity>
         <activity android:name=".activities.ProfileTab" />
         <activity android:name=".auth.DummyGoogleSignInActivity" />
-        <activity android:name=".auth.GoogleSignInActivity" />
+        <activity android:name=".auth.DummyMainActivity" />
         <activity android:name=".activities.MainActivity"></activity>
         <activity android:name=".activities.CalendarActivity"/>
         <activity android:name=".activities.MergedCalendarActivity"/>
