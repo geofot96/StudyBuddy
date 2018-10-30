@@ -1,7 +1,5 @@
 package ch.epfl.sweng.studdybuddy;
 
-import android.provider.ContactsContract;
-
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 
@@ -20,7 +18,7 @@ public class MetabaseTest {
 
     DataSnapshot userCourses = mock(DataSnapshot.class);
     DatabaseReference testref = mock(DatabaseReference.class);
-    Metabase mb = new Metabase(new FirebaseReference(testref));
+    MetaGroup mb = new MetaGroup(new FirebaseReference(testref));
 
     @Before
     public void setup() {

@@ -16,7 +16,7 @@ import ch.epfl.sweng.studdybuddy.CourseAdapter;
 import ch.epfl.sweng.studdybuddy.FirebaseReference;
 import ch.epfl.sweng.studdybuddy.Group;
 import ch.epfl.sweng.studdybuddy.GroupsRecyclerAdapter;
-import ch.epfl.sweng.studdybuddy.Metabase;
+import ch.epfl.sweng.studdybuddy.MetaGroup;
 import ch.epfl.sweng.studdybuddy.R;
 import ch.epfl.sweng.studdybuddy.RecyclerAdapterAdapter;
 import ch.epfl.sweng.studdybuddy.ReferenceWrapper;
@@ -35,8 +35,9 @@ ProfileTab extends AppCompatActivity {
     private CourseAdapter adCourse;
     private User user;
     private String userID;
-    private Metabase metabase;
+    private MetaGroup metabase;
 
+    
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -44,11 +45,10 @@ ProfileTab extends AppCompatActivity {
         firebase = getDB();
         user = ((StudyBuddy) ProfileTab.this.getApplication()).getAuthendifiedUser();
         userID = user.getUserID().toString();
-        metabase = new Metabase();
-        //usersCourses.addAll(.getCoursesPreset());
+        metabase = new MetaGroup();
         setUI();
         setCoursesUp();
-        //setGroupsUp();
+        setGroupsUp();
     }
 
     public void setUserCourses(List<Course> courses) {
@@ -97,5 +97,5 @@ ProfileTab extends AppCompatActivity {
         return new FirebaseReference();
     }
 
-    public void setDB(ReferenceWrapper r){ this.metabase = new Metabase(r); }
+    public void setDB(ReferenceWrapper r){ this.metabase = new MetaGroup(r); }
 }

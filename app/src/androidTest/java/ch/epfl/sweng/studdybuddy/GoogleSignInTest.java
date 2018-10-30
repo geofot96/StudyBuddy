@@ -2,12 +2,17 @@ package ch.epfl.sweng.studdybuddy;
 
 import android.content.ComponentName;
 import android.content.Intent;
+import android.provider.ContactsContract;
 import android.support.test.espresso.intent.rule.IntentsTestRule;
 import android.support.test.espresso.matcher.ViewMatchers;
 import android.support.test.runner.AndroidJUnit4;
+
+import com.google.firebase.database.DatabaseReference;
+
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
 
 import ch.epfl.sweng.studdybuddy.activities.CourseSelectActivity;
 import ch.epfl.sweng.studdybuddy.activities.MainActivity;
@@ -18,6 +23,7 @@ import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.intent.Intents.intended;
 import static android.support.test.espresso.intent.matcher.IntentMatchers.hasComponent;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
+import static org.mockito.Mockito.mock;
 
 @RunWith(AndroidJUnit4.class)
 public class GoogleSignInTest {
@@ -44,5 +50,16 @@ public class GoogleSignInTest {
         DummyMainActivityIntentRule.launchActivity(new Intent());
         onView(withId(R.id.signout_btn)).perform(click());
         intended(hasComponent(new ComponentName(getTargetContext(), GoogleSignInActivity.class)));
+    }
+
+    @Test
+    public void fetchUserAndStart() {
+        DatabaseReference ref = mock(DatabaseReference.class);
+        FirebaseReference fb = new FirebaseReference(ref);
+        Class dest = mock(Class.class);
+        Account acc = mock(Account.class);
+        ArgumentCaptor<User> usr = ArgumentCaptor.forClass(User.class);
+        fetchUserAndStart();
+
     }
 }

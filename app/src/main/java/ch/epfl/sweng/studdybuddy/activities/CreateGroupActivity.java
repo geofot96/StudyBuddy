@@ -10,7 +10,6 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.NumberPicker;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -23,12 +22,11 @@ import ch.epfl.sweng.studdybuddy.GroupsActivity;
 import ch.epfl.sweng.studdybuddy.DummyCourses;
 import ch.epfl.sweng.studdybuddy.FirebaseReference;
 import ch.epfl.sweng.studdybuddy.Group;
-import ch.epfl.sweng.studdybuddy.Metabase;
-import ch.epfl.sweng.studdybuddy.Pair;
+import ch.epfl.sweng.studdybuddy.MetaGroup;
 import ch.epfl.sweng.studdybuddy.R;
 import ch.epfl.sweng.studdybuddy.StudyBuddy;
 import ch.epfl.sweng.studdybuddy.User;
-import ch.epfl.sweng.studdybuddy.util.Helper;
+
 import static ch.epfl.sweng.studdybuddy.ActivityHelper.showDropdown;
 public class CreateGroupActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener
 {
@@ -41,7 +39,7 @@ public class CreateGroupActivity extends AppCompatActivity implements AdapterVie
     private static AutoCompleteTextView textView;
 
     FirebaseReference firebase;
-    Metabase mb;
+    MetaGroup mb;
     Button create;
 
     @Override
@@ -49,7 +47,7 @@ public class CreateGroupActivity extends AppCompatActivity implements AdapterVie
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_group);
-        mb = new Metabase();
+        mb = new MetaGroup();
         Intent intent = getIntent();
         setUpLang();
         setUpNumberPicker();

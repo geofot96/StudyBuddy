@@ -11,6 +11,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
@@ -75,7 +76,7 @@ public class GoogleSignInActivity extends AppCompatActivity {
                     @Override
                     public void then(Account acct) {
                         if (acct != null) {
-                            fetchUserAndStart(acct, CourseSelectActivity.class);
+                            fetchUserAndStart(getAuthManager().getCurrentUser(), CourseSelectActivity.class);
                         }
                     }
                 }, TAG);
@@ -86,10 +87,13 @@ public class GoogleSignInActivity extends AppCompatActivity {
         }
     }
 
-    void fetchUserAndStart(Account acct, Class destination) {
-        FirebaseReference fb = new FirebaseReference();
+    public ValueEventListener fetchUserAndStart(Account acct, Class destination) {
+        return fetchUserAndStart(new FirebaseReference(), acct, destination);
+    }
+
+    public ValueEventListener fetchUserAndStart(ReferenceWrapper fb, Account acct, Class destination) {
         final ID<User> userID = new ID<>(acct.getId());
-        fb.select("users").select(userID.getId()).get(User.class, new Consumer<User>() {
+        return fb.select("users").select(userID.getId()).get(User.class, new Consumer<User>() {
             @Override
             public void accept(User user) {
                 StudyBuddy app = ((StudyBuddy) GoogleSignInActivity.this.getApplication());
