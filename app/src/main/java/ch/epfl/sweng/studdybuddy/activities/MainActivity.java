@@ -78,5 +78,16 @@ public class MainActivity extends AppCompatActivity
         startActivity(intent);
     }
 
+    public void goToCalendarActivity(View view)
+    {
+        Intent intent = new Intent(this, CalendarActivity.class);
+        startActivity(intent);
+    }
+    public void goToMergedCalendarActivity(View view)
+    {
+        Intent intent = new Intent(this, MergedCalendarActivity.class);
+        startActivity(intent);
+    }
+
 
 }
