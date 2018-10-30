@@ -21,6 +21,7 @@ import org.junit.runner.RunWith;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
+import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static android.support.test.espresso.action.ViewActions.scrollTo;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
@@ -65,7 +66,7 @@ public class ColorChaningTest
                                         withId(R.id.generalThing),
                                         1)),
                         1));
-        cardView.perform(click());
+        cardView.perform(closeSoftKeyboard(), click());
 
         // Added a sleep statement to match the app's execution delay.
         // The recommended way to handle such scenarios is to use Espresso idling resources:
@@ -78,7 +79,7 @@ public class ColorChaningTest
                                         withId(R.id.generalThing),
                                         1)),
                         35));
-        cardView2.perform(click());
+        cardView2.perform(closeSoftKeyboard(), click());
 
         ViewInteraction cardView3 = onView(
                 childAtPosition(
@@ -87,7 +88,7 @@ public class ColorChaningTest
                                         withId(R.id.generalThing),
                                         1)),
                         69));
-        cardView3.perform(click());
+        cardView3.perform(closeSoftKeyboard(), click());
 
         ViewInteraction frameLayout = onView(
                 allOf(childAtPosition(
