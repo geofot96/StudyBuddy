@@ -95,7 +95,7 @@ public class MetaGroup extends Metabase{
     }
 
     public ValueEventListener getAllGroupSizes(Map<String, Integer> sizes) {
-        return db.select("userGroups").getAll(Pair.class, new Consumer<List<Pair>>() {
+        return db.select("userGroup").getAll(Pair.class, new Consumer<List<Pair>>() {
             @Override
             public void accept(List<Pair> pairs) {
                 sizes.clear();
@@ -120,7 +120,7 @@ public class MetaGroup extends Metabase{
     }
 
     public ValueEventListener getGroupUsers(String gId, List<String> uIds, List<User> groupUsers) {
-        return db.select("userGroups").getAll(Pair.class, new Consumer<List<Pair>>() {
+        return db.select("userGroup").getAll(Pair.class, new Consumer<List<Pair>>() {
             @Override
             public void accept(List<Pair> pairs) {
                 uIds.clear();
