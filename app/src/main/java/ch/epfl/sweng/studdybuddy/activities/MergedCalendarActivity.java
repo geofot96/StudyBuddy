@@ -10,7 +10,7 @@ import android.widget.GridLayout;
 
 import java.util.ArrayList;
 
-import ch.epfl.sweng.studdybuddy.GroupsActivity;
+import ch.epfl.sweng.studdybuddy.activities.GroupsActivity;
 import ch.epfl.sweng.studdybuddy.R;
 
 
