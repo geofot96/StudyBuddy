@@ -1,5 +1,6 @@
 package ch.epfl.sweng.studdybuddy.util;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -19,9 +20,7 @@ import ch.epfl.sweng.studdybuddy.core.Group;
 import ch.epfl.sweng.studdybuddy.core.Pair;
 import ch.epfl.sweng.studdybuddy.firebase.FirebaseReference;
 import ch.epfl.sweng.studdybuddy.firebase.MetaGroup;
-import ch.epfl.sweng.studdybuddy.firebase.Metabase;
 import ch.epfl.sweng.studdybuddy.firebase.ReferenceWrapper;
-import ch.epfl.sweng.studdybuddy.util.Helper;
 
 public class GroupsRecyclerAdapter extends RecyclerView.Adapter<GroupsRecyclerAdapter.MyViewHolder> implements Filterable
 {
@@ -40,6 +39,7 @@ public class GroupsRecyclerAdapter extends RecyclerView.Adapter<GroupsRecyclerAd
         public TextView groupParticipantInfoTextView;
         public TextView groupLanguageTextView;
         public Button messageButton;
+        public TextView groupCreationDateTextView;
 
         public MyViewHolder(View itemView)
         {
@@ -48,6 +48,8 @@ public class GroupsRecyclerAdapter extends RecyclerView.Adapter<GroupsRecyclerAd
             groupParticipantInfoTextView = (TextView) itemView.findViewById(R.id.group_participant_info);
             groupLanguageTextView = (TextView) itemView.findViewById(R.id.group_language);
             messageButton = (Button) itemView.findViewById(R.id.message_button);
+            groupCreationDateTextView = (TextView) itemView.findViewById(R.id.creation_date);
+
         }
     }
 
@@ -84,14 +86,33 @@ public class GroupsRecyclerAdapter extends RecyclerView.Adapter<GroupsRecyclerAd
         return vh;
     }
 
+    private String getCreationDate(Group group){
+        Integer day =  group.getCreationDate().getDay();
+        String string_day = day.toString();
+        Integer month =  group.getCreationDate().getMonth();
+        String string_month = month.toString();
+        Integer year = group.getCreationDate().getYear();
+        String string_year = year.toString();
+
+        if (day < 10){
+            string_day = "0" + day.toString();
+        }
+
+        if (month < 10){
+            string_month = "0" + month.toString();
+        }
+        return string_day + "-" + string_month + "-" + string_year;
+    }
+
+    @SuppressLint("DefaultLocale")
     @Override
-    public void onBindViewHolder(MyViewHolder holder, int position)
-    {
+    public void onBindViewHolder(MyViewHolder holder, int position){
         Group group = groupList.get(position);
-        TextView newGroupCourseTextView = holder.groupCourseTextView;
-        newGroupCourseTextView.setText(group.getCourse().getCourseName());
-        TextView newGroupLanguageTextView = holder.groupLanguageTextView;
-        newGroupLanguageTextView.setText(group.getLang());
+        holder.groupCourseTextView.setText(group.getCourse().getCourseName());
+        holder.groupLanguageTextView.setText(group.getLang());
+        holder.groupCreationDateTextView.setText(getCreationDate(group));
+        Button button = holder.messageButton;
+        button.setText("More info");
         setParticipantNumber(holder.groupParticipantInfoTextView, group);
         setButton(holder.messageButton, group);
 
