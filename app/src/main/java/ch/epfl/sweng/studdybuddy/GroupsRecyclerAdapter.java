@@ -12,14 +12,21 @@ import android.widget.Filterable;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+
+import ch.epfl.sweng.studdybuddy.util.Helper;
 
 public class GroupsRecyclerAdapter extends RecyclerView.Adapter<GroupsRecyclerAdapter.MyViewHolder> implements Filterable
 {
     private List<Group> groupList, filterList;
     FeedFilter filter;
-
-
+    private Metabase mb;
+    private ReferenceWrapper fb;
+    private String userId;
+    private List<Group> uGroups;
+    private HashMap<String, Integer> sizes;
+    private List<String> uGroupIds;
     public static class MyViewHolder extends RecyclerView.ViewHolder
     {
 
@@ -41,10 +48,19 @@ public class GroupsRecyclerAdapter extends RecyclerView.Adapter<GroupsRecyclerAd
         }
     }
 
-    public GroupsRecyclerAdapter(List<Group> groupList)
+    public GroupsRecyclerAdapter(List<Group> groupList, String userId)
     {
         this.groupList = groupList;
         this.filterList=groupList;
+        mb = new Metabase();
+        fb = new FirebaseReference();
+        this.userId = userId;
+        this.uGroups = new ArrayList<>();
+        this.sizes = new HashMap<>();
+        this.uGroupIds = new ArrayList<>();
+        mb.addListenner(new RecyclerAdapterAdapter(this));
+        mb.getUserGroups(userId, uGroupIds, uGroups);
+        mb.getAllGroupSizes(sizes);
     }
 
     public List<Group> getGroupList() {
@@ -87,18 +103,14 @@ public class GroupsRecyclerAdapter extends RecyclerView.Adapter<GroupsRecyclerAd
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position){
         Group group = groupList.get(position);
-        TextView newGroupCourseTextView = holder.groupCourseTextView;
-        newGroupCourseTextView.setText(group.getCourse().getCourseName());
-        TextView newGroupLanguageTextView = holder.groupLanguageTextView;
-        newGroupLanguageTextView.setText(group.getLang());
-        TextView newGroupParticipantInfoTextView = holder.groupParticipantInfoTextView;
-        //newGroupParticipantInfoTextView.setText(("Particip: " + group.getParticipantNumber() + "/" + group.getMaxNoUsers()));
-        TextView newGroupCreationDateTextView = holder.groupCreationDateTextView;
-        String string_date = getCreationDate(group);
-
-        newGroupCreationDateTextView.setText(string_date);
+        holder.groupCourseTextView.setText(group.getCourse().getCourseName());
+        holder.groupLanguageTextView.setText(group.getLang());
+        holder.groupCreationDateTextView.setText(getCreationDate(group));
         Button button = holder.messageButton;
         button.setText("More info");
+        setParticipantNumber(holder.groupParticipantInfoTextView, group);
+        setButton(holder.messageButton, group);
+
     }
 
     @Override
@@ -114,5 +126,29 @@ public class GroupsRecyclerAdapter extends RecyclerView.Adapter<GroupsRecyclerAd
         }
 
         return filter;
+    }
+
+    private void setButton(Button button, Group group){
+        if(!uGroupIds.contains(group.getGroupID().getId())) {
+            button.setText("Join");
+            button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Pair pair =new Pair(userId, group.getGroupID().toString());
+                    fb.select("userGroup").select(Helper.hashCode(pair)).setVal(pair);
+
+                }
+            });
+        }else{
+            button.setText("More Info");
+        }
+    }
+
+    private void setParticipantNumber(TextView pNumber, Group group){
+        int count = 0;
+       if(sizes.get(group.getGroupID().toString()) != null){
+           count = sizes.get(group.getGroupID().toString());
+       }
+       pNumber.setText(("Particip: " + count+ "/" + group.getMaxNoUsers()));
     }
 }
