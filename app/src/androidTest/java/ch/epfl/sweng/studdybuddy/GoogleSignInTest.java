@@ -53,7 +53,7 @@ public class GoogleSignInTest {
         onView(withId(R.id.signout_btn)).perform(click());
         intended(hasComponent(new ComponentName(getTargetContext(), GoogleSignInActivity.class)));
     }
-
+/*
     @Test
     public void fetchUserAndStart() {
         DatabaseReference ref = mock(DatabaseReference.class);
@@ -63,5 +63,5 @@ public class GoogleSignInTest {
         ArgumentCaptor<User> usr = ArgumentCaptor.forClass(User.class);
         fetchUserAndStart();
 
-    }
+    }*/
 }

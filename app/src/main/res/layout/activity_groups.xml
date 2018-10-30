@@ -22,8 +22,10 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/feedRecycleViewer"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_marginTop="22dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/sortButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/feed_search" />
@@ -42,12 +44,10 @@
         android:id="@+id/sortButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="104dp"
-        android:layout_marginTop="158dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="16dp"
         android:onClick="sortGroupCards"
         android:text="Sort"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/feedRecycleViewer" />
+        app:layout_constraintStart_toStartOf="parent" />
 </android.support.constraint.ConstraintLayout>
