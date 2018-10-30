@@ -21,6 +21,7 @@ import ch.epfl.sweng.studdybuddy.util.AdapterConsumer;
 import ch.epfl.sweng.studdybuddy.core.Course;
 import ch.epfl.sweng.studdybuddy.firebase.FirebaseReference;
 import ch.epfl.sweng.studdybuddy.core.Group;
+import ch.epfl.sweng.studdybuddy.util.Consumer;
 import ch.epfl.sweng.studdybuddy.util.GroupsRecyclerAdapter;
 import ch.epfl.sweng.studdybuddy.R;
 import ch.epfl.sweng.studdybuddy.util.RecyclerAdapterAdapter;
@@ -42,7 +43,15 @@ public class GroupsActivity extends AppCompatActivity
         FirebaseReference firebase = new FirebaseReference(FirebaseDatabase.getInstance().getReference());
         //groupSet.add(new Group(3, new Course("-"), "fr"));
         String userId =  ((StudyBuddy) GroupsActivity.this.getApplication()).getAuthendifiedUser().getUserID().toString();
-        mAdapter = new GroupsRecyclerAdapter(groupSet,userId);
+        Consumer<Object> consumer = new Consumer<Object>()
+        {
+            @Override
+            public void accept(Object o)
+            {
+                goToCalendarActivity();
+            }
+        };
+        mAdapter = new GroupsRecyclerAdapter(groupSet,userId, consumer);
         rv.setAdapter(mAdapter);
         firebase.select("groups").getAll(Group.class, AdapterConsumer.adapterConsumer(Group.class, groupSet, new RecyclerAdapterAdapter(mAdapter)));
         SearchView sv = (SearchView) findViewById(R.id.feed_search);
@@ -75,5 +84,11 @@ public class GroupsActivity extends AppCompatActivity
         Collections.sort(groupList);
         mAdapter.setGroupList(groupList);
         mAdapter.notifyDataSetChanged();
+    }
+
+    public void goToCalendarActivity()
+    {
+        Intent intent = new Intent(this, CalendarActivity.class);
+        startActivity(intent);
     }
 }

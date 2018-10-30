@@ -15,6 +15,7 @@ import org.junit.Rule;
 import org.junit.Test;
 
 import ch.epfl.sweng.studdybuddy.activities.CalendarActivity;
+import ch.epfl.sweng.studdybuddy.activities.MergedCalendarActivity;
 import ch.epfl.sweng.studdybuddy.activities.ProfileTab;
 
 import static android.support.test.espresso.Espresso.onView;
@@ -37,9 +38,11 @@ public class CalendarActivityTest
             new IntentsTestRule<>(CalendarActivity.class);
 
     @Test
-    public void confirmLeadsToProfile()
+    public void confirmLeadsToMergedCalendar()
     {
         sleepFor7000millis();
+        onView(withId(R.id.confirmSlots)).perform(scrollTo(),closeSoftKeyboard(), click());
+        intended(hasComponent(MergedCalendarActivity.class.getName()));
         onView(withId(R.id.confirmSlots)).perform(scrollTo(),closeSoftKeyboard(), click());
         intended(hasComponent(ProfileTab.class.getName()));
     }

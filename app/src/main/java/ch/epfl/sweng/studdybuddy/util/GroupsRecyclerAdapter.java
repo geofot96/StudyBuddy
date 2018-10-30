@@ -2,6 +2,7 @@ package ch.epfl.sweng.studdybuddy.util;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +17,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import ch.epfl.sweng.studdybuddy.R;
+import ch.epfl.sweng.studdybuddy.activities.CalendarActivity;
 import ch.epfl.sweng.studdybuddy.core.Group;
 import ch.epfl.sweng.studdybuddy.core.Pair;
 import ch.epfl.sweng.studdybuddy.firebase.FirebaseReference;
@@ -32,6 +34,8 @@ public class GroupsRecyclerAdapter extends RecyclerView.Adapter<GroupsRecyclerAd
     private List<Group> uGroups;
     private HashMap<String, Integer> sizes;
     private List<String> uGroupIds;
+    public Consumer<Object> consumer;
+
     public static class MyViewHolder extends RecyclerView.ViewHolder
     {
 
@@ -40,6 +44,7 @@ public class GroupsRecyclerAdapter extends RecyclerView.Adapter<GroupsRecyclerAd
         public TextView groupLanguageTextView;
         public Button messageButton;
         public TextView groupCreationDateTextView;
+
 
         public MyViewHolder(View itemView)
         {
@@ -68,6 +73,12 @@ public class GroupsRecyclerAdapter extends RecyclerView.Adapter<GroupsRecyclerAd
         mb.getAllGroupSizes(sizes);
     }
 
+    public GroupsRecyclerAdapter(List<Group> groupList, String userId, Consumer<Object> consumer)
+    {
+        this(groupList, userId);
+        this.consumer = consumer;
+
+    }
     public List<Group> getGroupList() {
         return new ArrayList<>(groupList);
     }
@@ -141,7 +152,10 @@ public class GroupsRecyclerAdapter extends RecyclerView.Adapter<GroupsRecyclerAd
                 public void onClick(View v) {
                     Pair pair =new Pair(userId, group.getGroupID().toString());
                     fb.select("userGroup").select(Helper.hashCode(pair)).setVal(pair);
-
+                    if(consumer != null)
+                    {
+                        consumer.accept(this);
+                    }
                 }
             });
         }else{

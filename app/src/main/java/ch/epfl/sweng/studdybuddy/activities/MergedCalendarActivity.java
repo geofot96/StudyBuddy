@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.view.View;
+import android.widget.Button;
 import android.widget.GridLayout;
 
 import java.util.ArrayList;
@@ -44,8 +45,18 @@ public class MergedCalendarActivity extends AppCompatActivity
         calendars.add(c1);
         calendars.add(c2);
         calendars.add(c3);
-
         calendarGrid = (GridLayout) findViewById(R.id.calendarGrid);
+        Button button = findViewById(R.id.confirmSlots);
+
+        button.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                Intent intent = new Intent(MergedCalendarActivity.this, ProfileTab.class);
+                startActivity(intent);
+            }
+        });
         mergeCalendars(calendarGrid);
     }
 
