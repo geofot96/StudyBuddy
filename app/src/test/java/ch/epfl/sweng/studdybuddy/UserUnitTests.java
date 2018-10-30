@@ -2,7 +2,8 @@ package ch.epfl.sweng.studdybuddy;
 
 import org.junit.Test;
 
-import java.util.ArrayList;
+import ch.epfl.sweng.studdybuddy.core.ID;
+import ch.epfl.sweng.studdybuddy.core.User;
 
 import static org.junit.Assert.*;
 

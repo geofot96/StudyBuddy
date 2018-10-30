@@ -10,26 +10,23 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.NumberPicker;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import ch.epfl.sweng.studdybuddy.AdapterConsumer;
-import ch.epfl.sweng.studdybuddy.ArrayAdapterAdapter;
-import ch.epfl.sweng.studdybuddy.Course;
-import ch.epfl.sweng.studdybuddy.GroupsActivity;
+import ch.epfl.sweng.studdybuddy.util.AdapterConsumer;
+import ch.epfl.sweng.studdybuddy.util.ArrayAdapterAdapter;
+import ch.epfl.sweng.studdybuddy.core.Course;
 import ch.epfl.sweng.studdybuddy.DummyCourses;
-import ch.epfl.sweng.studdybuddy.FirebaseReference;
-import ch.epfl.sweng.studdybuddy.Group;
-import ch.epfl.sweng.studdybuddy.Metabase;
-import ch.epfl.sweng.studdybuddy.Pair;
+import ch.epfl.sweng.studdybuddy.firebase.FirebaseReference;
+import ch.epfl.sweng.studdybuddy.core.Group;
+import ch.epfl.sweng.studdybuddy.firebase.MetaGroup;
 import ch.epfl.sweng.studdybuddy.R;
-import ch.epfl.sweng.studdybuddy.StudyBuddy;
-import ch.epfl.sweng.studdybuddy.User;
-import ch.epfl.sweng.studdybuddy.util.Helper;
-import static ch.epfl.sweng.studdybuddy.ActivityHelper.showDropdown;
+import ch.epfl.sweng.studdybuddy.util.StudyBuddy;
+import ch.epfl.sweng.studdybuddy.core.User;
+
+import static ch.epfl.sweng.studdybuddy.util.ActivityHelper.showDropdown;
 public class CreateGroupActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener
 {
     private String selectedCourse="";
@@ -41,7 +38,7 @@ public class CreateGroupActivity extends AppCompatActivity implements AdapterVie
     private static AutoCompleteTextView textView;
 
     FirebaseReference firebase;
-    Metabase mb;
+    MetaGroup mb;
     Button create;
 
     @Override
@@ -49,7 +46,7 @@ public class CreateGroupActivity extends AppCompatActivity implements AdapterVie
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_group);
-        mb = new Metabase();
+        mb = new MetaGroup();
         Intent intent = getIntent();
         setUpLang();
         setUpNumberPicker();

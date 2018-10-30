@@ -11,7 +11,10 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
 import ch.epfl.sweng.studdybuddy.R;
-import ch.epfl.sweng.studdybuddy.*;
+import ch.epfl.sweng.studdybuddy.auth.AuthManager;
+import ch.epfl.sweng.studdybuddy.auth.FirebaseAuthManager;
+import ch.epfl.sweng.studdybuddy.auth.GoogleSignInActivity;
+import ch.epfl.sweng.studdybuddy.core.Account;
 
 public class MainActivity extends AppCompatActivity
 {
