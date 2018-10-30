@@ -4,6 +4,11 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 
+import ch.epfl.sweng.studdybuddy.core.Course;
+import ch.epfl.sweng.studdybuddy.core.Group;
+import ch.epfl.sweng.studdybuddy.core.ID;
+import ch.epfl.sweng.studdybuddy.core.User;
+
 import static org.junit.Assert.assertEquals;
 
 /**

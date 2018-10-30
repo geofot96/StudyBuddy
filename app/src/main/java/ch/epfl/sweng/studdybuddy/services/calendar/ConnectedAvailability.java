@@ -2,7 +2,7 @@ package ch.epfl.sweng.studdybuddy.services.calendar;
 
 import java.util.List;
 
-import ch.epfl.sweng.studdybuddy.FirebaseReference;
+import ch.epfl.sweng.studdybuddy.firebase.FirebaseReference;
 
 public class ConnectedAvailability implements Availability {
     private Availability A;

@@ -6,8 +6,9 @@ import com.google.firebase.database.DatabaseReference;
 
 import org.junit.Test;
 
-import java.util.ArrayList;
 import java.util.Arrays;
+
+import ch.epfl.sweng.studdybuddy.core.User;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;

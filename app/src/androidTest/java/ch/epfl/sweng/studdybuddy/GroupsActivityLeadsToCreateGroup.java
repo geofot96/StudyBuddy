@@ -17,6 +17,7 @@ import org.junit.runner.RunWith;
 
 import ch.epfl.sweng.studdybuddy.activities.CreateGroupActivity;
 import ch.epfl.sweng.studdybuddy.activities.MainActivity;
+import ch.epfl.sweng.studdybuddy.auth.DummyMainActivity;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;

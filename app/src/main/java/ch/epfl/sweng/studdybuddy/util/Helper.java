@@ -1,7 +1,6 @@
 package ch.epfl.sweng.studdybuddy.util;
 
-import ch.epfl.sweng.studdybuddy.ID;
-import ch.epfl.sweng.studdybuddy.Pair;
+import ch.epfl.sweng.studdybuddy.core.Pair;
 
 public class Helper {
 

@@ -4,14 +4,16 @@ import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.support.test.espresso.intent.rule.IntentsTestRule;
-import android.support.test.espresso.matcher.ViewMatchers;
 import android.support.test.runner.AndroidJUnit4;
+
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import ch.epfl.sweng.studdybuddy.activities.CourseSelectActivity;
-import ch.epfl.sweng.studdybuddy.activities.MainActivity;
+import ch.epfl.sweng.studdybuddy.auth.DummyGoogleSignInActivity;
+import ch.epfl.sweng.studdybuddy.auth.DummyMainActivity;
+import ch.epfl.sweng.studdybuddy.auth.GoogleSignInActivity;
 
 import static android.support.test.InstrumentationRegistry.getTargetContext;
 import static android.support.test.espresso.Espresso.onView;

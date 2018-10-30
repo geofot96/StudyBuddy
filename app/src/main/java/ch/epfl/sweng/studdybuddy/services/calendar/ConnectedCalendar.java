@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import ch.epfl.sweng.studdybuddy.Consumer;
-import ch.epfl.sweng.studdybuddy.FirebaseReference;
-import ch.epfl.sweng.studdybuddy.Group;
-import ch.epfl.sweng.studdybuddy.ID;
+import ch.epfl.sweng.studdybuddy.core.Group;
+import ch.epfl.sweng.studdybuddy.core.ID;
+import ch.epfl.sweng.studdybuddy.firebase.FirebaseReference;
+import ch.epfl.sweng.studdybuddy.util.Consumer;
 
 public class ConnectedCalendar implements CalendarInterface{
     Calendar calendar;

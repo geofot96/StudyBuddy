@@ -3,8 +3,8 @@ package ch.epfl.sweng.studdybuddy.services.calendar;
 import java.util.ArrayList;
 import java.util.List;
 
-import ch.epfl.sweng.studdybuddy.Group;
-import ch.epfl.sweng.studdybuddy.ID;
+import ch.epfl.sweng.studdybuddy.core.Group;
+import ch.epfl.sweng.studdybuddy.core.ID;
 
 public final class Calendar implements CalendarInterface{
 

@@ -1,7 +1,5 @@
 package ch.epfl.sweng.studdybuddy;
 
-import android.provider.ContactsContract;
-
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 
@@ -12,6 +10,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import ch.epfl.sweng.studdybuddy.core.Pair;
+import ch.epfl.sweng.studdybuddy.firebase.FirebaseReference;
+import ch.epfl.sweng.studdybuddy.firebase.MetaGroup;
+
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -20,7 +22,7 @@ public class MetabaseTest {
 
     DataSnapshot userCourses = mock(DataSnapshot.class);
     DatabaseReference testref = mock(DatabaseReference.class);
-    Metabase mb = new Metabase(new FirebaseReference(testref));
+    MetaGroup mb = new MetaGroup(new FirebaseReference(testref));
 
     @Before
     public void setup() {
