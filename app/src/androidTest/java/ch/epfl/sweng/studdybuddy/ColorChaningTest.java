@@ -65,7 +65,7 @@ public class ColorChaningTest
                                         withId(R.id.generalThing),
                                         1)),
                         1));
-        cardView.perform(scrollTo(), click());
+        cardView.perform(click());
 
         // Added a sleep statement to match the app's execution delay.
         // The recommended way to handle such scenarios is to use Espresso idling resources:
@@ -78,7 +78,7 @@ public class ColorChaningTest
                                         withId(R.id.generalThing),
                                         1)),
                         35));
-        cardView2.perform(scrollTo(), click());
+        cardView2.perform(click());
 
         ViewInteraction cardView3 = onView(
                 childAtPosition(
@@ -87,7 +87,7 @@ public class ColorChaningTest
                                         withId(R.id.generalThing),
                                         1)),
                         69));
-        cardView3.perform(scrollTo(), click());
+        cardView3.perform(click());
 
         ViewInteraction frameLayout = onView(
                 allOf(childAtPosition(
