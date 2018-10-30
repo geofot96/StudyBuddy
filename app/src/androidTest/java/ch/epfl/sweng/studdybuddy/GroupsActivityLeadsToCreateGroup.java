@@ -15,6 +15,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import ch.epfl.sweng.studdybuddy.activities.CreateGroupActivity;
 import ch.epfl.sweng.studdybuddy.activities.MainActivity;
 import ch.epfl.sweng.studdybuddy.auth.DummyMainActivity;
 
@@ -32,8 +33,8 @@ public class GroupsActivityLeadsToCreateGroup
 {
 
     @Rule
-    public ActivityTestRule<MainActivity> mActivityTestRule = new ActivityTestRule(DummyMainActivity.class);
-
+    public ActivityTestRule<CreateGroupActivity> mActivityTestRule = new ActivityTestRule(CreateGroupActivity.class);
+/*
 
     @Test
     public void addGroupButtonExists()
@@ -43,7 +44,7 @@ public class GroupsActivityLeadsToCreateGroup
         linearLayout.check(matches(isDisplayed()));
     }
 
- /*   @Test
+   @Test
     public void algoTest()
     {
         refactor();
@@ -72,17 +73,21 @@ public class GroupsActivityLeadsToCreateGroup
     @Test
     public void searchBarExists()
     {
-        refactor();
-        ViewInteraction linearLayout = onView(withId(R.id.feed_search));
-        linearLayout.check(matches(isDisplayed()));
+        try{
+            Thread.sleep(100);
+        }catch (InterruptedException e){
+            e.printStackTrace();
+        }
+        onView(withId(R.id.courseComplete2)).check(matches(isDisplayed()));
     }
+    
    /* @Test
     public void recyclerViewerExists()
     {
         refactor();
         ViewInteraction linearLayout = onView(withId(R.id.feedRecycleViewer));
         linearLayout.check(matches(isDisplayed()));
-    }*/
+    }
     @Test
     public void sortButtonExists()
     {
@@ -111,7 +116,7 @@ public class GroupsActivityLeadsToCreateGroup
                                         0),
                                 0),
                         isDisplayed()));
-        textView.check(matches(withText("Algorithms CS-250")));*/
+        textView.check(matches(withText("Algorithms CS-250")));
     }
     void refactor(){
         try
@@ -163,4 +168,5 @@ public class GroupsActivityLeadsToCreateGroup
             }
         };
     }
+    */
 }

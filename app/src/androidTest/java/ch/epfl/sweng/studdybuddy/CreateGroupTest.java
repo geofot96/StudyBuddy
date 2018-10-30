@@ -39,135 +39,20 @@ public class CreateGroupTest {
         onView(withId(R.id.createGroup)).perform(click());
         intended(hasComponent(new ComponentName(getTargetContext(), CreateGroupActivity.class)));
     }
-
+/*
     @Test
-    public void createAGroupWillBeRegistered() {
+    public void createAGroupWillBeRegistered() throws InterruptedException {
 
-       /* onView(withId(R.id.createGroup)).perform(click());
+        onView(withId(R.id.createGroup)).perform(click());
         onView(withId(R.id.courseComplete2)).perform(click(), typeText("Concurrent algorithms CS-453"));
+        Thread.sleep(500);
         onData(equalTo("Concurrent algorithms CS-453")).inRoot(RootMatchers.isPlatformPopup()).perform(click());
         onView(withId(R.id.courseComplete2)).perform(closeSoftKeyboard());
+        Thread.sleep(500);
         onView(withId(R.id.confirmGroupCreation)).perform(click());
         intended(hasComponent(new ComponentName(getTargetContext(), GroupsActivity.class)));
-*/
-       /*// Added a sleep statement to match the app's execution delay.
-        // The recommended way to handle such scenarios is to use Espresso idling resources:
-        // https://google.github.io/android-testing-support-library/docs/espresso/idling-resource/index.html
-        try {
-            Thread.sleep(5000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-
-        ViewInteraction appCompatAutoCompleteTextView = onView(
-                allOf(withId(R.id.courseComplete2), withContentDescription("Courses")
-                        ));
-        appCompatAutoCompleteTextView.perform(click());
-
-        ViewInteraction appCompatAutoCompleteTextView2 = onView(
-                allOf(withId(R.id.courseComplete2), withContentDescription("Courses")));
-        appCompatAutoCompleteTextView2.perform(replaceText("Algor"), closeSoftKeyboard());
-
-        DataInteraction appCompatTextView = onData(anything())
-                .inAdapterView(childAtPosition(
-                        withClassName(is("android.widget.PopupWindow$PopupBackgroundView")),
-                        0))
-                .atPosition(0);
-        appCompatTextView.perform(click());
-
-        ViewInteraction appCompatSpinner = onView(
-                allOf(withId(R.id.spinnerLanguage),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                1),
-                        isDisplayed()));
-        appCompatSpinner.perform(click());
-
-        DataInteraction appCompatCheckedTextView = onData(anything())
-                .inAdapterView(childAtPosition(
-                        withClassName(is("android.widget.PopupWindow$PopupBackgroundView")),
-                        0))
-                .atPosition(1);
-        appCompatCheckedTextView.perform(click());
-
-        ViewInteraction customEditText = onView(
-                allOf(withClassName(is("android.widget.NumberPicker$CustomEditText")), withText("5"),
-                        childAtPosition(
-                                allOf(withId(R.id.numberPicker),
-                                        childAtPosition(
-                                                withClassName(is("android.support.constraint.ConstraintLayout")),
-                                                2)),
-                                0),
-                        isDisplayed()));
-        customEditText.perform(replaceText("7"));
-
-        ViewInteraction customEditText2 = onView(
-                allOf(withClassName(is("android.widget.NumberPicker$CustomEditText")), withText("7"),
-                        childAtPosition(
-                                allOf(withId(R.id.numberPicker),
-                                        childAtPosition(
-                                                withClassName(is("android.support.constraint.ConstraintLayout")),
-                                                2)),
-                                0),
-                        isDisplayed()));
-        customEditText2.perform(closeSoftKeyboard());
-
-        pressBack();
-
-        ViewInteraction appCompatButton3 = onView(
-                allOf(withId(R.id.confirmGroupCreation), withText(" Create Group"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                3),
-                        isDisplayed()));
-        appCompatButton3.perform(click());
-
-        // Added a sleep statement to match the app's execution delay.
-        // The recommended way to handle such scenarios is to use Espresso idling resources:
-        // https://google.github.io/android-testing-support-library/docs/espresso/idling-resource/index.html
-        try {
-            Thread.sleep(3474941);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        ViewInteraction appCompatButton4 = onView(
-                allOf(withId(R.id.sortButton), withText("Sort"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                3),
-                        isDisplayed()));
-        appCompatButton4.perform(click());
-
-        ViewInteraction textView = onView(
-                allOf(withId(R.id.group_course_name), withText("Concurrent algorithms CS-453"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(R.id.feedRecycleViewer),
-                                        1),
-                                0),
-                        isDisplayed()));
-        textView.check(matches(withText("Concurrent algorithms CS-453")));
-
-        ViewInteraction textView2 = onView(
-                allOf(withId(R.id.group_language), withText("Fr"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(R.id.feedRecycleViewer),
-                                        1),
-                                2),
-                        isDisplayed()));
-        textView2.check(matches(withText("Fr")));
-*/
     }
-
+*/
     @Test
     public void createButtonDisabledIfNoCourseSelected() {
         try {
@@ -185,4 +70,5 @@ public class CreateGroupTest {
         onView(withId(R.id.confirmGroupCreation)).perform(click());
         intended(hasComponent(new ComponentName(getTargetContext(), CreateGroupActivity.class)));
     }
+
 }

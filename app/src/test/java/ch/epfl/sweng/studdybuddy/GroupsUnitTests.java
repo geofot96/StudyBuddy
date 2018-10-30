@@ -9,7 +9,7 @@ import ch.epfl.sweng.studdybuddy.core.Group;
 import ch.epfl.sweng.studdybuddy.core.ID;
 import ch.epfl.sweng.studdybuddy.core.User;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Unit tests for Group class
@@ -17,7 +17,6 @@ import static org.junit.Assert.*;
 public class GroupsUnitTests
 {
     private static Course dummy_course = new Course("test");
-    private static DummyCourses courses = new DummyCourses();
     private static User user = new User( "Mr Potato", new ID<>("dumbid"));
     private ArrayList<User> participants = new ArrayList();
 
