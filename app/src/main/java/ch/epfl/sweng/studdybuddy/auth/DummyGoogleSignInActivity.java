@@ -1,5 +1,7 @@
 package ch.epfl.sweng.studdybuddy.auth;
 
+import android.content.Intent;
+
 import com.google.android.gms.tasks.Task;
 
 import ch.epfl.sweng.studdybuddy.core.Account;

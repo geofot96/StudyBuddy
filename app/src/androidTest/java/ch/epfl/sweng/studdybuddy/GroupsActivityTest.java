@@ -31,10 +31,10 @@ public class GroupsActivityTest
         onView(withId(R.id.createGroup)).perform(click());
         intended(hasComponent(new ComponentName(getTargetContext(), CreateGroupActivity.class)));
     }
-/*
+
     @Test
     public void WeCanClickOnSortButton() throws InterruptedException {
         Thread.sleep(1000);
         onView(withId(R.id.sortButton)).perform(click());
-    }*/
+    }
 }

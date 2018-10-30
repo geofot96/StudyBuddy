@@ -60,7 +60,6 @@ public class GoogleSignInActivity extends AppCompatActivity {
             //appears only when the user is connected
             Toast.makeText(this, "Welcome " + personName, Toast.LENGTH_SHORT).show();
             fetchUserAndStart(acct, MainActivity.class);
-            startActivity(new Intent(GoogleSignInActivity.this, MainActivity.class));
         } else {
             //appears only when the user isn't connected to the app
             Toast.makeText(this, "No User", Toast.LENGTH_SHORT).show();
@@ -82,7 +81,11 @@ public class GoogleSignInActivity extends AppCompatActivity {
                     @Override
                     public void then(Account acct) {
                         if (acct != null) {
-                            fetchUserAndStart(getAuthManager().getCurrentUser(), CourseSelectActivity.class);
+                            if (onTest()) {
+                                startActivity(new Intent(GoogleSignInActivity.this, CourseSelectActivity.class));
+                            } else {
+                                fetchUserAndStart(mAuth.getCurrentUser(), CourseSelectActivity.class);
+                            }
                         }
                     }
                 }, TAG);
@@ -93,11 +96,11 @@ public class GoogleSignInActivity extends AppCompatActivity {
         }
     }
 
-    public ValueEventListener fetchUserAndStart(Account acct, Class destination) {
+    private ValueEventListener fetchUserAndStart(Account acct, Class destination) {
         return fetchUserAndStart(new FirebaseReference(), acct, destination);
     }
 
-    public ValueEventListener fetchUserAndStart(ReferenceWrapper fb, Account acct, Class destination) {
+    private ValueEventListener fetchUserAndStart(ReferenceWrapper fb, Account acct, Class destination) {
         final ID<User> userID = new ID<>(acct.getId());
         return fb.select("users").select(userID.getId()).get(User.class, new Consumer<User>() {
             @Override
