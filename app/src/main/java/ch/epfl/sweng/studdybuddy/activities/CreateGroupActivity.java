@@ -120,9 +120,9 @@ public class CreateGroupActivity extends AppCompatActivity implements AdapterVie
 
     public void addtoGroups(View view)
     {
-            Group g = new Group(maxParticipants, new Course(selectedCourse),selectedLanguage);
 
             User user = ((StudyBuddy) CreateGroupActivity.this.getApplication()).authendifiedUser;
+            Group g = new Group(maxParticipants, new Course(selectedCourse),selectedLanguage, user.getUserID().getId());
             mb.pushGroup(g, user.getUserID().getId());
             createUserInitialAvailabilities(user.getUserID().getId(), g.getGroupID().getId());
 	        Intent intent = new Intent(this, GroupsActivity.class);
