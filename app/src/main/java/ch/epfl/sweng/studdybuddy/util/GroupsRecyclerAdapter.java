@@ -53,7 +53,7 @@ public class GroupsRecyclerAdapter extends RecyclerView.Adapter<GroupsRecyclerAd
             groupLanguageTextView = (TextView) itemView.findViewById(R.id.group_language);
             messageButton = (Button) itemView.findViewById(R.id.message_button);
             groupCreationDateTextView = (TextView) itemView.findViewById(R.id.creation_date);
-            //admin = (TextView) itemView.findViewById(R.id.admin);
+            admin = (TextView) itemView.findViewById(R.id.admin);
         }
     }
 
@@ -126,7 +126,7 @@ public class GroupsRecyclerAdapter extends RecyclerView.Adapter<GroupsRecyclerAd
         setParticipantNumber(holder.groupParticipantInfoTextView, group);
         setButton(holder.messageButton, group);
         if(userId.equals(group.getAdminID())) {
-            //holder.admin.setText("\uD83D\uDC51");
+            holder.admin.setText("\uD83D\uDC51");
         }
     }
 
