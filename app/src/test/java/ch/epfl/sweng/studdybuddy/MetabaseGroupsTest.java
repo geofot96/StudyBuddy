@@ -14,6 +14,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import ch.epfl.sweng.studdybuddy.core.Course;
 import ch.epfl.sweng.studdybuddy.core.Group;
@@ -46,7 +47,7 @@ public class MetabaseGroupsTest {
     DataSnapshot usrTbl = mock(DataSnapshot.class);
 
     private Group blankGroupWId(String id) {
-        return new Group(1, new Course(""), "", id);
+        return new Group(1, new Course(""), "", id, UUID.randomUUID().toString());
     }
 
     private User johnDoe(String id) {
