@@ -24,11 +24,10 @@ import ch.epfl.sweng.studdybuddy.firebase.FirebaseReference;
 import ch.epfl.sweng.studdybuddy.firebase.MetaGroup;
 import ch.epfl.sweng.studdybuddy.util.Helper;
 
-import static ch.epfl.sweng.studdybuddy.core.Group.blankGroupWId;
-import static ch.epfl.sweng.studdybuddy.core.User.johnDoe;
+import static ch.epfl.sweng.studdybuddy.util.CoreFactory.blankGroupWId;
+import static ch.epfl.sweng.studdybuddy.util.CoreFactory.johnDoe;
+import static ch.epfl.sweng.studdybuddy.util.CoreFactory.userGroup1;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
@@ -39,7 +38,7 @@ import static org.mockito.Mockito.when;
 public class MetabaseGroupsTest {
     DatabaseReference testref = mock(DatabaseReference.class, Mockito.RETURNS_DEEP_STUBS);
     DataSnapshot dataSnapshot = mock(DataSnapshot.class);
-    List<Pair> tuples = Arrays.asList(new Pair("456", "123"), new Pair("789", "123"), new Pair("ghi", "abc"));
+    List<Pair> tuples = userGroup1();
     DataSnapshot insaneSnapshot = mock(DataSnapshot.class);
     List<Pair> doublons = Arrays.asList(new Pair("k", "v"), new Pair("k", "v"), new Pair("k", "vv"), new Pair("kk", "v"));
     DataSnapshot groupTbl = mock(DataSnapshot.class);

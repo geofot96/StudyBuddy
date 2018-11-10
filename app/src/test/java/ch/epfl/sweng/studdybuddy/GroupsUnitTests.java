@@ -10,7 +10,7 @@ import ch.epfl.sweng.studdybuddy.core.Group;
 import ch.epfl.sweng.studdybuddy.core.ID;
 import ch.epfl.sweng.studdybuddy.core.User;
 
-import static ch.epfl.sweng.studdybuddy.core.Group.groupOf;
+import static ch.epfl.sweng.studdybuddy.util.CoreFactory.groupOf;
 import static org.junit.Assert.assertEquals;
 
 /**
