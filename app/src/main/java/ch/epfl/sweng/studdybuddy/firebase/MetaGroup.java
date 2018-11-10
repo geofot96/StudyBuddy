@@ -153,4 +153,22 @@ public class MetaGroup extends Metabase{
         db.select("userGroup").select(Helper.hashCode(pair)).setVal(pair);
     }
 
+    public ValueEventListener removeUserFromGroup(String uId, Group g) {
+        db.select("userGroup").select(Helper.hashCode(new Pair(uId, g.getGroupID().getId()))).clear();
+        if(g.getAdminID().equals(uId)) {
+            return db.select("userGroup").getAll(Pair.class, new Consumer<List<Pair>>() {
+                @Override
+                public void accept(List<Pair> pairs) {
+                    for(Pair pair: pairs) {
+                        if(pair.getValue().equals(g.getGroupID().getId())) {
+                            g.setAdminID(pair.getKey());
+                            db.select("groups").select(g.getGroupID().getId()).setVal(g);
+                        }
+                    }
+                }
+            });
+        }
+        return null;
+    }
+
 }
