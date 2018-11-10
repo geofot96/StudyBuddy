@@ -169,6 +169,7 @@ public class MetaGroup extends Metabase{
 
     //returns null in case we want to make group immutable down the road
     public Group findNextAdmin(Group g, Iterator<Pair> it) {
+        if(g == null || it == null) return null;
         while(it.hasNext()) {
             Pair p = it.next();
             if(p.getValue().equals(g.getGroupID().getId())) {

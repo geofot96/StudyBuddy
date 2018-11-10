@@ -24,6 +24,7 @@ import ch.epfl.sweng.studdybuddy.firebase.FirebaseReference;
 import ch.epfl.sweng.studdybuddy.firebase.MetaGroup;
 import ch.epfl.sweng.studdybuddy.util.Helper;
 
+import static ch.epfl.sweng.studdybuddy.MetaFactory.deepFBReference;
 import static ch.epfl.sweng.studdybuddy.util.CoreFactory.blankGroupWId;
 import static ch.epfl.sweng.studdybuddy.util.CoreFactory.johnDoe;
 import static ch.epfl.sweng.studdybuddy.util.CoreFactory.userGroup1;
@@ -36,7 +37,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 public class MetabaseGroupsTest {
-    DatabaseReference testref = mock(DatabaseReference.class, Mockito.RETURNS_DEEP_STUBS);
+    DatabaseReference testref = deepFBReference();
     DataSnapshot dataSnapshot = mock(DataSnapshot.class);
     List<Pair> tuples = userGroup1();
     DataSnapshot insaneSnapshot = mock(DataSnapshot.class);
