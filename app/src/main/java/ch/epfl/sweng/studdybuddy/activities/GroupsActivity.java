@@ -33,7 +33,8 @@ import ch.epfl.sweng.studdybuddy.util.StudyBuddy;
 public class GroupsActivity extends AppCompatActivity {
     GroupsRecyclerAdapter mAdapter;
     static List<Group> groupSet = new ArrayList<>();
-    static List<Group> filteredGroupSet=new ArrayList<>();
+    static List<Group> filteredGroupSet = new ArrayList<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,21 +72,19 @@ public class GroupsActivity extends AppCompatActivity {
         toggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
-                    //filterFullGroupCards(getWindow().getDecorView().getRootView());
                     List<Group> groupList = mAdapter.getGroupList();
                     filteredGroupSet.clear();
-                    for(Group g: groupList){
-                        if(g.getMaxNoUsers()>mAdapter.getParticipantNumber(g))filteredGroupSet.add(g);
+                    for (Group g : groupSet) {
+                        if (g.getMaxNoUsers() > mAdapter.getParticipantNumber(g))
+                            filteredGroupSet.add(g);
                     }
-
                     mAdapter.setGroupList(filteredGroupSet);
                     mAdapter.setFilterList(filteredGroupSet);
-                    mAdapter.notifyDataSetChanged();
                 } else {
                     mAdapter.setGroupList(groupSet);
                     mAdapter.setFilterList(groupSet);
-                    mAdapter.notifyDataSetChanged();
                 }
+                mAdapter.notifyDataSetChanged();
             }
         });
     }
@@ -102,16 +101,6 @@ public class GroupsActivity extends AppCompatActivity {
         mAdapter.notifyDataSetChanged();
     }
 
-    public void filterFullGroupCards(View view) {
-        List<Group> groupList = mAdapter.getGroupList();
-        filteredGroupSet.clear();
-       for(Group g: groupList){
-           if(g.getMaxNoUsers()>mAdapter.getParticipantNumber(g))filteredGroupSet.add(g);
-       }
-
-        mAdapter.setGroupList(filteredGroupSet);
-        mAdapter.notifyDataSetChanged();
-    }
 
 
     public void goToCalendarActivity() {
