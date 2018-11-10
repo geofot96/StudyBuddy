@@ -17,6 +17,7 @@ public final class CoreFactory {
     public static Group blankGroupWId(String id) {
         return new Group(1, new Course(""), "", id, UUID.randomUUID().toString());
     }
+
     public static Group groupOf(int parti) {
         return new Group(parti, new Course("test"), "fr", UUID.randomUUID().toString());
     }
