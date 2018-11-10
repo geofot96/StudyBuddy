@@ -42,4 +42,8 @@ final public class User
         this.name = name;
     }
 
+
+    public static User johnDoe(String id) {
+        return new User("John Doe", id);
+    }
 }

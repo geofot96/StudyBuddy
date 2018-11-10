@@ -24,6 +24,8 @@ import ch.epfl.sweng.studdybuddy.firebase.FirebaseReference;
 import ch.epfl.sweng.studdybuddy.firebase.MetaGroup;
 import ch.epfl.sweng.studdybuddy.util.Helper;
 
+import static ch.epfl.sweng.studdybuddy.core.Group.blankGroupWId;
+import static ch.epfl.sweng.studdybuddy.core.User.johnDoe;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
@@ -46,13 +48,6 @@ public class MetabaseGroupsTest {
     List<User> usrs = Arrays.asList(johnDoe("ghi"), johnDoe("789"), johnDoe("456"), johnDoe("k"), johnDoe("kk"));
     DataSnapshot usrTbl = mock(DataSnapshot.class);
 
-    private Group blankGroupWId(String id) {
-        return new Group(1, new Course(""), "", id, UUID.randomUUID().toString());
-    }
-
-    private User johnDoe(String id) {
-        return new User("John Doe", id);
-    }
 
     @Before public void setup() {
         DataSnapshot a = mock(DataSnapshot.class), b = mock(DataSnapshot.class), c = mock(DataSnapshot.class);
