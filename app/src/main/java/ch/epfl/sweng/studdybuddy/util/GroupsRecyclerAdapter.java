@@ -174,4 +174,11 @@ public class GroupsRecyclerAdapter extends RecyclerView.Adapter<GroupsRecyclerAd
        }
        pNumber.setText(("Particip: " + count+ "/" + group.getMaxNoUsers()));
     }
+    public int getParticipantNumber(Group group){
+        int count = 0;
+        if(sizes.get(group.getGroupID().toString()) != null){
+            count = sizes.get(group.getGroupID().toString());
+        }
+        return count;
+    }
 }
