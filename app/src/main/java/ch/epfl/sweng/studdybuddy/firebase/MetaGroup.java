@@ -3,9 +3,11 @@ package ch.epfl.sweng.studdybuddy.firebase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import ch.epfl.sweng.studdybuddy.util.AdapterAdapter;
 import ch.epfl.sweng.studdybuddy.util.Consumer;
@@ -153,20 +155,33 @@ public class MetaGroup extends Metabase{
         db.select("userGroup").select(Helper.hashCode(pair)).setVal(pair);
     }
 
+    public ValueEventListener rotateAdmin(Group g) {
+        return db.select("userGroup").getAll(Pair.class, new Consumer<List<Pair>>() {
+            @Override
+            public void accept(List<Pair> pairs) {
+                Group updated = findNextAdmin(g, pairs.iterator());
+                ReferenceWrapper gField = db.select("groups").select(g.getGroupID().getId());
+                if(updated == null) gField.clear(); //Last user left => wipe the group
+                else gField.setVal(updated);
+            }
+        });
+    }
+
+    //returns null in case we want to make group immutable down the road
+    public Group findNextAdmin(Group g, Iterator<Pair> it) {
+        while(it.hasNext()) {
+            Pair p = it.next();
+            if(p.getValue().equals(g.getGroupID().getId())) {
+                return g.withAdmin(p.getKey());
+            }
+        }
+        return null;
+    }
+
     public ValueEventListener removeUserFromGroup(String uId, Group g) {
         db.select("userGroup").select(Helper.hashCode(new Pair(uId, g.getGroupID().getId()))).clear();
         if(g.getAdminID().equals(uId)) {
-            return db.select("userGroup").getAll(Pair.class, new Consumer<List<Pair>>() {
-                @Override
-                public void accept(List<Pair> pairs) {
-                    for(Pair pair: pairs) {
-                        if(pair.getValue().equals(g.getGroupID().getId())) {
-                            g.setAdminID(pair.getKey());
-                            db.select("groups").select(g.getGroupID().getId()).setVal(g);
-                        }
-                    }
-                }
-            });
+            return rotateAdmin(g);
         }
         return null;
     }

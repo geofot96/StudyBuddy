@@ -9,12 +9,12 @@ import java.util.UUID;
  * course is the course for which the group is created
  * participants is the actual group members
  */
-public class Group implements Comparable<Group> {
+public final class Group implements Comparable<Group> {
     private int maxNoUsers;
     private Course course;
 
     private ID<Group> groupID; //TODO add getters and setters
-    private String language;
+    private String lang;
 
     public String getAdminID() {
         return adminID;
@@ -54,7 +54,7 @@ public class Group implements Comparable<Group> {
         this.groupID = new ID<>(gId);
         this.maxNoUsers = maxNoUsers;
         this.course = course;
-        this.language = lang;
+        this.lang = lang;
         this.creationDate = new SerialDate();
         this.adminID = adminID;
     }
@@ -96,15 +96,17 @@ public class Group implements Comparable<Group> {
 
     public String getLang()
     {
-        return language;
+        return lang;
     }
 
     public void setLang(String language)
     {
-        this.language = language;
+        this.lang = language;
     }
 
-
+    public Group withAdmin(String adminID) {
+        return new Group(maxNoUsers, course, lang, groupID.getId(), adminID);
+    }
 
     @Override
     public int compareTo(Group group)
