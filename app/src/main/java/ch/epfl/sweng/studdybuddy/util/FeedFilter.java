@@ -16,6 +16,10 @@ public class FeedFilter extends Filter {
         this.filterList = filterList;
     }
 
+    public List<Group> forceFiltering(CharSequence constraint) {
+        return (List<Group>) performFiltering(constraint).values;
+    }
+
     @Override
     protected FilterResults performFiltering(CharSequence constraint) {
         FilterResults results=new FilterResults();

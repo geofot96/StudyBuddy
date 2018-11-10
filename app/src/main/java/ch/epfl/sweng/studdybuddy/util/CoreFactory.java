@@ -18,6 +18,10 @@ public final class CoreFactory {
         return new Group(1, new Course(""), "", id, UUID.randomUUID().toString());
     }
 
+    public static Group blankGroupWithCourse(String course) {
+        return new Group(1, new Course(course), "", "", "");
+    }
+
     public static Group groupOf(int parti) {
         return new Group(parti, new Course("test"), "fr", UUID.randomUUID().toString());
     }
@@ -33,6 +37,10 @@ public final class CoreFactory {
 
     public static List<Group> groups1() {
         return Arrays.asList(blankGroupWId("123"), blankGroupWId("abc"), blankGroupWId("v"), blankGroupWId("vv"));
+    }
+
+    public static List<Group> groups2() {
+        return Arrays.asList(blankGroupWithCourse("algo"), blankGroupWithCourse("compnet"), blankGroupWithCourse("clp"), blankGroupWithCourse("algebra"), blankGroupWithCourse("sweng"));
     }
     private CoreFactory(){
         //throw new IllegalMonitorStateException(); //Safe but will drop code cvg a little
