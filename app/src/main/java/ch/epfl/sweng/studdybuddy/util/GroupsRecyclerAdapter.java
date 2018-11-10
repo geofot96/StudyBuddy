@@ -144,8 +144,9 @@ public class GroupsRecyclerAdapter extends RecyclerView.Adapter<GroupsRecyclerAd
 
     public void setFilterList(List<Group> newFilter)
     {
-        filter.
-        this.filterList=new ArrayList<>(newFilter);
+        getFilter();
+        filter.setFilterList(newFilter);
+
     }
     private void setButton(Button button, Group group){
         Integer gSize = sizes.get(group.getGroupID().toString());

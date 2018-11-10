@@ -80,7 +80,7 @@ public class GroupsActivity extends AppCompatActivity {
 
                     mAdapter.setGroupList(filteredGroupSet);
                     mAdapter.setFilterList(filteredGroupSet);
-                    mAdapter.notifyDataSetChanged();;
+                    mAdapter.notifyDataSetChanged();
                 } else {
                     mAdapter.setGroupList(groupSet);
                     mAdapter.setFilterList(groupSet);

@@ -43,4 +43,7 @@ public class FeedFilter extends Filter {
         adapter.notifyDataSetChanged();
     }
 
+    public void setFilterList(List<Group> newfilterList) {
+        this.filterList = newfilterList;
+    }
 }
