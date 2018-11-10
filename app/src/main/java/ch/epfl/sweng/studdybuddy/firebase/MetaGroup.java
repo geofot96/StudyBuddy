@@ -16,6 +16,9 @@ import ch.epfl.sweng.studdybuddy.core.Pair;
 import ch.epfl.sweng.studdybuddy.core.User;
 import ch.epfl.sweng.studdybuddy.util.Helper;
 
+import static ch.epfl.sweng.studdybuddy.util.Helper.getOrDefault;
+import static ch.epfl.sweng.studdybuddy.util.Helper.safeAddId;
+
 public class MetaGroup extends Metabase{
 
     public MetaGroup() {
@@ -50,16 +53,6 @@ public class MetaGroup extends Metabase{
                 getGroupsfromIds(gIds, groups);
             }
         });
-    }
-
-    public void addListenner(AdapterAdapter ad) {
-        this.ads.add(ad);
-    }
-
-    private void safeAddId(String ref, String neu, String val, List<String> ids) {
-        if(ref.equals(neu) && !ids.contains(val)) {
-            ids.add(val);
-        }
     }
 
     //protected ?
@@ -112,11 +105,6 @@ public class MetaGroup extends Metabase{
         });
     }
 
-    private int getOrDefault(String key, Map<String, Integer> map) {
-        if(map.containsKey(key)) return map.get(key);
-        else return 0;
-    }
-
     public ValueEventListener getGroupUsers(String gId, List<User> groupUsers) {
         return getGroupUsers(gId, new LinkedList<>(), groupUsers);
     }
@@ -135,56 +123,9 @@ public class MetaGroup extends Metabase{
         });
     }
 
-    public ValueEventListener getUsersfromIds(List<String> uIds, List<User> groupUsers) {
-        return db.select("users").getAll(User.class, new Consumer<List<User>>() {
-            @Override
-            public void accept(List<User> users) {
-                for(int i = 0; i < users.size(); ++i) {
-                    if(uIds.contains(users.get(i).getUserID().toString())) {
-                        groupUsers.add(users.get(i));
-                    }
-                }
-                notif();
-            }
-        });
-    }
-
     public void pushGroup(Group g, String creatorId) {
         db.select("groups").select(g.getGroupID().getId()).setVal(g);
         Pair pair = new Pair(creatorId,g.getGroupID().toString());
         db.select("userGroup").select(Helper.hashCode(pair)).setVal(pair);
     }
-
-    public ValueEventListener rotateAdmin(Group g) {
-        return db.select("userGroup").getAll(Pair.class, new Consumer<List<Pair>>() {
-            @Override
-            public void accept(List<Pair> pairs) {
-                Group updated = findNextAdmin(g, pairs.iterator());
-                ReferenceWrapper gField = db.select("groups").select(g.getGroupID().getId());
-                if(updated == null) gField.clear(); //Last user left => wipe the group
-                else gField.setVal(updated);
-            }
-        });
-    }
-
-    //returns null in case we want to make group immutable down the road
-    public Group findNextAdmin(Group g, Iterator<Pair> it) {
-        if(g == null || it == null) return null;
-        while(it.hasNext()) {
-            Pair p = it.next();
-            if(p.getValue().equals(g.getGroupID().getId())) {
-                return g.withAdmin(p.getKey());
-            }
-        }
-        return null;
-    }
-
-    public ValueEventListener removeUserFromGroup(String uId, Group g) {
-        db.select("userGroup").select(Helper.hashCode(new Pair(uId, g.getGroupID().getId()))).clear();
-        if(g.getAdminID().equals(uId)) {
-            return rotateAdmin(g);
-        }
-        return null;
-    }
-
 }

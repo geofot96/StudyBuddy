@@ -1,5 +1,8 @@
 package ch.epfl.sweng.studdybuddy;
 
+import com.google.firebase.database.DataSnapshot;
+
+import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -10,21 +13,35 @@ import ch.epfl.sweng.studdybuddy.core.Group;
 import ch.epfl.sweng.studdybuddy.core.Pair;
 import ch.epfl.sweng.studdybuddy.firebase.FirebaseReference;
 import ch.epfl.sweng.studdybuddy.firebase.MetaGroup;
+import ch.epfl.sweng.studdybuddy.firebase.MetaGroupAdmin;
 
 import static ch.epfl.sweng.studdybuddy.MetaFactory.deepFBReference;
 import static ch.epfl.sweng.studdybuddy.util.CoreFactory.blankGroupWId;
 import static ch.epfl.sweng.studdybuddy.util.CoreFactory.userGroup1;
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class MetaGroupAdminTest {
 
-    private MetaGroup mg = new MetaGroup(new FirebaseReference(deepFBReference()));
+    private MetaGroupAdmin mg = new MetaGroupAdmin(new FirebaseReference(deepFBReference()));
     private Iterator<Pair> userGroup = userGroup1().iterator();
     private Group ghostGroup = blankGroupWId("?");
     private Group group2 = blankGroupWId("123");
+    private DataSnapshot groups = mock(DataSnapshot.class);
+
+    @Before
+    public void setup() {
+        when(groups.getValue()).thenReturn(groups);
+    }
 
     @Test
-    public void rotateAdmin() {
+    public void rotateAdminCallsClearIfGroupHasNoUser() {
+
+    }
+
+    @Test
+    public void rotateAdminCallsSetIfGroupHasUser() {
 
     }
 

@@ -26,8 +26,10 @@ import ch.epfl.sweng.studdybuddy.util.Helper;
 
 import static ch.epfl.sweng.studdybuddy.MetaFactory.deepFBReference;
 import static ch.epfl.sweng.studdybuddy.util.CoreFactory.blankGroupWId;
+import static ch.epfl.sweng.studdybuddy.util.CoreFactory.groups1;
 import static ch.epfl.sweng.studdybuddy.util.CoreFactory.johnDoe;
 import static ch.epfl.sweng.studdybuddy.util.CoreFactory.userGroup1;
+import static ch.epfl.sweng.studdybuddy.util.CoreFactory.users1;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
@@ -43,9 +45,9 @@ public class MetabaseGroupsTest {
     DataSnapshot insaneSnapshot = mock(DataSnapshot.class);
     List<Pair> doublons = Arrays.asList(new Pair("k", "v"), new Pair("k", "v"), new Pair("k", "vv"), new Pair("kk", "v"));
     DataSnapshot groupTbl = mock(DataSnapshot.class);
-    List<Group> gs = Arrays.asList(blankGroupWId("123"), blankGroupWId("abc"), blankGroupWId("v"), blankGroupWId("vv"));
+    List<Group> gs = groups1();
     MetaGroup mb = new MetaGroup(new FirebaseReference(testref));
-    List<User> usrs = Arrays.asList(johnDoe("ghi"), johnDoe("789"), johnDoe("456"), johnDoe("k"), johnDoe("kk"));
+    List<User> usrs = users1();
     DataSnapshot usrTbl = mock(DataSnapshot.class);
 
 

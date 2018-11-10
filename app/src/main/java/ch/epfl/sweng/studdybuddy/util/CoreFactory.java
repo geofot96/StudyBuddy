@@ -26,6 +26,14 @@ public final class CoreFactory {
     public static User johnDoe(String id) {
         return new User("John Doe", id);
     }
+
+    public static List<User> users1() {
+        return Arrays.asList(johnDoe("ghi"), johnDoe("789"), johnDoe("456"), johnDoe("k"), johnDoe("kk"));
+    }
+
+    public static List<Group> groups1() {
+        return Arrays.asList(blankGroupWId("123"), blankGroupWId("abc"), blankGroupWId("v"), blankGroupWId("vv"));
+    }
     private CoreFactory(){
         //throw new IllegalMonitorStateException(); //Safe but will drop code cvg a little
     }

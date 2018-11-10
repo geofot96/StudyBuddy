@@ -44,7 +44,7 @@ public class GroupsActivityLeadsToCreateGroup
         linearLayout.check(matches(isDisplayed()));
     }
 
-    @Test
+    /*Test
     public void algoTest()
     {
        // refactor();
@@ -69,7 +69,7 @@ public class GroupsActivityLeadsToCreateGroup
                         childAtPosition(withId(R.id.feedRecycleViewer), 0), 0),
                         isDisplayed()));
         textView.check(matches(withText("Algorithms CS-250")));
-    }
+    }*/
     @Test
     public void searchBarExists()
     {
