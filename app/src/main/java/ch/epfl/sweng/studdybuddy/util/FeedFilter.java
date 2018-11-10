@@ -43,7 +43,7 @@ public class FeedFilter extends Filter {
         adapter.notifyDataSetChanged();
     }
 
-    public void setFilterList(List<Group> newfilterList) {
+    public void setFilterList(List<Group> newfilterList) {//used for filtering out full groups
         this.filterList = newfilterList;
     }
 }

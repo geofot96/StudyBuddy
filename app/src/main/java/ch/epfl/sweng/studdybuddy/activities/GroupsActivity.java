@@ -72,7 +72,6 @@ public class GroupsActivity extends AppCompatActivity {
         toggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
-                    List<Group> groupList = mAdapter.getGroupList();
                     filteredGroupSet.clear();
                     for (Group g : groupSet) {
                         if (g.getMaxNoUsers() > mAdapter.getParticipantNumber(g))
