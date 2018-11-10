@@ -10,6 +10,8 @@ import java.util.Collections;
 
 import android.support.v7.widget.SearchView;
 import android.view.View;
+import android.widget.CompoundButton;
+import android.widget.ToggleButton;
 
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -65,6 +67,27 @@ public class GroupsActivity extends AppCompatActivity {
                 return false;
             }
         });
+        ToggleButton toggle = (ToggleButton) findViewById(R.id.toggleButton);
+        toggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    //filterFullGroupCards(getWindow().getDecorView().getRootView());
+                    List<Group> groupList = mAdapter.getGroupList();
+                    filteredGroupSet.clear();
+                    for(Group g: groupList){
+                        if(g.getMaxNoUsers()>mAdapter.getParticipantNumber(g))filteredGroupSet.add(g);
+                    }
+
+                    mAdapter.setGroupList(filteredGroupSet);
+                    mAdapter.setFilterList(filteredGroupSet);
+                    mAdapter.notifyDataSetChanged();;
+                } else {
+                    mAdapter.setGroupList(groupSet);
+                    mAdapter.setFilterList(groupSet);
+                    mAdapter.notifyDataSetChanged();
+                }
+            }
+        });
     }
 
     public void gotoCreation(View view) {
@@ -81,7 +104,7 @@ public class GroupsActivity extends AppCompatActivity {
 
     public void filterFullGroupCards(View view) {
         List<Group> groupList = mAdapter.getGroupList();
-
+        filteredGroupSet.clear();
        for(Group g: groupList){
            if(g.getMaxNoUsers()>mAdapter.getParticipantNumber(g))filteredGroupSet.add(g);
        }
@@ -95,4 +118,5 @@ public class GroupsActivity extends AppCompatActivity {
         Intent intent = new Intent(this, CalendarActivity.class);
         startActivity(intent);
     }
+
 }

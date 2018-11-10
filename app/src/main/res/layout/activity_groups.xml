@@ -32,14 +32,15 @@
 
     <Button
         android:id="@+id/sortButton"
-        android:layout_width="88dp"
+        android:layout_width="0dp"
         android:layout_height="48dp"
         android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginEnd="132dp"
+        android:layout_marginStart="16dp"
         android:onClick="sortGroupCards"
         android:text="Sort"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/createGroup"
+        app:layout_constraintEnd_toStartOf="@+id/toggleButton"
         app:layout_constraintHorizontal_bias="0.068"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -67,4 +68,14 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/feed_search" />
+
+    <ToggleButton
+        android:id="@+id/toggleButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="60dp"
+        android:text="ToggleButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/sortButton"
+        app:layout_constraintTop_toTopOf="@+id/filterFullButton" />
 </android.support.constraint.ConstraintLayout>

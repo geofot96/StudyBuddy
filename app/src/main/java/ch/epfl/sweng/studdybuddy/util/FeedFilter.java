@@ -42,4 +42,5 @@ public class FeedFilter extends Filter {
         //REFRESH
         adapter.notifyDataSetChanged();
     }
+
 }
