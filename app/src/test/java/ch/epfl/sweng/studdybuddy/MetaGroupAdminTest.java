@@ -12,7 +12,6 @@ import java.util.List;
 import ch.epfl.sweng.studdybuddy.core.Group;
 import ch.epfl.sweng.studdybuddy.core.Pair;
 import ch.epfl.sweng.studdybuddy.firebase.FirebaseReference;
-import ch.epfl.sweng.studdybuddy.firebase.MetaGroup;
 import ch.epfl.sweng.studdybuddy.firebase.MetaGroupAdmin;
 
 import static ch.epfl.sweng.studdybuddy.MetaFactory.deepFBReference;

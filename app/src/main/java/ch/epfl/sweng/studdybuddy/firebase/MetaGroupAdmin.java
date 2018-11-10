@@ -39,12 +39,12 @@ public class MetaGroupAdmin extends MetaGroup {
         return null;
     }
 
-    public ValueEventListener removeUserFromGroup(String uId, Group g) {
+    /*public ValueEventListener removeUserFromGroup(String uId, Group g) {
         db.select("userGroup").select(Helper.hashCode(new Pair(uId, g.getGroupID().getId()))).clear(); //redundant
         if(g.getAdminID().equals(uId)) {
             return rotateAdmin(g);
         }
         return null;
-    }
+    }*/
 
 }
