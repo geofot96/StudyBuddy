@@ -41,7 +41,6 @@ public class GroupsActivity extends AppCompatActivity
         Consumer<Intent> buttonClickConsumer = new Consumer<Intent>() {
             @Override
             public void accept(Intent target) { goToCalendarActivity(target); }};
-        Intent buttonTransition = new Intent(this, CalendarActivity.class);
 
         mAdapter = new GroupsRecyclerAdapter(groupSet,userId, buttonClickConsumer);
         rv.setAdapter(mAdapter);
