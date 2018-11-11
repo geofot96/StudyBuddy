@@ -1,7 +1,9 @@
 package ch.epfl.sweng.studdybuddy.util;
 
+import android.content.Context;
 import android.support.annotation.IdRes;
 import android.support.annotation.LayoutRes;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,5 +23,10 @@ public abstract class Adapter extends RecyclerView.Adapter<Holder>{
     {
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(layoutRes, viewGroup, false);
         return new Holder(view, holderId);
+    }
+
+    public void initRecyclerView(Context ctx, RecyclerView rv){
+       rv.setLayoutManager(new LinearLayoutManager(ctx));
+       rv.setAdapter(this);
     }
 }
