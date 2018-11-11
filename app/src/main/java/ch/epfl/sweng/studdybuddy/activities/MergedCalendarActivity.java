@@ -18,77 +18,15 @@ import ch.epfl.sweng.studdybuddy.R;
 public class MergedCalendarActivity extends AppCompatActivity
 {
 
-    GridLayout calendarGrid;
-    ArrayList<boolean[][]> calendars;
-    //Temporary dummy inputs
-    boolean c1[][]={{true,true,true,false,false,false,false,false,false,false,false},
-            {false,false,false,false,false,false,false,false,false,false,true},
-            {false,false,false,false,false,false,false,false,false,true,false},
-            {false,false,false,false,false,false,false,false,true,false,false},
-            {false,false,false,false,false,false,false,true,false,false,false},
-            {false,false,false,false,false,false,true,false,false,false,false},
-            {false,false,false,false,false,true,false,false,false,false,false}};
-    boolean c2[][]=c1;
 
-    boolean c3[][]=c1;
-
+    //TODO delete
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calendar);
-        calendars=new ArrayList<>();
-       //TODO Temporary, remove after
-        c2[0][1]=true;
-        c2[0][2]=true;
-        c3[0][2]=true;
-        calendars.add(c1);
-        calendars.add(c2);
-        calendars.add(c3);
-        calendarGrid = (GridLayout) findViewById(R.id.calendarGrid);
-        Button button = findViewById(R.id.confirmSlots);
 
-        button.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                Intent intent = new Intent(MergedCalendarActivity.this, ProfileTab.class);
-                startActivity(intent);
-            }
-        });
-        mergeCalendars(calendarGrid);
     }
 
-    public void editColor(int calendarNumber, int i)
-    {
-        CardView cardView = (CardView) calendarGrid.getChildAt(i);
-        int timesSelected=0;
-        for (int j=0; j<calendars.size();j++)
-        {
-            if(calendars.get(j)[(i%8)-1][i/8])timesSelected++;
 
-        }
-
-        if(timesSelected==0)
-        {
-            cardView.setCardBackgroundColor(Color.WHITE);
-        }
-
-        else
-        {
-            double gradient=(((255.0/calendarNumber)*(calendarNumber-timesSelected))+60)%255;
-            cardView.setCardBackgroundColor(Color.rgb(0,(int)gradient,0));
-        }
-    }
-
-    private void mergeCalendars(GridLayout calendarGrid)
-    {
-        int calendarNumber=calendars.size();
-        for(int i = 0; i < calendarGrid.getChildCount(); i++) {
-            if(i%8!=0) {
-                editColor(calendarNumber, i);
-            }
-        }
-    }
 }
