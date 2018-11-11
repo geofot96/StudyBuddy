@@ -19,6 +19,7 @@ import java.util.List;
 import ch.epfl.sweng.studdybuddy.R;
 import ch.epfl.sweng.studdybuddy.activities.CalendarActivity;
 import ch.epfl.sweng.studdybuddy.activities.GroupInfoActivity;
+import ch.epfl.sweng.studdybuddy.activities.GroupsActivity;
 import ch.epfl.sweng.studdybuddy.core.Group;
 import ch.epfl.sweng.studdybuddy.core.Pair;
 import ch.epfl.sweng.studdybuddy.firebase.FirebaseReference;
@@ -156,7 +157,7 @@ public class GroupsRecyclerAdapter extends RecyclerView.Adapter<GroupsRecyclerAd
             button.setOnClickListener(joinButtonListener(group, button));
         }else{
             button.setText("More Info");
-            button.setOnClickListener(moreInfoListener(button));
+            button.setOnClickListener(moreInfoListener(button, group.getGroupID().getId()));
         }
     }
 
@@ -169,19 +170,21 @@ public class GroupsRecyclerAdapter extends RecyclerView.Adapter<GroupsRecyclerAd
                 if(joinConsumer != null)
                 {
                     Intent intent = new Intent(button.getContext(), CalendarActivity.class);
+                    intent.putExtra(GroupsActivity.GROUP_ID, group.getGroupID().getId());
                     joinConsumer.accept(intent);
                 }
             }
         };
     }
 
-    private View.OnClickListener moreInfoListener(Button button){
+    private View.OnClickListener moreInfoListener(Button button, String gId){
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(joinConsumer != null )
                 {
                     Intent intent = new Intent(button.getContext(), GroupInfoActivity.class);
+                    intent.putExtra(GroupsActivity.GROUP_ID, gId);
                     joinConsumer.accept(intent);
                 }
             }

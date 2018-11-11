@@ -27,6 +27,7 @@ public class GroupsActivity extends AppCompatActivity
 {
     GroupsRecyclerAdapter mAdapter;
 		static List<Group> groupSet  = new ArrayList<>();
+    public static final String GROUP_ID = "ch.epfl.sweng.studdybuddy.groupId";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
