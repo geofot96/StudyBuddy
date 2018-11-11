@@ -1,5 +1,7 @@
 package ch.epfl.sweng.studdybuddy.util;
 
+import android.widget.SearchView;
+
 import java.util.List;
 
 final public class AdapterConsumer {
@@ -14,6 +16,21 @@ final public class AdapterConsumer {
                     set.addAll(list);
                     adapter.update();
                 }
+            }
+        };
+    }
+
+    public static android.support.v7.widget.SearchView.OnQueryTextListener searchListener(GroupsRecyclerAdapter mAdapter) {
+        return new android.support.v7.widget.SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query)
+            {
+                return false;
+            }
+            @Override
+            public boolean onQueryTextChange(String query) {
+                mAdapter.getFilter().filter(query); //FILTER AS YOU TYPE
+                return false;
             }
         };
     }

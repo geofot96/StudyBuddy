@@ -41,8 +41,9 @@ public class GroupsActivityLeadsToCreateGroup
         ViewInteraction linearLayout = onView(withId(R.id.createGroup));
         linearLayout.check(matches(isDisplayed()));
     }
-/*
-    @Test
+
+
+    /*Test
     public void algoTest()
     {
        // refactor();

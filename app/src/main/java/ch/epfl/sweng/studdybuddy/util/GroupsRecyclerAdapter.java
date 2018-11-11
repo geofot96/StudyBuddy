@@ -46,7 +46,7 @@ public class GroupsRecyclerAdapter extends RecyclerView.Adapter<GroupsRecyclerAd
         public TextView groupLanguageTextView;
         public Button messageButton;
         public TextView groupCreationDateTextView;
-
+        public TextView admin;
 
         public MyViewHolder(View itemView)
         {
@@ -56,7 +56,7 @@ public class GroupsRecyclerAdapter extends RecyclerView.Adapter<GroupsRecyclerAd
             groupLanguageTextView = (TextView) itemView.findViewById(R.id.group_language);
             messageButton = (Button) itemView.findViewById(R.id.message_button);
             groupCreationDateTextView = (TextView) itemView.findViewById(R.id.creation_date);
-
+            admin = (TextView) itemView.findViewById(R.id.admin);
         }
     }
 
@@ -127,7 +127,9 @@ public class GroupsRecyclerAdapter extends RecyclerView.Adapter<GroupsRecyclerAd
         button.setText("More info");
         setParticipantNumber(holder.groupParticipantInfoTextView, group);
         setButton(holder.messageButton, group);
-
+        if(userId.equals(group.getAdminID())) {
+            holder.admin.setText("\uD83D\uDC51");
+        }
     }
 
     @Override
