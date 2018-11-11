@@ -19,7 +19,6 @@ import ch.epfl.sweng.studdybuddy.util.RecyclerAdapterAdapter;
 public class GroupInfoActivity extends AppCompatActivity{
     List<User> participants;
     MetaGroup mb;
-    private Holder participantHolder;
     private RecyclerView participantsRv;
     private ParticipantAdapter participantAdapter;
 
@@ -29,7 +28,6 @@ public class GroupInfoActivity extends AppCompatActivity{
         setContentView(R.layout.activity_group_info);
         participants = new ArrayList<>();
         mb  = new MetaGroup();
-
         Intent intent = getIntent();
         String gId = intent.getStringExtra(GroupsActivity.GROUP_ID);
         mb.getGroupUsers(gId, participants);
