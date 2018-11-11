@@ -29,16 +29,14 @@ public class MetaGroupAdmin extends MetaGroup {
 
     //returns null in case we want to make group immutable down the road
     public Group findNextAdmin(Group g, Iterator<Pair> it) {
-        Group group = null;
-        if(g != null && it != null) {
-            while (it.hasNext() && group == null) {
-                Pair p = it.next();
-                if (p.getValue().equals(g.getGroupID().getId())) {
-                    group = g.withAdmin(p.getKey());
-                }
+        if(g == null || it == null) return null;
+        while(it.hasNext()) {
+            Pair p = it.next();
+            if(p.getValue().equals(g.getGroupID().getId())) {
+                return g.withAdmin(p.getKey());
             }
         }
-        return group;
+        return null;
     }
 
     /*public ValueEventListener removeUserFromGroup(String uId, Group g) {
