@@ -1,19 +1,17 @@
 package ch.epfl.sweng.studdybuddy.util;
 
+import android.support.annotation.IdRes;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
 
-import ch.epfl.sweng.studdybuddy.R;
-
-public class ParticipantHolder extends RecyclerView.ViewHolder{
-
+public class Holder extends RecyclerView.ViewHolder {
     private TextView txt;
 
-    public ParticipantHolder(View itemView)
+    public Holder(View itemView, @IdRes int id)
     {
         super(itemView);
-        txt = (TextView) itemView.findViewById(R.id.participant);
+        txt = (TextView) itemView.findViewById(id);
     }
 
     public String get()
@@ -21,8 +19,8 @@ public class ParticipantHolder extends RecyclerView.ViewHolder{
         return txt.getText().toString();
     }
 
-    public void bind(String course)
+    public void bind(String value)
     {
-        txt.setText(course);
+        txt.setText(value);
     }
 }

@@ -10,7 +10,7 @@ import java.util.List;
 import ch.epfl.sweng.studdybuddy.R;
 import ch.epfl.sweng.studdybuddy.core.User;
 
-public class ParticipantAdapter extends RecyclerView.Adapter<ParticipantHolder> {
+public class ParticipantAdapter extends RecyclerView.Adapter<Holder> {
 
     List<User> participants;
 
@@ -23,15 +23,15 @@ public class ParticipantAdapter extends RecyclerView.Adapter<ParticipantHolder> 
     //cette fonction permet de créer les viewHolder
     //et par la même indiquer la vue à inflater (à partir des layout xml)
     @Override
-    public ParticipantHolder onCreateViewHolder(ViewGroup viewGroup, int itemType)
+    public Holder onCreateViewHolder(ViewGroup viewGroup, int itemType)
     {
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.participant_card, viewGroup, false);
-        return new ParticipantHolder(view);
+        return new Holder(view, R.id.participant);
     }
 
     //c'est ici que nous allons remplir notre cellule avec le texte/image de chaque MyObjects
     @Override
-    public void onBindViewHolder(ParticipantHolder holder, int position)
+    public void onBindViewHolder(Holder holder, int position)
     {
         String username = participants.get(position).getName();
         holder.bind(username);

@@ -9,7 +9,7 @@ import java.util.List;
 
 import ch.epfl.sweng.studdybuddy.R;
 
-public class CourseAdapter extends RecyclerView.Adapter<CourseHolder>
+public class CourseAdapter extends RecyclerView.Adapter<Holder>
 {
     List<String> list;
 
@@ -22,15 +22,15 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseHolder>
     //cette fonction permet de créer les viewHolder
     //et par la même indiquer la vue à inflater (à partir des layout xml)
     @Override
-    public CourseHolder onCreateViewHolder(ViewGroup viewGroup, int itemType)
+    public Holder onCreateViewHolder(ViewGroup viewGroup, int itemType)
     {
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.course_card, viewGroup, false);
-        return new CourseHolder(view);
+        return new Holder(view, R.id.text);
     }
 
     //c'est ici que nous allons remplir notre cellule avec le texte/image de chaque MyObjects
     @Override
-    public void onBindViewHolder(CourseHolder holder, int position)
+    public void onBindViewHolder(Holder holder, int position)
     {
         String course = list.get(position);
         holder.bind(course);

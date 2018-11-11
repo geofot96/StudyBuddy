@@ -12,14 +12,14 @@ import java.util.List;
 import ch.epfl.sweng.studdybuddy.R;
 import ch.epfl.sweng.studdybuddy.core.User;
 import ch.epfl.sweng.studdybuddy.firebase.MetaGroup;
+import ch.epfl.sweng.studdybuddy.util.Holder;
 import ch.epfl.sweng.studdybuddy.util.ParticipantAdapter;
-import ch.epfl.sweng.studdybuddy.util.ParticipantHolder;
 import ch.epfl.sweng.studdybuddy.util.RecyclerAdapterAdapter;
 
 public class GroupInfoActivity extends AppCompatActivity{
     List<User> participants;
     MetaGroup mb;
-    private ParticipantHolder participantHolder;
+    private Holder participantHolder;
     private RecyclerView participantsRv;
     private ParticipantAdapter participantAdapter;
     private RecyclerView mRecyclerView;
