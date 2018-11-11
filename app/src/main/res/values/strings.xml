@@ -2,4 +2,7 @@
     <string name="app_name">StuddyBuddy</string>
     <string name="sign_out">Sign Out</string>
     <string name="title_activity_groups">GroupsActivity</string>
+    <string name="nav_home">Home</string>
+    <string name="nav_profile">Profile</string>
+    <string name="nav_calendar">Calendar</string>
 </resources>

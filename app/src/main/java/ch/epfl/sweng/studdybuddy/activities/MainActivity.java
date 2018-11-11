@@ -85,7 +85,7 @@ public class MainActivity extends AppCompatActivity
     }
     public void goToMergedCalendarActivity(View view)
     {
-        Intent intent = new Intent(this, MergedCalendarActivity.class);
+        Intent intent = new Intent(this, NavigationActivity.class);
         startActivity(intent);
     }
 

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:icon="@drawable/round_home_black_24dp"
+        android:title="@string/nav_home" />
+
+    <item
+        android:icon="@drawable/round_person_black_24dp"
+        android:title="@string/nav_profile" />
+
+    <item
+        android:icon="@drawable/round_calendar_today_black_24dp"
+        android:title="@string/nav_calendar" />
+</menu>
