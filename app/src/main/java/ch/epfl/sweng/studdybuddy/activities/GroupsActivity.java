@@ -28,6 +28,8 @@ import ch.epfl.sweng.studdybuddy.util.RecyclerAdapterAdapter;
 import ch.epfl.sweng.studdybuddy.activities.CreateGroupActivity;
 import ch.epfl.sweng.studdybuddy.util.StudyBuddy;
 
+import static ch.epfl.sweng.studdybuddy.util.AdapterConsumer.searchListener;
+
 public class GroupsActivity extends AppCompatActivity
 {
     GroupsRecyclerAdapter mAdapter;
@@ -50,16 +52,7 @@ public class GroupsActivity extends AppCompatActivity
         firebase.select("groups").getAll(Group.class, AdapterConsumer.adapterConsumer(Group.class, groupSet, new RecyclerAdapterAdapter(mAdapter)));
         SearchView sv = (SearchView) findViewById(R.id.feed_search);
         sv.onActionViewExpanded();sv.clearFocus();
-        sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query)
-            {
-                return false;
-            }
-            @Override
-            public boolean onQueryTextChange(String query) {
-                mAdapter.getFilter().filter(query); //FILTER AS YOU TYPE
-                return false; }});
+        sv.setOnQueryTextListener(searchListener(mAdapter));
     }
 
     public void gotoCreation(View view)
