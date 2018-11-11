@@ -22,9 +22,7 @@ public class GroupInfoActivity extends AppCompatActivity{
     private Holder participantHolder;
     private RecyclerView participantsRv;
     private ParticipantAdapter participantAdapter;
-    private RecyclerView mRecyclerView;
-    private RecyclerView.Adapter mAdapter;
-    private RecyclerView.LayoutManager mLayoutManager;
+
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
