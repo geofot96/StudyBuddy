@@ -16,6 +16,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import ch.epfl.sweng.studdybuddy.R;
+import ch.epfl.sweng.studdybuddy.core.Consumable;
 import ch.epfl.sweng.studdybuddy.core.Group;
 import ch.epfl.sweng.studdybuddy.core.Pair;
 import ch.epfl.sweng.studdybuddy.firebase.FirebaseReference;
@@ -32,7 +33,7 @@ public class GroupsRecyclerAdapter extends RecyclerView.Adapter<GroupsRecyclerAd
     private List<Group> uGroups;
     private HashMap<String, Integer> sizes;
     private List<String> uGroupIds;
-    public Consumer<Object> consumer;
+    public Consumer<Consumable> consumer;
 
     public static class MyViewHolder extends RecyclerView.ViewHolder
     {
@@ -71,7 +72,7 @@ public class GroupsRecyclerAdapter extends RecyclerView.Adapter<GroupsRecyclerAd
         mb.getAllGroupSizes(sizes);
     }
 
-    public GroupsRecyclerAdapter(List<Group> groupList, String userId, Consumer<Object> consumer)
+    public GroupsRecyclerAdapter(List<Group> groupList, String userId, Consumer<Consumable> consumer)
     {
         this(groupList, userId);
         this.consumer = consumer;
@@ -120,8 +121,7 @@ public class GroupsRecyclerAdapter extends RecyclerView.Adapter<GroupsRecyclerAd
         holder.groupCourseTextView.setText(group.getCourse().getCourseName());
         holder.groupLanguageTextView.setText(group.getLang());
         holder.groupCreationDateTextView.setText(getCreationDate(group));
-        Button button = holder.messageButton;
-        button.setText("More info");
+        //Button button = holder.messageButton;
         setParticipantNumber(holder.groupParticipantInfoTextView, group);
         setButton(holder.messageButton, group);
 
@@ -148,22 +148,28 @@ public class GroupsRecyclerAdapter extends RecyclerView.Adapter<GroupsRecyclerAd
         if(gSize != null){
             groupSize = gSize.intValue();
         }
+        button.setText("Join");
+        Pair pair =new Pair(userId, group.getGroupID().toString());
         if(groupSize < group.getMaxNoUsers()
                 &&!uGroupIds.contains(group.getGroupID().getId())) {
-            button.setText("Join");
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Pair pair =new Pair(userId, group.getGroupID().toString());
                     fb.select("userGroup").select(Helper.hashCode(pair)).setVal(pair);
-                    if(consumer != null)
-                    {
-                        consumer.accept(this);
-                    }
+                    mb.getUserGroups(userId, uGroupIds, uGroups);
                 }
             });
         }else{
-            button.setText("More Info");
+            button.setText("+");
+            //TODO corriger les listeners, y a un problème avec eux.........
+            button.setOnClickListener(new View.OnClickListener() {
+            @Override
+                public void onClick(View v) {
+                   if (consumer != null) {
+                       consumer.accept(pair);
+                   }
+                }
+            });
         }
     }
 

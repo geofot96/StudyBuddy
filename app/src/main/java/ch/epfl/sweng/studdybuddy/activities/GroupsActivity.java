@@ -5,9 +5,6 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-
-import java.util.Collections;
-
 import android.support.v7.widget.SearchView;
 import android.view.View;
 
@@ -17,15 +14,16 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import ch.epfl.sweng.studdybuddy.util.AdapterConsumer;
-import ch.epfl.sweng.studdybuddy.core.Course;
-import ch.epfl.sweng.studdybuddy.firebase.FirebaseReference;
+import ch.epfl.sweng.studdybuddy.R;
+import ch.epfl.sweng.studdybuddy.core.Consumable;
 import ch.epfl.sweng.studdybuddy.core.Group;
+import ch.epfl.sweng.studdybuddy.core.Pair;
+import ch.epfl.sweng.studdybuddy.firebase.FirebaseReference;
+import ch.epfl.sweng.studdybuddy.util.AdapterConsumer;
 import ch.epfl.sweng.studdybuddy.util.Consumer;
 import ch.epfl.sweng.studdybuddy.util.GroupsRecyclerAdapter;
-import ch.epfl.sweng.studdybuddy.R;
+import ch.epfl.sweng.studdybuddy.util.Messages;
 import ch.epfl.sweng.studdybuddy.util.RecyclerAdapterAdapter;
-import ch.epfl.sweng.studdybuddy.activities.CreateGroupActivity;
 import ch.epfl.sweng.studdybuddy.util.StudyBuddy;
 
 public class GroupsActivity extends AppCompatActivity
@@ -42,14 +40,21 @@ public class GroupsActivity extends AppCompatActivity
         rv.setLayoutManager(new LinearLayoutManager(this));
         FirebaseReference firebase = new FirebaseReference(FirebaseDatabase.getInstance().getReference());
         String userId =  ((StudyBuddy) GroupsActivity.this.getApplication()).getAuthendifiedUser().getUserID().toString();
-        Consumer<Object> consumer = new Consumer<Object>() {
+        Consumer<Consumable> consumer = new Consumer<Consumable>() {
             @Override
-            public void accept(Object o) { goToCalendarActivity(); }};
+            public void accept(Consumable o) {
+                assert(o!= null);
+                if (o.getClass().equals(Group.class)) {
+                    Pair p = (Pair) o;
+                    goToGroupActivity(p);
+                }
+            }};
         mAdapter = new GroupsRecyclerAdapter(groupSet,userId, consumer);
         rv.setAdapter(mAdapter);
         firebase.select("groups").getAll(Group.class, AdapterConsumer.adapterConsumer(Group.class, groupSet, new RecyclerAdapterAdapter(mAdapter)));
         SearchView sv = (SearchView) findViewById(R.id.feed_search);
-        sv.onActionViewExpanded();sv.clearFocus();
+        sv.onActionViewExpanded();
+        sv.clearFocus();
         sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query)
@@ -76,9 +81,11 @@ public class GroupsActivity extends AppCompatActivity
         mAdapter.notifyDataSetChanged();
     }
 
-    public void goToCalendarActivity()
+    public void goToGroupActivity(Pair pair)
     {
-        Intent intent = new Intent(this, CalendarActivity.class);
+        Intent intent = new Intent(this, GroupActivity.class);
+        intent.putExtra(Messages.userID, pair.getKey());
+        intent.putExtra(Messages.groupID, pair.getValue());
         startActivity(intent);
     }
 }

@@ -20,17 +20,6 @@ public class MergedCalendarActivity extends AppCompatActivity
 
     GridLayout calendarGrid;
     ArrayList<boolean[][]> calendars;
-    //Temporary dummy inputs
-    boolean c1[][]={{true,true,true,false,false,false,false,false,false,false,false},
-            {false,false,false,false,false,false,false,false,false,false,true},
-            {false,false,false,false,false,false,false,false,false,true,false},
-            {false,false,false,false,false,false,false,false,true,false,false},
-            {false,false,false,false,false,false,false,true,false,false,false},
-            {false,false,false,false,false,false,true,false,false,false,false},
-            {false,false,false,false,false,true,false,false,false,false,false}};
-    boolean c2[][]=c1;
-
-    boolean c3[][]=c1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -38,13 +27,6 @@ public class MergedCalendarActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calendar);
         calendars=new ArrayList<>();
-       //TODO Temporary, remove after
-        c2[0][1]=true;
-        c2[0][2]=true;
-        c3[0][2]=true;
-        calendars.add(c1);
-        calendars.add(c2);
-        calendars.add(c3);
         calendarGrid = (GridLayout) findViewById(R.id.calendarGrid);
         Button button = findViewById(R.id.confirmSlots);
 

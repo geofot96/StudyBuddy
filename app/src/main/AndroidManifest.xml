@@ -49,6 +49,8 @@
         <activity android:name=".activities.MainActivity"></activity>
         <activity android:name=".activities.CalendarActivity"/>
         <activity android:name=".activities.MergedCalendarActivity"/>
+        <activity android:name=".activities.ConnectedCalendarActivity"/>
+        <activity android:name=".activities.GroupActivity"/>
     </application>
 
 </manifest>

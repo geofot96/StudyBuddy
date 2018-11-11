@@ -4,6 +4,10 @@ import java.util.List;
 
 import ch.epfl.sweng.studdybuddy.firebase.FirebaseReference;
 
+/**
+ * The ConnectedAvailability is linked to an instance of Availability and will
+ * update the database every time t
+ */
 public class ConnectedAvailability implements Availability {
     private Availability A;
     private FirebaseReference ref;
@@ -26,25 +30,6 @@ public class ConnectedAvailability implements Availability {
         update();
     }
 
-    @Override
-    public void addAvailability(int row, int column) throws ArrayIndexOutOfBoundsException {
-        try{
-            A.addAvailability(row, column);
-            update();
-        }catch (ArrayIndexOutOfBoundsException e){
-            throw e;
-        }
-    }
-
-    @Override
-    public void removeAvailability(int row, int column) throws ArrayIndexOutOfBoundsException {
-        try{
-            A.removeAvailability(row, column);
-            update();
-        }catch(ArrayIndexOutOfBoundsException e){
-            throw e;
-        }
-    }
 
     @Override
     public List<Boolean> getUserAvailabilities() {
@@ -53,6 +38,12 @@ public class ConnectedAvailability implements Availability {
 
     public Boolean isAvailable(int row, int column){
         return A.isAvailable(row, column);
+    }
+
+    @Override
+    public void modifyAvailability(int row, int column) throws ArrayIndexOutOfBoundsException {
+        A.modifyAvailability(row, column);
+        update();
     }
 
     private void update(){

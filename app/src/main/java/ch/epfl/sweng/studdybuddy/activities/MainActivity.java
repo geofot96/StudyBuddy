@@ -15,6 +15,8 @@ import ch.epfl.sweng.studdybuddy.auth.AuthManager;
 import ch.epfl.sweng.studdybuddy.auth.FirebaseAuthManager;
 import ch.epfl.sweng.studdybuddy.auth.GoogleSignInActivity;
 import ch.epfl.sweng.studdybuddy.core.Account;
+import ch.epfl.sweng.studdybuddy.firebase.FirebaseReference;
+import ch.epfl.sweng.studdybuddy.util.Messages;
 
 public class MainActivity extends AppCompatActivity
 {
@@ -80,7 +82,13 @@ public class MainActivity extends AppCompatActivity
 
     public void goToCalendarActivity(View view)
     {
-        Intent intent = new Intent(this, CalendarActivity.class);
+        String dummyGroupID = "3f99660b-79d0-42d2-aecb-e7eedbafcb41";
+        String dummyUserID = "ZqHa4GLFGEfbuQW9gO6E0kndWNw2";
+        Integer dummyInt = new Integer(6);
+        Intent intent = new Intent(this, GroupActivity.class);
+        intent.putExtra(Messages.groupID, dummyGroupID);
+        intent.putExtra(Messages.userID, dummyUserID);
+        intent.putExtra(Messages.maxUser, dummyInt);
         startActivity(intent);
     }
     public void goToMergedCalendarActivity(View view)
