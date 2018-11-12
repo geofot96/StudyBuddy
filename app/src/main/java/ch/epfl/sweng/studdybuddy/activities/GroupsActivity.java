@@ -76,10 +76,7 @@ public class GroupsActivity extends AppCompatActivity {
     {
         if (isChecked) {
             filteredGroupSet.clear();
-            for (Group g : groupSet) {
-                if (g.getMaxNoUsers() > mAdapter.getParticipantNumber(g))
-                    filteredGroupSet.add(g);
-            }
+            selectOnlyAvailableGroups();
             mAdapter.setGroupList(filteredGroupSet);
             mAdapter.setFilterList(filteredGroupSet);
         } else {
@@ -87,6 +84,13 @@ public class GroupsActivity extends AppCompatActivity {
             mAdapter.setFilterList(groupSet);
         }
         mAdapter.notifyDataSetChanged();
+    }
+
+    private void selectOnlyAvailableGroups() {
+        for (Group g : groupSet) {
+            if (g.getMaxNoUsers() > mAdapter.getParticipantNumber(g))
+                filteredGroupSet.add(g);
+        }
     }
 
     public void gotoCreation(View view) {
