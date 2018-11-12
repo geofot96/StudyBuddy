@@ -16,6 +16,7 @@ import com.google.android.gms.tasks.Task;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
+import org.hamcrest.core.IsInstanceOf;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -30,8 +31,10 @@ import ch.epfl.sweng.studdybuddy.util.Messages;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
+import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
+import static ch.epfl.sweng.studdybuddy.GroupsActivityLeadsToCreateGroup.childAtPosition;
 import static org.hamcrest.Matchers.allOf;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -61,6 +64,16 @@ public class ConnectedCalendarActivityTest{
 
     @Test
     public void addAvailabilityInTimeSlot(){
+        ViewInteraction gridLayout = onView(
+                allOf(withId(R.id.calendarGrid),
+                        childAtPosition(
+                                allOf(withId(R.id.generalThing),
+                                        childAtPosition(
+                                                IsInstanceOf.<View>instanceOf(android.widget.ScrollView.class),
+                                                0)),
+                                1),
+                        isDisplayed()));
+        gridLayout.check(matches(isDisplayed()));
         settingTime();
         ClickOnSlot(2);
         try{
@@ -74,6 +87,18 @@ public class ConnectedCalendarActivityTest{
 
     @Test
     public void removeAvailabilityInTimeSlot(){
+
+        ViewInteraction gridLayout = onView(
+                allOf(withId(R.id.calendarGrid),
+                        childAtPosition(
+                                allOf(withId(R.id.generalThing),
+                                        childAtPosition(
+                                                IsInstanceOf.<View>instanceOf(android.widget.ScrollView.class),
+                                                0)),
+                                1),
+                        isDisplayed()));
+        gridLayout.check(matches(isDisplayed()));
+
         settingTime();
         ClickOnSlot(1);
         try{
