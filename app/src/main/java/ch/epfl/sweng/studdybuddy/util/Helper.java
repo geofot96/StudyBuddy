@@ -19,7 +19,7 @@ public final class Helper {
     }
 
     public static void safeAddId(String ref, String neu, String val, List<String> ids) {
-        if(ref.equals(neu) && !ids.contains(val)) {
+        if(ref != null && neu != null && ids != null && ref.equals(neu) && !ids.contains(val)) {
             ids.add(val);
         }
     }
