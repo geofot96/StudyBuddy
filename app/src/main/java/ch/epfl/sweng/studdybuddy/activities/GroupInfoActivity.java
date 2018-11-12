@@ -55,7 +55,6 @@ public class GroupInfoActivity extends AppCompatActivity{
                 @Override
                 public void onClick(View v) {
                     if (uId != null && gId != null) {
-                        System.out.println("nanana");
                         mb.removeGroup(new Pair(uId, gId));
                         Intent transition = new Intent(GroupInfoActivity.this, GroupsActivity.class);
                         startActivity(transition);

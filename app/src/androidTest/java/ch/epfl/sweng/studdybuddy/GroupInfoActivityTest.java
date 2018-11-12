@@ -7,6 +7,7 @@ import android.support.test.espresso.intent.rule.IntentsTestRule;
 import org.junit.Rule;
 import org.junit.Test;
 
+import ch.epfl.sweng.studdybuddy.activities.GroupInfoActivity;
 import ch.epfl.sweng.studdybuddy.activities.GroupsActivity;
 
 import static android.support.test.espresso.Espresso.onView;
@@ -18,18 +19,18 @@ import static android.support.test.espresso.matcher.ViewMatchers.withId;
 public class GroupInfoActivityTest {
 
     @Rule
-    public final IntentsTestRule<GroupsActivity> mActivityRule =
-            new IntentsTestRule<>(GroupsActivity.class);
+    public final IntentsTestRule<GroupInfoActivity> mActivityRule =
+            new IntentsTestRule<>(GroupInfoActivity .class, false, false);
 
 
     @Test
     public void quitButtonTest(){
         Activity activity = mActivityRule.getActivity();
-        Intent intent = new Intent(activity.getApplicationContext(), GroupsActivity.class);
+        Intent intent = new Intent();
         intent.putExtra(GroupsActivity.GROUP_ID, "1");
         intent.putExtra(GroupsActivity.IS_PARTICIPANT, true);
 
-        activity.startActivity(intent);
+        mActivityRule.launchActivity(intent);
 
         try {
             Thread.sleep(2000);
