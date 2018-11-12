@@ -2,21 +2,13 @@ package ch.epfl.sweng.studdybuddy;
 
 import android.content.Intent;
 import android.support.annotation.Nullable;
-import android.support.test.espresso.ViewInteraction;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.support.v7.widget.CardView;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.ViewParent;
 import android.widget.GridLayout;
 
 import com.google.android.gms.tasks.Task;
 
-import org.hamcrest.Description;
-import org.hamcrest.Matcher;
-import org.hamcrest.TypeSafeMatcher;
-import org.hamcrest.core.IsInstanceOf;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -29,14 +21,7 @@ import ch.epfl.sweng.studdybuddy.activities.ConnectedCalendarActivity;
 import ch.epfl.sweng.studdybuddy.firebase.FirebaseReference;
 import ch.epfl.sweng.studdybuddy.util.Messages;
 
-import static android.support.test.espresso.Espresso.onView;
-import static android.support.test.espresso.action.ViewActions.click;
-import static android.support.test.espresso.assertion.ViewAssertions.matches;
-import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
-import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.internal.runner.junit4.statement.UiThreadStatement.runOnUiThread;
-import static ch.epfl.sweng.studdybuddy.GroupsActivityLeadsToCreateGroup.childAtPosition;
-import static org.hamcrest.Matchers.allOf;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -65,45 +50,25 @@ public class ConnectedCalendarActivityTest{
 
     @Test
     public void addAvailabilityInTimeSlot(){
-        CardView cardView = (CardView) calendar.getChildAt(2);
-        try{
-            clickOnCardView(cardView);
-        }catch (Throwable e){
-            e.printStackTrace();
-        }
-
-        try{
-            Thread.sleep(1000);
-        }catch(InterruptedException e){
-            e.printStackTrace();
-        }
-        int result = cardView.getCardBackgroundColor().getDefaultColor();
-        assertEquals(-16711936, result);
+       assertEquals(-16711936, setAvailability(2));
     }
 
     @Test
     public void removeAvailabilityInTimeSlot(){
-        CardView cardView = (CardView) calendar.getChildAt(1);
-        try{
-            clickOnCardView(cardView);
-        }catch (Throwable e){
-            e.printStackTrace();
-        }
-
-        try{
-            Thread.sleep(1000);
-        }catch(InterruptedException e){
-            e.printStackTrace();
-        }
-        assertEquals(-1, cardView.getCardBackgroundColor().getDefaultColor());
+        assertEquals(-1, setAvailability(1));
     }
 
 
-
-    private boolean checkAreWhite(int start){
+    /**
+     * check if every cell of the calendar, from <tt>start</tt> to
+     * the end of the grid has a white background
+     * @param start the index head of the sublist of the calendar we want to test
+     * @return <tt>true</tt> if every cell from <tt>start</tt> are white
+     */
+    private boolean checkAreWhite(int start) {
         CardView cardView;
-        for(int i = start; i<88; i++){
-            if(i%8 != 0) {
+        for (int i = start; i < 88; i++) {
+            if (i % 8 != 0) {
                 cardView = (CardView) calendar.getChildAt(i);
                 if (cardView.getCardBackgroundColor().getDefaultColor() != -1) {
                     return false;
@@ -113,26 +78,11 @@ public class ConnectedCalendarActivityTest{
         return true;
     }
 
-    private void ClickOnSlot(int position){
-        ViewInteraction timeSlot = onView(
-                allOf(childAtPosition(
-                        allOf(withId(R.id.calendarGrid),
-                                childAtPosition(
-                                        withId(R.id.generalThing),
-                                        1)),
-                        position),
-                        isDisplayed()));
-        timeSlot.perform(click());
-    }
-
-    private void settingTime(){
-        try{
-            Thread.sleep(1000);
-        }catch(InterruptedException e){
-            e.printStackTrace();
-        }
-    }
-
+    /**
+     * perform a click on a targeted cardiew
+     * @param cardView
+     * @throws Throwable
+     */
     private void clickOnCardView(final CardView cardView) throws Throwable {
         runOnUiThread(new Runnable() {
             @Override
@@ -140,6 +90,22 @@ public class ConnectedCalendarActivityTest{
                 cardView.performClick();
             }
         });
+    }
+
+    private int setAvailability(int index){
+        CardView cardView = (CardView) calendar.getChildAt(index);
+        try{
+            clickOnCardView(cardView);
+        }catch (Throwable e){
+            e.printStackTrace();
+        }
+
+        try{
+            Thread.sleep(1000);
+        }catch(InterruptedException e){
+            e.printStackTrace();
+        }
+        return cardView.getCardBackgroundColor().getDefaultColor();
     }
 
     private class myRule extends ActivityTestRule<ConnectedCalendarActivity> {
@@ -163,31 +129,12 @@ public class ConnectedCalendarActivityTest{
         }
 
         @Override
-        public ConnectedCalendarActivity launchActivity(@Nullable Intent startIntent){
+        public ConnectedCalendarActivity launchActivity(@Nullable Intent startIntent) {
             intent = new Intent();
             intent.putExtra(Messages.maxUser, 1);
             intent.putExtra(Messages.userID, Messages.TEST);
             intent.putExtra(Messages.groupID, Messages.TEST);
             return super.launchActivity(intent);
         }
-    }
-
-    private static Matcher<View> childAtPosition(
-            final Matcher<View> parentMatcher, final int position) {
-
-        return new TypeSafeMatcher<View>() {
-            @Override
-            public void describeTo(Description description) {
-                description.appendText("Child at position " + position + " in parent ");
-                parentMatcher.describeTo(description);
-            }
-
-            @Override
-            public boolean matchesSafely(View view) {
-                ViewParent parent = view.getParent();
-                return parent instanceof ViewGroup && parentMatcher.matches(parent)
-                        && view.equals(((ViewGroup) parent).getChildAt(position));
-            }
-        };
     }
 }
