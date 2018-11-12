@@ -70,22 +70,23 @@ public class GroupsActivity extends AppCompatActivity {
         });
         ToggleButton toggleFull = (ToggleButton) findViewById(R.id.toggleButton);
         toggleFull.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    filteredGroupSet.clear();
-                    for (Group g : groupSet) {
-                        if (g.getMaxNoUsers() > mAdapter.getParticipantNumber(g))
-                            filteredGroupSet.add(g);
-                    }
-                    mAdapter.setGroupList(filteredGroupSet);
-                    mAdapter.setFilterList(filteredGroupSet);
-                } else {
-                    mAdapter.setGroupList(groupSet);
-                    mAdapter.setFilterList(groupSet);
-                }
-                mAdapter.notifyDataSetChanged();
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) { toggleButtonFullBehaviour(buttonView,isChecked);}});
+    }
+    public void toggleButtonFullBehaviour(CompoundButton buttonView, boolean isChecked)
+    {
+        if (isChecked) {
+            filteredGroupSet.clear();
+            for (Group g : groupSet) {
+                if (g.getMaxNoUsers() > mAdapter.getParticipantNumber(g))
+                    filteredGroupSet.add(g);
             }
-        });
+            mAdapter.setGroupList(filteredGroupSet);
+            mAdapter.setFilterList(filteredGroupSet);
+        } else {
+            mAdapter.setGroupList(groupSet);
+            mAdapter.setFilterList(groupSet);
+        }
+        mAdapter.notifyDataSetChanged();
     }
 
     public void gotoCreation(View view) {
