@@ -3,17 +3,15 @@ package ch.epfl.sweng.studdybuddy.firebase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
-import ch.epfl.sweng.studdybuddy.util.AdapterAdapter;
-import ch.epfl.sweng.studdybuddy.util.Consumer;
 import ch.epfl.sweng.studdybuddy.core.Group;
 import ch.epfl.sweng.studdybuddy.core.Pair;
 import ch.epfl.sweng.studdybuddy.core.User;
+import ch.epfl.sweng.studdybuddy.util.AdapterAdapter;
+import ch.epfl.sweng.studdybuddy.util.Consumer;
 import ch.epfl.sweng.studdybuddy.util.Helper;
 
 import static ch.epfl.sweng.studdybuddy.util.Helper.getOrDefault;
@@ -127,5 +125,10 @@ public class MetaGroup extends Metabase{
         db.select("groups").select(g.getGroupID().getId()).setVal(g);
         Pair pair = new Pair(creatorId,g.getGroupID().toString());
         db.select("userGroup").select(Helper.hashCode(pair)).setVal(pair);
+    }
+
+    public void removeGroup(Pair pair){
+        System.out.println(Helper.hashCode(pair));
+        db.select("userGroup").select(Helper.hashCode(pair)).clear();
     }
 }
