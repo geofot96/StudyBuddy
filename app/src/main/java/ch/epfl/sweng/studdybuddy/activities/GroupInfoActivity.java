@@ -52,8 +52,11 @@ public class GroupInfoActivity extends AppCompatActivity{
     // create an action bar button
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.mymenu, menu);
-        return super.onCreateOptionsMenu(menu);
+        if(gId == null) {
+            getMenuInflater().inflate(R.menu.mymenu, menu);
+            return super.onCreateOptionsMenu(menu);
+        }
+        return false;
     }
 
     // handle button activities
@@ -62,9 +65,11 @@ public class GroupInfoActivity extends AppCompatActivity{
         int id = item.getItemId();
 
         if (id == R.id.mybutton) {
-            mb.removeGroup(new Pair(uId, gId));
-            Intent transition = new Intent(this, GroupsActivity.class);
-            startActivity(transition);
+            if(uId != null && gId != null) {
+                mb.removeGroup(new Pair(uId, gId));
+                Intent transition = new Intent(this, GroupsActivity.class);
+                startActivity(transition);
+            }
         }
         return super.onOptionsItemSelected(item);
     }
