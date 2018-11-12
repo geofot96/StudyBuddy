@@ -7,12 +7,15 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import ch.epfl.sweng.studdybuddy.util.AdapterAdapter;
-import ch.epfl.sweng.studdybuddy.util.Consumer;
 import ch.epfl.sweng.studdybuddy.core.Group;
 import ch.epfl.sweng.studdybuddy.core.Pair;
 import ch.epfl.sweng.studdybuddy.core.User;
+import ch.epfl.sweng.studdybuddy.util.AdapterAdapter;
+import ch.epfl.sweng.studdybuddy.util.Consumer;
 import ch.epfl.sweng.studdybuddy.util.Helper;
+
+import static ch.epfl.sweng.studdybuddy.util.Helper.getOrDefault;
+import static ch.epfl.sweng.studdybuddy.util.Helper.safeAddId;
 
 public class MetaGroup extends Metabase{
 
@@ -48,16 +51,6 @@ public class MetaGroup extends Metabase{
                 getGroupsfromIds(gIds, groups);
             }
         });
-    }
-
-    public void addListenner(AdapterAdapter ad) {
-        this.ads.add(ad);
-    }
-
-    private void safeAddId(String ref, String neu, String val, List<String> ids) {
-        if(ref.equals(neu) && !ids.contains(val)) {
-            ids.add(val);
-        }
     }
 
     //protected ?
@@ -110,11 +103,6 @@ public class MetaGroup extends Metabase{
         });
     }
 
-    private int getOrDefault(String key, Map<String, Integer> map) {
-        if(map.containsKey(key)) return map.get(key);
-        else return 0;
-    }
-
     public ValueEventListener getGroupUsers(String gId, List<User> groupUsers) {
         return getGroupUsers(gId, new LinkedList<>(), groupUsers);
     }
@@ -133,24 +121,14 @@ public class MetaGroup extends Metabase{
         });
     }
 
-    public ValueEventListener getUsersfromIds(List<String> uIds, List<User> groupUsers) {
-        return db.select("users").getAll(User.class, new Consumer<List<User>>() {
-            @Override
-            public void accept(List<User> users) {
-                for(int i = 0; i < users.size(); ++i) {
-                    if(uIds.contains(users.get(i).getUserID().toString())) {
-                        groupUsers.add(users.get(i));
-                    }
-                }
-                notif();
-            }
-        });
-    }
-
     public void pushGroup(Group g, String creatorId) {
         db.select("groups").select(g.getGroupID().getId()).setVal(g);
         Pair pair = new Pair(creatorId,g.getGroupID().toString());
         db.select("userGroup").select(Helper.hashCode(pair)).setVal(pair);
     }
 
+    public void removeGroup(Pair pair){
+        System.out.println(Helper.hashCode(pair));
+        db.select("userGroup").select(Helper.hashCode(pair)).clear();
+    }
 }

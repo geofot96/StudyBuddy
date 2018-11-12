@@ -1,9 +1,13 @@
 package ch.epfl.sweng.studdybuddy.firebase;
 
+import com.google.firebase.database.ValueEventListener;
+
 import java.util.LinkedList;
 import java.util.List;
 
+import ch.epfl.sweng.studdybuddy.core.User;
 import ch.epfl.sweng.studdybuddy.util.AdapterAdapter;
+import ch.epfl.sweng.studdybuddy.util.Consumer;
 
 abstract public class Metabase {
     protected ReferenceWrapper db;
@@ -23,4 +27,22 @@ abstract public class Metabase {
                 ad.update();
         }
     }
+
+    public ValueEventListener getUsersfromIds(List<String> uIds, List<User> groupUsers) {
+        return db.select("users").getAll(User.class, new Consumer<List<User>>() {
+            @Override
+            public void accept(List<User> users) {
+                for(int i = 0; i < users.size(); ++i) {
+                    if(uIds.contains(users.get(i).getUserID().toString())) {
+                        groupUsers.add(users.get(i));
+                    }
+                }
+                notif();
+            }
+        });
+    }
+    public void addListenner(AdapterAdapter ad) {
+        this.ads.add(ad);
+    }
+
 }

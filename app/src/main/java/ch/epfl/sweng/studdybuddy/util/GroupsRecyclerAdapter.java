@@ -2,6 +2,7 @@ package ch.epfl.sweng.studdybuddy.util;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,7 +17,9 @@ import java.util.HashMap;
 import java.util.List;
 
 import ch.epfl.sweng.studdybuddy.R;
-import ch.epfl.sweng.studdybuddy.core.Consumable;
+import ch.epfl.sweng.studdybuddy.activities.CalendarActivity;
+import ch.epfl.sweng.studdybuddy.activities.GroupInfoActivity;
+import ch.epfl.sweng.studdybuddy.activities.GroupsActivity;
 import ch.epfl.sweng.studdybuddy.core.Group;
 import ch.epfl.sweng.studdybuddy.core.Pair;
 import ch.epfl.sweng.studdybuddy.firebase.FirebaseReference;
@@ -33,7 +36,7 @@ public class GroupsRecyclerAdapter extends RecyclerView.Adapter<GroupsRecyclerAd
     private List<Group> uGroups;
     private HashMap<String, Integer> sizes;
     private List<String> uGroupIds;
-    public Consumer<Consumable> consumer;
+    public Consumer<Intent> joinConsumer;
 
     public static class MyViewHolder extends RecyclerView.ViewHolder
     {
@@ -43,7 +46,7 @@ public class GroupsRecyclerAdapter extends RecyclerView.Adapter<GroupsRecyclerAd
         public TextView groupLanguageTextView;
         public Button messageButton;
         public TextView groupCreationDateTextView;
-
+        public TextView admin;
 
         public MyViewHolder(View itemView)
         {
@@ -53,7 +56,7 @@ public class GroupsRecyclerAdapter extends RecyclerView.Adapter<GroupsRecyclerAd
             groupLanguageTextView = (TextView) itemView.findViewById(R.id.group_language);
             messageButton = (Button) itemView.findViewById(R.id.message_button);
             groupCreationDateTextView = (TextView) itemView.findViewById(R.id.creation_date);
-
+            admin = (TextView) itemView.findViewById(R.id.admin);
         }
     }
 
@@ -72,11 +75,10 @@ public class GroupsRecyclerAdapter extends RecyclerView.Adapter<GroupsRecyclerAd
         mb.getAllGroupSizes(sizes);
     }
 
-    public GroupsRecyclerAdapter(List<Group> groupList, String userId, Consumer<Consumable> consumer)
+    public GroupsRecyclerAdapter(List<Group> groupList, String userId, Consumer<Intent> joinConsumer)
     {
         this(groupList, userId);
-        this.consumer = consumer;
-
+        this.joinConsumer = joinConsumer;
     }
     public List<Group> getGroupList() {
         return new ArrayList<>(groupList);
@@ -124,7 +126,9 @@ public class GroupsRecyclerAdapter extends RecyclerView.Adapter<GroupsRecyclerAd
         //Button button = holder.messageButton;
         setParticipantNumber(holder.groupParticipantInfoTextView, group);
         setButton(holder.messageButton, group);
-
+        if(userId.equals(group.getAdminID())) {
+            holder.admin.setText("\uD83D\uDC51");
+        }
     }
 
     @Override
@@ -152,25 +156,42 @@ public class GroupsRecyclerAdapter extends RecyclerView.Adapter<GroupsRecyclerAd
         Pair pair =new Pair(userId, group.getGroupID().toString());
         if(groupSize < group.getMaxNoUsers()
                 &&!uGroupIds.contains(group.getGroupID().getId())) {
-            button.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    fb.select("userGroup").select(Helper.hashCode(pair)).setVal(pair);
-                    mb.getUserGroups(userId, uGroupIds, uGroups);
-                }
-            });
+            button.setText("Join");
+            button.setOnClickListener(joinButtonListener(group, button));
         }else{
-            button.setText("+");
-            //TODO corriger les listeners, y a un problème avec eux.........
-            button.setOnClickListener(new View.OnClickListener() {
-            @Override
-                public void onClick(View v) {
-                   if (consumer != null) {
-                       consumer.accept(pair);
-                   }
-                }
-            });
+            button.setText("More Info");
+            button.setOnClickListener(moreInfoListener(button, group.getGroupID().getId()));
         }
+    }
+
+    private View.OnClickListener joinButtonListener(Group group, Button button){
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Pair pair =new Pair(userId, group.getGroupID().toString());
+                fb.select("userGroup").select(Helper.hashCode(pair)).setVal(pair);
+                if(joinConsumer != null)
+                {
+                    Intent intent = new Intent(button.getContext(), CalendarActivity.class);
+                    intent.putExtra(GroupsActivity.GROUP_ID, group.getGroupID().getId());
+                    joinConsumer.accept(intent);
+                }
+            }
+        };
+    }
+
+    private View.OnClickListener moreInfoListener(Button button, String gId){
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(joinConsumer != null )
+                {
+                    Intent intent = new Intent(button.getContext(), GroupInfoActivity.class);
+                    intent.putExtra(GroupsActivity.GROUP_ID, gId);
+                    joinConsumer.accept(intent);
+                }
+            }
+        };
     }
 
     private void setParticipantNumber(TextView pNumber, Group group){

@@ -14,6 +14,7 @@ import android.widget.Spinner;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 
 import ch.epfl.sweng.studdybuddy.R;
 import ch.epfl.sweng.studdybuddy.core.Course;
@@ -38,7 +39,6 @@ public class CreateGroupActivity extends AppCompatActivity implements AdapterVie
 
     private static final List<String> courseSelection = new ArrayList<>();
     private static AutoCompleteTextView textView;
-
     FirebaseReference firebase;
     MetaGroup mb;
     Button create;
@@ -120,9 +120,9 @@ public class CreateGroupActivity extends AppCompatActivity implements AdapterVie
 
     public void addtoGroups(View view)
     {
-            Group g = new Group(maxParticipants, new Course(selectedCourse),selectedLanguage);
 
             User user = ((StudyBuddy) CreateGroupActivity.this.getApplication()).authendifiedUser;
+            Group g = new Group(maxParticipants, new Course(selectedCourse),selectedLanguage, UUID.randomUUID().toString(), user.getUserID().getId());
             mb.pushGroup(g, user.getUserID().getId());
             createUserInitialAvailabilities(user.getUserID().getId(), g.getGroupID().getId());
 	        Intent intent = new Intent(this, GroupsActivity.class);
