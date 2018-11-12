@@ -36,7 +36,17 @@ public class GroupInfoActivity extends AppCompatActivity{
         if(intent != null){
             gId = intent.getStringExtra(GroupsActivity.GROUP_ID);
             mb.getGroupUsers(gId, participants);
-            isParticipant = intent.getBooleanExtra(GroupsActivity.IS_PARTICIPANT, false);
+
+            for(User participant: participants){
+                if(participant.getUserID().getId().equals(uId)){
+                    isParticipant = true;
+                    break;
+                }
+            }
+
+            if(isParticipant == null){
+                isParticipant = intent.getBooleanExtra(GroupsActivity.IS_PARTICIPANT, false);
+            }
         }else {
             isParticipant = false;
         }
