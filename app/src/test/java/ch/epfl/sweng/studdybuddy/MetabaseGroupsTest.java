@@ -14,6 +14,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import ch.epfl.sweng.studdybuddy.core.Course;
 import ch.epfl.sweng.studdybuddy.core.Group;
@@ -23,9 +24,13 @@ import ch.epfl.sweng.studdybuddy.firebase.FirebaseReference;
 import ch.epfl.sweng.studdybuddy.firebase.MetaGroup;
 import ch.epfl.sweng.studdybuddy.util.Helper;
 
+import static ch.epfl.sweng.studdybuddy.MetaFactory.deepFBReference;
+import static ch.epfl.sweng.studdybuddy.util.CoreFactory.blankGroupWId;
+import static ch.epfl.sweng.studdybuddy.util.CoreFactory.groups1;
+import static ch.epfl.sweng.studdybuddy.util.CoreFactory.johnDoe;
+import static ch.epfl.sweng.studdybuddy.util.CoreFactory.userGroup1;
+import static ch.epfl.sweng.studdybuddy.util.CoreFactory.users1;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
@@ -34,24 +39,17 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 public class MetabaseGroupsTest {
-    DatabaseReference testref = mock(DatabaseReference.class, Mockito.RETURNS_DEEP_STUBS);
+    DatabaseReference testref = deepFBReference();
     DataSnapshot dataSnapshot = mock(DataSnapshot.class);
-    List<Pair> tuples = Arrays.asList(new Pair("456", "123"), new Pair("789", "123"), new Pair("ghi", "abc"));
+    List<Pair> tuples = userGroup1();
     DataSnapshot insaneSnapshot = mock(DataSnapshot.class);
     List<Pair> doublons = Arrays.asList(new Pair("k", "v"), new Pair("k", "v"), new Pair("k", "vv"), new Pair("kk", "v"));
     DataSnapshot groupTbl = mock(DataSnapshot.class);
-    List<Group> gs = Arrays.asList(blankGroupWId("123"), blankGroupWId("abc"), blankGroupWId("v"), blankGroupWId("vv"));
+    List<Group> gs = groups1();
     MetaGroup mb = new MetaGroup(new FirebaseReference(testref));
-    List<User> usrs = Arrays.asList(johnDoe("ghi"), johnDoe("789"), johnDoe("456"), johnDoe("k"), johnDoe("kk"));
+    List<User> usrs = users1();
     DataSnapshot usrTbl = mock(DataSnapshot.class);
 
-    private Group blankGroupWId(String id) {
-        return new Group(1, new Course(""), "", id);
-    }
-
-    private User johnDoe(String id) {
-        return new User("John Doe", id);
-    }
 
     @Before public void setup() {
         DataSnapshot a = mock(DataSnapshot.class), b = mock(DataSnapshot.class), c = mock(DataSnapshot.class);

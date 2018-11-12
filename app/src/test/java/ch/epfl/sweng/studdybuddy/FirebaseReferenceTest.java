@@ -19,6 +19,7 @@ import org.mockito.ArgumentCaptor;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 
 import ch.epfl.sweng.studdybuddy.core.Course;
 import ch.epfl.sweng.studdybuddy.core.Group;
@@ -37,7 +38,7 @@ public class FirebaseReferenceTest {
         DataSnapshot dataSnapshot = mock(DataSnapshot.class);
         //when(testref.setValue("key")).th;
 
-        Group emptyGroup = new Group(3, new Course("SDP"), "fr");
+        Group emptyGroup = new Group(3, new Course("SDP"), "fr", UUID.randomUUID().toString());
         when(dataSnapshot.getValue(Group.class)).thenReturn(emptyGroup);
         when(dataSnapshot.getChildren()).thenReturn(Arrays.asList(dataSnapshot));
         ArgumentCaptor<ValueEventListener> argument = ArgumentCaptor.forClass(ValueEventListener.class);
@@ -85,7 +86,7 @@ public class FirebaseReferenceTest {
         FirebaseReference fb = new FirebaseReference(db);
 
         DataSnapshot ds = mock(DataSnapshot.class);
-        final Group clp = new Group(10,new Course("CLP"), "EN");
+        final Group clp = new Group(10,new Course("CLP"), "EN",  UUID.randomUUID().toString());
 
 
         when(ds.getValue(Group.class)).thenReturn(clp);

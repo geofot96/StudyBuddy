@@ -2,6 +2,8 @@ package ch.epfl.sweng.studdybuddy;
 
 import org.junit.Test;
 
+import java.util.UUID;
+
 import ch.epfl.sweng.studdybuddy.core.Course;
 import ch.epfl.sweng.studdybuddy.core.Group;
 import ch.epfl.sweng.studdybuddy.core.ID;
@@ -12,7 +14,7 @@ public class GroupTest {
 
 
     private static Group groupFactory() {
-        return new Group(10,new Course("CLP"), "EN");
+        return new Group(10,new Course("CLP"), "EN", "123");
     }
     private static Group g = groupFactory();
 
@@ -39,6 +41,12 @@ public class GroupTest {
     public void setGetCourse() {
         g.setCourse(new Course("not clp"));
         assertEquals(g.getCourse().getCourseName(), "not clp");
+    }
+
+    @Test
+    public void setAdminWorks() {
+        g.setAdminID("gg");
+        assertEquals(g.getAdminID(), "gg");
     }
 
     @Test
