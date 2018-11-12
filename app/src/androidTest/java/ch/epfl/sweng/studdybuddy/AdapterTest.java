@@ -11,7 +11,7 @@ import org.junit.runner.RunWith;
 
 import java.util.ArrayList;
 
-import ch.epfl.sweng.studdybuddy.activities.CourseSelectActivity;
+import ch.epfl.sweng.studdybuddy.activities.GroupInfoActivity;
 import ch.epfl.sweng.studdybuddy.util.Adapter;
 import ch.epfl.sweng.studdybuddy.util.ParticipantAdapter;
 
@@ -21,15 +21,16 @@ public class AdapterTest {
 
 
     @Rule
-    public final IntentsTestRule<CourseSelectActivity> mActivityRule =
-            new IntentsTestRule<>(CourseSelectActivity.class);
+    public final IntentsTestRule<GroupInfoActivity> mActivityRule =
+            new IntentsTestRule<>(GroupInfoActivity.class);
 
     @Test
-    public void initRecyclerView(){
+    public void initRecyclerView() {
         Adapter ad = new ParticipantAdapter(new ArrayList<>());
         Context ctx = mActivityRule.getActivity().getApplicationContext();
         RecyclerView rv = new RecyclerView(ctx);
-        ad.initRecyclerView(ctx,rv);
+        ad.initRecyclerView(ctx, rv);
         assertTrue(rv.getAdapter().equals(ad));
     }
+
 }
