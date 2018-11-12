@@ -38,23 +38,4 @@ public class GroupsActivity extends AppCompatActivity
         setContentView(R.layout.activity_groups);
 
     }
-
-    public void gotoCreation(View view)
-    {
-
-    }
-
-    public void sortGroupCards(View view)
-    {
-//        List<Group> groupList = mAdapter.getGroupList();
-//        Collections.sort(groupList);
-//        mAdapter.setGroupList(groupList);
-//        mAdapter.notifyDataSetChanged();
-    }
-
-    public void goToCalendarActivity()
-    {
-        Intent intent = new Intent(this, CalendarActivity.class);
-        startActivity(intent);
-    }
 }

@@ -28,17 +28,19 @@ public class NavigationActivity extends AppCompatActivity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_navigation);
-
         mMainFrame = (FrameLayout) findViewById(R.id.main_frame);
         mMainNav = (BottomNavigationView) findViewById(R.id.bottom_navigation);
-
         mergedCalendarFragment = new MergedCalendarFragment();
         feedFragment = new FeedFragment();
         profileFragment = new ProfileFragment();
-
         setFragment(feedFragment);
+        mMainNav.setOnNavigationItemSelectedListener(getListener());
+    }
 
-        mMainNav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener()
+    @NonNull
+    private BottomNavigationView.OnNavigationItemSelectedListener getListener()
+    {
+        return new BottomNavigationView.OnNavigationItemSelectedListener()
         {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem)
@@ -58,7 +60,7 @@ public class NavigationActivity extends AppCompatActivity
                         return false;
                 }
             }
-        });
+        };
     }
 
     private void setFragment(Fragment fragment)
