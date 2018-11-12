@@ -25,56 +25,14 @@ import ch.epfl.sweng.studdybuddy.core.User;
 public class
 ProfileTab extends AppCompatActivity {
 
-    private final List<String> userCourses =  new ArrayList<>();
-    private  final List<Group> userGroups = new ArrayList<>();
-    private RecyclerView recyclerView_groups;
-    private RecyclerView recyclerView_courses;
-    protected ReferenceWrapper firebase;
-    private GroupsRecyclerAdapter ad;
-    private CourseAdapter adCourse;
-    private User user;
-    private String userID;
-    private MetaGroup metabase;
+//TODO delete
     
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile_tab);
-        firebase = getDB();
-        user = ((StudyBuddy) ProfileTab.this.getApplication()).getAuthendifiedUser();
-        userID = user.getUserID().toString();
-        metabase = new MetaGroup();
-        setUI();
-        setCoursesUp();
-        setGroupsUp();
-    }
-    public ValueEventListener setGroupsUp() {
-        metabase.addListenner(new RecyclerAdapterAdapter(ad));
-        return metabase.getUserGroups(userID, userGroups);
+
     }
 
-    public ValueEventListener setCoursesUp() {
-        metabase.addListenner(new RecyclerAdapterAdapter(adCourse));
-        return metabase.getUserCourses(userID, userCourses);
-    }
-
-    private void setUI(){
-        TextView nameView = (TextView) findViewById(R.id.profile_name_text);
-        nameView.setText(user.getName());
-
-        adCourse = new CourseAdapter(userCourses);
-        recyclerView_courses = (RecyclerView) findViewById(R.id.courses_list);
-        recyclerView_courses.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView_courses.setAdapter(adCourse);
-
-        ad = new GroupsRecyclerAdapter(userGroups, userID);
-        recyclerView_groups = (RecyclerView) findViewById(R.id.groups_list);
-        recyclerView_groups.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView_groups.setAdapter(ad);
-    }
-
-    public ReferenceWrapper getDB(){
-        return new FirebaseReference();
-    }
 
 }

@@ -11,6 +11,7 @@ import android.widget.FrameLayout;
 
 import ch.epfl.sweng.studdybuddy.Fragments.FeedFragment;
 import ch.epfl.sweng.studdybuddy.Fragments.MergedCalendarFragment;
+import ch.epfl.sweng.studdybuddy.Fragments.ProfileFragment;
 import ch.epfl.sweng.studdybuddy.R;
 
 public class NavigationActivity extends AppCompatActivity
@@ -20,6 +21,7 @@ public class NavigationActivity extends AppCompatActivity
     private FrameLayout mMainFrame;
     private MergedCalendarFragment mergedCalendarFragment;
     private FeedFragment feedFragment;
+    private ProfileFragment profileFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -32,6 +34,7 @@ public class NavigationActivity extends AppCompatActivity
 
         mergedCalendarFragment = new MergedCalendarFragment();
         feedFragment = new FeedFragment();
+        profileFragment = new ProfileFragment();
 
         setFragment(feedFragment);
 
@@ -48,6 +51,8 @@ public class NavigationActivity extends AppCompatActivity
                     case R.id.navToHome:
                         setFragment(feedFragment);
                         return true;
+                    case R.id.navToProfile:
+                        setFragment(profileFragment);
 
                     default:
                         return false;

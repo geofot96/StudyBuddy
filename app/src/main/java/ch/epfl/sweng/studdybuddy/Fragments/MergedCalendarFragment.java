@@ -15,6 +15,7 @@ import android.widget.GridLayout;
 import java.util.ArrayList;
 
 import ch.epfl.sweng.studdybuddy.R;
+import ch.epfl.sweng.studdybuddy.activities.NavigationActivity;
 import ch.epfl.sweng.studdybuddy.activities.ProfileTab;
 
 /**
@@ -67,7 +68,7 @@ public class MergedCalendarFragment extends Fragment
             @Override
             public void onClick(View v)
             {
-                Intent intent = new Intent(v.getContext(), ProfileTab.class);
+                Intent intent = new Intent(v.getContext(), NavigationActivity.class);
                 startActivity(intent);
             }
         });
