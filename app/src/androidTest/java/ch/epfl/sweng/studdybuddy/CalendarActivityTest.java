@@ -34,12 +34,11 @@ import static org.hamcrest.Matchers.allOf;
 public class CalendarActivityTest
 {
     //TODO: modify the class test according to the newly added ConnectedCalendarActivity
-    /*
     @Rule
     public final IntentsTestRule<CalendarActivity> mActivityRule =
             new IntentsTestRule<>(CalendarActivity.class);
 
-    @Test
+   /* @Test
     public void confirmLeadsToMergedCalendar()
     {
         sleepFor7000millis();
@@ -48,7 +47,7 @@ public class CalendarActivityTest
         onView(withId(R.id.confirmSlots)).perform(scrollTo(),closeSoftKeyboard(), click());
         intended(hasComponent(ProfileTab.class.getName()));
     }
-
+*/
     @Test
     public void testConfirmButtonExists()
     {
@@ -207,5 +206,5 @@ public class CalendarActivityTest
         { Thread.sleep(7000); } catch(InterruptedException e)
         { e.printStackTrace(); }
     }
-*/
+
 }

@@ -54,9 +54,10 @@ public class ConnectedCalendarActivity extends AppCompatActivity implements ICal
     @Override
     protected void onCreate(Bundle savedInstanceState) throws NullPointerException{
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_calendar);
 
-        calendarGrid = (GridLayout) findViewById(R.id.calendarGrid);
+        calendarGrid = findViewById(R.id.calendarGrid);
         Button button = findViewById(R.id.confirmSlots);
 
         Intent intent = getIntent();
@@ -239,6 +240,7 @@ public class ConnectedCalendarActivity extends AppCompatActivity implements ICal
             for(DataSnapshot ds: dataSnapshot.getChildren()){
                 list.add(ds.getValue(Boolean.class));
             }
+            assert(!(list.isEmpty()));
             userAvailabilities = new ConnectedAvailability(pair.getValue(), pair.getKey(), new ConcreteAvailability(list), new FirebaseReference());
         }
 

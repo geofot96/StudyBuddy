@@ -7,7 +7,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import ch.epfl.sweng.studdybuddy.activities.CalendarActivity;
+import ch.epfl.sweng.studdybuddy.activities.ConnectedCalendarActivity;
 import ch.epfl.sweng.studdybuddy.activities.GroupsActivity;
 import ch.epfl.sweng.studdybuddy.activities.MergedCalendarActivity;
 import ch.epfl.sweng.studdybuddy.activities.ProfileTab;
@@ -33,7 +33,7 @@ public class MainActivityTest {
 
     @Test
     public void clickToCalendarGoesToCalendarActivity() {
-        testIntent(R.id.calendarButton, CalendarActivity.class.getName());
+        testIntent(R.id.calendarButton, ConnectedCalendarActivity.class.getName());
     }
 
     @Test
