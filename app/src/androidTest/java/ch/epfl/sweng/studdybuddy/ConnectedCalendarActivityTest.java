@@ -34,6 +34,7 @@ import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
+import static android.support.test.internal.runner.junit4.statement.UiThreadStatement.runOnUiThread;
 import static ch.epfl.sweng.studdybuddy.GroupsActivityLeadsToCreateGroup.childAtPosition;
 import static org.hamcrest.Matchers.allOf;
 import static org.junit.Assert.assertEquals;
@@ -64,49 +65,36 @@ public class ConnectedCalendarActivityTest{
 
     @Test
     public void addAvailabilityInTimeSlot(){
-        ViewInteraction gridLayout = onView(
-                allOf(withId(R.id.calendarGrid),
-                        childAtPosition(
-                                allOf(withId(R.id.generalThing),
-                                        childAtPosition(
-                                                IsInstanceOf.<View>instanceOf(android.widget.ScrollView.class),
-                                                0)),
-                                1),
-                        isDisplayed()));
-        gridLayout.check(matches(isDisplayed()));
-        settingTime();
-        ClickOnSlot(2);
+        CardView cardView = (CardView) calendar.getChildAt(2);
         try{
-            Thread.sleep(100);
+            clickOnCardView(cardView);
+        }catch (Throwable e){
+            e.printStackTrace();
+        }
+
+        try{
+            Thread.sleep(1000);
         }catch(InterruptedException e){
             e.printStackTrace();
         }
-        CardView cardView = (CardView) calendar.getChildAt(2);
-        assertEquals(-16711936, cardView.getCardBackgroundColor().getDefaultColor());
+        int result = cardView.getCardBackgroundColor().getDefaultColor();
+        assertEquals(-16711936, result);
     }
 
     @Test
     public void removeAvailabilityInTimeSlot(){
-
-        ViewInteraction gridLayout = onView(
-                allOf(withId(R.id.calendarGrid),
-                        childAtPosition(
-                                allOf(withId(R.id.generalThing),
-                                        childAtPosition(
-                                                IsInstanceOf.<View>instanceOf(android.widget.ScrollView.class),
-                                                0)),
-                                1),
-                        isDisplayed()));
-        gridLayout.check(matches(isDisplayed()));
-
-        settingTime();
-        ClickOnSlot(1);
+        CardView cardView = (CardView) calendar.getChildAt(1);
         try{
-            Thread.sleep(100);
+            clickOnCardView(cardView);
+        }catch (Throwable e){
+            e.printStackTrace();
+        }
+
+        try{
+            Thread.sleep(1000);
         }catch(InterruptedException e){
             e.printStackTrace();
         }
-        CardView cardView = (CardView) calendar.getChildAt(1);
         assertEquals(-1, cardView.getCardBackgroundColor().getDefaultColor());
     }
 
@@ -143,6 +131,15 @@ public class ConnectedCalendarActivityTest{
         }catch(InterruptedException e){
             e.printStackTrace();
         }
+    }
+
+    private void clickOnCardView(final CardView cardView) throws Throwable {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                cardView.performClick();
+            }
+        });
     }
 
     private class myRule extends ActivityTestRule<ConnectedCalendarActivity> {
