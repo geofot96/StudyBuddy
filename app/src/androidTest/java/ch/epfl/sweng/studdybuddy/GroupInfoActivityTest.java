@@ -27,14 +27,35 @@ public class GroupInfoActivityTest {
         Activity activity = mActivityRule.getActivity();
         Intent intent = new Intent(activity.getApplicationContext(), GroupsActivity.class);
         intent.putExtra(GroupsActivity.GROUP_ID, "1");
+        intent.putExtra(GroupsActivity.IS_PARTICIPANT, true);
+
         activity.startActivity(intent);
+
         try {
             Thread.sleep(2000);
-            onView(withId(R.id.mybutton)).perform(click());
+            onView(withId(R.id.quitGroup)).perform(click());
             intended(hasComponent(GroupsActivity.class.getName()));
         }
         catch (Exception e) {
 
         }
     }
+
+  /*  @Test
+    public void quitButtonDoesntExist(){
+        Activity activity = mActivityRule.getActivity();
+        Intent intent = new Intent(activity.getApplicationContext(), GroupsActivity.class);
+        intent.putExtra(GroupsActivity.GROUP_ID, "1");
+
+        activity.startActivity(intent);
+
+        try {
+            Thread.sleep(2000);
+            onView(withId(R.id.quitGroup)).perform(click());
+            intended(hasComponent(GroupsActivity.class.getName()));
+        }
+        catch (Exception e) {
+
+        }
+    }*/
 }

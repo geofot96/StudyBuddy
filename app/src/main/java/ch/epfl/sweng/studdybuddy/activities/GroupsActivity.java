@@ -30,7 +30,7 @@ public class GroupsActivity extends AppCompatActivity
     GroupsRecyclerAdapter mAdapter;
 		static List<Group> groupSet  = new ArrayList<>();
     public static final String GROUP_ID = "ch.epfl.sweng.studdybuddy.groupId";
-
+    public static final String IS_PARTICIPANT ="ch.epfl.sweng.studdybuddy.particip";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

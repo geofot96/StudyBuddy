@@ -187,6 +187,7 @@ public class GroupsRecyclerAdapter extends RecyclerView.Adapter<GroupsRecyclerAd
                 {
                     Intent intent = new Intent(button.getContext(), GroupInfoActivity.class);
                     intent.putExtra(GroupsActivity.GROUP_ID, gId);
+                    intent.putExtra(GroupsActivity.IS_PARTICIPANT, uGroupIds.contains(gId));
                     joinConsumer.accept(intent);
                 }
             }
