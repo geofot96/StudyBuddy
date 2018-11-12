@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -26,31 +27,15 @@ public class GroupInfoActivity extends AppCompatActivity{
     private String uId;
     private String gId;
     Button button;
-    private Boolean isParticipant;
+    private Boolean isParticipant = false;
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group_info);
         uId = ((StudyBuddy) GroupInfoActivity.this.getApplication()).getAuthendifiedUser().getUserID().getId();
         Intent intent = getIntent();
-        if(intent != null){
             gId = intent.getStringExtra(GroupsActivity.GROUP_ID);
             mb.getGroupUsers(gId, participants);
-
-            for(User participant: participants){
-                if(participant.getUserID().getId().equals(uId)){
-                    isParticipant = true;
-                    break;
-                }
-            }
-
-            if(isParticipant == null){
-                isParticipant = intent.getBooleanExtra(GroupsActivity.IS_PARTICIPANT, false);
-            }
-        }else {
-            isParticipant = false;
-        }
-
         setUI();
     }
 
@@ -60,20 +45,22 @@ public class GroupInfoActivity extends AppCompatActivity{
         participantsRv = (RecyclerView) findViewById(R.id.participantsRecyclerVIew);
         participantAdapter.initRecyclerView(this, participantsRv);
         button = findViewById(R.id.quitGroup);
-        if(isParticipant) {
-            button.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (uId != null && gId != null) {
-                        mb.removeGroup(new Pair(uId, gId));
-                        Intent transition = new Intent(GroupInfoActivity.this, GroupsActivity.class);
-                        startActivity(transition);
-                    }
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (uId != null && gId != null) {
+                    mb.removeGroup(new Pair(uId, gId));
+                    Intent transition = new Intent(GroupInfoActivity.this, GroupsActivity.class);
+                    startActivity(transition);
                 }
-            });
-        }else {
-            button.setVisibility(View.INVISIBLE);
-        }
+            }
+        });
+        /*for(User u: participants) {
+            Log.i("SPCIAL", u.getUserID().getId() + "::" + uId);
+            if(u.getUserID().getId().equals(uId)) {
+                button.setVisibility(View.VISIBLE);
+            }
+        }*/
     }
 
 
