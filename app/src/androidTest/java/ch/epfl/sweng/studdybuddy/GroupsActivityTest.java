@@ -3,6 +3,7 @@ package ch.epfl.sweng.studdybuddy;
 import android.content.ComponentName;
 import android.support.test.espresso.intent.rule.IntentsTestRule;
 import android.support.test.runner.AndroidJUnit4;
+import android.widget.Button;
 
 import org.junit.Rule;
 import org.junit.Test;
@@ -37,5 +38,11 @@ public class GroupsActivityTest
     public void WeCanClickOnSortButton() throws InterruptedException {
         Thread.sleep(1000);
         onView(withId(R.id.sortButton)).perform(click());
+    }
+    @Test
+    public void filterOutFullGroups()
+    {
+        onView(withId(R.id.toggleButton)).perform(click());
+        onView(withId(R.id.toggleButton)).perform(click());
     }
 }
