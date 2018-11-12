@@ -40,8 +40,7 @@ public class GroupsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_groups);
         RecyclerView rv = (RecyclerView) findViewById(R.id.feedRecycleViewer);
-        rv.setHasFixedSize(true);
-        rv.setLayoutManager(new LinearLayoutManager(this));
+
         FirebaseReference firebase = new FirebaseReference(FirebaseDatabase.getInstance().getReference());
         String userId = ((StudyBuddy) GroupsActivity.this.getApplication()).getAuthendifiedUser().getUserID().toString();
         Consumer<Object> consumer = new Consumer<Object>() {
@@ -51,11 +50,9 @@ public class GroupsActivity extends AppCompatActivity {
             }
         };
         mAdapter = new GroupsRecyclerAdapter(groupSet, userId, consumer);
-        rv.setAdapter(mAdapter);
         firebase.select("groups").getAll(Group.class, AdapterConsumer.adapterConsumer(Group.class, groupSet, new RecyclerAdapterAdapter(mAdapter)));
         SearchView sv = (SearchView) findViewById(R.id.feed_search);
-        sv.onActionViewExpanded();
-        sv.clearFocus();
+        setUpActivity(rv, sv);
         sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -72,6 +69,15 @@ public class GroupsActivity extends AppCompatActivity {
         toggleFull.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) { toggleButtonFullBehaviour(buttonView,isChecked);}});
     }
+
+    private void setUpActivity(RecyclerView rv, SearchView sv) {
+        rv.setHasFixedSize(true);
+        rv.setLayoutManager(new LinearLayoutManager(this));
+        rv.setAdapter(mAdapter);
+        sv.onActionViewExpanded();
+        sv.clearFocus();
+    }
+
     public void toggleButtonFullBehaviour(CompoundButton buttonView, boolean isChecked)
     {
         if (isChecked) {

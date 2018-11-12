@@ -40,7 +40,7 @@ public class GroupsActivityTest
         onView(withId(R.id.sortButton)).perform(click());
     }
     @Test
-    public void filterOutFullGroups()
+    public void filterOutFullGroupsToggleButtonActivates()
     {
         onView(withId(R.id.toggleButton)).perform(click());
         onView(withId(R.id.toggleButton)).perform(click());
