@@ -30,50 +30,26 @@ import ch.epfl.sweng.studdybuddy.util.StudyBuddy;
 
 public class GroupsActivity extends AppCompatActivity
 {
-    GroupsRecyclerAdapter mAdapter;
-		static List<Group> groupSet  = new ArrayList<>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_groups);
-        RecyclerView rv = (RecyclerView) findViewById(R.id.feedRecycleViewer);
-        rv.setHasFixedSize(true);
-        rv.setLayoutManager(new LinearLayoutManager(this));
-        FirebaseReference firebase = new FirebaseReference(FirebaseDatabase.getInstance().getReference());
-        String userId =  ((StudyBuddy) GroupsActivity.this.getApplication()).getAuthendifiedUser().getUserID().toString();
-        Consumer<Object> consumer = new Consumer<Object>() {
-            @Override
-            public void accept(Object o) { goToCalendarActivity(); }};
-        mAdapter = new GroupsRecyclerAdapter(groupSet,userId, consumer);
-        rv.setAdapter(mAdapter);
-        firebase.select("groups").getAll(Group.class, AdapterConsumer.adapterConsumer(Group.class, groupSet, new RecyclerAdapterAdapter(mAdapter)));
-        SearchView sv = (SearchView) findViewById(R.id.feed_search);
-        sv.onActionViewExpanded();sv.clearFocus();
-        sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query)
-            {
-                return false;
-            }
-            @Override
-            public boolean onQueryTextChange(String query) {
-                mAdapter.getFilter().filter(query); //FILTER AS YOU TYPE
-                return false; }});
+
     }
 
     public void gotoCreation(View view)
     {
-        Intent intent = new Intent(this, CreateGroupActivity.class);
-        startActivity(intent);
+
     }
 
     public void sortGroupCards(View view)
     {
-        List<Group> groupList = mAdapter.getGroupList();
-        Collections.sort(groupList);
-        mAdapter.setGroupList(groupList);
-        mAdapter.notifyDataSetChanged();
+//        List<Group> groupList = mAdapter.getGroupList();
+//        Collections.sort(groupList);
+//        mAdapter.setGroupList(groupList);
+//        mAdapter.notifyDataSetChanged();
     }
 
     public void goToCalendarActivity()

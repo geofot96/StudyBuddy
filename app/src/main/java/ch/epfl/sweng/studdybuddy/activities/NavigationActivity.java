@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
 
+import ch.epfl.sweng.studdybuddy.Fragments.FeedFragment;
 import ch.epfl.sweng.studdybuddy.Fragments.MergedCalendarFragment;
 import ch.epfl.sweng.studdybuddy.R;
 
@@ -18,6 +19,7 @@ public class NavigationActivity extends AppCompatActivity
     private BottomNavigationView mMainNav;
     private FrameLayout mMainFrame;
     private MergedCalendarFragment mergedCalendarFragment;
+    private FeedFragment feedFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -29,8 +31,9 @@ public class NavigationActivity extends AppCompatActivity
         mMainNav = (BottomNavigationView) findViewById(R.id.bottom_navigation);
 
         mergedCalendarFragment = new MergedCalendarFragment();
+        feedFragment = new FeedFragment();
 
-        //setFragment(mergedCalendarFragment);
+        setFragment(feedFragment);
 
         mMainNav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener()
         {
@@ -41,6 +44,9 @@ public class NavigationActivity extends AppCompatActivity
                 {
                     case R.id.navToCalendar:
                         setFragment(mergedCalendarFragment);
+                        return true;
+                    case R.id.navToHome:
+                        setFragment(feedFragment);
                         return true;
 
                     default:
