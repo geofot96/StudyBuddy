@@ -55,13 +55,13 @@ public class ConnectedCalendarActivityTest{
     @Test
     public void seeAvailabilitiyInFirstTimeSlot(){
         CardView cardView = (CardView) calendar.getChildAt(1);
-
         boolean rightColors = (cardView.getCardBackgroundColor().getDefaultColor() == -16711936) && checkAreWhite(2);
         assertTrue(rightColors);
     }
 
     @Test
     public void addAvailabilityInTimeSlot(){
+        settingTime();
         ClickOnSlot(2);
         try{
             Thread.sleep(100);
@@ -74,6 +74,7 @@ public class ConnectedCalendarActivityTest{
 
     @Test
     public void removeAvailabilityInTimeSlot(){
+        settingTime();
         ClickOnSlot(1);
         try{
             Thread.sleep(100);
@@ -111,6 +112,13 @@ public class ConnectedCalendarActivityTest{
         timeSlot.perform(click());
     }
 
+    private void settingTime(){
+        try{
+            Thread.sleep(1000);
+        }catch(InterruptedException e){
+            e.printStackTrace();
+        }
+    }
 
     private class myRule extends ActivityTestRule<ConnectedCalendarActivity> {
 
