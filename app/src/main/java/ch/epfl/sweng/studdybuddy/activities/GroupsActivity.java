@@ -68,8 +68,8 @@ public class GroupsActivity extends AppCompatActivity {
                 return false;
             }
         });
-        ToggleButton toggle = (ToggleButton) findViewById(R.id.toggleButton);
-        toggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        ToggleButton toggleFull = (ToggleButton) findViewById(R.id.toggleButton);
+        toggleFull.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
                     filteredGroupSet.clear();
