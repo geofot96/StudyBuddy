@@ -53,18 +53,6 @@ public class GroupsActivity extends AppCompatActivity {
         firebase.select("groups").getAll(Group.class, AdapterConsumer.adapterConsumer(Group.class, groupSet, new RecyclerAdapterAdapter(mAdapter)));
         SearchView sv = (SearchView) findViewById(R.id.feed_search);
         setUpActivity(rv, sv);
-        sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String query) {
-                mAdapter.getFilter().filter(query); //FILTER AS YOU TYPE
-                return false;
-            }
-        });
         ToggleButton toggleFull = (ToggleButton) findViewById(R.id.toggleButton);
         toggleFull.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) { toggleButtonFullBehaviour(buttonView,isChecked);}});
@@ -76,6 +64,18 @@ public class GroupsActivity extends AppCompatActivity {
         rv.setAdapter(mAdapter);
         sv.onActionViewExpanded();
         sv.clearFocus();
+        sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String query) {
+                mAdapter.getFilter().filter(query);
+                return false;
+            }
+        });
     }
 
     public void toggleButtonFullBehaviour(CompoundButton buttonView, boolean isChecked)
