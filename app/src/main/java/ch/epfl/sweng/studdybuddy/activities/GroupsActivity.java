@@ -10,6 +10,8 @@ import java.util.Collections;
 
 import android.support.v7.widget.SearchView;
 import android.view.View;
+import android.widget.CompoundButton;
+import android.widget.ToggleButton;
 
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -28,50 +30,92 @@ import ch.epfl.sweng.studdybuddy.util.RecyclerAdapterAdapter;
 import ch.epfl.sweng.studdybuddy.activities.CreateGroupActivity;
 import ch.epfl.sweng.studdybuddy.util.StudyBuddy;
 
-import static ch.epfl.sweng.studdybuddy.util.AdapterConsumer.searchListener;
-
-public class GroupsActivity extends AppCompatActivity
-{
+public class GroupsActivity extends AppCompatActivity {
     GroupsRecyclerAdapter mAdapter;
-		static List<Group> groupSet  = new ArrayList<>();
+    static List<Group> groupSet = new ArrayList<>();
+    static List<Group> filteredGroupSet = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_groups);
         RecyclerView rv = (RecyclerView) findViewById(R.id.feedRecycleViewer);
-        rv.setHasFixedSize(true);
-        rv.setLayoutManager(new LinearLayoutManager(this));
+
         FirebaseReference firebase = new FirebaseReference(FirebaseDatabase.getInstance().getReference());
-        String userId =  ((StudyBuddy) GroupsActivity.this.getApplication()).getAuthendifiedUser().getUserID().toString();
+        String userId = ((StudyBuddy) GroupsActivity.this.getApplication()).getAuthendifiedUser().getUserID().toString();
         Consumer<Object> consumer = new Consumer<Object>() {
             @Override
-            public void accept(Object o) { goToCalendarActivity(); }};
-        mAdapter = new GroupsRecyclerAdapter(groupSet,userId, consumer);
-        rv.setAdapter(mAdapter);
+            public void accept(Object o) {
+                goToCalendarActivity();
+            }
+        };
+        mAdapter = new GroupsRecyclerAdapter(groupSet, userId, consumer);
         firebase.select("groups").getAll(Group.class, AdapterConsumer.adapterConsumer(Group.class, groupSet, new RecyclerAdapterAdapter(mAdapter)));
         SearchView sv = (SearchView) findViewById(R.id.feed_search);
-        sv.onActionViewExpanded();sv.clearFocus();
-        sv.setOnQueryTextListener(searchListener(mAdapter));
+        setUpActivity(rv, sv);
+        ToggleButton toggleFull = (ToggleButton) findViewById(R.id.toggleButton);
+        toggleFull.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) { toggleButtonFullBehaviour(buttonView,isChecked);}});
     }
 
-    public void gotoCreation(View view)
+    private void setUpActivity(RecyclerView rv, SearchView sv) {
+        rv.setHasFixedSize(true);
+        rv.setLayoutManager(new LinearLayoutManager(this));
+        rv.setAdapter(mAdapter);
+        sv.onActionViewExpanded();
+        sv.clearFocus();
+        sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String query) {
+                mAdapter.getFilter().filter(query);
+                return false;
+            }
+        });
+    }
+
+    public void toggleButtonFullBehaviour(CompoundButton buttonView, boolean isChecked)
     {
+        if (isChecked) {
+            filteredGroupSet.clear();
+            selectOnlyAvailableGroups();
+            mAdapter.setGroupList(filteredGroupSet);
+            mAdapter.setFilterList(filteredGroupSet);
+        } else {
+            mAdapter.setGroupList(groupSet);
+            mAdapter.setFilterList(groupSet);
+        }
+        mAdapter.notifyDataSetChanged();
+    }
+
+    private void selectOnlyAvailableGroups() {
+        for (Group g : groupSet) {
+            if (g.getMaxNoUsers() > mAdapter.getParticipantNumber(g))
+                filteredGroupSet.add(g);
+        }
+    }
+
+    public void gotoCreation(View view) {
         Intent intent = new Intent(this, CreateGroupActivity.class);
         startActivity(intent);
     }
 
-    public void sortGroupCards(View view)
-    {
+    public void sortGroupCards(View view) {
         List<Group> groupList = mAdapter.getGroupList();
         Collections.sort(groupList);
         mAdapter.setGroupList(groupList);
         mAdapter.notifyDataSetChanged();
     }
 
-    public void goToCalendarActivity()
-    {
+
+
+    public void goToCalendarActivity() {
         Intent intent = new Intent(this, CalendarActivity.class);
         startActivity(intent);
     }
+
 }
