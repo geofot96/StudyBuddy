@@ -18,6 +18,10 @@ public final class CoreFactory {
         return new Group(1, new Course(""), "", id, UUID.randomUUID().toString());
     }
 
+    public static Group withAdmin(String aId) {
+        return new Group(1, new Course(""), "", "-" ,aId);
+    }
+
     public static Group blankGroupWithCourse(String course) {
         return new Group(1, new Course(course), "", "", "");
     }
