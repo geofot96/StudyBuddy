@@ -126,9 +126,4 @@ public class MetaGroup extends Metabase{
         Pair pair = new Pair(creatorId,g.getGroupID().toString());
         db.select("userGroup").select(Helper.hashCode(pair)).setVal(pair);
     }
-
-    public void removeGroup(Pair pair){
-        System.out.println(Helper.hashCode(pair));
-        db.select("userGroup").select(Helper.hashCode(pair)).clear();
-    }
 }
