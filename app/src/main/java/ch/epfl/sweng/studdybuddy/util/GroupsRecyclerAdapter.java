@@ -17,8 +17,8 @@ import java.util.HashMap;
 import java.util.List;
 
 import ch.epfl.sweng.studdybuddy.R;
-import ch.epfl.sweng.studdybuddy.activities.CalendarActivity;
 import ch.epfl.sweng.studdybuddy.activities.ConnectedCalendarActivity;
+import ch.epfl.sweng.studdybuddy.activities.GroupActivity;
 import ch.epfl.sweng.studdybuddy.activities.GroupInfoActivity;
 import ch.epfl.sweng.studdybuddy.activities.GroupsActivity;
 import ch.epfl.sweng.studdybuddy.core.Group;
@@ -216,7 +216,7 @@ public class GroupsRecyclerAdapter extends RecyclerView.Adapter<GroupsRecyclerAd
             public void onClick(View v) {
                 if(joinConsumer != null )
                 {
-                    Intent intent = new Intent(button.getContext(), GroupInfoActivity.class);
+                    Intent intent = new Intent(button.getContext(), GroupActivity.class);
                     intent.putExtra(GroupsActivity.GROUP_ID, group.getGroupID().getId());
                     intent.putExtra(Messages.maxUser, group.getMaxNoUsers());
                     intent.putExtra(Messages.userID, userId);

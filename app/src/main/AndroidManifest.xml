@@ -50,7 +50,13 @@
         <activity android:name=".activities.CalendarActivity"/>
         <activity android:name=".activities.MergedCalendarActivity"/>
         <activity android:name=".activities.ConnectedCalendarActivity"/>
-        <activity android:name=".activities.GroupActivity"/>
+        <activity
+            android:name=".activities.GroupActivity"
+            android:parentActivityName=".activities.GroupsActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.GroupsActivity" />
+        </activity>
         <activity android:name=".activities.GroupInfoActivity"/>
     </application>
 
