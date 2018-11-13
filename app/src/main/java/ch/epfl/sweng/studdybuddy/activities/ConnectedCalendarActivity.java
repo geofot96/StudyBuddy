@@ -24,6 +24,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import ch.epfl.sweng.studdybuddy.R;
+import ch.epfl.sweng.studdybuddy.core.Group;
 import ch.epfl.sweng.studdybuddy.core.ID;
 import ch.epfl.sweng.studdybuddy.core.Pair;
 import ch.epfl.sweng.studdybuddy.firebase.FirebaseReference;
@@ -50,6 +51,7 @@ public class ConnectedCalendarActivity extends AppCompatActivity implements ICal
     private ConnectedCalendar calendar;
     private DatabaseReference database;
     private Pair pair = new Pair();
+    private Bundle extras;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) throws NullPointerException{
@@ -64,6 +66,8 @@ public class ConnectedCalendarActivity extends AppCompatActivity implements ICal
         if(intent == null){
             throw new NullPointerException("No intent grabbed by the activity");
         }
+
+        extras = intent.getExtras();
 
         NmaxUsers = (float) intent.getIntExtra(Messages.maxUser, -1);
 
@@ -81,7 +85,7 @@ public class ConnectedCalendarActivity extends AppCompatActivity implements ICal
             @Override
             public void onClick(View v)
             {
-                confirmSlots(intent);
+                confirmSlots(extras);
             }
         });
     }
@@ -123,9 +127,10 @@ public class ConnectedCalendarActivity extends AppCompatActivity implements ICal
      * @param origin the intent got from the GroupActivity
      */
     @Override
-    public void confirmSlots(Intent origin) {
+    public void confirmSlots(Bundle origin) {
         //TODO : once the GroupActivity will be correctly set, launch the GroupActivity
-        startActivity(new Intent(this, ProfileTab.class));
+        Intent newIntent = new Intent(this, GroupActivity.class);
+        startActivity(newIntent.putExtras(origin));
     }
 
     /**

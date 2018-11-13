@@ -167,9 +167,13 @@ public class GroupsRecyclerAdapter extends RecyclerView.Adapter<GroupsRecyclerAd
                 &&!uGroupIds.contains(group.getGroupID().getId())) {
             button.setText("Join");
             button.setOnClickListener(joinButtonListener(group, button));
-        }else{
+        }else {
             button.setText("More Info");
-            button.setOnClickListener(moreInfoListener(button, group.getGroupID().getId()));
+            if (uGroupIds.contains(group.getGroupID().getId())) {
+                button.setOnClickListener(moreInfoListenerIfInTheGroup(button, group));
+            } else {
+                button.setOnClickListener(moreInfoListener(button, group.getGroupID().getId()));
+            }
         }
     }
 
@@ -200,6 +204,22 @@ public class GroupsRecyclerAdapter extends RecyclerView.Adapter<GroupsRecyclerAd
                 {
                     Intent intent = new Intent(button.getContext(), GroupInfoActivity.class);
                     intent.putExtra(GroupsActivity.GROUP_ID, gId);
+                    joinConsumer.accept(intent);
+                }
+            }
+        };
+    }
+
+    private View.OnClickListener moreInfoListenerIfInTheGroup(Button button, Group group){
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(joinConsumer != null )
+                {
+                    Intent intent = new Intent(button.getContext(), GroupInfoActivity.class);
+                    intent.putExtra(GroupsActivity.GROUP_ID, group.getGroupID().getId());
+                    intent.putExtra(Messages.maxUser, group.getMaxNoUsers());
+                    intent.putExtra(Messages.userID, userId);
                     joinConsumer.accept(intent);
                 }
             }

@@ -11,9 +11,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ch.epfl.sweng.studdybuddy.R;
+import ch.epfl.sweng.studdybuddy.core.Group;
+import ch.epfl.sweng.studdybuddy.core.ID;
 import ch.epfl.sweng.studdybuddy.core.Pair;
 import ch.epfl.sweng.studdybuddy.core.User;
+import ch.epfl.sweng.studdybuddy.firebase.FirebaseReference;
 import ch.epfl.sweng.studdybuddy.firebase.MetaGroup;
+import ch.epfl.sweng.studdybuddy.services.calendar.ConnectedAvailability;
 import ch.epfl.sweng.studdybuddy.util.ParticipantAdapter;
 import ch.epfl.sweng.studdybuddy.util.RecyclerAdapterAdapter;
 import ch.epfl.sweng.studdybuddy.util.StudyBuddy;
@@ -49,6 +53,7 @@ public class GroupInfoActivity extends AppCompatActivity{
             public void onClick(View v) {
                 if (uId != null && gId != null) {
                     mb.removeGroup(new Pair(uId, gId));
+                    ConnectedAvailability.removeAvailabiliity(new ID<Group>(gId), new ID<User>(uId), new FirebaseReference());
                     Intent transition = new Intent(GroupInfoActivity.this, GroupsActivity.class);
                     startActivity(transition);
                 }

@@ -2,6 +2,9 @@ package ch.epfl.sweng.studdybuddy.services.calendar;
 
 import java.util.List;
 
+import ch.epfl.sweng.studdybuddy.core.Group;
+import ch.epfl.sweng.studdybuddy.core.ID;
+import ch.epfl.sweng.studdybuddy.core.User;
 import ch.epfl.sweng.studdybuddy.firebase.FirebaseReference;
 
 /**
@@ -48,5 +51,9 @@ public class ConnectedAvailability implements Availability {
 
     private void update(){
         ref.select("availabilities").select(groupID).select(userID).setVal(A.getUserAvailabilities());
+    }
+
+    public static void removeAvailabiliity(ID<Group> group, ID<User> user, FirebaseReference ref){
+        ref.select("availabilities").select(group.getId()).select(user.getId()).clear();
     }
 }
