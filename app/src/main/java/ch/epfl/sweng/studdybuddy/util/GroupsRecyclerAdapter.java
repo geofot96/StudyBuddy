@@ -146,6 +146,12 @@ public class GroupsRecyclerAdapter extends RecyclerView.Adapter<GroupsRecyclerAd
         return filter;
     }
 
+    public void setFilterList(List<Group> newFilter)
+    {
+        getFilter();
+        filter.setFilterList(newFilter);
+
+    }
     private void setButton(Button button, Group group){
         Integer gSize = sizes.get(group.getGroupID().toString());
         int groupSize = 1;
@@ -200,5 +206,12 @@ public class GroupsRecyclerAdapter extends RecyclerView.Adapter<GroupsRecyclerAd
            count = sizes.get(group.getGroupID().toString());
        }
        pNumber.setText(("Particip: " + count+ "/" + group.getMaxNoUsers()));
+    }
+    public int getParticipantNumber(Group group){
+        int count = 0;
+        if(sizes.get(group.getGroupID().toString()) != null){
+            count = sizes.get(group.getGroupID().toString());
+        }
+        return count;
     }
 }
