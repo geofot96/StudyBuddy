@@ -6,7 +6,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
-import android.util.Pair;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.ToggleButton;
@@ -23,7 +22,6 @@ import ch.epfl.sweng.studdybuddy.firebase.FirebaseReference;
 import ch.epfl.sweng.studdybuddy.util.AdapterConsumer;
 import ch.epfl.sweng.studdybuddy.util.Consumer;
 import ch.epfl.sweng.studdybuddy.util.GroupsRecyclerAdapter;
-import ch.epfl.sweng.studdybuddy.util.Messages;
 import ch.epfl.sweng.studdybuddy.util.RecyclerAdapterAdapter;
 import ch.epfl.sweng.studdybuddy.util.StudyBuddy;
 

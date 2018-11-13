@@ -17,7 +17,6 @@ import java.util.HashMap;
 import java.util.List;
 
 import ch.epfl.sweng.studdybuddy.R;
-import ch.epfl.sweng.studdybuddy.activities.ConnectedCalendarActivity;
 import ch.epfl.sweng.studdybuddy.activities.GroupActivity;
 import ch.epfl.sweng.studdybuddy.activities.GroupInfoActivity;
 import ch.epfl.sweng.studdybuddy.activities.GroupsActivity;

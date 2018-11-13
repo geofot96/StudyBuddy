@@ -10,7 +10,6 @@ import org.junit.Test;
 import ch.epfl.sweng.studdybuddy.activities.ConnectedCalendarActivity;
 import ch.epfl.sweng.studdybuddy.activities.GroupActivity;
 import ch.epfl.sweng.studdybuddy.activities.GroupInfoActivity;
-import ch.epfl.sweng.studdybuddy.util.Messages;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;

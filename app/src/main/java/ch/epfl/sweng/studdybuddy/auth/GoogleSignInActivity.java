@@ -13,15 +13,16 @@ import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.ValueEventListener;
 
-import ch.epfl.sweng.studdybuddy.util.Consumer;
 import ch.epfl.sweng.studdybuddy.R;
-import ch.epfl.sweng.studdybuddy.util.StudyBuddy;
-import ch.epfl.sweng.studdybuddy.activities.*;
+import ch.epfl.sweng.studdybuddy.activities.CourseSelectActivity;
+import ch.epfl.sweng.studdybuddy.activities.MainActivity;
 import ch.epfl.sweng.studdybuddy.core.Account;
 import ch.epfl.sweng.studdybuddy.core.ID;
 import ch.epfl.sweng.studdybuddy.core.User;
 import ch.epfl.sweng.studdybuddy.firebase.FirebaseReference;
 import ch.epfl.sweng.studdybuddy.firebase.ReferenceWrapper;
+import ch.epfl.sweng.studdybuddy.util.Consumer;
+import ch.epfl.sweng.studdybuddy.util.StudyBuddy;
 
 public class GoogleSignInActivity extends AppCompatActivity {
 

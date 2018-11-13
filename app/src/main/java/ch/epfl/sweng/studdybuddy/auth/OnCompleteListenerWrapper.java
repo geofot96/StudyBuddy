@@ -5,7 +5,6 @@ import android.util.Log;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
-import ch.epfl.sweng.studdybuddy.auth.OnLoginCallback;
 import ch.epfl.sweng.studdybuddy.core.Account;
 
 

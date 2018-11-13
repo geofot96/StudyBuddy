@@ -2,7 +2,6 @@ package ch.epfl.sweng.studdybuddy;
 
 
 import android.content.ComponentName;
-
 import android.support.test.espresso.intent.rule.IntentsTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
@@ -20,12 +19,7 @@ import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.intent.Intents.intended;
 import static android.support.test.espresso.intent.matcher.IntentMatchers.hasComponent;
 import static android.support.test.espresso.matcher.ViewMatchers.isEnabled;
-import static android.support.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
-import static android.support.test.espresso.matcher.ViewMatchers.withText;
-import static org.hamcrest.Matchers.allOf;
-import static org.hamcrest.Matchers.anything;
-import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 
 @RunWith(AndroidJUnit4.class)

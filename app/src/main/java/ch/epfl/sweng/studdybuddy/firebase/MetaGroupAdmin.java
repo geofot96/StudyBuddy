@@ -6,7 +6,10 @@ import java.util.Iterator;
 import java.util.List;
 
 import ch.epfl.sweng.studdybuddy.core.Group;
+import ch.epfl.sweng.studdybuddy.core.ID;
 import ch.epfl.sweng.studdybuddy.core.Pair;
+import ch.epfl.sweng.studdybuddy.core.User;
+import ch.epfl.sweng.studdybuddy.services.calendar.ConnectedAvailability;
 import ch.epfl.sweng.studdybuddy.util.Consumer;
 import ch.epfl.sweng.studdybuddy.util.Helper;
 
@@ -42,6 +45,7 @@ public class MetaGroupAdmin extends MetaGroup {
 
     public ValueEventListener removeUserFromGroup(String uId, Group g) {
         db.select("userGroup").select(Helper.hashCode(new Pair(uId, g.getGroupID().getId()))).clear(); //redundant
+        ConnectedAvailability.removeAvailabiliity(g.getGroupID(), new ID<User>(uId), new FirebaseReference());
         if(g.getAdminID().equals(uId)) {
             return rotateAdmin(g);
         }

@@ -7,15 +7,12 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Iterator;
-import java.util.List;
 
 import ch.epfl.sweng.studdybuddy.core.Group;
 import ch.epfl.sweng.studdybuddy.core.Pair;
 import ch.epfl.sweng.studdybuddy.firebase.FirebaseReference;
 import ch.epfl.sweng.studdybuddy.firebase.MetaGroupAdmin;
-import ch.epfl.sweng.studdybuddy.firebase.ReferenceWrapper;
 
 import static ch.epfl.sweng.studdybuddy.MetaFactory.deepFBReference;
 import static ch.epfl.sweng.studdybuddy.util.CoreFactory.blankGroupWId;

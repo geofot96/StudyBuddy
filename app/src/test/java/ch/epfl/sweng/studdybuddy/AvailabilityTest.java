@@ -8,7 +8,6 @@ import java.util.List;
 
 import ch.epfl.sweng.studdybuddy.services.calendar.Availability;
 import ch.epfl.sweng.studdybuddy.services.calendar.ConcreteAvailability;
-import ch.epfl.sweng.studdybuddy.services.calendar.ConnectedAvailability;
 
 import static org.junit.Assert.assertEquals;
 
