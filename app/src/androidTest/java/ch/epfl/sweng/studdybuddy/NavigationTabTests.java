@@ -52,18 +52,18 @@ public class NavigationTabTests
         bottomNavigationItemView4.perform(click());
     }
 
-    @Test
-    public void testClickOnCalendar()
-    {
-        ViewInteraction bottomNavigationItemView4 = onView(
-                allOf(withId(R.id.navToCalendar), withContentDescription("Calendar"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(R.id.bottom_navigation),
-                                        0),
-                                2),
-                        isDisplayed()));
-        bottomNavigationItemView4.perform(click());
-    }
+//    @Test
+//    public void testClickOnCalendar()
+//    {
+//        ViewInteraction bottomNavigationItemView4 = onView(
+//                allOf(withId(R.id.navToCalendar), withContentDescription("Calendar"),
+//                        childAtPosition(
+//                                childAtPosition(
+//                                        withId(R.id.bottom_navigation),
+//                                        0),
+//                                2),
+//                        isDisplayed()));
+//        bottomNavigationItemView4.perform(click());
+//    }
 
 }
