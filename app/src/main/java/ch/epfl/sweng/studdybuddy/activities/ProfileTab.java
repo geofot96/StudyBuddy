@@ -25,7 +25,7 @@ import ch.epfl.sweng.studdybuddy.core.User;
 public class
 ProfileTab extends AppCompatActivity {
 
-//TODO delete
+
     
     @Override
     protected void onCreate(Bundle savedInstanceState){

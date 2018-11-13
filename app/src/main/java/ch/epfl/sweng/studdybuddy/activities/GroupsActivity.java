@@ -25,14 +25,15 @@ import ch.epfl.sweng.studdybuddy.util.GroupsRecyclerAdapter;
 import ch.epfl.sweng.studdybuddy.util.RecyclerAdapterAdapter;
 import ch.epfl.sweng.studdybuddy.util.StudyBuddy;
 
-public class GroupsActivity extends AppCompatActivity
-{
+public class GroupsActivity extends AppCompatActivity {
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_groups);
+
     }
+
 
 }

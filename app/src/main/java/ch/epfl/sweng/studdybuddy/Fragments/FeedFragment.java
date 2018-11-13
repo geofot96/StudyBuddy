@@ -14,6 +14,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.ToggleButton;
 
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -40,12 +42,13 @@ public class FeedFragment extends Fragment
 {
 
     GroupsRecyclerAdapter mAdapter;
-		static List<Group> groupSet  = new ArrayList<>();
+    static List<Group> groupSet = new ArrayList<>();
     public static final String GROUP_ID = "ch.epfl.sweng.studdybuddy.groupId";
-    public static final String IS_PARTICIPANT ="ch.epfl.sweng.studdybuddy.particip";
+    public static final String IS_PARTICIPANT = "ch.epfl.sweng.studdybuddy.particip";
     static List<Group> filteredGroupSet = new ArrayList<>();
     Button sortButton;
     FloatingActionButton actionButton;
+
 
     public FeedFragment()
     {
@@ -61,20 +64,7 @@ public class FeedFragment extends Fragment
         View v = inflater.inflate(R.layout.fragment_feed, container, false);
 
         RecyclerView rv = (RecyclerView) v.findViewById(R.id.feedRecycleViewer);
-        rv.setHasFixedSize(true);
-        rv.setLayoutManager(new LinearLayoutManager(v.getContext()));
-        FirebaseReference firebase = new FirebaseReference(FirebaseDatabase.getInstance().getReference());
-        String userId = ((StudyBuddy) getActivity().getApplication()).getAuthendifiedUser().getUserID().toString();
 
-        Consumer<Object> consumer = getConsumer(v);
-        mAdapter = new GroupsRecyclerAdapter(groupSet, userId, consumer);
-        rv.setAdapter(mAdapter);
-        firebase.select("groups").getAll(Group.class, AdapterConsumer.adapterConsumer(Group.class, groupSet, new RecyclerAdapterAdapter(mAdapter)));
-        SearchView sv = (SearchView) v.findViewById(R.id.feed_search);
-        sv.onActionViewExpanded();
-        sv.clearFocus();
-        sv.setOnQueryTextListener(getListener());
-        setUpActivity(rv, sv);
         sortButton = v.findViewById(R.id.sortButton);
 
         sortButton.setOnClickListener(getOnClickListener());
@@ -82,35 +72,90 @@ public class FeedFragment extends Fragment
         actionButton = v.findViewById(R.id.createGroup);
 
         actionButton.setOnClickListener(getFloatingButtonListener());
-/*
-        ToggleButton toggleFull = (ToggleButton) findViewById(R.id.toggleButton);
-        toggleFull.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) { toggleButtonFullBehaviour(buttonView,isChecked);}});
 
-*/
+        FirebaseReference firebase = new FirebaseReference(FirebaseDatabase.getInstance().getReference());
+        String userId = ((StudyBuddy) getActivity().getApplication()).getAuthendifiedUser().getUserID().toString();
+        Consumer<Intent> buttonClickConsumer = new Consumer<Intent>()
+        {
+            @Override
+            public void accept(Intent target)
+            {
+                goToCalendarActivity(target);
+            }
+        };
+
+        mAdapter = new GroupsRecyclerAdapter(groupSet, userId, buttonClickConsumer);
+        rv.setAdapter(mAdapter);
+        firebase.select("groups").getAll(Group.class, AdapterConsumer.adapterConsumer(Group.class, groupSet, new RecyclerAdapterAdapter(mAdapter)));
+        SearchView sv = (SearchView) v.findViewById(R.id.feed_search);
+        setUpActivity(rv, sv, v);
+        ToggleButton toggleFull = (ToggleButton) v.findViewById(R.id.toggleButton);
+        toggleFull.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
+        {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
+            {
+                toggleButtonFullBehaviour(buttonView, isChecked);
+            }
+        });
+
         return v;
+    }
+
+    private void setUpActivity(RecyclerView rv, SearchView sv, View v)
+    {
+        rv.setHasFixedSize(true);
+        rv.setLayoutManager(new LinearLayoutManager(v.getContext()));
+        rv.setAdapter(mAdapter);
+        sv.onActionViewExpanded();
+        sv.clearFocus();
+        sv.setOnQueryTextListener(new SearchView.OnQueryTextListener()
+        {
+            @Override
+            public boolean onQueryTextSubmit(String query)
+            {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String query)
+            {
+                mAdapter.getFilter().filter(query);
+                return false;
+            }
+        });
     }
 
     public void toggleButtonFullBehaviour(CompoundButton buttonView, boolean isChecked)
     {
-        if (isChecked) {
+        if(isChecked)
+        {
             filteredGroupSet.clear();
             selectOnlyAvailableGroups();
             mAdapter.setGroupList(filteredGroupSet);
             mAdapter.setFilterList(filteredGroupSet);
-        } else {
+        }
+        else
+        {
             mAdapter.setGroupList(groupSet);
             mAdapter.setFilterList(groupSet);
         }
         mAdapter.notifyDataSetChanged();
     }
 
-    private void selectOnlyAvailableGroups() {
-        for (Group g : groupSet) {
-            if (g.getMaxNoUsers() > mAdapter.getParticipantNumber(g))
+    private void selectOnlyAvailableGroups()
+    {
+        for(Group g : groupSet)
+        {
+            if(g.getMaxNoUsers() > mAdapter.getParticipantNumber(g))
                 filteredGroupSet.add(g);
         }
     }
+
+    public void goToCalendarActivity(Intent target)
+    {
+        startActivity(target);
+    }
+
     @NonNull
     private View.OnClickListener getFloatingButtonListener()
     {
@@ -123,26 +168,6 @@ public class FeedFragment extends Fragment
                 startActivity(intent);
             }
         };
-    }
-
-    private void setUpActivity(RecyclerView rv, SearchView sv) {
-        rv.setHasFixedSize(true);
-        rv.setLayoutManager(new LinearLayoutManager(this));
-        rv.setAdapter(mAdapter);
-        sv.onActionViewExpanded();
-        sv.clearFocus();
-        sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String query) {
-                mAdapter.getFilter().filter(query);
-                return false;
-            }
-        });
     }
 
     @NonNull
@@ -158,39 +183,6 @@ public class FeedFragment extends Fragment
         };
     }
 
-    @NonNull
-    private SearchView.OnQueryTextListener getListener()
-    {
-        return new SearchView.OnQueryTextListener()
-        {
-            @Override
-            public boolean onQueryTextSubmit(String query)
-            {
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String query)
-            {
-                mAdapter.getFilter().filter(query); //FILTER AS YOU TYPE
-                return false;
-            }
-        };
-    }
-
-    @NonNull
-    private Consumer<Object> getConsumer(View v)
-    {
-        return new Consumer<Object>()
-        {
-            @Override
-            public void accept(Object o)
-            {
-                goToCalendarActivity(v);
-            }
-        };
-    }
-
     public void sortGroupCards(View view)
     {
         List<Group> groupList = mAdapter.getGroupList();
@@ -198,13 +190,6 @@ public class FeedFragment extends Fragment
         mAdapter.setGroupList(groupList);
         mAdapter.notifyDataSetChanged();
     }
-
-    public void goToCalendarActivity(View v)
-    {
-        Intent intent = new Intent(v.getContext(), CalendarActivity.class);
-        startActivity(intent);
-    }
-
 
 
 }

@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import ch.epfl.sweng.studdybuddy.Fragments.FeedFragment;
 import ch.epfl.sweng.studdybuddy.R;
 import ch.epfl.sweng.studdybuddy.activities.CalendarActivity;
 import ch.epfl.sweng.studdybuddy.activities.GroupInfoActivity;
@@ -178,7 +179,7 @@ public class GroupsRecyclerAdapter extends RecyclerView.Adapter<GroupsRecyclerAd
                 if(joinConsumer != null)
                 {
                     Intent intent = new Intent(button.getContext(), CalendarActivity.class);
-                    intent.putExtra(GroupsActivity.GROUP_ID, group.getGroupID().getId());
+                    intent.putExtra(FeedFragment.GROUP_ID, group.getGroupID().getId());
                     joinConsumer.accept(intent);
                 }
             }
@@ -192,7 +193,7 @@ public class GroupsRecyclerAdapter extends RecyclerView.Adapter<GroupsRecyclerAd
                 if(joinConsumer != null )
                 {
                     Intent intent = new Intent(button.getContext(), GroupInfoActivity.class);
-                    intent.putExtra(GroupsActivity.GROUP_ID, gId);
+                    intent.putExtra(FeedFragment.GROUP_ID, gId);
                     joinConsumer.accept(intent);
                 }
             }

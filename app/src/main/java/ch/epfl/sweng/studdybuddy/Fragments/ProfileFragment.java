@@ -83,8 +83,7 @@ public class ProfileFragment extends Fragment
 
         adCourse = new CourseAdapter(userCourses);
         recyclerView_courses = (RecyclerView) v.findViewById(R.id.courses_list);
-        recyclerView_courses.setLayoutManager(new LinearLayoutManager(v.getContext()));
-        recyclerView_courses.setAdapter(adCourse);
+        adCourse.initRecyclerView(v.getContext(), recyclerView_courses);
 
         ad = new GroupsRecyclerAdapter(userGroups, userID);
         recyclerView_groups = (RecyclerView) v.findViewById(R.id.groups_list);

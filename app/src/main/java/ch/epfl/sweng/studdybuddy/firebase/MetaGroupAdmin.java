@@ -15,6 +15,7 @@ public class MetaGroupAdmin extends MetaGroup {
     public MetaGroupAdmin(ReferenceWrapper rw) {
         super(rw);
     }
+    public MetaGroupAdmin() { super(); }
     public ValueEventListener rotateAdmin(Group g) {
         return db.select("userGroup").getAll(Pair.class, new Consumer<List<Pair>>() {
             @Override
@@ -39,12 +40,12 @@ public class MetaGroupAdmin extends MetaGroup {
         return null;
     }
 
-    /*public ValueEventListener removeUserFromGroup(String uId, Group g) {
+    public ValueEventListener removeUserFromGroup(String uId, Group g) {
         db.select("userGroup").select(Helper.hashCode(new Pair(uId, g.getGroupID().getId()))).clear(); //redundant
         if(g.getAdminID().equals(uId)) {
             return rotateAdmin(g);
         }
         return null;
-    }*/
+    }
 
 }
