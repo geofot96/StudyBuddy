@@ -162,18 +162,23 @@ public class GroupsRecyclerAdapter extends RecyclerView.Adapter<GroupsRecyclerAd
             groupSize = gSize.intValue();
         }
         button.setText("Join");
-        Pair pair =new Pair(userId, group.getGroupID().toString());
+        //Pair pair =new Pair(userId, group.getGroupID().toString());
         if(groupSize < group.getMaxNoUsers()
                 &&!uGroupIds.contains(group.getGroupID().getId())) {
             button.setText("Join");
             button.setOnClickListener(joinButtonListener(group, button));
         }else {
             button.setText("More Info");
-            if (uGroupIds.contains(group.getGroupID().getId())) {
-                button.setOnClickListener(moreInfoListenerIfInTheGroup(button, group));
-            } else {
-                button.setOnClickListener(moreInfoListener(button, group.getGroupID().getId()));
-            }
+            getTheRightMoreInfo(button, group, uGroupIds.contains(group.getGroupID().getId()));
+
+        }
+    }
+
+    private void getTheRightMoreInfo(Button button, Group group, boolean contains) {
+        if (contains) {
+            button.setOnClickListener(moreInfoListenerIfInTheGroup(button, group));
+        } else {
+            button.setOnClickListener(moreInfoListener(button, group.getGroupID().getId()));
         }
     }
 
