@@ -1,5 +1,6 @@
 package ch.epfl.sweng.studdybuddy;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -10,13 +11,18 @@ import ch.epfl.sweng.studdybuddy.core.Group;
 import ch.epfl.sweng.studdybuddy.core.ID;
 import ch.epfl.sweng.studdybuddy.services.calendar.Calendar;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Unit tests for Calendar class
  */
 
 public class CalendarUnitTests {
+    private Calendar randomCalendar;
+    @Before
+    public void setUp(){
+        randomCalendar = new Calendar(new ID<Group>("test"));
+    }
 
     @Test
     public void twoZeroIntegerListReturnZeroIntegerList(){
@@ -114,6 +120,11 @@ public class CalendarUnitTests {
         Calendar testCalendar = new Calendar(groupID);
         List<Integer> result =  testCalendar.sumBooleanLists(lists);
         assertEquals(d, result);
+    }
+
+    @Test(expected = UnsupportedOperationException.class)
+    public void getGroupsAvailabilitiesThrowsException(){
+        randomCalendar.getGroupsAvailabilities();
     }
 
 }

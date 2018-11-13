@@ -29,38 +29,38 @@ public class ConnectedAvailabilityTest {
         Availability Available = new ConcreteAvailability();
         connectedA = new ConnectedAvailability("","",A, ref);
         connectedAvailable = new ConnectedAvailability("","",Available,ref);
-        connectedAvailable.addAvailability(rowTest,columnTest);
+        connectedAvailable.modifyAvailability(rowTest,columnTest);
     }
 
     @Test
     public void addAvailabilityInParticularSlot(){
-        connectedA.addAvailability(rowTest, columnTest);
+        connectedA.modifyAvailability(rowTest, columnTest);
         checkHeadTrueTailFalse(connectedA);
     }
 
     @Test
     public void removeAvailabilityInParticularSlot(){
-        connectedAvailable.removeAvailability(rowTest, columnTest);
+        connectedAvailable.modifyAvailability(rowTest, columnTest);
         checkAllFalse(connectedAvailable);
     }
 
     @Test(expected = ArrayIndexOutOfBoundsException.class)
     public void negativeRow(){
-        connectedA.addAvailability(-1, 0);
+        connectedA.modifyAvailability(-1, 0);
     }
 
     @Test(expected = ArrayIndexOutOfBoundsException.class)
     public void negativeColumn(){
-        connectedA.addAvailability(0, -1);
+        connectedA.modifyAvailability(0, -1);
     }
 
     @Test(expected = ArrayIndexOutOfBoundsException.class)
     public void rowOutOfBound(){
-        connectedA.addAvailability(7,0);
+        connectedA.modifyAvailability(11,0);
     }
 
     @Test(expected = ArrayIndexOutOfBoundsException.class)
-    public void columnOutOfBound(){ connectedA.addAvailability(0,11);
+    public void columnOutOfBound(){ connectedA.modifyAvailability(0,11);
     }
 
     public void checkAllFalse(Availability list){

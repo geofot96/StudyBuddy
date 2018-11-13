@@ -3,7 +3,6 @@ package ch.epfl.sweng.studdybuddy;
 import org.junit.Test;
 
 import java.util.ArrayList;
-import java.util.UUID;
 
 import ch.epfl.sweng.studdybuddy.core.Course;
 import ch.epfl.sweng.studdybuddy.core.Group;

@@ -6,7 +6,7 @@ import java.util.List;
 import ch.epfl.sweng.studdybuddy.core.Group;
 import ch.epfl.sweng.studdybuddy.core.ID;
 
-public final class Calendar implements CalendarInterface{
+public final class Calendar {
 
     private ID<Group> groupID;
 
@@ -67,4 +67,9 @@ public final class Calendar implements CalendarInterface{
     public String getID(){
         return groupID.getId();
     }
+
+    public List<Integer> getGroupsAvailabilities(){
+        throw new UnsupportedOperationException();
+    }
+
 }

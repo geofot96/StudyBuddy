@@ -6,6 +6,8 @@ import ch.epfl.sweng.studdybuddy.core.ID;
 import ch.epfl.sweng.studdybuddy.core.User;
 
 public class StudyBuddy extends Application {
+    public User authendifiedUser;
+
     public User getAuthendifiedUser() {
         if(authendifiedUser == null) {
             return new User("Default", new ID<>("Default"));
@@ -18,5 +20,4 @@ public class StudyBuddy extends Application {
         this.authendifiedUser = authendifiedUser;
     }
 
-    public User authendifiedUser;
 }

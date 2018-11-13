@@ -11,16 +11,16 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-import ch.epfl.sweng.studdybuddy.util.CourseAdapter;
-import ch.epfl.sweng.studdybuddy.firebase.FirebaseReference;
-import ch.epfl.sweng.studdybuddy.core.Group;
-import ch.epfl.sweng.studdybuddy.util.GroupsRecyclerAdapter;
-import ch.epfl.sweng.studdybuddy.firebase.MetaGroup;
 import ch.epfl.sweng.studdybuddy.R;
-import ch.epfl.sweng.studdybuddy.util.RecyclerAdapterAdapter;
-import ch.epfl.sweng.studdybuddy.firebase.ReferenceWrapper;
-import ch.epfl.sweng.studdybuddy.util.StudyBuddy;
+import ch.epfl.sweng.studdybuddy.core.Group;
 import ch.epfl.sweng.studdybuddy.core.User;
+import ch.epfl.sweng.studdybuddy.firebase.FirebaseReference;
+import ch.epfl.sweng.studdybuddy.firebase.MetaGroup;
+import ch.epfl.sweng.studdybuddy.firebase.ReferenceWrapper;
+import ch.epfl.sweng.studdybuddy.util.CourseAdapter;
+import ch.epfl.sweng.studdybuddy.util.GroupsRecyclerAdapter;
+import ch.epfl.sweng.studdybuddy.util.RecyclerAdapterAdapter;
+import ch.epfl.sweng.studdybuddy.util.StudyBuddy;
 
 public class
 ProfileTab extends AppCompatActivity {
