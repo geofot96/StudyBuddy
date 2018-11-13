@@ -29,8 +29,8 @@ public class GroupInfoActivity extends AppCompatActivity{
     private String uId;
     private String gId;
     Button button;
-    List<Group> group;
-    List<String> gIds;
+    List<Group> group = new ArrayList<>();
+    List<String> gIds = new ArrayList<>();
     private Boolean isParticipant = false;
     @Override
     public void onCreate(Bundle savedInstanceState){
@@ -39,8 +39,6 @@ public class GroupInfoActivity extends AppCompatActivity{
         uId = ((StudyBuddy) GroupInfoActivity.this.getApplication()).getAuthendifiedUser().getUserID().getId();
         Intent intent = getIntent();
         gId = intent.getStringExtra(GroupsActivity.GROUP_ID);
-        gIds = new ArrayList<>();
-        group = new ArrayList<>();
         gIds.add(gId);
         mb.getGroupsfromIds(gIds, group);
         mb.getGroupUsers(gId, participants);
