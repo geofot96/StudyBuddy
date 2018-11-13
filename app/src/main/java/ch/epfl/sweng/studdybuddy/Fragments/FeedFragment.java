@@ -24,7 +24,6 @@ import java.util.Collections;
 import java.util.List;
 
 import ch.epfl.sweng.studdybuddy.R;
-//import ch.epfl.sweng.studdybuddy.activities.CalendarActivity;
 import ch.epfl.sweng.studdybuddy.activities.CreateGroupActivity;
 import ch.epfl.sweng.studdybuddy.activities.GroupsActivity;
 import ch.epfl.sweng.studdybuddy.core.Group;
