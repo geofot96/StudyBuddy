@@ -46,6 +46,7 @@ public class GroupActivityTest {
         }
     }
 
+
     private class myRule extends IntentsTestRule<GroupActivity> {
 
 
@@ -55,10 +56,7 @@ public class GroupActivityTest {
 
         @Override
         public GroupActivity launchActivity(@Nullable Intent startIntent) {
-            intent = new Intent();
-            intent.putExtra(Messages.maxUser, 1);
-            intent.putExtra(Messages.userID, Messages.TEST);
-            intent.putExtra(Messages.groupID, Messages.TEST);
+            Intent intent = ConnectedCalendarActivityTest.setUpTestIntent();
             return super.launchActivity(intent);
         }
     }

@@ -28,7 +28,6 @@ import static org.junit.Assert.assertTrue;
 @RunWith(AndroidJUnit4.class)
 
 public class ConnectedCalendarActivityTest{
-    private Intent intent;
     private GridLayout calendar;
 
     @Rule
@@ -106,6 +105,14 @@ public class ConnectedCalendarActivityTest{
         return cardView.getCardBackgroundColor().getDefaultColor();
     }
 
+    public static Intent setUpTestIntent(){
+        Intent intent = new Intent();
+        intent.putExtra(Messages.maxUser, 1);
+        intent.putExtra(Messages.userID, Messages.TEST);
+        intent.putExtra(Messages.groupID, Messages.TEST);
+        return intent;
+    }
+
     private class myRule extends ActivityTestRule<ConnectedCalendarActivity> {
 
 
@@ -128,10 +135,7 @@ public class ConnectedCalendarActivityTest{
 
         @Override
         public ConnectedCalendarActivity launchActivity(@Nullable Intent startIntent) {
-            intent = new Intent();
-            intent.putExtra(Messages.maxUser, 1);
-            intent.putExtra(Messages.userID, Messages.TEST);
-            intent.putExtra(Messages.groupID, Messages.TEST);
+            Intent intent = setUpTestIntent();
             return super.launchActivity(intent);
         }
     }
