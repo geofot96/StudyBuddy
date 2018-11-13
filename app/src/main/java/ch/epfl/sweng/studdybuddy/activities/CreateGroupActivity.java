@@ -16,6 +16,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
+import ch.epfl.sweng.studdybuddy.Fragments.FeedFragment;
 import ch.epfl.sweng.studdybuddy.R;
 import ch.epfl.sweng.studdybuddy.core.Course;
 import ch.epfl.sweng.studdybuddy.core.Group;
@@ -125,7 +126,7 @@ public class CreateGroupActivity extends AppCompatActivity implements AdapterVie
             Group g = new Group(maxParticipants, new Course(selectedCourse),selectedLanguage, UUID.randomUUID().toString(), user.getUserID().getId());
             mb.pushGroup(g, user.getUserID().getId());
             createUserInitialAvailabilities(user.getUserID().getId(), g.getGroupID().getId());
-	        Intent intent = new Intent(this, GroupsActivity.class);
+	        Intent intent = new Intent(this, NavigationActivity.class);
 	        startActivity(intent);
     }
 

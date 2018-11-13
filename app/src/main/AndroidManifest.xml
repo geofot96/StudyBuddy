@@ -10,16 +10,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
         <activity android:name=".auth.GoogleSignInActivity">
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".activities.GroupsActivity"
             android:parentActivityName=".activities.MainActivity">
@@ -47,6 +44,7 @@
         <activity android:name=".auth.DummyGoogleSignInActivity" />
         <activity android:name=".auth.DummyMainActivity" />
         <activity android:name=".activities.MainActivity"></activity>
+        <activity android:name=".activities.GroupInfoActivity"/>
         <activity android:name=".activities.ConnectedCalendarActivity"/>
         <activity
             android:name=".activities.GroupActivity"
@@ -55,7 +53,9 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activities.GroupsActivity" />
         </activity>
-        <activity android:name=".activities.GroupInfoActivity"/>
+        <activity android:name=".activities.NavigationActivity"></activity>
     </application>
+
+
 
 </manifest>

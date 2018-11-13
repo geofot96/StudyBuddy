@@ -11,6 +11,7 @@ import org.junit.runner.RunWith;
 
 import ch.epfl.sweng.studdybuddy.activities.CreateGroupActivity;
 import ch.epfl.sweng.studdybuddy.activities.GroupsActivity;
+import ch.epfl.sweng.studdybuddy.activities.NavigationActivity;
 
 import static android.support.test.InstrumentationRegistry.getTargetContext;
 import static android.support.test.espresso.Espresso.onView;
@@ -26,7 +27,7 @@ import static org.hamcrest.Matchers.not;
 public class CreateGroupTest {
 
     @Rule
-    public IntentsTestRule<GroupsActivity> mIntentsTestRule = new IntentsTestRule<>(GroupsActivity.class);
+    public IntentsTestRule<NavigationActivity> mIntentsTestRule = new IntentsTestRule<>(NavigationActivity.class);
 
     @Test
     public void clickCreateGroupButtonLeadsToCreateGroupsActivity(){

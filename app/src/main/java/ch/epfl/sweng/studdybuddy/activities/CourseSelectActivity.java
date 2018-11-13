@@ -66,7 +66,7 @@ public class CourseSelectActivity extends AppCompatActivity
     }
 
     private void setUpButtons() {
-        final Intent toMain = new Intent(this, GroupsActivity.class);
+        final Intent toMain = new Intent(this, NavigationActivity.class);
         Button skipButton = findViewById(R.id.skipButton);
         skipButton.setOnClickListener(new View.OnClickListener() {
             @Override

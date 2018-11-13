@@ -15,7 +15,9 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import ch.epfl.sweng.studdybuddy.Fragments.FeedFragment;
 import ch.epfl.sweng.studdybuddy.activities.GroupsActivity;
+import ch.epfl.sweng.studdybuddy.activities.NavigationActivity;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
@@ -31,7 +33,7 @@ public class GroupsActivityLeadsToCreateGroup
 {
 
     @Rule
-    public ActivityTestRule<GroupsActivity> mActivityTestRule = new ActivityTestRule(GroupsActivity.class);
+    public ActivityTestRule<NavigationActivity> mActivityTestRule = new ActivityTestRule(NavigationActivity.class);
 
 
     @Test

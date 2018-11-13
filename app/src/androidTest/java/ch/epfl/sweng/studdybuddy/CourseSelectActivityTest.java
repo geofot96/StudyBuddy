@@ -15,6 +15,7 @@ import org.junit.runner.RunWith;
 
 import ch.epfl.sweng.studdybuddy.activities.CourseSelectActivity;
 import ch.epfl.sweng.studdybuddy.activities.GroupsActivity;
+import ch.epfl.sweng.studdybuddy.activities.NavigationActivity;
 
 import static android.support.test.InstrumentationRegistry.getTargetContext;
 import static android.support.test.espresso.Espresso.onData;
@@ -49,7 +50,7 @@ public class       CourseSelectActivityTest
         onView(withId(R.id.skipButton)).perform(closeSoftKeyboard());
         Thread.sleep(500);
         onView(withId(R.id.skipButton)).perform(click());
-        intended(hasComponent(new ComponentName(getTargetContext(), GroupsActivity.class)));
+        intended(hasComponent(new ComponentName(getTargetContext(), NavigationActivity.class)));
     }
 
 

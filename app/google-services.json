@@ -31,11 +31,27 @@
           }
         },
         {
+          "client_id": "873211888268-5f6rcu35rsirtffs26u5iu29sloqh0ct.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ch.epfl.sweng.studdybuddy",
+            "certificate_hash": "970626551f1ce1c1ef771d89326a3191520cc0d4"
+          }
+        },
+        {
           "client_id": "873211888268-namufmkc6ctqrp1fnrii9qjr82ij6329.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "ch.epfl.sweng.studdybuddy",
             "certificate_hash": "57c5fdac896ebfd6f6c426ad33678ceaf8e4fe92"
+          }
+        },
+        {
+          "client_id": "873211888268-ehqndpm9sv30eh2eiqhbpii32ohj8sbh.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ch.epfl.sweng.studdybuddy",
+            "certificate_hash": "6e9b690df74805e9dd47ecf5ea5d3a821a22310a"
           }
         },
         {
