@@ -191,7 +191,7 @@ public class GroupsRecyclerAdapter extends RecyclerView.Adapter<GroupsRecyclerAd
                 Availability a = new ConnectedAvailability(pair.getKey(), pair.getValue());
                 if(joinConsumer != null)
                 {
-                    Intent intent = new Intent(button.getContext(), ConnectedCalendarActivity.class);
+                    Intent intent = new Intent(button.getContext(), GroupActivity.class);
                     intent.putExtra(GroupsActivity.GROUP_ID, group.getGroupID().getId());
                     intent.putExtra(Messages.userID, userId);
                     intent.putExtra(Messages.maxUser, group.getMaxNoUsers());
