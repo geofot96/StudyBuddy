@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import ch.epfl.sweng.studdybuddy.Fragments.FeedFragment;
 import ch.epfl.sweng.studdybuddy.R;
 import ch.epfl.sweng.studdybuddy.activities.GroupActivity;
 import ch.epfl.sweng.studdybuddy.activities.GroupInfoActivity;
@@ -191,7 +192,7 @@ public class GroupsRecyclerAdapter extends RecyclerView.Adapter<GroupsRecyclerAd
                 if(joinConsumer != null)
                 {
                     Intent intent = new Intent(button.getContext(), GroupActivity.class);
-                    intent.putExtra(GroupsActivity.GROUP_ID, group.getGroupID().getId());
+                    intent.putExtra(FeedFragment.GROUP_ID, group.getGroupID().getId());
                     intent.putExtra(Messages.userID, userId);
                     intent.putExtra(Messages.maxUser, group.getMaxNoUsers());
                     joinConsumer.accept(intent);
@@ -207,7 +208,7 @@ public class GroupsRecyclerAdapter extends RecyclerView.Adapter<GroupsRecyclerAd
                 if(joinConsumer != null )
                 {
                     Intent intent = new Intent(button.getContext(), GroupInfoActivity.class);
-                    intent.putExtra(GroupsActivity.GROUP_ID, gId);
+                    intent.putExtra(FeedFragment.GROUP_ID, gId);
                     joinConsumer.accept(intent);
                 }
             }
@@ -221,7 +222,7 @@ public class GroupsRecyclerAdapter extends RecyclerView.Adapter<GroupsRecyclerAd
                 if(joinConsumer != null )
                 {
                     Intent intent = new Intent(button.getContext(), GroupActivity.class);
-                    intent.putExtra(GroupsActivity.GROUP_ID, group.getGroupID().getId());
+                    intent.putExtra(FeedFragment.GROUP_ID, group.getGroupID().getId());
                     intent.putExtra(Messages.maxUser, group.getMaxNoUsers());
                     intent.putExtra(Messages.userID, userId);
                     joinConsumer.accept(intent);

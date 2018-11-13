@@ -7,6 +7,7 @@ import android.support.test.espresso.intent.rule.IntentsTestRule;
 import org.junit.Rule;
 import org.junit.Test;
 
+import ch.epfl.sweng.studdybuddy.Fragments.FeedFragment;
 import ch.epfl.sweng.studdybuddy.activities.GroupInfoActivity;
 import ch.epfl.sweng.studdybuddy.activities.GroupsActivity;
 
@@ -27,8 +28,8 @@ public class GroupInfoActivityTest {
     public void quitButtonTest(){
         Activity activity = mActivityRule.getActivity();
         Intent intent = new Intent();
-        intent.putExtra(GroupsActivity.GROUP_ID, "1");
-        intent.putExtra(GroupsActivity.IS_PARTICIPANT, true);
+        intent.putExtra(FeedFragment.GROUP_ID, "1");
+        intent.putExtra(FeedFragment.IS_PARTICIPANT, true);
 
         mActivityRule.launchActivity(intent);
 

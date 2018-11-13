@@ -24,7 +24,7 @@ import java.util.Collections;
 import java.util.List;
 
 import ch.epfl.sweng.studdybuddy.R;
-import ch.epfl.sweng.studdybuddy.activities.CalendarActivity;
+//import ch.epfl.sweng.studdybuddy.activities.CalendarActivity;
 import ch.epfl.sweng.studdybuddy.activities.CreateGroupActivity;
 import ch.epfl.sweng.studdybuddy.activities.GroupsActivity;
 import ch.epfl.sweng.studdybuddy.core.Group;
@@ -66,23 +66,13 @@ public class FeedFragment extends Fragment
         RecyclerView rv = (RecyclerView) v.findViewById(R.id.feedRecycleViewer);
 
         sortButton = v.findViewById(R.id.sortButton);
-
         sortButton.setOnClickListener(getOnClickListener());
-
         actionButton = v.findViewById(R.id.createGroup);
-
         actionButton.setOnClickListener(getFloatingButtonListener());
 
         FirebaseReference firebase = new FirebaseReference(FirebaseDatabase.getInstance().getReference());
         String userId = ((StudyBuddy) getActivity().getApplication()).getAuthendifiedUser().getUserID().toString();
-        Consumer<Intent> buttonClickConsumer = new Consumer<Intent>()
-        {
-            @Override
-            public void accept(Intent target)
-            {
-                goToCalendarActivity(target);
-            }
-        };
+        Consumer<Intent> buttonClickConsumer = getButtonClickConsumer();
 
         mAdapter = new GroupsRecyclerAdapter(groupSet, userId, buttonClickConsumer);
         rv.setAdapter(mAdapter);
@@ -90,15 +80,34 @@ public class FeedFragment extends Fragment
         SearchView sv = (SearchView) v.findViewById(R.id.feed_search);
         setUpActivity(rv, sv, v);
         ToggleButton toggleFull = (ToggleButton) v.findViewById(R.id.toggleButton);
-        toggleFull.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
+        toggleFull.setOnCheckedChangeListener(getToggleListener());
+
+        return v;
+    }
+
+    @NonNull
+    private Consumer<Intent> getButtonClickConsumer()
+    {
+        return new Consumer<Intent>()
+        {
+            @Override
+            public void accept(Intent target)
+            {
+                moveOn(target);
+            }
+        };
+    }
+
+    @NonNull
+    private CompoundButton.OnCheckedChangeListener getToggleListener()
+    {
+        return new CompoundButton.OnCheckedChangeListener()
         {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
             {
                 toggleButtonFullBehaviour(buttonView, isChecked);
             }
-        });
-
-        return v;
+        };
     }
 
     private void setUpActivity(RecyclerView rv, SearchView sv, View v)
@@ -189,6 +198,11 @@ public class FeedFragment extends Fragment
         Collections.sort(groupList);
         mAdapter.setGroupList(groupList);
         mAdapter.notifyDataSetChanged();
+    }
+
+    public void moveOn(Intent intent)
+    {
+        startActivity(intent);
     }
 
 

@@ -55,6 +55,7 @@ public class NavigationActivity extends AppCompatActivity
                         return true;
                     case R.id.navToProfile:
                         setFragment(profileFragment);
+                        return true;
 
                     default:
                         return false;

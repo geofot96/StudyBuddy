@@ -128,7 +128,7 @@ public class ConnectedCalendarActivity extends AppCompatActivity implements ICal
     @Override
     public void confirmSlots(Bundle origin) {
         //TODO : once the GroupActivity will be correctly set, launch the GroupActivity
-        Intent newIntent = new Intent(this, GroupActivity.class);
+        Intent newIntent = new Intent(this, NavigationActivity.class);
         startActivity(newIntent.putExtras(origin));
     }
 

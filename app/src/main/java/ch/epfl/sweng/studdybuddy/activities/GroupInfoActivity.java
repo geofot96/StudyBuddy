@@ -10,6 +10,7 @@ import android.widget.Button;
 import java.util.ArrayList;
 import java.util.List;
 
+import ch.epfl.sweng.studdybuddy.Fragments.FeedFragment;
 import ch.epfl.sweng.studdybuddy.R;
 import ch.epfl.sweng.studdybuddy.core.Group;
 import ch.epfl.sweng.studdybuddy.core.User;
@@ -35,7 +36,7 @@ public class GroupInfoActivity extends AppCompatActivity{
         setContentView(R.layout.activity_group_info);
         uId = ((StudyBuddy) GroupInfoActivity.this.getApplication()).getAuthendifiedUser().getUserID().getId();
         Intent intent = getIntent();
-        gId = intent.getStringExtra(GroupsActivity.GROUP_ID);
+        gId = intent.getStringExtra(FeedFragment.GROUP_ID);
         gIds.add(gId);
         mb.getGroupsfromIds(gIds, group);
         mb.getGroupUsers(gId, participants);
@@ -53,7 +54,7 @@ public class GroupInfoActivity extends AppCompatActivity{
             public void onClick(View v) {
                 if (uId != null && gId != null) {
                     mb.removeUserFromGroup(uId, group.get(0));
-                    Intent transition = new Intent(GroupInfoActivity.this, GroupsActivity.class);
+                    Intent transition = new Intent(GroupInfoActivity.this, NavigationActivity.class);
                     startActivity(transition);
                 }
             }

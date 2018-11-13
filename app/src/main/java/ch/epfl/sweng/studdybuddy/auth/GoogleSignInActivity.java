@@ -16,6 +16,7 @@ import com.google.firebase.database.ValueEventListener;
 import ch.epfl.sweng.studdybuddy.R;
 import ch.epfl.sweng.studdybuddy.activities.CourseSelectActivity;
 import ch.epfl.sweng.studdybuddy.activities.MainActivity;
+import ch.epfl.sweng.studdybuddy.activities.NavigationActivity;
 import ch.epfl.sweng.studdybuddy.core.Account;
 import ch.epfl.sweng.studdybuddy.core.ID;
 import ch.epfl.sweng.studdybuddy.core.User;
@@ -60,7 +61,7 @@ public class GoogleSignInActivity extends AppCompatActivity {
             String personName = acct.getDisplayName();
             //appears only when the user is connected
             Toast.makeText(this, "Welcome " + personName, Toast.LENGTH_SHORT).show();
-            fetchUserAndStart(acct, MainActivity.class);
+            fetchUserAndStart(acct, NavigationActivity.class);
         } else {
             //appears only when the user isn't connected to the app
             Toast.makeText(this, "No User", Toast.LENGTH_SHORT).show();
