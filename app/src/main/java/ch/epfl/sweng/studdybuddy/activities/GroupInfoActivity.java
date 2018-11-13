@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import ch.epfl.sweng.studdybuddy.R;
@@ -18,18 +19,21 @@ import ch.epfl.sweng.studdybuddy.core.User;
 import ch.epfl.sweng.studdybuddy.firebase.FirebaseReference;
 import ch.epfl.sweng.studdybuddy.firebase.MetaGroup;
 import ch.epfl.sweng.studdybuddy.services.calendar.ConnectedAvailability;
+import ch.epfl.sweng.studdybuddy.firebase.MetaGroupAdmin;
 import ch.epfl.sweng.studdybuddy.util.ParticipantAdapter;
 import ch.epfl.sweng.studdybuddy.util.RecyclerAdapterAdapter;
 import ch.epfl.sweng.studdybuddy.util.StudyBuddy;
 
 public class GroupInfoActivity extends AppCompatActivity{
     List<User> participants  = new ArrayList<>();
-    MetaGroup mb  = new MetaGroup();
+    MetaGroupAdmin mb  = new MetaGroupAdmin();
     private RecyclerView participantsRv;
     private ParticipantAdapter participantAdapter;
     private String uId;
     private String gId;
     Button button;
+    List<Group> group = new ArrayList<>();
+    List<String> gIds = new ArrayList<>();
     private Boolean isParticipant = false;
     @Override
     public void onCreate(Bundle savedInstanceState){
@@ -37,8 +41,10 @@ public class GroupInfoActivity extends AppCompatActivity{
         setContentView(R.layout.activity_group_info);
         uId = ((StudyBuddy) GroupInfoActivity.this.getApplication()).getAuthendifiedUser().getUserID().getId();
         Intent intent = getIntent();
-            gId = intent.getStringExtra(GroupsActivity.GROUP_ID);
-            mb.getGroupUsers(gId, participants);
+        gId = intent.getStringExtra(GroupsActivity.GROUP_ID);
+        gIds.add(gId);
+        mb.getGroupsfromIds(gIds, group);
+        mb.getGroupUsers(gId, participants);
         setUI();
     }
 
@@ -52,8 +58,9 @@ public class GroupInfoActivity extends AppCompatActivity{
             @Override
             public void onClick(View v) {
                 if (uId != null && gId != null) {
-                    mb.removeGroup(new Pair(uId, gId));
                     ConnectedAvailability.removeAvailabiliity(new ID<Group>(gId), new ID<User>(uId), new FirebaseReference());
+
+                    mb.removeUserFromGroup(uId, group.get(0));
                     Intent transition = new Intent(GroupInfoActivity.this, GroupsActivity.class);
                     startActivity(transition);
                 }

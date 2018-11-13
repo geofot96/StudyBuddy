@@ -20,7 +20,9 @@ import ch.epfl.sweng.studdybuddy.firebase.ReferenceWrapper;
 import static ch.epfl.sweng.studdybuddy.MetaFactory.deepFBReference;
 import static ch.epfl.sweng.studdybuddy.util.CoreFactory.blankGroupWId;
 import static ch.epfl.sweng.studdybuddy.util.CoreFactory.userGroup1;
+import static ch.epfl.sweng.studdybuddy.util.CoreFactory.withAdmin;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
@@ -84,7 +86,11 @@ public class MetaGroupAdminTest {
     }
 
     @Test
-    public void leaveGroup() {
-
+    public void removeUserFromGroupReturnsNull() {
+        assertEquals(null, mg.removeUserFromGroup("notingroup", ghostGroup));
+        verify(testref, times(1)).child("userGroup");
+    }
+    @Test public void removeUserFromGroupDoesNotReturnNull() {
+        assertNotNull(mg.removeUserFromGroup("123", withAdmin("123")));
     }
 }
