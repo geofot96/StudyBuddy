@@ -30,7 +30,7 @@ public class MergedCalendarFragment extends Fragment
     boolean c1[][]={{true,true,true,false,false,false,false,false,false,false,false},
             {false,false,false,false,false,false,false,false,false,false,true},
             {false,false,false,false,false,false,false,false,false,true,false},
-            {false,false,false,false,false,false,false,false,true,false,false},
+            {false,false,false,true,false,false,false,false,true,false,false},
             {false,false,false,false,false,false,false,true,false,false,false},
             {false,false,false,false,false,false,true,false,false,false,false},
             {false,false,false,false,false,true,false,false,false,false,false}};
@@ -95,7 +95,7 @@ public class MergedCalendarFragment extends Fragment
         else
         {
             double gradient=(((255.0/calendarNumber)*(calendarNumber-timesSelected))+60)%255;
-            cardView.setCardBackgroundColor(Color.rgb(0,(int)gradient,0));
+            cardView.setCardBackgroundColor(Color.rgb(0,255,0));
         }
     }
 
