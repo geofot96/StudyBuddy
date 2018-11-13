@@ -80,22 +80,4 @@ public class MainActivity extends AppCompatActivity
         startActivity(intent);
     }
 
-    public void goToCalendarActivity(View view)
-    {
-        String dummyGroupID = "3f99660b-79d0-42d2-aecb-e7eedbafcb41";
-        String dummyUserID = "ZqHa4GLFGEfbuQW9gO6E0kndWNw2";
-        Integer dummyInt = new Integer(6);
-        Intent intent = new Intent(this, GroupActivity.class);
-        intent.putExtra(Messages.groupID, dummyGroupID);
-        intent.putExtra(Messages.userID, dummyUserID);
-        intent.putExtra(Messages.maxUser, dummyInt);
-        startActivity(intent);
-    }
-    public void goToMergedCalendarActivity(View view)
-    {
-        Intent intent = new Intent(this, MergedCalendarActivity.class);
-        startActivity(intent);
-    }
-
-
 }

@@ -4,4 +4,6 @@
     <string name="title_activity_groups">GroupsActivity</string>
     <string name="participants">Participants</string>
     <string name="calendar">Calendar</string>
+    <string name="groups">Groups</string>
+    <string name="profile">Profile</string>
 </resources>

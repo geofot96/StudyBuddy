@@ -10,9 +10,10 @@
         android:id="@+id/gotoGroups"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
         android:onClick="gotoGroups"
-        android:text="Groups"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:text="@string/groups"
+        app:layout_constraintBottom_toTopOf="@+id/go_to_profile_btn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -25,7 +26,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:text="sign out"
+        android:text="@string/sign_out"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -36,39 +37,9 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="62dp"
         android:onClick="goToProfileTabred"
-        android:text="Profile"
+        android:text="@string/profile"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
-
-    <Button
-        android:id="@+id/calendarButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="145dp"
-        android:layout_marginTop="58dp"
-        android:layout_marginEnd="151dp"
-        android:layout_marginBottom="8dp"
-        android:onClick="goToCalendarActivity"
-        android:text="Calendar"
-        app:layout_constraintBottom_toTopOf="@+id/mergedCalendar"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.418"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/gotoGroups"
-        app:layout_constraintVertical_bias="0.0" />
-
-    <Button
-        android:id="@+id/mergedCalendar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginTop="8dp"
-        android:onClick="goToMergedCalendarActivity"
-        android:text="Merged Calendar"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/calendarButton" />
 
 </android.support.constraint.ConstraintLayout>

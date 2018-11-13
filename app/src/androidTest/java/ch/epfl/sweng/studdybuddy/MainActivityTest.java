@@ -7,9 +7,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import ch.epfl.sweng.studdybuddy.activities.ConnectedCalendarActivity;
 import ch.epfl.sweng.studdybuddy.activities.GroupsActivity;
-import ch.epfl.sweng.studdybuddy.activities.MergedCalendarActivity;
 import ch.epfl.sweng.studdybuddy.activities.ProfileTab;
 import ch.epfl.sweng.studdybuddy.auth.DummyMainActivity;
 
@@ -29,16 +27,6 @@ public class MainActivityTest {
     @Test
     public void clickGoToGroupsGoToGroupsActivity() {
         testIntent(R.id.gotoGroups, GroupsActivity.class.getName());
-    }
-
-    @Test
-    public void clickToCalendarGoesToCalendarActivity() {
-        //testIntent(R.id.calendarButton, ConnectedCalendarActivity.class.getName());
-    }
-
-    @Test
-    public void clickToMergedCalendarGoesToMergedCalendarActivity() {
-        testIntent(R.id.mergedCalendar, MergedCalendarActivity.class.getName());
     }
 
     public void testIntent(int id, String name) {
