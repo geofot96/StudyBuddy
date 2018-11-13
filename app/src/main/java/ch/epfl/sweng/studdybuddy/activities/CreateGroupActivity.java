@@ -39,7 +39,6 @@ public class CreateGroupActivity extends AppCompatActivity implements AdapterVie
 
     private static final List<String> courseSelection = new ArrayList<>();
     private static AutoCompleteTextView textView;
-
     FirebaseReference firebase;
     MetaGroup mb;
     Button create;

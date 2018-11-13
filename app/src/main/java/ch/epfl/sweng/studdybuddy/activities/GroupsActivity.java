@@ -5,9 +5,6 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-
-import java.util.Collections;
-
 import android.support.v7.widget.SearchView;
 import android.view.View;
 import android.widget.CompoundButton;
@@ -19,20 +16,20 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import ch.epfl.sweng.studdybuddy.util.AdapterConsumer;
-import ch.epfl.sweng.studdybuddy.core.Course;
-import ch.epfl.sweng.studdybuddy.firebase.FirebaseReference;
+import ch.epfl.sweng.studdybuddy.R;
 import ch.epfl.sweng.studdybuddy.core.Group;
+import ch.epfl.sweng.studdybuddy.firebase.FirebaseReference;
+import ch.epfl.sweng.studdybuddy.util.AdapterConsumer;
 import ch.epfl.sweng.studdybuddy.util.Consumer;
 import ch.epfl.sweng.studdybuddy.util.GroupsRecyclerAdapter;
-import ch.epfl.sweng.studdybuddy.R;
 import ch.epfl.sweng.studdybuddy.util.RecyclerAdapterAdapter;
-import ch.epfl.sweng.studdybuddy.activities.CreateGroupActivity;
 import ch.epfl.sweng.studdybuddy.util.StudyBuddy;
 
 public class GroupsActivity extends AppCompatActivity {
     GroupsRecyclerAdapter mAdapter;
-    static List<Group> groupSet = new ArrayList<>();
+		static List<Group> groupSet  = new ArrayList<>();
+    public static final String GROUP_ID = "ch.epfl.sweng.studdybuddy.groupId";
+    public static final String IS_PARTICIPANT ="ch.epfl.sweng.studdybuddy.particip";
     static List<Group> filteredGroupSet = new ArrayList<>();
 
     @Override
@@ -43,13 +40,12 @@ public class GroupsActivity extends AppCompatActivity {
 
         FirebaseReference firebase = new FirebaseReference(FirebaseDatabase.getInstance().getReference());
         String userId = ((StudyBuddy) GroupsActivity.this.getApplication()).getAuthendifiedUser().getUserID().toString();
-        Consumer<Object> consumer = new Consumer<Object>() {
+        Consumer<Intent> buttonClickConsumer = new Consumer<Intent>() {
             @Override
-            public void accept(Object o) {
-                goToCalendarActivity();
-            }
-        };
-        mAdapter = new GroupsRecyclerAdapter(groupSet, userId, consumer);
+            public void accept(Intent target) { goToCalendarActivity(target); }};
+
+        mAdapter = new GroupsRecyclerAdapter(groupSet,userId, buttonClickConsumer);
+        rv.setAdapter(mAdapter);
         firebase.select("groups").getAll(Group.class, AdapterConsumer.adapterConsumer(Group.class, groupSet, new RecyclerAdapterAdapter(mAdapter)));
         SearchView sv = (SearchView) findViewById(R.id.feed_search);
         setUpActivity(rv, sv);
@@ -111,11 +107,8 @@ public class GroupsActivity extends AppCompatActivity {
         mAdapter.notifyDataSetChanged();
     }
 
-
-
-    public void goToCalendarActivity() {
-        Intent intent = new Intent(this, CalendarActivity.class);
-        startActivity(intent);
+    public void goToCalendarActivity(Intent target){
+        startActivity(target);
     }
 
 }

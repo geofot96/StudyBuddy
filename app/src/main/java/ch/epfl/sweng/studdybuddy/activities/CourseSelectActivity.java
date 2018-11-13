@@ -20,19 +20,19 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.util.ArrayList;
 import java.util.List;
 
+import ch.epfl.sweng.studdybuddy.R;
+import ch.epfl.sweng.studdybuddy.auth.AuthManager;
+import ch.epfl.sweng.studdybuddy.auth.FirebaseAuthManager;
+import ch.epfl.sweng.studdybuddy.core.Pair;
+import ch.epfl.sweng.studdybuddy.core.User;
+import ch.epfl.sweng.studdybuddy.firebase.FirebaseReference;
+import ch.epfl.sweng.studdybuddy.firebase.ReferenceWrapper;
 import ch.epfl.sweng.studdybuddy.util.AdapterConsumer;
 import ch.epfl.sweng.studdybuddy.util.ArrayAdapterAdapter;
-import ch.epfl.sweng.studdybuddy.auth.AuthManager;
 import ch.epfl.sweng.studdybuddy.util.CourseAdapter;
-import ch.epfl.sweng.studdybuddy.util.CourseHolder;
-import ch.epfl.sweng.studdybuddy.auth.FirebaseAuthManager;
-import ch.epfl.sweng.studdybuddy.firebase.FirebaseReference;
-import ch.epfl.sweng.studdybuddy.core.Pair;
-import ch.epfl.sweng.studdybuddy.R;
-import ch.epfl.sweng.studdybuddy.firebase.ReferenceWrapper;
-import ch.epfl.sweng.studdybuddy.util.StudyBuddy;
-import ch.epfl.sweng.studdybuddy.core.User;
 import ch.epfl.sweng.studdybuddy.util.Helper;
+import ch.epfl.sweng.studdybuddy.util.Holder;
+import ch.epfl.sweng.studdybuddy.util.StudyBuddy;
 
 import static ch.epfl.sweng.studdybuddy.util.ActivityHelper.showDropdown;
 
@@ -128,7 +128,7 @@ public class CourseSelectActivity extends AppCompatActivity
                    @Override
                    public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int i)
                    {
-                       CourseHolder cc = (CourseHolder) viewHolder;
+                       Holder cc = (Holder) viewHolder;
                        courseSelection.remove(courseSelection.indexOf(cc.get()));
                        selectedCourses.getAdapter().notifyDataSetChanged();
                        if(courseSelection.size() == 0)

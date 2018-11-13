@@ -64,8 +64,7 @@ ProfileTab extends AppCompatActivity {
 
         adCourse = new CourseAdapter(userCourses);
         recyclerView_courses = (RecyclerView) findViewById(R.id.courses_list);
-        recyclerView_courses.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView_courses.setAdapter(adCourse);
+        adCourse.initRecyclerView(this, recyclerView_courses);
 
         ad = new GroupsRecyclerAdapter(userGroups, userID);
         recyclerView_groups = (RecyclerView) findViewById(R.id.groups_list);
