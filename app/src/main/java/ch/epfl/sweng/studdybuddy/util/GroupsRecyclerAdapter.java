@@ -18,6 +18,7 @@ import java.util.List;
 
 import ch.epfl.sweng.studdybuddy.R;
 import ch.epfl.sweng.studdybuddy.activities.CalendarActivity;
+import ch.epfl.sweng.studdybuddy.activities.ConnectedCalendarActivity;
 import ch.epfl.sweng.studdybuddy.activities.GroupInfoActivity;
 import ch.epfl.sweng.studdybuddy.activities.GroupsActivity;
 import ch.epfl.sweng.studdybuddy.core.Group;
@@ -25,6 +26,8 @@ import ch.epfl.sweng.studdybuddy.core.Pair;
 import ch.epfl.sweng.studdybuddy.firebase.FirebaseReference;
 import ch.epfl.sweng.studdybuddy.firebase.MetaGroup;
 import ch.epfl.sweng.studdybuddy.firebase.ReferenceWrapper;
+import ch.epfl.sweng.studdybuddy.services.calendar.Availability;
+import ch.epfl.sweng.studdybuddy.services.calendar.ConnectedAvailability;
 
 public class GroupsRecyclerAdapter extends RecyclerView.Adapter<GroupsRecyclerAdapter.MyViewHolder> implements Filterable
 {
@@ -176,10 +179,13 @@ public class GroupsRecyclerAdapter extends RecyclerView.Adapter<GroupsRecyclerAd
             public void onClick(View v) {
                 Pair pair =new Pair(userId, group.getGroupID().toString());
                 fb.select("userGroup").select(Helper.hashCode(pair)).setVal(pair);
+                Availability a = new ConnectedAvailability(pair.getKey(), pair.getValue());
                 if(joinConsumer != null)
                 {
-                    Intent intent = new Intent(button.getContext(), CalendarActivity.class);
+                    Intent intent = new Intent(button.getContext(), ConnectedCalendarActivity.class);
                     intent.putExtra(GroupsActivity.GROUP_ID, group.getGroupID().getId());
+                    intent.putExtra(Messages.userID, userId);
+                    intent.putExtra(Messages.maxUser, group.getMaxNoUsers());
                     joinConsumer.accept(intent);
                 }
             }

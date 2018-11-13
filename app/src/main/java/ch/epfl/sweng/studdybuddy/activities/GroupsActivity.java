@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
+import android.util.Pair;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.ToggleButton;
@@ -43,7 +44,7 @@ public class GroupsActivity extends AppCompatActivity {
         String userId = ((StudyBuddy) GroupsActivity.this.getApplication()).getAuthendifiedUser().getUserID().toString();
         Consumer<Intent> buttonClickConsumer = new Consumer<Intent>() {
             @Override
-            public void accept(Intent target) { goToCalendarActivity(target); }};
+            public void accept(Intent target) { goToGroupActivity(target); }};
 
         mAdapter = new GroupsRecyclerAdapter(groupSet,userId, buttonClickConsumer);
         rv.setAdapter(mAdapter);
@@ -108,11 +109,8 @@ public class GroupsActivity extends AppCompatActivity {
         mAdapter.notifyDataSetChanged();
     }
 
-    public void goToGroupActivity(Pair pair)
+    public void goToGroupActivity(Intent intent)
     {
-        Intent intent = new Intent(this, GroupActivity.class);
-        intent.putExtra(Messages.userID, pair.getKey());
-        intent.putExtra(Messages.groupID, pair.getValue());
         startActivity(intent);
     }
 
