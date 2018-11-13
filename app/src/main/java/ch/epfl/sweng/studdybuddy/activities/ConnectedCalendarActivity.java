@@ -73,17 +73,11 @@ public class ConnectedCalendarActivity extends AppCompatActivity implements ICal
             throw new NullPointerException("the intent didn't content expected data");
         }
 
-        calendar = new ConnectedCalendar(new ID<>(pair.getKey()), new HashMap<>());
-
-        database = FirebaseDatabase.getInstance().getReference("availabilities").child(pair.getKey());
-        database.addChildEventListener(new AvailabilitiesChildEventListener());
-
-        readData(database.child(pair.getValue()), new AvailabilitiesOnDataGetListener());
+        connect();
 
         setOnToggleBehavior(calendarGrid);
 
-        button.setOnClickListener(new View.OnClickListener()
-        {
+        button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v)
             {
@@ -92,6 +86,14 @@ public class ConnectedCalendarActivity extends AppCompatActivity implements ICal
         });
     }
 
+    public void connect() {
+        calendar = new ConnectedCalendar(new ID<>(pair.getKey()), new HashMap<>());
+
+        database = FirebaseDatabase.getInstance().getReference("availabilities").child(pair.getKey());
+        database.addChildEventListener(new AvailabilitiesChildEventListener());
+
+        readData(database.child(pair.getValue()), new AvailabilitiesOnDataGetListener());
+    }
     /**
      * Set the behavior of every cell of the calendar so that
      * clicking on any cell will modify our availabilities in the

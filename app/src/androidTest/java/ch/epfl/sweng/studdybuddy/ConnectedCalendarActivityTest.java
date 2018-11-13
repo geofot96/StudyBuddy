@@ -67,13 +67,11 @@ public class ConnectedCalendarActivityTest{
      */
     private boolean checkAreWhite(int start) {
         CardView cardView;
-        for (int i = start; i < 88; i++) {
-            if (i % 8 != 0) {
+        for (int i = start; i < 88; i += (i % 8 == 7) ? 2 : 1) {
                 cardView = (CardView) calendar.getChildAt(i);
                 if (cardView.getCardBackgroundColor().getDefaultColor() != -1) {
                     return false;
                 }
-            }
         }
         return true;
     }
