@@ -42,7 +42,7 @@ public class GroupsActivity extends AppCompatActivity {
         String userId = ((StudyBuddy) GroupsActivity.this.getApplication()).getAuthendifiedUser().getUserID().toString();
         Consumer<Intent> buttonClickConsumer = new Consumer<Intent>() {
             @Override
-            public void accept(Intent target) { goToCalendarActivity(target); }};
+            public void accept(Intent target) { moveOn(target); }};
 
         mAdapter = new GroupsRecyclerAdapter(groupSet,userId, buttonClickConsumer);
         rv.setAdapter(mAdapter);
@@ -107,8 +107,9 @@ public class GroupsActivity extends AppCompatActivity {
         mAdapter.notifyDataSetChanged();
     }
 
-    public void goToCalendarActivity(Intent target){
-        startActivity(target);
+    public void moveOn(Intent intent)
+    {
+        startActivity(intent);
     }
 
 }

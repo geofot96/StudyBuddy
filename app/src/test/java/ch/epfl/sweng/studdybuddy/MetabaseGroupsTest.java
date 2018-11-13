@@ -6,7 +6,6 @@ import com.google.firebase.database.DatabaseReference;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -14,9 +13,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
-import ch.epfl.sweng.studdybuddy.core.Course;
 import ch.epfl.sweng.studdybuddy.core.Group;
 import ch.epfl.sweng.studdybuddy.core.Pair;
 import ch.epfl.sweng.studdybuddy.core.User;
@@ -27,7 +24,6 @@ import ch.epfl.sweng.studdybuddy.util.Helper;
 import static ch.epfl.sweng.studdybuddy.MetaFactory.deepFBReference;
 import static ch.epfl.sweng.studdybuddy.util.CoreFactory.blankGroupWId;
 import static ch.epfl.sweng.studdybuddy.util.CoreFactory.groups1;
-import static ch.epfl.sweng.studdybuddy.util.CoreFactory.johnDoe;
 import static ch.epfl.sweng.studdybuddy.util.CoreFactory.userGroup1;
 import static ch.epfl.sweng.studdybuddy.util.CoreFactory.users1;
 import static org.junit.Assert.assertEquals;

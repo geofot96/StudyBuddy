@@ -17,7 +17,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import ch.epfl.sweng.studdybuddy.R;
-import ch.epfl.sweng.studdybuddy.activities.CalendarActivity;
+import ch.epfl.sweng.studdybuddy.activities.GroupActivity;
 import ch.epfl.sweng.studdybuddy.activities.GroupInfoActivity;
 import ch.epfl.sweng.studdybuddy.activities.GroupsActivity;
 import ch.epfl.sweng.studdybuddy.core.Group;
@@ -25,6 +25,8 @@ import ch.epfl.sweng.studdybuddy.core.Pair;
 import ch.epfl.sweng.studdybuddy.firebase.FirebaseReference;
 import ch.epfl.sweng.studdybuddy.firebase.MetaGroup;
 import ch.epfl.sweng.studdybuddy.firebase.ReferenceWrapper;
+import ch.epfl.sweng.studdybuddy.services.calendar.Availability;
+import ch.epfl.sweng.studdybuddy.services.calendar.ConnectedAvailability;
 
 public class GroupsRecyclerAdapter extends RecyclerView.Adapter<GroupsRecyclerAdapter.MyViewHolder> implements Filterable
 {
@@ -123,8 +125,7 @@ public class GroupsRecyclerAdapter extends RecyclerView.Adapter<GroupsRecyclerAd
         holder.groupCourseTextView.setText(group.getCourse().getCourseName());
         holder.groupLanguageTextView.setText(group.getLang());
         holder.groupCreationDateTextView.setText(getCreationDate(group));
-        Button button = holder.messageButton;
-        button.setText("More info");
+        //Button button = holder.messageButton;
         setParticipantNumber(holder.groupParticipantInfoTextView, group);
         setButton(holder.messageButton, group);
         if(userId.equals(group.getAdminID())) {
@@ -159,12 +160,23 @@ public class GroupsRecyclerAdapter extends RecyclerView.Adapter<GroupsRecyclerAd
         if(gSize != null){
             groupSize = gSize.intValue();
         }
+        button.setText("Join");
+        //Pair pair =new Pair(userId, group.getGroupID().toString());
         if(groupSize < group.getMaxNoUsers()
                 &&!uGroupIds.contains(group.getGroupID().getId())) {
             button.setText("Join");
             button.setOnClickListener(joinButtonListener(group, button));
-        }else{
+        }else {
             button.setText("More Info");
+            getTheRightMoreInfo(button, group, uGroupIds.contains(group.getGroupID().getId()));
+
+        }
+    }
+
+    private void getTheRightMoreInfo(Button button, Group group, boolean contains) {
+        if (contains) {
+            button.setOnClickListener(moreInfoListenerIfInTheGroup(button, group));
+        } else {
             button.setOnClickListener(moreInfoListener(button, group.getGroupID().getId()));
         }
     }
@@ -175,10 +187,13 @@ public class GroupsRecyclerAdapter extends RecyclerView.Adapter<GroupsRecyclerAd
             public void onClick(View v) {
                 Pair pair =new Pair(userId, group.getGroupID().toString());
                 fb.select("userGroup").select(Helper.hashCode(pair)).setVal(pair);
+                Availability a = new ConnectedAvailability(pair.getKey(), pair.getValue());
                 if(joinConsumer != null)
                 {
-                    Intent intent = new Intent(button.getContext(), CalendarActivity.class);
+                    Intent intent = new Intent(button.getContext(), GroupActivity.class);
                     intent.putExtra(GroupsActivity.GROUP_ID, group.getGroupID().getId());
+                    intent.putExtra(Messages.userID, userId);
+                    intent.putExtra(Messages.maxUser, group.getMaxNoUsers());
                     joinConsumer.accept(intent);
                 }
             }
@@ -193,6 +208,22 @@ public class GroupsRecyclerAdapter extends RecyclerView.Adapter<GroupsRecyclerAd
                 {
                     Intent intent = new Intent(button.getContext(), GroupInfoActivity.class);
                     intent.putExtra(GroupsActivity.GROUP_ID, gId);
+                    joinConsumer.accept(intent);
+                }
+            }
+        };
+    }
+
+    private View.OnClickListener moreInfoListenerIfInTheGroup(Button button, Group group){
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(joinConsumer != null )
+                {
+                    Intent intent = new Intent(button.getContext(), GroupActivity.class);
+                    intent.putExtra(GroupsActivity.GROUP_ID, group.getGroupID().getId());
+                    intent.putExtra(Messages.maxUser, group.getMaxNoUsers());
+                    intent.putExtra(Messages.userID, userId);
                     joinConsumer.accept(intent);
                 }
             }

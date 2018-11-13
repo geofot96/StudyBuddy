@@ -1,7 +1,5 @@
 package ch.epfl.sweng.studdybuddy.util;
 
-import android.widget.SearchView;
-
 import java.util.List;
 
 final public class AdapterConsumer {

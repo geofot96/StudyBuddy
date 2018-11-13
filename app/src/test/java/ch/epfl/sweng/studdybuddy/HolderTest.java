@@ -9,7 +9,6 @@ import org.junit.Test;
 import ch.epfl.sweng.studdybuddy.util.Holder;
 
 import static junit.framework.TestCase.assertEquals;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
