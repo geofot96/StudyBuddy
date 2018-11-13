@@ -6,6 +6,7 @@ import ch.epfl.sweng.studdybuddy.core.Group;
 import ch.epfl.sweng.studdybuddy.core.ID;
 import ch.epfl.sweng.studdybuddy.core.User;
 import ch.epfl.sweng.studdybuddy.firebase.FirebaseReference;
+import ch.epfl.sweng.studdybuddy.firebase.ReferenceWrapper;
 
 /**
  * The ConnectedAvailability is linked to an instance of Availability and will
@@ -13,7 +14,7 @@ import ch.epfl.sweng.studdybuddy.firebase.FirebaseReference;
  */
 public class ConnectedAvailability implements Availability {
     private Availability A;
-    private FirebaseReference ref;
+    private ReferenceWrapper ref;
     private String userID;
     private String groupID;
 
@@ -25,7 +26,7 @@ public class ConnectedAvailability implements Availability {
         this(user, group, A, new FirebaseReference());
     }
 
-    public ConnectedAvailability(String user, String group, Availability A, FirebaseReference ref){
+    public ConnectedAvailability(String user, String group, Availability A, ReferenceWrapper ref){
         this.A = A;
         this.ref = ref;
         this.userID = user;
@@ -53,7 +54,7 @@ public class ConnectedAvailability implements Availability {
         ref.select("availabilities").select(groupID).select(userID).setVal(A.getUserAvailabilities());
     }
 
-    public static void removeAvailabiliity(ID<Group> group, ID<User> user, FirebaseReference ref){
+    public static void removeAvailabiliity(ID<Group> group, ID<User> user, ReferenceWrapper ref){
         ref.select("availabilities").select(group.getId()).select(user.getId()).clear();
     }
 }
