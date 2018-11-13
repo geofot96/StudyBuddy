@@ -2,28 +2,27 @@ package ch.epfl.sweng.studdybuddy;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
-
 import com.google.firebase.database.ValueEventListener;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 import org.junit.Assert;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 
 import ch.epfl.sweng.studdybuddy.core.Course;
 import ch.epfl.sweng.studdybuddy.core.Group;
 import ch.epfl.sweng.studdybuddy.firebase.FirebaseReference;
 import ch.epfl.sweng.studdybuddy.util.Consumer;
+
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class FirebaseReferenceTest {
 
@@ -37,7 +36,7 @@ public class FirebaseReferenceTest {
         DataSnapshot dataSnapshot = mock(DataSnapshot.class);
         //when(testref.setValue("key")).th;
 
-        Group emptyGroup = new Group(3, new Course("SDP"), "fr");
+        Group emptyGroup = new Group(3, new Course("SDP"), "fr", UUID.randomUUID().toString());
         when(dataSnapshot.getValue(Group.class)).thenReturn(emptyGroup);
         when(dataSnapshot.getChildren()).thenReturn(Arrays.asList(dataSnapshot));
         ArgumentCaptor<ValueEventListener> argument = ArgumentCaptor.forClass(ValueEventListener.class);
@@ -62,9 +61,11 @@ public class FirebaseReferenceTest {
         DatabaseReference testRef = mock(DatabaseReference.class);
         DatabaseReference childRef = mock(DatabaseReference.class);
         when(testRef.child("child")).thenReturn(childRef);
+        when(childRef.getParent()).thenReturn(testRef);
         FirebaseReference ref = new FirebaseReference(testRef);
         FirebaseReference res = (FirebaseReference) ref.select("child");
         Assert.assertThat(res.getRef(), is(childRef));
+        Assert.assertThat(res.getParent().getRef(), is(testRef));
     }
 
     /*@Test
@@ -85,7 +86,7 @@ public class FirebaseReferenceTest {
         FirebaseReference fb = new FirebaseReference(db);
 
         DataSnapshot ds = mock(DataSnapshot.class);
-        final Group clp = new Group(10,new Course("CLP"), "EN");
+        final Group clp = new Group(10,new Course("CLP"), "EN",  UUID.randomUUID().toString());
 
 
         when(ds.getValue(Group.class)).thenReturn(clp);

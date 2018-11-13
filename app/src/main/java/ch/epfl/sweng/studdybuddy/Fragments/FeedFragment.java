@@ -40,7 +40,10 @@ public class FeedFragment extends Fragment
 {
 
     GroupsRecyclerAdapter mAdapter;
-    static List<Group> groupSet = new ArrayList<>();
+		static List<Group> groupSet  = new ArrayList<>();
+    public static final String GROUP_ID = "ch.epfl.sweng.studdybuddy.groupId";
+    public static final String IS_PARTICIPANT ="ch.epfl.sweng.studdybuddy.particip";
+    static List<Group> filteredGroupSet = new ArrayList<>();
     Button sortButton;
     FloatingActionButton actionButton;
 
@@ -71,7 +74,7 @@ public class FeedFragment extends Fragment
         sv.onActionViewExpanded();
         sv.clearFocus();
         sv.setOnQueryTextListener(getListener());
-
+        setUpActivity(rv, sv);
         sortButton = v.findViewById(R.id.sortButton);
 
         sortButton.setOnClickListener(getOnClickListener());
@@ -79,10 +82,35 @@ public class FeedFragment extends Fragment
         actionButton = v.findViewById(R.id.createGroup);
 
         actionButton.setOnClickListener(getFloatingButtonListener());
+/*
+        ToggleButton toggleFull = (ToggleButton) findViewById(R.id.toggleButton);
+        toggleFull.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) { toggleButtonFullBehaviour(buttonView,isChecked);}});
 
+*/
         return v;
     }
 
+    public void toggleButtonFullBehaviour(CompoundButton buttonView, boolean isChecked)
+    {
+        if (isChecked) {
+            filteredGroupSet.clear();
+            selectOnlyAvailableGroups();
+            mAdapter.setGroupList(filteredGroupSet);
+            mAdapter.setFilterList(filteredGroupSet);
+        } else {
+            mAdapter.setGroupList(groupSet);
+            mAdapter.setFilterList(groupSet);
+        }
+        mAdapter.notifyDataSetChanged();
+    }
+
+    private void selectOnlyAvailableGroups() {
+        for (Group g : groupSet) {
+            if (g.getMaxNoUsers() > mAdapter.getParticipantNumber(g))
+                filteredGroupSet.add(g);
+        }
+    }
     @NonNull
     private View.OnClickListener getFloatingButtonListener()
     {
@@ -95,6 +123,26 @@ public class FeedFragment extends Fragment
                 startActivity(intent);
             }
         };
+    }
+
+    private void setUpActivity(RecyclerView rv, SearchView sv) {
+        rv.setHasFixedSize(true);
+        rv.setLayoutManager(new LinearLayoutManager(this));
+        rv.setAdapter(mAdapter);
+        sv.onActionViewExpanded();
+        sv.clearFocus();
+        sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String query) {
+                mAdapter.getFilter().filter(query);
+                return false;
+            }
+        });
     }
 
     @NonNull
@@ -156,5 +204,7 @@ public class FeedFragment extends Fragment
         Intent intent = new Intent(v.getContext(), CalendarActivity.class);
         startActivity(intent);
     }
+
+
 
 }

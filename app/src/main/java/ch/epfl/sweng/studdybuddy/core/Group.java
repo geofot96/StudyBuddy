@@ -9,12 +9,23 @@ import java.util.UUID;
  * course is the course for which the group is created
  * participants is the actual group members
  */
-public class Group implements Comparable<Group> {
+public final class Group implements Comparable<Group> {
     private int maxNoUsers;
     private Course course;
 
     private ID<Group> groupID; //TODO add getters and setters
-    private String language;
+    private String lang;
+
+    public String getAdminID() {
+        return adminID;
+    }
+
+    public void setAdminID(String adminID) {
+        this.adminID = adminID;
+    }
+
+    private String adminID;
+
     public SerialDate getCreationDate() {
         return creationDate;
     }
@@ -31,37 +42,22 @@ public class Group implements Comparable<Group> {
     public Group() {}
 
 
-    public Group(int maxNoUsers, Course course, String lang)
-    {
-        this(maxNoUsers, course, lang, UUID.randomUUID().toString());
+    public Group(int maxNoUsers, Course course, String lang, String adminID) {
+        this(maxNoUsers, course, lang, UUID.randomUUID().toString(), adminID);
     }
 
-    public Group(int maxNoUsers, Course course, String lang, String gId)
-    {
+    public Group(int maxNoUsers, Course course, String lang, String gId, String adminID) {
         this();
-        if(maxNoUsers <= 0)
-        {
+        if(maxNoUsers <= 0) {
             throw new IllegalArgumentException("Participants number must be > 0 and maximum number of participants must be positive");
         }
-
-
         this.groupID = new ID<>(gId);
         this.maxNoUsers = maxNoUsers;
         this.course = course;
-        this.language = lang;
+        this.lang = lang;
         this.creationDate = new SerialDate();
+        this.adminID = adminID;
     }
-
-    /*public Group(Group sourceGroup)
-    {
-        this();
-        //TODO why do we need this constructor and what do we do with the date
-        this.course = sourceGroup.getCourse();
-        this.maxNoUsers = sourceGroup.getMaxNoUsers();
-        this.language = sourceGroup.language;
-        this.creationDate = new SerialDate();
-    }*/
-
 
     public ID<Group> getGroupID()
     {
@@ -100,15 +96,17 @@ public class Group implements Comparable<Group> {
 
     public String getLang()
     {
-        return language;
+        return lang;
     }
 
     public void setLang(String language)
     {
-        this.language = language;
+        this.lang = language;
     }
 
-
+    public Group withAdmin(String adminID) {
+        return new Group(maxNoUsers, course, lang, groupID.getId(), adminID);
+    }
 
     @Override
     public int compareTo(Group group)
