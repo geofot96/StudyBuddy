@@ -101,12 +101,12 @@ public class GroupsRecyclerAdapter extends RecyclerView.Adapter<GroupsRecyclerAd
         return vh;
     }
 
-    private String getCreationDate(Group group){
-        Integer day =  group.getCreationDate().getDay();
+    public static String getCreationDate(Group group){
+        Integer day =  group.getCreationDate().getDate();
         String string_day = day.toString();
-        Integer month =  group.getCreationDate().getMonth();
+        Integer month = 1 + group.getCreationDate().getMonth();
         String string_month = month.toString();
-        Integer year = group.getCreationDate().getYear();
+        Integer year = 1900 + group.getCreationDate().getYear();
         String string_year = year.toString();
 
         if (day < 10){
@@ -116,6 +116,7 @@ public class GroupsRecyclerAdapter extends RecyclerView.Adapter<GroupsRecyclerAd
         if (month < 10){
             string_month = "0" + month.toString();
         }
+
         return string_day + "-" + string_month + "-" + string_year;
     }
 
