@@ -4,22 +4,20 @@ package ch.epfl.sweng.studdybuddy.Fragments;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.ListView;
-import android.widget.TextView;
 
-import com.firebase.ui.database.FirebaseListAdapter;
-import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import ch.epfl.sweng.studdybuddy.R;
 import ch.epfl.sweng.studdybuddy.firebase.FirebaseReference;
 import ch.epfl.sweng.studdybuddy.services.chat.ChatMessage;
+import ch.epfl.sweng.studdybuddy.util.Consumer;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -28,7 +26,7 @@ public class ChatFragment extends Fragment
 {
 
 
-    private FirebaseListAdapter<ChatMessage> adapter;
+ //er<ChatMessage> adapter;
 
     public ChatFragment()
     {
@@ -63,21 +61,42 @@ public class ChatFragment extends Fragment
 //                                        .getDisplayName())
 //                        );
                 FirebaseReference ref = new FirebaseReference();
-                ref.select("chat").setVal(new ChatMessage(input.getText().toString(),
+                ref.select("chat").select("001").setVal(new ChatMessage(input.getText().toString(),
                                 FirebaseAuth.getInstance()
                                         .getCurrentUser()
                                         .getDisplayName()));
+                ref.select("chat").select("002").setVal(new ChatMessage(input.getText().toString(),
+                        FirebaseAuth.getInstance()
+                                .getCurrentUser()
+                                .getDisplayName()));
+                ref.select("chat").select("003").setVal(new ChatMessage(input.getText().toString(),
+                        FirebaseAuth.getInstance()
+                                .getCurrentUser()
+                                .getDisplayName()));
 
+
+                List<ChatMessage> chats = new ArrayList<>();
+                ref.select("chat").getAll(ChatMessage.class, new Consumer<List<ChatMessage>>() {
+                    @Override
+                    public void accept(List<ChatMessage> chatMessages) {
+                        chats.clear();
+                        chats.addAll(chatMessages);
+                        System.out.println(chatMessages.get(0).getMessageText());
+                    }
+                });
                 // Clear the input
                 input.setText("");
+
+
+
             }
         });
-        displayChatMessages(v);
+       // displayChatMessages(v);
 
         return v;
     }
 
-    private void displayChatMessages(View v)
+   /* private void displayChatMessages(View v)
     {
         ListView listOfMessages = (ListView) v.findViewById(R.id.list_of_messages);
 
@@ -104,5 +123,5 @@ public class ChatFragment extends Fragment
         listOfMessages.setAdapter(adapter);
 
     }
-
+*/
 }
