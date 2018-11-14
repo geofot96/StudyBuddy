@@ -21,12 +21,12 @@ public class SerialDateTest {
     @Test
     public void setWorks(){
         SerialDate d = new SerialDate();
-        d.setDay(10);
+        d.setDate(10);
         d.setSeconds(10);
         d.setMinutes(10);
         d.setMonth(10);
         d.setYear(2018);
-        assert(d.getDay() == 10 && d.getYear() == 2018 && d.getSeconds()==10 && d.getMinutes()==10 &&d.getMonth()==10);
+        assert(d.getDate() == 10 && d.getYear() == 2018 && d.getSeconds()==10 && d.getMinutes()==10 &&d.getMonth()==10);
     }
 
 }
