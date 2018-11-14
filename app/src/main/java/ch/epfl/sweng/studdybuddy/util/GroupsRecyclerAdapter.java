@@ -102,9 +102,9 @@ public class GroupsRecyclerAdapter extends RecyclerView.Adapter<GroupsRecyclerAd
     }
 
     private String getCreationDate(Group group){
-        Integer day =  group.getCreationDate().getDay();
+        Integer day =  group.getCreationDate().getDate();
         String string_day = day.toString();
-        Integer month =  group.getCreationDate().getMonth();
+        Integer month = 1 + group.getCreationDate().getMonth();
         String string_month = month.toString();
         Integer year = 1900 + group.getCreationDate().getYear();
         String string_year = year.toString();
