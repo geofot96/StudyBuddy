@@ -20,12 +20,12 @@ public class SerialDate {
         this.minutes = minutes;
     }
 
-    public int getDay() {
-        return day;
+    public int getDate() {
+        return date;
     }
 
-    public void setDay(int day) {
-        this.day = day;
+    public void setDate(int date) {
+        this.date = date;
     }
 
     public int getMonth() {
@@ -46,28 +46,28 @@ public class SerialDate {
 
     int seconds;
     int minutes;
-    int day;
+    int date;
     int month;
     int year;
     private final Date d;
     public SerialDate() {
         d  = new Date();
-        day = d.getDay();
+        date = d.getDate();
         year = d.getYear();
         month = d.getMonth();
         minutes = d.getMinutes();
         seconds = d.getSeconds();
     }
 
-    protected Date getDate() {
+    protected Date getDateElement() {
         return d;
     }
 
     public boolean before(SerialDate when) {
-        return d.before(when.getDate());
+        return d.before(when.getDateElement());
     }
     public boolean after(SerialDate when) {
-        return d.after(when.getDate());
+        return d.after(when.getDateElement());
     }
 
 
