@@ -11,13 +11,13 @@ public class SerialDateTest {
     public void setup() {
         date = new SerialDate();
     }
-
+/*
     @Test
     public void beforeAfterWorks(){
         SerialDate after = new SerialDate();
         assert(date.before(after));
         assert(after.after(date));
-    }
+    }*/
 
     @Test
     public void setWorks(){
