@@ -59,6 +59,16 @@ public class SerialDate {
         seconds = d.getSeconds();
     }
 
+    public SerialDate(int y, int m, int d, int min ,int sec) {
+        day = d;
+        year = y;
+        month = m;
+        minutes = min;
+        seconds = sec;
+        this.d = new Date();
+        //
+    }
+
     protected Date getDate() {
         return d;
     }

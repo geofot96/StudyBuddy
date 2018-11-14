@@ -12,7 +12,7 @@ public class MeetingTest {
     Meeting meeting = new Meeting();
     SerialDate date = new SerialDate();
     @Test
-    public void setGetDate() {
+    public void setGetDeadline() {
         meeting.setDeadline(date);
         assertEquals(date, meeting.getDeadline());
     }
@@ -22,5 +22,11 @@ public class MeetingTest {
         ID<Meeting> abc = new ID<>("abc");
         meeting.setId(abc);
         assertEquals(abc, meeting.getId());
+    }
+
+    @Test
+    public void setGetCreation() {
+        meeting.setCreation(date);
+        assertEquals(date, meeting.getCreation());
     }
 }

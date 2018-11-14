@@ -21,13 +21,28 @@ public final class Meeting {
         this.id = id;
     }
 
-    ID<Meeting> id;
+    public ID<Meeting> id;
+
+    public SerialDate getCreation() {
+        return creation;
+    }
+
+    public void setCreation(SerialDate creation) {
+        this.creation = creation;
+    }
+
+    public SerialDate creation;
     public Meeting() {
         this(UUID.randomUUID().toString());
     }
 
     public Meeting(String id) {
-        this.deadline = new SerialDate();
+        this(new SerialDate(), new SerialDate(), id);
+    }
+
+    public Meeting(SerialDate creation, SerialDate deadline, String id) {
+        this.deadline = deadline;
         this.id = new ID<>(id);
+        this.creation = creation;
     }
 }
