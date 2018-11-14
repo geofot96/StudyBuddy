@@ -52,7 +52,7 @@ public class SerialDate {
     private final Date d;
     public SerialDate() {
         d  = new Date();
-        day = d.getDay();
+        day = d.getDate();
         year = d.getYear();
         month = d.getMonth();
         minutes = d.getMinutes();
