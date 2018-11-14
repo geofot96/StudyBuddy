@@ -101,7 +101,7 @@ public class GroupsRecyclerAdapter extends RecyclerView.Adapter<GroupsRecyclerAd
         return vh;
     }
 
-    private String getCreationDate(Group group){
+    public static String getCreationDate(Group group){
         Integer day =  group.getCreationDate().getDate();
         String string_day = day.toString();
         Integer month = 1 + group.getCreationDate().getMonth();
