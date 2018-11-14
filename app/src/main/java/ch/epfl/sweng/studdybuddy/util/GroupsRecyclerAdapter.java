@@ -132,6 +132,9 @@ public class GroupsRecyclerAdapter extends RecyclerView.Adapter<GroupsRecyclerAd
         if(userId.equals(group.getAdminID())) {
             holder.admin.setText("\uD83D\uDC51");
         }
+        else {
+            holder.admin.setText("");
+        }
     }
 
     @Override
