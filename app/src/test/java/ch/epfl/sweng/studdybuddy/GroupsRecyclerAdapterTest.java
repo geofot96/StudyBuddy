@@ -2,7 +2,9 @@ package ch.epfl.sweng.studdybuddy;
 
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import ch.epfl.sweng.studdybuddy.core.Course;
 import ch.epfl.sweng.studdybuddy.core.Group;
@@ -61,5 +63,24 @@ public class GroupsRecyclerAdapterTest {
         testGroup.setCreationDate(serialDate);
         String result = GroupsRecyclerAdapter.getCreationDate(testGroup);
         assertEquals("02-11-2018", result);
+    }
+
+    @Test
+    public void getGroupListTest(){
+        Course testCourseFirst = new Course("TestCourseFirst");
+        Course testCourseSecond = new Course("TestCourseSecond");
+        Group testGroupFirst = new Group(6, testCourseFirst, "rus", "123", "1231");
+        Group testGroupSecond = new Group(6, testCourseSecond, "rus", "123", "1231");
+        List<Group> testList= new ArrayList<>();
+
+        testList.add(testGroupFirst);
+        testList.add(testGroupSecond);
+
+        String userIDTest = "GHEXYdRhVrVanubQCDJF8nfihXL2";
+
+        GroupsRecyclerAdapter groupsRecyclerAdapterTest = new GroupsRecyclerAdapter(testList, userIDTest);
+        String courseTargerName = groupsRecyclerAdapterTest.getGroupList().get(0).getCourse().getCourseName();
+        assertEquals( "TestCourseFirst",courseTargerName);
+
     }
 }

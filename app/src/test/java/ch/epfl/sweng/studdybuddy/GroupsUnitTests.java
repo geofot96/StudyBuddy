@@ -3,10 +3,12 @@ package ch.epfl.sweng.studdybuddy;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import ch.epfl.sweng.studdybuddy.core.Course;
 import ch.epfl.sweng.studdybuddy.core.Group;
 import ch.epfl.sweng.studdybuddy.core.ID;
+import ch.epfl.sweng.studdybuddy.core.SerialDate;
 import ch.epfl.sweng.studdybuddy.core.User;
 
 import static ch.epfl.sweng.studdybuddy.util.CoreFactory.groupOf;
@@ -76,6 +78,18 @@ public class GroupsUnitTests
         //TODO check for the uid
     }
 
+    @Test
+    public void getCreationDate() {
+        addUsers();
+        Group group = groupOf(3);
+        Date targetDate = new Date();
+        SerialDate serialDateTest = group.getCreationDate();
+        String expectedResult = String.valueOf(targetDate.getDate()) + String.valueOf(targetDate.getMonth()) + String.valueOf(targetDate.getYear());
+        String result = String.valueOf(serialDateTest.getDate()) + String.valueOf(serialDateTest.getMonth()) + String.valueOf(serialDateTest.getYear());
+
+        assertEquals(expectedResult, result);
+
+    }
 
 
 
