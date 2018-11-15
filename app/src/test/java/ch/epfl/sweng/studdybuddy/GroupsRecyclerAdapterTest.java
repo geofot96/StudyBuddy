@@ -2,9 +2,7 @@ package ch.epfl.sweng.studdybuddy;
 
 import org.junit.Test;
 
-import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 
 import ch.epfl.sweng.studdybuddy.core.Course;
 import ch.epfl.sweng.studdybuddy.core.Group;
@@ -45,5 +43,23 @@ public class GroupsRecyclerAdapterTest {
         testGroup.setCreationDate(serialDate);
         String result = GroupsRecyclerAdapter.getCreationDate(testGroup);
         assertEquals("02-03-2018", result);
+    }
+
+    @Test
+    public void getCreationDateMethodGetRightFormatOfDateBeginningOfMonthAndMothInTheEndOfTheYear() {
+
+        Course testCourse = new Course("TestCourse");
+        Group testGroup = new Group(6, testCourse, "rus", "123", "1231");
+
+        SerialDate serialDate = new SerialDate();
+        serialDate.setSeconds(2);
+        serialDate.setMinutes(1);
+        serialDate.setDate(2);
+        serialDate.setMonth(10);
+        serialDate.setYear(118);
+
+        testGroup.setCreationDate(serialDate);
+        String result = GroupsRecyclerAdapter.getCreationDate(testGroup);
+        assertEquals("02-11-2018", result);
     }
 }
