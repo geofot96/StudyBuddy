@@ -32,7 +32,7 @@ import ch.epfl.sweng.studdybuddy.services.calendar.Availability;
 import ch.epfl.sweng.studdybuddy.services.calendar.ConcreteAvailability;
 import ch.epfl.sweng.studdybuddy.services.calendar.ConnectedAvailability;
 import ch.epfl.sweng.studdybuddy.services.calendar.ConnectedCalendar;
-import ch.epfl.sweng.studdybuddy.util.Consumer;
+import ch.epfl.sweng.studdybuddy.tools.Consumer;
 import ch.epfl.sweng.studdybuddy.util.Messages;
 
 /**

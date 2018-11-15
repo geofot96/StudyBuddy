@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ch.epfl.sweng.studdybuddy.core.Group;
+import ch.epfl.sweng.studdybuddy.tools.GroupsRecyclerAdapter;
 
 public class FeedFilter extends Filter {
     GroupsRecyclerAdapter adapter;

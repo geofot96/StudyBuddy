@@ -3,9 +3,9 @@ package ch.epfl.sweng.studdybuddy;
 import org.junit.Test;
 
 import ch.epfl.sweng.studdybuddy.util.FeedFilter;
-import ch.epfl.sweng.studdybuddy.util.GroupsRecyclerAdapter;
+import ch.epfl.sweng.studdybuddy.tools.GroupsRecyclerAdapter;
 
-import static ch.epfl.sweng.studdybuddy.util.AdapterConsumer.searchListener;
+import static ch.epfl.sweng.studdybuddy.tools.AdapterConsumer.searchListener;
 import static org.junit.Assert.assertFalse;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;

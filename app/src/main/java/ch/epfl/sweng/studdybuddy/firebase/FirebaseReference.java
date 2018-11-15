@@ -13,7 +13,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-import ch.epfl.sweng.studdybuddy.util.Consumer;
+import ch.epfl.sweng.studdybuddy.tools.Consumer;
 
 public class FirebaseReference implements ReferenceWrapper {
     //pass it
