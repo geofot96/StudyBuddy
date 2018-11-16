@@ -96,6 +96,7 @@ public class NavigationActivity extends AppCompatActivity
                 switch(menuItem.getItemId())
                 {
                     case R.id.navToCalendar:
+
                         setFragment(chatFragment);
                         return true;
                     case R.id.navToHome:

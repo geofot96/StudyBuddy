@@ -2,14 +2,20 @@ package ch.epfl.sweng.studdybuddy.Fragments;
 
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ListView;
+import android.widget.TextView;
 
+import com.firebase.ui.database.FirebaseListAdapter;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,20 +32,23 @@ public class ChatFragment extends Fragment
 {
 
 
- //er<ChatMessage> adapter;
-
+    private FirebaseListAdapter<ChatMessage> adapter;
+int i=0;
     public ChatFragment()
     {
-        // Required empty public constructor
+
+
     }
+
+
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState)
     {
-        View v = inflater.inflate(R.layout.fragment_chat, container, false);
-
+       View v = inflater.inflate(R.layout.fragment_chat, container, false);
+        displayChatMessages(v);
         FloatingActionButton fab =
                 (FloatingActionButton) v.findViewById(R.id.fab);
 
@@ -61,18 +70,12 @@ public class ChatFragment extends Fragment
 //                                        .getDisplayName())
 //                        );
                 FirebaseReference ref = new FirebaseReference();
-                ref.select("chat").select("001").setVal(new ChatMessage(input.getText().toString(),
+                ref.select("chat").select(i+"").setVal(new ChatMessage(input.getText().toString(),
                                 FirebaseAuth.getInstance()
                                         .getCurrentUser()
                                         .getDisplayName()));
-                ref.select("chat").select("002").setVal(new ChatMessage(input.getText().toString(),
-                        FirebaseAuth.getInstance()
-                                .getCurrentUser()
-                                .getDisplayName()));
-                ref.select("chat").select("003").setVal(new ChatMessage(input.getText().toString(),
-                        FirebaseAuth.getInstance()
-                                .getCurrentUser()
-                                .getDisplayName()));
+                i++;
+
 
 
                 List<ChatMessage> chats = new ArrayList<>();
@@ -82,6 +85,7 @@ public class ChatFragment extends Fragment
                         chats.clear();
                         chats.addAll(chatMessages);
                         System.out.println(chatMessages.get(0).getMessageText());
+                        //displayChatMessages(v);
                     }
                 });
                 // Clear the input
@@ -91,16 +95,16 @@ public class ChatFragment extends Fragment
 
             }
         });
-       // displayChatMessages(v);
+
 
         return v;
     }
 
-   /* private void displayChatMessages(View v)
+    public  void displayChatMessages(View v)
     {
         ListView listOfMessages = (ListView) v.findViewById(R.id.list_of_messages);
 
-        adapter = new FirebaseListAdapter<ChatMessage>(getActivity(), ChatMessage.class, R.layout.message, FirebaseDatabase.getInstance().getReference())
+        adapter = new FirebaseListAdapter<ChatMessage>(getActivity(), ChatMessage.class, R.layout.message, FirebaseDatabase.getInstance().getReference().child("chat"))
         {
             @Override
             protected void populateView(View v, ChatMessage model, int position)
@@ -123,5 +127,5 @@ public class ChatFragment extends Fragment
         listOfMessages.setAdapter(adapter);
 
     }
-*/
+
 }
