@@ -15,5 +15,5 @@
     <item
         android:icon="@drawable/round_calendar_today_black_24dp"
         android:title="@string/nav_calendar"
-        android:id="@+id/navToCalendar"/>
+        android:id="@+id/navToChat"/>
 </menu>
