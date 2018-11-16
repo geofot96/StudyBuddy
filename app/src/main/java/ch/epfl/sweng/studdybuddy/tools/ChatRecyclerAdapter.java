@@ -66,18 +66,6 @@ public class ChatRecyclerAdapter extends RecyclerView.Adapter<ChatRecyclerAdapte
         mb.getAllGroupSizes(sizes);
     }
 
-    public ChatRecyclerAdapter(List<Group> groupList, String userId, Consumer<Intent> joinConsumer)
-    {
-        this(groupList, userId);
-        this.joinConsumer = joinConsumer;
-    }
-    public List<Group> getGroupList() {
-        return new ArrayList<>(groupList);
-    }
-
-    public void setGroupList(List<Group> groupList) {
-        this.groupList = groupList;
-    }
 
     @Override
     public ChatRecyclerAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
@@ -124,27 +112,11 @@ public class ChatRecyclerAdapter extends RecyclerView.Adapter<ChatRecyclerAdapte
     }
 
 
-
-
-
-
-
-
-
-
-
     private void setParticipantNumber(TextView pNumber, Group group){
         int count = 0;
        if(sizes.get(group.getGroupID().toString()) != null){
            count = sizes.get(group.getGroupID().toString());
        }
        pNumber.setText(("Particip: " + count+ "/" + group.getMaxNoUsers()));
-    }
-    public int getParticipantNumber(Group group){
-        int count = 0;
-        if(sizes.get(group.getGroupID().toString()) != null){
-            count = sizes.get(group.getGroupID().toString());
-        }
-        return count;
     }
 }
