@@ -6,7 +6,7 @@ import java.util.List;
 
 import ch.epfl.sweng.studdybuddy.core.Group;
 import ch.epfl.sweng.studdybuddy.util.FeedFilter;
-import ch.epfl.sweng.studdybuddy.util.GroupsRecyclerAdapter;
+import ch.epfl.sweng.studdybuddy.tools.GroupsRecyclerAdapter;
 
 import static ch.epfl.sweng.studdybuddy.util.CoreFactory.groups2;
 import static junit.framework.TestCase.assertEquals;

@@ -5,7 +5,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.List;
 
-import ch.epfl.sweng.studdybuddy.util.Consumer;
+import ch.epfl.sweng.studdybuddy.tools.Consumer;
 
 public interface ReferenceWrapper {
     /**
