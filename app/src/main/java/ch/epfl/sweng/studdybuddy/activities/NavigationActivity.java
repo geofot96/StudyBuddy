@@ -14,6 +14,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
 import ch.epfl.sweng.studdybuddy.Fragments.ChatFragment;
+import ch.epfl.sweng.studdybuddy.Fragments.ChatListsFragment;
 import ch.epfl.sweng.studdybuddy.Fragments.FeedFragment;
 import ch.epfl.sweng.studdybuddy.Fragments.ProfileFragment;
 import ch.epfl.sweng.studdybuddy.R;
@@ -28,7 +29,7 @@ public class NavigationActivity extends AppCompatActivity
     private AuthManager mAuth = null;
     private BottomNavigationView mMainNav;
     private FrameLayout mMainFrame;
-    private ChatFragment chatFragment;
+    private ChatListsFragment chatFragment;
     private FeedFragment feedFragment;
     private ProfileFragment profileFragment;
 
@@ -39,7 +40,7 @@ public class NavigationActivity extends AppCompatActivity
         setContentView(R.layout.activity_navigation);
         mMainFrame = (FrameLayout) findViewById(R.id.main_frame);
         mMainNav = (BottomNavigationView) findViewById(R.id.bottom_navigation);
-        chatFragment = new ChatFragment();
+        chatFragment = new ChatListsFragment();
         feedFragment = new FeedFragment();
         profileFragment = new ProfileFragment();
         setFragment(feedFragment);
@@ -96,7 +97,6 @@ public class NavigationActivity extends AppCompatActivity
                 switch(menuItem.getItemId())
                 {
                     case R.id.navToCalendar:
-
                         setFragment(chatFragment);
                         return true;
                     case R.id.navToHome:
