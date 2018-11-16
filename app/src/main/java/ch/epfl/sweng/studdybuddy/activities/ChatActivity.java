@@ -20,11 +20,14 @@ import ch.epfl.sweng.studdybuddy.services.chat.ChatMessage;
 
 public class ChatActivity extends AppCompatActivity{
     private FirebaseListAdapter<ChatMessage> adapter;
-    int i=0;
+    String groupID;
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
+        Bundle extras=getIntent().getExtras();
+        if(extras!=null)groupID=extras.getString("GroupID");
+        else ;//TODO throw exception
         displayChatMessages();
         FloatingActionButton fab =
                 (FloatingActionButton)findViewById(R.id.fab);
@@ -35,7 +38,7 @@ public class ChatActivity extends AppCompatActivity{
                 EditText input = (EditText)findViewById(R.id.input);
 
 
-                FirebaseDatabase.getInstance().getReference().child("chat").push()
+                FirebaseDatabase.getInstance().getReference().child("chat").child(groupID).push()
                         .setValue(new ChatMessage(input.getText().toString(),
                         FirebaseAuth.getInstance()
                                 .getCurrentUser()
@@ -43,7 +46,6 @@ public class ChatActivity extends AppCompatActivity{
                 input.setText("");
             }
         });
-        i++;
 
     }
     public  void displayChatMessages()
@@ -51,7 +53,7 @@ public class ChatActivity extends AppCompatActivity{
         ListView listOfMessages = (ListView)findViewById(R.id.list_of_messages);
 
         adapter = new FirebaseListAdapter<ChatMessage>(this, ChatMessage.class,
-                R.layout.message, FirebaseDatabase.getInstance().getReference().child("chat")) {
+                R.layout.message, FirebaseDatabase.getInstance().getReference().child("chat").child(groupID)) {
             @Override
             protected void populateView(View v, ChatMessage model, int position) {
                 // Get references to the views of message.xml

@@ -125,6 +125,7 @@ public class ChatRecyclerAdapter extends RecyclerView.Adapter<ChatRecyclerAdapte
             @Override
             public void onClick(View v) {
                 Intent i=new Intent(button.getContext(), ChatActivity.class);
+                i.putExtra("GroupID",uGroupIds.get(position));
                 v.getContext().startActivity(i);
 
             }
