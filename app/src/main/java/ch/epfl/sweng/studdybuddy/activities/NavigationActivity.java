@@ -13,7 +13,6 @@ import android.widget.FrameLayout;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
-import ch.epfl.sweng.studdybuddy.Fragments.ChatFragment;
 import ch.epfl.sweng.studdybuddy.Fragments.ChatListsFragment;
 import ch.epfl.sweng.studdybuddy.Fragments.FeedFragment;
 import ch.epfl.sweng.studdybuddy.Fragments.ProfileFragment;

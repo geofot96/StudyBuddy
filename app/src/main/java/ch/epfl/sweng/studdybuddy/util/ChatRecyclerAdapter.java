@@ -8,28 +8,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.Filter;
-import android.widget.Filterable;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import ch.epfl.sweng.studdybuddy.Fragments.ChatFragment;
-import ch.epfl.sweng.studdybuddy.Fragments.FeedFragment;
 import ch.epfl.sweng.studdybuddy.R;
 import ch.epfl.sweng.studdybuddy.activities.ChatActivity;
-import ch.epfl.sweng.studdybuddy.activities.GroupActivity;
-import ch.epfl.sweng.studdybuddy.activities.GroupInfoActivity;
-import ch.epfl.sweng.studdybuddy.activities.MainActivity;
 import ch.epfl.sweng.studdybuddy.core.Group;
-import ch.epfl.sweng.studdybuddy.core.Pair;
 import ch.epfl.sweng.studdybuddy.firebase.FirebaseReference;
 import ch.epfl.sweng.studdybuddy.firebase.MetaGroup;
 import ch.epfl.sweng.studdybuddy.firebase.ReferenceWrapper;
-import ch.epfl.sweng.studdybuddy.services.calendar.Availability;
-import ch.epfl.sweng.studdybuddy.services.calendar.ConnectedAvailability;
 
 public class ChatRecyclerAdapter extends RecyclerView.Adapter<ChatRecyclerAdapter.MyViewHolder>
 {
