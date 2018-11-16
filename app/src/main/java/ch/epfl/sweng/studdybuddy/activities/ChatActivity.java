@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseListAdapter;
 import com.google.firebase.auth.FirebaseAuth;
@@ -27,7 +28,13 @@ public class ChatActivity extends AppCompatActivity{
         setContentView(R.layout.activity_chat);
         Bundle extras=getIntent().getExtras();
         if(extras!=null)groupID=extras.getString("GroupID");
-        else ;//TODO throw exception
+        else {
+            Toast.makeText(this,
+                    "Group not found in database",
+                    Toast.LENGTH_LONG)
+                    .show();
+            finish();
+        };
         displayChatMessages();
         FloatingActionButton fab =
                 (FloatingActionButton)findViewById(R.id.fab);
