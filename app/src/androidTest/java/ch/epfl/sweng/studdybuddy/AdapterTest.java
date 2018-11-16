@@ -12,8 +12,8 @@ import org.junit.runner.RunWith;
 import java.util.ArrayList;
 
 import ch.epfl.sweng.studdybuddy.activities.GroupInfoActivity;
-import ch.epfl.sweng.studdybuddy.util.Adapter;
-import ch.epfl.sweng.studdybuddy.util.ParticipantAdapter;
+import ch.epfl.sweng.studdybuddy.tools.Adapter;
+import ch.epfl.sweng.studdybuddy.tools.ParticipantAdapter;
 
 import static junit.framework.TestCase.assertTrue;
 

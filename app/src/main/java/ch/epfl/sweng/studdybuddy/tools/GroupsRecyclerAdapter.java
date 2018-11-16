@@ -1,4 +1,4 @@
-package ch.epfl.sweng.studdybuddy.util;
+package ch.epfl.sweng.studdybuddy.tools;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -20,7 +20,6 @@ import ch.epfl.sweng.studdybuddy.Fragments.FeedFragment;
 import ch.epfl.sweng.studdybuddy.R;
 import ch.epfl.sweng.studdybuddy.activities.GroupActivity;
 import ch.epfl.sweng.studdybuddy.activities.GroupInfoActivity;
-import ch.epfl.sweng.studdybuddy.activities.GroupsActivity;
 import ch.epfl.sweng.studdybuddy.core.Group;
 import ch.epfl.sweng.studdybuddy.core.Pair;
 import ch.epfl.sweng.studdybuddy.firebase.FirebaseReference;
@@ -28,6 +27,9 @@ import ch.epfl.sweng.studdybuddy.firebase.MetaGroup;
 import ch.epfl.sweng.studdybuddy.firebase.ReferenceWrapper;
 import ch.epfl.sweng.studdybuddy.services.calendar.Availability;
 import ch.epfl.sweng.studdybuddy.services.calendar.ConnectedAvailability;
+import ch.epfl.sweng.studdybuddy.util.FeedFilter;
+import ch.epfl.sweng.studdybuddy.util.Helper;
+import ch.epfl.sweng.studdybuddy.util.Messages;
 
 public class GroupsRecyclerAdapter extends RecyclerView.Adapter<GroupsRecyclerAdapter.MyViewHolder> implements Filterable
 {
