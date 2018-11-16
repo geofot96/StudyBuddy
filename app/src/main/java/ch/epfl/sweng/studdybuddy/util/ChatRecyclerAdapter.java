@@ -20,6 +20,8 @@ import ch.epfl.sweng.studdybuddy.core.Group;
 import ch.epfl.sweng.studdybuddy.firebase.FirebaseReference;
 import ch.epfl.sweng.studdybuddy.firebase.MetaGroup;
 import ch.epfl.sweng.studdybuddy.firebase.ReferenceWrapper;
+import ch.epfl.sweng.studdybuddy.tools.Consumer;
+import ch.epfl.sweng.studdybuddy.tools.RecyclerAdapterAdapter;
 
 public class ChatRecyclerAdapter extends RecyclerView.Adapter<ChatRecyclerAdapter.MyViewHolder>
 {
@@ -130,10 +132,12 @@ public class ChatRecyclerAdapter extends RecyclerView.Adapter<ChatRecyclerAdapte
 
             }
         });
-        if(userId.equals(group.getAdminID())) {
+        if(userId.equals(group.getAdminID()))
+        {
             holder.admin.setText("\uD83D\uDC51");
         }
-        else {
+        else
+        {
             holder.admin.setText("");
         }
     }
