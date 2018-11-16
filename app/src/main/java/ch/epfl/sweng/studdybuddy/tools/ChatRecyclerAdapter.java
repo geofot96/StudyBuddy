@@ -1,4 +1,4 @@
-package ch.epfl.sweng.studdybuddy.util;
+package ch.epfl.sweng.studdybuddy.tools;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -20,8 +20,7 @@ import ch.epfl.sweng.studdybuddy.core.Group;
 import ch.epfl.sweng.studdybuddy.firebase.FirebaseReference;
 import ch.epfl.sweng.studdybuddy.firebase.MetaGroup;
 import ch.epfl.sweng.studdybuddy.firebase.ReferenceWrapper;
-import ch.epfl.sweng.studdybuddy.tools.Consumer;
-import ch.epfl.sweng.studdybuddy.tools.RecyclerAdapterAdapter;
+import ch.epfl.sweng.studdybuddy.util.FeedFilter;
 
 public class ChatRecyclerAdapter extends RecyclerView.Adapter<ChatRecyclerAdapter.MyViewHolder>
 {

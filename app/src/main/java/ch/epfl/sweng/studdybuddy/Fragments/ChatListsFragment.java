@@ -8,7 +8,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.google.firebase.database.ValueEventListener;
 
@@ -23,7 +22,7 @@ import ch.epfl.sweng.studdybuddy.firebase.MetaGroup;
 import ch.epfl.sweng.studdybuddy.firebase.ReferenceWrapper;
 import ch.epfl.sweng.studdybuddy.tools.CourseAdapter;
 import ch.epfl.sweng.studdybuddy.tools.RecyclerAdapterAdapter;
-import ch.epfl.sweng.studdybuddy.util.ChatRecyclerAdapter;
+import ch.epfl.sweng.studdybuddy.tools.ChatRecyclerAdapter;
 
 import ch.epfl.sweng.studdybuddy.util.StudyBuddy;
 
