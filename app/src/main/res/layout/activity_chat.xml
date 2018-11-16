@@ -8,14 +8,18 @@
 
 
     <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:clickable="true"
-        android:id="@+id/fab"
-        android:tint="@android:color/white"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
-        app:fabSize="mini"/>
+        android:layout_margin="@dimen/fab_margin"
+        android:clickable="true"
+        android:tint="@android:color/white"
+        app:fabSize="mini"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@android:drawable/ic_menu_send" />
 
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
