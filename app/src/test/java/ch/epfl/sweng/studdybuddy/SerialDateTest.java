@@ -24,8 +24,8 @@ public class SerialDateTest {
         d.setDay(10);
         d.setSeconds(10);
         d.setMinutes(10);
-        d.setMonth(10);
-        d.setYear(2018);
+        d.setMonth(9);
+        d.setYear(118);
         assert(d.getDay() == 10 && d.getYear() == 2018 && d.getSeconds()==10 && d.getMinutes()==10 &&d.getMonth()==10);
     }
 
