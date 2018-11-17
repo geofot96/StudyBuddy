@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -40,6 +42,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private final String TAG = "MAPS";
     private  MarkerOptions mMarker;
     private Marker marker;
+    private Button button;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,6 +71,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 Log.i("Maps", "An error occurred: " + status);
             }
         });
+
+        ((Button)findViewById(R.id.confirmLocation)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                
+                finish();
+
+            }
+        });
+
+
 
 
         mDefaultLocation = new LatLng(46.4123266, 6.2650744);
