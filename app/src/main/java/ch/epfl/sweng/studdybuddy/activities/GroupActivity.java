@@ -63,7 +63,7 @@ public class GroupActivity extends AppCompatActivity {
         setupMeeting();
     }
 
-    public void setMeeting(View view) {
+    public void setAdmin() {
 
     }
 
@@ -71,7 +71,10 @@ public class GroupActivity extends AppCompatActivity {
         final Calendar newCalendar = Calendar.getInstance();
         DatePickerDialog  StartTime = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                mm.pushMeeting(new Meeting(), group.get(0)); // new Serial Date
+                Meeting mee = (meetings.size() > 0) ? meetings.get(0) : new Meeting();
+                mee.getDeadline().setYear(year);
+                mee.getDeadline().setMonth(monthOfYear);
+                mm.pushMeeting(mee, group.get(0)); // new Serial Date
                 setupMeeting();
             }
         }, newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
@@ -91,7 +94,7 @@ public class GroupActivity extends AppCompatActivity {
     private void setupMeeting() {
         meetings = new ArrayList<>();
         TextView meeting = findViewById(R.id.nextMeet);
-        mm.fetchMeetings(groupID, meetingConsumer(meeting, time, null));
+        mm.fetchMeetings(groupID, meetingConsumer(meeting, time, date));
     }
 
     private void goToActivity(Intent intent){

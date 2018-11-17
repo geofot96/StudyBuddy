@@ -26,12 +26,5 @@ public class MetaMeeting extends MetaGroup {
 
     public ValueEventListener fetchMeetings(String groupId, Consumer<List<Meeting>> callback) {
         return db.select("meetings").select(groupId).getAll(Meeting.class, callback);
-        /*return db.select("meetings").select(groupId).getAll(Meeting.class, new Consumer<List<Meeting>>() {
-            @Override
-            public void accept(List<Meeting> meetings) {
-                meets.clear();
-                meets.addAll(meetings);
-            }
-        });*/
     }
 }

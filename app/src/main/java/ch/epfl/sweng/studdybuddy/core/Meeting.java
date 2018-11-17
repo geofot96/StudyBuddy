@@ -50,4 +50,12 @@ public final class Meeting {
     public String toString() {
         return deadline.toString();
     }
+
+    public String date() {
+        return deadline.toString();
+    }
+
+    public String time() {
+        return "00:" + deadline.getMinutes();
+    }
 }

@@ -26,9 +26,14 @@ public class ActivityHelper {
                 if(meetings.size() == 0) {
                     title.setVisibility(View.GONE);
                     time.setVisibility(View.GONE);
+                    date.setVisibility(View.GONE);
                 }
                 else {
-                    time.setText(meetings.get(0).getDeadline().toString());
+                    date.setText(meetings.get(0).date());
+                    time.setText(meetings.get(0).time());
+                    title.setVisibility(View.VISIBLE);
+                    time.setVisibility(View.VISIBLE);
+                    date.setVisibility(View.VISIBLE);
                 }
             }
         };
