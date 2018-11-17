@@ -2,34 +2,20 @@ package ch.epfl.sweng.studdybuddy.core;
 
 import java.util.UUID;
 
-public final class Meeting {
-    public SerialDate getDeadline() {
-        return deadline;
-    }
+import ch.epfl.sweng.studdybuddy.util.Helper;
 
-    public void setDeadline(SerialDate deadline) {
-        this.deadline = deadline;
-    }
+public final class Meeting {
+
 
     public SerialDate deadline;
 
     public ID<Meeting> getId() {
         return id;
     }
-
-    public void setId(ID<Meeting> id) {
-        this.id = id;
-    }
-
     public ID<Meeting> id;
+    public MeetingLocation location;
 
-    public SerialDate getCreation() {
-        return creation;
-    }
 
-    public void setCreation(SerialDate creation) {
-        this.creation = creation;
-    }
 
     public SerialDate creation;
     public Meeting() {
@@ -44,5 +30,28 @@ public final class Meeting {
         this.deadline = deadline;
         this.id = new ID<>(id);
         this.creation = creation;
+        this.location = Helper.ROLEX_LOCATION;
     }
+
+    public SerialDate getDeadline() {
+        return deadline;
+    }
+
+    public void setDeadline(SerialDate deadline) {
+        this.deadline = deadline;
+    }
+
+    public void setId(ID<Meeting> id) {
+        this.id = id;
+    }
+
+
+    public SerialDate getCreation() {
+        return creation;
+    }
+
+    public void setCreation(SerialDate creation) {
+        this.creation = creation;
+    }
+
 }

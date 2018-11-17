@@ -75,7 +75,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         ((Button)findViewById(R.id.confirmLocation)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                
+
+
                 finish();
 
             }
