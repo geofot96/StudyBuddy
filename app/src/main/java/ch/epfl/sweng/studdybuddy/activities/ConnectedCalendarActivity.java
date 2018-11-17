@@ -41,7 +41,7 @@ import ch.epfl.sweng.studdybuddy.util.Messages;
  * availabilities dynamically. Touching a cell of the calendar will
  * modify our availability
  */
-public class ConnectedCalendarActivity extends AppCompatActivity implements ICalendarActivity
+public class ConnectedCalendarActivity extends AppCompatActivity
 {
     GridLayout calendarGrid;
     private static final int CalendarWidth = 8;
@@ -103,7 +103,6 @@ public class ConnectedCalendarActivity extends AppCompatActivity implements ICal
      * appropriate time slot
      * @param calendarGrid the View of the calendar
      */
-    @Override
     public void setOnToggleBehavior(GridLayout calendarGrid){
         for(int i = 0; i < calendarGrid.getChildCount(); i++)
         {
@@ -125,7 +124,6 @@ public class ConnectedCalendarActivity extends AppCompatActivity implements ICal
      * clicking on the confirm button leads us to the group Activity
      * @param origin the intent got from the GroupActivity
      */
-    @Override
     public void confirmSlots(Bundle origin) {
         //TODO : once the GroupActivity will be correctly set, launch the GroupActivity
         Intent newIntent = new Intent(this, NavigationActivity.class);
@@ -136,7 +134,6 @@ public class ConnectedCalendarActivity extends AppCompatActivity implements ICal
      * change the color of every cell of the calendar when a change has been added to
      * the availabilities of the users.
      */
-    @Override
     public void updateColor() {
         List<Integer> groupAvailabilities = calendar.getComputedAvailabilities();
         int size = calendarGrid.getColumnCount()*calendarGrid.getRowCount();
