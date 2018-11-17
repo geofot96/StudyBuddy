@@ -30,7 +30,9 @@
         android:id="@+id/mapsButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="17dp"
+        android:layout_marginTop="82dp"
         android:text="Button"
-        tools:layout_editor_absoluteX="148dp"
-        tools:layout_editor_absoluteY="354dp" />
+        app:layout_constraintStart_toStartOf="@+id/participantsBtn"
+        app:layout_constraintTop_toBottomOf="@+id/participantsBtn" />
 </android.support.constraint.ConstraintLayout>
