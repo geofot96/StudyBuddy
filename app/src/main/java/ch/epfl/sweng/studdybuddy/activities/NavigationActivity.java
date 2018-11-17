@@ -21,7 +21,6 @@ public class NavigationActivity extends AppCompatActivity
     //private MergedCalendarFragment mergedCalendarFragment;
     private FeedFragment feedFragment;
     private ProfileFragment profileFragment;
-
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -55,6 +54,7 @@ public class NavigationActivity extends AppCompatActivity
                     case R.id.navToProfile:
                         setFragment(profileFragment);
                         return true;
+
 
                     default:
                         return false;
