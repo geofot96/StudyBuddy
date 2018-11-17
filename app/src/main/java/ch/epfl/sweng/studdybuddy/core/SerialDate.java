@@ -78,12 +78,12 @@ public class SerialDate
 
     public boolean before(SerialDate when)
     {
-        return d.before(when.getDate());
+        return !d.before(when.getDate());
     }
 
     public boolean after(SerialDate when)
     {
-        return d.after(when.getDate());
+        return !d.after(when.getDate());
     }
 
     public String toString()

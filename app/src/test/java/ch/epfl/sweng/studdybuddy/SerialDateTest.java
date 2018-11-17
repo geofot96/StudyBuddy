@@ -4,6 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import ch.epfl.sweng.studdybuddy.core.SerialDate;
+import org.junit.Assert.*;
 
 public class SerialDateTest {
     public SerialDate date;
@@ -27,6 +28,31 @@ public class SerialDateTest {
         d.setMonth(9);
         d.setYear(118);
         assert(d.getDay() == 10 && d.getYear() == 2018 && d.getSeconds()==10 && d.getMinutes()==10 &&d.getMonth()==10);
+    }
+
+    @Test
+    public void testToString()
+    {
+        SerialDate d = new SerialDate();
+        d.setDay(10);
+        d.setMonth(9);
+        d.setYear(118);
+        String actual = "10-10-2018";
+        assert(actual.equals(d.toString()));
+    }
+
+    @Test
+    public void testBeforeAfter()
+    {
+        SerialDate d1 = new SerialDate();
+        try
+        {
+            wait();
+        }
+        catch(Exception e){}
+        SerialDate d2 = new SerialDate();
+        assert(d1.before(d2));
+        assert(d2.after(d1));
     }
 
 }
