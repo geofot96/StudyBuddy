@@ -37,9 +37,11 @@ public class GroupActivity extends AppCompatActivity {
     Button time;
     Button date;
     Button add;
+    TextView title;
     MetaMeeting mm;
     List<Group> group;
     List<Meeting> meetings;
+    Boolean isAdmin = false;
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -52,7 +54,7 @@ public class GroupActivity extends AppCompatActivity {
         group = new ArrayList<>();
         List<String> id = Arrays.asList(groupID);
         mm.getGroupsfromIds(id, group);
-
+        title = findViewById(R.id.nextMeet);
         userID = origin.getStringExtra(Messages.userID);
         MaxNumUsers = origin.getIntExtra(Messages.maxUser, -1);
         calendarButton = findViewById(R.id.calendarBtn);
@@ -62,18 +64,20 @@ public class GroupActivity extends AppCompatActivity {
         add = findViewById(R.id.addMeeting);
         calendarButton.setOnClickListener(new ClickListener(new Intent(this, ConnectedCalendarActivity.class)));
         participantButton.setOnClickListener(new ClickListener(new Intent(this, GroupInfoActivity.class)));
+
+        setAdmin();
         setupMeeting();
     }
 
     public void setAdmin() {
-
+            isAdmin = !group.isEmpty() && group.get(0).getAdminID().equals(userID);
     }
 
     public void setDate(View view) {
         final Calendar newCalendar = Calendar.getInstance();
         DatePickerDialog  StartTime = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                Meeting mee = (meetings.size() > 0) ? meetings.get(0) : new Meeting();
+                Meeting mee =getMeeting();
                 mee.getDeadline().setYear(year);
                 mee.getDeadline().setMonth(monthOfYear);
                 mm.pushMeeting(mee, group.get(0)); // new Serial Date
@@ -87,16 +91,20 @@ public class GroupActivity extends AppCompatActivity {
         TimePickerDialog timePickerDialog = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
                 @Override
                 public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-
+                    Meeting mee = getMeeting();
+                    mee.getDeadline().setMinutes(minute);
+                    mm.pushMeeting(mee, group.get(0));
                 }
          }, 0, 0, false);
         timePickerDialog.show();
     }
 
+    public Meeting getMeeting() {
+        return (meetings.size() > 0) ? meetings.get(0) : new Meeting();
+    }
     private void setupMeeting() {
         meetings = new ArrayList<>();
-        TextView meeting = findViewById(R.id.nextMeet);
-        mm.fetchMeetings(groupID, meetingConsumer(meeting, time, date, add));
+        mm.fetchMeetings(groupID, meetingConsumer(title, time, date, add, isAdmin));
     }
 
     private void goToActivity(Intent intent){

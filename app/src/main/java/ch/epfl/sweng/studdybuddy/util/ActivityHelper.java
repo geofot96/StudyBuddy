@@ -19,7 +19,7 @@ public class ActivityHelper {
             }
         };
     }
-    public static Consumer<List<Meeting>> meetingConsumer(TextView title, Button time, Button date, Button plus) {
+    public static Consumer<List<Meeting>> meetingConsumer(TextView title, Button time, Button date, Button plus, Boolean isAdmin) {
         return new Consumer<List<Meeting>>() {
             @Override
             public void accept(List<Meeting> meetings) {
@@ -27,7 +27,7 @@ public class ActivityHelper {
                     title.setVisibility(View.GONE);
                     time.setVisibility(View.GONE);
                     date.setVisibility(View.GONE);
-                    plus.setVisibility(View.VISIBLE);
+                    plus.setVisibility(isAdmin ? View.VISIBLE : View.GONE);
                 }
                 else {
                     date.setText(meetings.get(0).date());
