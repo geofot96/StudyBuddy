@@ -19,7 +19,7 @@ public class ActivityHelper {
             }
         };
     }
-    public static Consumer<List<Meeting>> meetingConsumer(TextView title, Button time, Button date) {
+    public static Consumer<List<Meeting>> meetingConsumer(TextView title, Button time, Button date, Button plus) {
         return new Consumer<List<Meeting>>() {
             @Override
             public void accept(List<Meeting> meetings) {
@@ -27,6 +27,7 @@ public class ActivityHelper {
                     title.setVisibility(View.GONE);
                     time.setVisibility(View.GONE);
                     date.setVisibility(View.GONE);
+                    plus.setVisibility(View.VISIBLE);
                 }
                 else {
                     date.setText(meetings.get(0).date());
@@ -34,6 +35,7 @@ public class ActivityHelper {
                     title.setVisibility(View.VISIBLE);
                     time.setVisibility(View.VISIBLE);
                     date.setVisibility(View.VISIBLE);
+                    plus.setVisibility(View.GONE);
                 }
             }
         };

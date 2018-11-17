@@ -39,10 +39,10 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
-        android:id="@+id/setMeeting"
+        android:id="@+id/addMeeting"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="5dp"
         android:onClick="setDate"
         android:text="Add Meeting"
         app:layout_constraintEnd_toEndOf="parent"

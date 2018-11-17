@@ -36,6 +36,7 @@ public class GroupActivity extends AppCompatActivity {
     private Button participantButton;
     Button time;
     Button date;
+    Button add;
     MetaMeeting mm;
     List<Group> group;
     List<Meeting> meetings;
@@ -58,6 +59,7 @@ public class GroupActivity extends AppCompatActivity {
         participantButton = findViewById(R.id.participantsBtn);
         time  = findViewById(R.id.time);
         date = findViewById(R.id.date);
+        add = findViewById(R.id.addMeeting);
         calendarButton.setOnClickListener(new ClickListener(new Intent(this, ConnectedCalendarActivity.class)));
         participantButton.setOnClickListener(new ClickListener(new Intent(this, GroupInfoActivity.class)));
         setupMeeting();
@@ -94,7 +96,7 @@ public class GroupActivity extends AppCompatActivity {
     private void setupMeeting() {
         meetings = new ArrayList<>();
         TextView meeting = findViewById(R.id.nextMeet);
-        mm.fetchMeetings(groupID, meetingConsumer(meeting, time, date));
+        mm.fetchMeetings(groupID, meetingConsumer(meeting, time, date, add));
     }
 
     private void goToActivity(Intent intent){
