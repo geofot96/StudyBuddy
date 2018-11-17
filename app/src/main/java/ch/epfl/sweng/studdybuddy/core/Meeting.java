@@ -45,4 +45,9 @@ public final class Meeting {
         this.id = new ID<>(id);
         this.creation = creation;
     }
+
+    @Override
+    public String toString() {
+        return deadline.toString();
+    }
 }

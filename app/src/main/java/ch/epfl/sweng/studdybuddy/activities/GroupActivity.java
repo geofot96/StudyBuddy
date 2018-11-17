@@ -1,6 +1,7 @@
 package ch.epfl.sweng.studdybuddy.activities;
 
 import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -8,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.TextView;
+import android.widget.TimePicker;
 
 import org.w3c.dom.Text;
 
@@ -23,6 +25,8 @@ import ch.epfl.sweng.studdybuddy.firebase.MetaMeeting;
 import ch.epfl.sweng.studdybuddy.util.Consumer;
 import ch.epfl.sweng.studdybuddy.util.Messages;
 
+import static ch.epfl.sweng.studdybuddy.util.ActivityHelper.meetingConsumer;
+
 public class GroupActivity extends AppCompatActivity {
     private String groupID;
     private String userID;
@@ -30,7 +34,8 @@ public class GroupActivity extends AppCompatActivity {
 
     private Button calendarButton;
     private Button participantButton;
-    TextView time;
+    Button time;
+    Button date;
     MetaMeeting mm;
     List<Group> group;
     List<Meeting> meetings;
@@ -51,39 +56,42 @@ public class GroupActivity extends AppCompatActivity {
         MaxNumUsers = origin.getIntExtra(Messages.maxUser, -1);
         calendarButton = findViewById(R.id.calendarBtn);
         participantButton = findViewById(R.id.participantsBtn);
-        time  = findViewById(R.id.meetTime);
+        time  = findViewById(R.id.time);
+        date = findViewById(R.id.date);
         calendarButton.setOnClickListener(new ClickListener(new Intent(this, ConnectedCalendarActivity.class)));
         participantButton.setOnClickListener(new ClickListener(new Intent(this, GroupInfoActivity.class)));
         setupMeeting();
     }
 
     public void setMeeting(View view) {
+
+    }
+
+    public void setDate(View view) {
         final Calendar newCalendar = Calendar.getInstance();
         DatePickerDialog  StartTime = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                mm.pushMeeting(new Meeting(), group.get(0));
+                mm.pushMeeting(new Meeting(), group.get(0)); // new Serial Date
                 setupMeeting();
             }
         }, newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
         StartTime.show();
     }
 
+    public void setTime(View view) {
+        TimePickerDialog timePickerDialog = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
+                @Override
+                public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+
+                }
+         }, 0, 0, false);
+        timePickerDialog.show();
+    }
+
     private void setupMeeting() {
         meetings = new ArrayList<>();
-        mm.fetchMeetings(groupID, new Consumer<List<Meeting>>() {
-            @Override
-            public void accept(List<Meeting> meetings) {
-                if(meetings.size() == 0) {
-                    TextView meeting = findViewById(R.id.nextMeet);
-                    meeting.setVisibility(View.GONE);
-                    time.setVisibility(View.GONE);
-                }
-                else {
-                    time.setText(meetings.get(0).getDeadline().toString());
-                }
-            }
-        });
-
+        TextView meeting = findViewById(R.id.nextMeet);
+        mm.fetchMeetings(groupID, meetingConsumer(meeting, time, null));
     }
 
     private void goToActivity(Intent intent){
