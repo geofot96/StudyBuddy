@@ -18,7 +18,7 @@ import ch.epfl.sweng.studdybuddy.core.Account;
 
 public class MainActivity extends AppCompatActivity
 {
-
+    private AuthManager mAuth = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -28,19 +28,43 @@ public class MainActivity extends AppCompatActivity
 
         Button mSignOutBtn = findViewById(R.id.signout_btn);
 
-//        mSignOutBtn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                signOut(); //get signed out
-//            }
-//        });
+        mSignOutBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                signOut(); //get signed out
+            }
+        });
     }
 
 
 
+    @Override
+    protected void onStart(){
+        super.onStart();
+        Account currentUser = getAuthManager().getCurrentUser();
+        if(currentUser == null){
+            signOut();
+        }
+
+    }
 
 
+    private void signOut(){
+        getAuthManager().logout().addOnCompleteListener(this,
+                new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        startActivity(new Intent(MainActivity.this, GoogleSignInActivity.class));
+                    }
+                });
+    }
 
+    public AuthManager getAuthManager(){
+        if (mAuth == null){
+            mAuth = new FirebaseAuthManager(this, getString(R.string.default_web_client_id));
+        }
+        return mAuth;
+    }
 
     public void goToProfileTabred(View view)
     {
