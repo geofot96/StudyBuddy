@@ -35,10 +35,8 @@ public class MetaMeetingTest {
        Pair binding = new Pair(mid, bg.getGroupID().getId());
        when(testref.child(any())).thenReturn(testref);
        verify(wb, times(1)).select("meetings");
-       verify(wb, times(1)).select("meetGroups");
+       verify(wb, times(1)).select(bg.getGroupID().getId());
        verify(wb, times(1)).select(mid);
-       verify(wb, times(1)).select(Helper.hashCode(binding));
        verify(wb, times(1)).setVal(m);
-       verify(wb, times(1)).setVal(any(Pair.class));
    }
 }
