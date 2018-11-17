@@ -12,12 +12,6 @@ public class SerialDateTest {
     public void setup() {
         date = new SerialDate();
     }
-    /*@Test
-    public void beforeAfterWorks(){
-        SerialDate after = new SerialDate();
-        assert(date.before(after));
-        assert(after.after(date));
-    }*/
 
     @Test
     public void setWorks(){
@@ -47,7 +41,7 @@ public class SerialDateTest {
         SerialDate d1 = new SerialDate();
         try
         {
-            wait();
+            Thread.sleep(800);
         }
         catch(Exception e){}
         SerialDate d2 = new SerialDate();
