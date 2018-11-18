@@ -1,5 +1,6 @@
 package ch.epfl.sweng.studdybuddy.util;
 
+import android.util.Log;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -30,6 +31,7 @@ public class ActivityHelper {
                     plus.setVisibility(isAdmin ? View.VISIBLE : View.GONE);
                 }
                 else {
+                    Log.i("UPDATE", meetings.get(0).time());
                     date.setText(meetings.get(0).date());
                     time.setText(meetings.get(0).time());
                     title.setVisibility(View.VISIBLE);

@@ -5,6 +5,7 @@ import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -46,9 +47,7 @@ public class GroupActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group);
-
         Intent origin = getIntent();
-
         mm = new MetaMeeting();
         groupID = origin.getStringExtra(Messages.groupID);
         group = new ArrayList<>();
@@ -64,47 +63,50 @@ public class GroupActivity extends AppCompatActivity {
         add = findViewById(R.id.addMeeting);
         calendarButton.setOnClickListener(new ClickListener(new Intent(this, ConnectedCalendarActivity.class)));
         participantButton.setOnClickListener(new ClickListener(new Intent(this, GroupInfoActivity.class)));
-
-        setAdmin();
         setupMeeting();
     }
 
-    public void setAdmin() {
-            isAdmin = !group.isEmpty() && group.get(0).getAdminID().equals(userID);
-    }
 
     public void setDate(View view) {
         final Calendar newCalendar = Calendar.getInstance();
-        DatePickerDialog  StartTime = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
-            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                Meeting mee =getMeeting();
-                mee.getDeadline().setYear(year);
-                mee.getDeadline().setMonth(monthOfYear);
-                mm.pushMeeting(mee, group.get(0)); // new Serial Date
-                setupMeeting();
-            }
-        }, newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
+        DatePickerDialog  StartTime = new DatePickerDialog(this, listenDate(getMeeting(), group.get(0), mm), newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
         StartTime.show();
     }
 
+    public static android.app.DatePickerDialog.OnDateSetListener listenDate(Meeting mee, Group group, MetaMeeting mm) {
+        return new DatePickerDialog.OnDateSetListener() {
+            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                mee.getDeadline().setYear(year);
+                mee.getDeadline().setMonth(monthOfYear);
+                mm.pushMeeting(mee, group); // new Serial Date
+                //setupMeeting();
+            }
+        };
+    }
+
     public void setTime(View view) {
-        TimePickerDialog timePickerDialog = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
-                @Override
-                public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                    Meeting mee = getMeeting();
-                    mee.getDeadline().setMinutes(minute);
-                    mm.pushMeeting(mee, group.get(0));
-                }
-         }, 0, 0, false);
+        TimePickerDialog timePickerDialog = new TimePickerDialog(this, listenTime(), 0, 0, false);
         timePickerDialog.show();
     }
 
+    public TimePickerDialog.OnTimeSetListener listenTime() {
+        return new TimePickerDialog.OnTimeSetListener() {
+            @Override
+            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                Meeting mee = getMeeting();
+                mee.getDeadline().setMinutes(minute);
+                mm.pushMeeting(mee, group.get(0));
+                setupMeeting();
+            }
+        };
+    }
     public Meeting getMeeting() {
         return (meetings.size() > 0) ? meetings.get(0) : new Meeting();
     }
     private void setupMeeting() {
         meetings = new ArrayList<>();
-        mm.fetchMeetings(groupID, meetingConsumer(title, time, date, add, isAdmin));
+        Boolean admin = !group.isEmpty() && group.get(0).getAdminID().equals(userID);
+        mm.fetchMeetings(groupID, meetingConsumer(title, time, date, add, true));
     }
 
     private void goToActivity(Intent intent){

@@ -8,11 +8,13 @@
 
     <TextView
         android:id="@+id/nextMeet"
-        android:layout_width="387dp"
+        android:layout_width="0dp"
         android:layout_height="104dp"
+        android:background="#424242"
         android:backgroundTint="@android:color/darker_gray"
         android:text="Next Meeting"
         android:textAlignment="center"
+        android:textColor="@android:color/white"
         android:textSize="36sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -54,9 +56,10 @@
         android:id="@+id/date"
         android:layout_width="243dp"
         android:layout_height="52dp"
-        android:background="@android:color/transparent"
+        android:background="#424242"
         android:onClick="setDate"
         android:text="Monday, 9"
+        android:textColor="@android:color/white"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/nextMeet" />
 
@@ -64,9 +67,10 @@
         android:id="@+id/time"
         android:layout_width="0dp"
         android:layout_height="52dp"
-        android:background="@android:color/transparent"
+        android:background="#424242"
         android:onClick="setTime"
         android:text="00:00"
+        android:textColor="@android:color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/date"
         app:layout_constraintTop_toBottomOf="@+id/nextMeet" />
