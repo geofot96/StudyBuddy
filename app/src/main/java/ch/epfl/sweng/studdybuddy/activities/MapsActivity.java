@@ -28,7 +28,6 @@ import ch.epfl.sweng.studdybuddy.R;
 import ch.epfl.sweng.studdybuddy.core.Meeting;
 import ch.epfl.sweng.studdybuddy.core.MeetingLocation;
 import ch.epfl.sweng.studdybuddy.firebase.FirebaseReference;
-import ch.epfl.sweng.studdybuddy.util.Helper;
 import ch.epfl.sweng.studdybuddy.util.MapsHelper;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
@@ -116,7 +115,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         } else {
             ActivityCompat.requestPermissions(this,
                     new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
-                    Helper.PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
+                    MapsHelper.PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
 
         }
     }
@@ -126,7 +125,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                            @NonNull String permissions[],
                                            @NonNull int[] grantResults) {
         switch (requestCode) {
-            case Helper.PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION: {
+            case MapsHelper.PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION: {
                 // If request is cancelled, the result arrays are empty.
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {

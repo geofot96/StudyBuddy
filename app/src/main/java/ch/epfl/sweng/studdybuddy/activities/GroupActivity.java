@@ -12,7 +12,7 @@ import java.util.List;
 import ch.epfl.sweng.studdybuddy.R;
 import ch.epfl.sweng.studdybuddy.core.Meeting;
 import ch.epfl.sweng.studdybuddy.firebase.FirebaseReference;
-import ch.epfl.sweng.studdybuddy.util.Helper;
+import ch.epfl.sweng.studdybuddy.util.MapsHelper;
 import ch.epfl.sweng.studdybuddy.util.Messages;
 
 public class GroupActivity extends AppCompatActivity {
@@ -56,7 +56,7 @@ public class GroupActivity extends AppCompatActivity {
 
         List<Meeting> meetings = Arrays.asList(m1,m2,m3);
         for(Meeting m: meetings){
-            m.setLocation(Helper.ROLEX_LOCATION);
+            m.setLocation(MapsHelper.ROLEX_LOCATION);
         }
         ref.select("BoubaMeetings").setVal(meetings);
         startActivity(intent);

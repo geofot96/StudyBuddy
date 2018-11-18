@@ -1,11 +1,8 @@
 package ch.epfl.sweng.studdybuddy.util;
 
 import android.app.Activity;
-import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.view.View;
 
 import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
@@ -91,26 +88,5 @@ public class MapsHelper {
                 }
             }
         });
-    }
-    public static boolean getLocationPermission(GoogleMap mMap, Activity activity) {
-        //
-        //Request location permission, so that we can get the location of the
-        //device. The result of the permission request is handled by a callback,
-        //onRequestPermissionsResult.
-        //
-        if (ContextCompat.checkSelfPermission(activity.getApplicationContext(),
-                android.Manifest.permission.ACCESS_FINE_LOCATION)
-                == PackageManager.PERMISSION_GRANTED) {
-            if(mMap != null) {
-                mMap.setMyLocationEnabled(true);
-            }
-            return true;
+    }}
 
-        } else {
-            ActivityCompat.requestPermissions(activity,
-                    new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
-                    PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
-            return false;
-        }
-    }
-}

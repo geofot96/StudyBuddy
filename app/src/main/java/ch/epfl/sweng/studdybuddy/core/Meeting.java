@@ -2,7 +2,7 @@ package ch.epfl.sweng.studdybuddy.core;
 
 import java.util.UUID;
 
-import ch.epfl.sweng.studdybuddy.util.Helper;
+import ch.epfl.sweng.studdybuddy.util.MapsHelper;
 
 public final class Meeting {
 
@@ -30,7 +30,7 @@ public final class Meeting {
         this.deadline = deadline;
         this.id = new ID<>(id);
         this.creation = creation;
-        this.location = Helper.ROLEX_LOCATION;
+        this.location = MapsHelper.ROLEX_LOCATION;
     }
 
     public SerialDate getDeadline() {
