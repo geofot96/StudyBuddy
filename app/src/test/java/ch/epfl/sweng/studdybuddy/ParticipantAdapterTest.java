@@ -7,8 +7,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import ch.epfl.sweng.studdybuddy.core.User;
-import ch.epfl.sweng.studdybuddy.util.Holder;
-import ch.epfl.sweng.studdybuddy.util.ParticipantAdapter;
+import ch.epfl.sweng.studdybuddy.tools.Holder;
+import ch.epfl.sweng.studdybuddy.tools.ParticipantAdapter;
 
 import static junit.framework.TestCase.assertTrue;
 import static org.mockito.Mockito.mock;

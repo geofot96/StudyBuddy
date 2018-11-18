@@ -16,7 +16,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
-import ch.epfl.sweng.studdybuddy.Fragments.FeedFragment;
 import ch.epfl.sweng.studdybuddy.R;
 import ch.epfl.sweng.studdybuddy.core.Course;
 import ch.epfl.sweng.studdybuddy.core.Group;
@@ -25,8 +24,8 @@ import ch.epfl.sweng.studdybuddy.firebase.FirebaseReference;
 import ch.epfl.sweng.studdybuddy.firebase.MetaGroup;
 import ch.epfl.sweng.studdybuddy.services.calendar.Availability;
 import ch.epfl.sweng.studdybuddy.services.calendar.ConnectedAvailability;
-import ch.epfl.sweng.studdybuddy.util.AdapterConsumer;
-import ch.epfl.sweng.studdybuddy.util.ArrayAdapterAdapter;
+import ch.epfl.sweng.studdybuddy.tools.AdapterConsumer;
+import ch.epfl.sweng.studdybuddy.tools.ArrayAdapterAdapter;
 import ch.epfl.sweng.studdybuddy.util.StudyBuddy;
 
 import static ch.epfl.sweng.studdybuddy.util.ActivityHelper.showDropdown;

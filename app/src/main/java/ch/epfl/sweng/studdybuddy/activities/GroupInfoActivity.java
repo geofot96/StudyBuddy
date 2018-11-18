@@ -15,8 +15,8 @@ import ch.epfl.sweng.studdybuddy.R;
 import ch.epfl.sweng.studdybuddy.core.Group;
 import ch.epfl.sweng.studdybuddy.core.User;
 import ch.epfl.sweng.studdybuddy.firebase.MetaGroupAdmin;
-import ch.epfl.sweng.studdybuddy.util.ParticipantAdapter;
-import ch.epfl.sweng.studdybuddy.util.RecyclerAdapterAdapter;
+import ch.epfl.sweng.studdybuddy.tools.ParticipantAdapter;
+import ch.epfl.sweng.studdybuddy.tools.RecyclerAdapterAdapter;
 import ch.epfl.sweng.studdybuddy.util.StudyBuddy;
 
 public class GroupInfoActivity extends AppCompatActivity{
@@ -53,6 +53,7 @@ public class GroupInfoActivity extends AppCompatActivity{
             @Override
             public void onClick(View v) {
                 if (uId != null && gId != null) {
+                    mb.clearListeners();
                     mb.removeUserFromGroup(uId, group.get(0));
                     Intent transition = new Intent(GroupInfoActivity.this, NavigationActivity.class);
                     startActivity(transition);
