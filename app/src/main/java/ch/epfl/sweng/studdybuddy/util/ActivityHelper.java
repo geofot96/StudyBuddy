@@ -51,7 +51,9 @@ public class ActivityHelper {
     }
     public static android.app.DatePickerDialog.OnDateSetListener listenDate(Meeting mee, Group group, MetaMeeting mm, AdapterAdapter adapter) {
         return new DatePickerDialog.OnDateSetListener() {
+            @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                Log.i("DATESET", "working");
                 mee.getDeadline().setYear(year);
                 mee.getDeadline().setMonth(monthOfYear);
                 mm.pushMeeting(mee, group); // new Serial Date

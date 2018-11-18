@@ -23,8 +23,7 @@ import ch.epfl.sweng.studdybuddy.R;
 import ch.epfl.sweng.studdybuddy.core.Group;
 import ch.epfl.sweng.studdybuddy.core.Meeting;
 import ch.epfl.sweng.studdybuddy.firebase.MetaMeeting;
-import ch.epfl.sweng.studdybuddy.util.AdapterAdapter;
-import ch.epfl.sweng.studdybuddy.util.Consumer;
+import ch.epfl.sweng.studdybuddy.tools.AdapterAdapter;
 import ch.epfl.sweng.studdybuddy.util.Messages;
 
 import static ch.epfl.sweng.studdybuddy.util.ActivityHelper.listenDate;
@@ -78,8 +77,8 @@ public class GroupActivity extends AppCompatActivity {
     }
 
     public void setDate(View view) {
-        final Calendar newCalendar = Calendar.getInstance();
-        DatePickerDialog  StartTime = new DatePickerDialog(this, listenDate(getMeeting(), group, mm, updateMeeting()), newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
+        final Calendar c = Calendar.getInstance();
+        DatePickerDialog  StartTime = new DatePickerDialog(this, listenDate(getMeeting(), group, mm, updateMeeting()), c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH));
         StartTime.show();
     }
 
