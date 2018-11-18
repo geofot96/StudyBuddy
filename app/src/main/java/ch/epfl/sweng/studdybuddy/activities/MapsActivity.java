@@ -83,9 +83,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
     }
 
-    
+
     private PlaceSelectionListener placeSelectionListener(){
-        new PlaceSelectionListener() {
+        return new PlaceSelectionListener() {
             @Override
             public void onPlaceSelected(Place place) {
                 // TODO: Get info about the selected place.
