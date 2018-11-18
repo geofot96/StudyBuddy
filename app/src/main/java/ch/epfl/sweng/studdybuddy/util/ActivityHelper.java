@@ -38,7 +38,6 @@ public class ActivityHelper {
                     date.setVisibility(View.GONE);
                 }
                 else {
-                    Log.i("TIME", meetings.get(0).date() + " " + meetings.get(0).time());
                     date.setText(meetings.get(0).date());
                     time.setText(meetings.get(meetings.size()-1).time());
                     title.setVisibility(View.VISIBLE);
@@ -53,7 +52,6 @@ public class ActivityHelper {
         return new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                Log.i("DATESET", "working");
                 mee.getDeadline().setYear(year);
                 mee.getDeadline().setMonth(monthOfYear);
                 mm.pushMeeting(mee, group); // new Serial Date

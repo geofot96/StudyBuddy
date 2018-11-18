@@ -19,7 +19,7 @@ import ch.epfl.sweng.studdybuddy.core.Pair;
 import ch.epfl.sweng.studdybuddy.firebase.FirebaseReference;
 import ch.epfl.sweng.studdybuddy.firebase.MetaMeeting;
 import ch.epfl.sweng.studdybuddy.firebase.ReferenceWrapper;
-import ch.epfl.sweng.studdybuddy.util.Consumer;
+import ch.epfl.sweng.studdybuddy.tools.Consumer;
 import ch.epfl.sweng.studdybuddy.util.Helper;
 
 import static ch.epfl.sweng.studdybuddy.MetaFactory.deepFBReference;
