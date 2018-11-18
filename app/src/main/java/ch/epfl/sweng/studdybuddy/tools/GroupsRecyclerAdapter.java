@@ -27,31 +27,8 @@ import ch.epfl.sweng.studdybuddy.util.Messages;
 
 public class GroupsRecyclerAdapter extends BasicRecyclerAdapter implements Filterable
 {
-   /* private List<Group> groupList, filterList;
-    FeedFilter filter;
-    private MetaGroup mb;
-    private ReferenceWrapper fb;
-    private String userId;
-    private List<Group> uGroups;
-    private HashMap<String, Integer> sizes;
-    private List<String> uGroupIds;
-    public Consumer<Intent> joinConsumer;
-*/
-
-
     public GroupsRecyclerAdapter(List<Group> groupList, String userId)
     {
-        /*this.groupList = groupList;
-        this.filterList=groupList;
-        mb = new MetaGroup();
-        fb = new FirebaseReference();
-        this.userId = userId;
-        this.uGroups = new ArrayList<>();
-        this.sizes = new HashMap<>();
-        this.uGroupIds = new ArrayList<>();
-        mb.addListenner(new RecyclerAdapterAdapter(this));
-        mb.getUserGroups(userId, uGroupIds, uGroups);
-        mb.getAllGroupSizes(sizes);*/
         super(groupList,userId);
     }
 
@@ -76,7 +53,6 @@ public class GroupsRecyclerAdapter extends BasicRecyclerAdapter implements Filte
         holder.groupCourseTextView.setText(group.getCourse().getCourseName());
         holder.groupLanguageTextView.setText(group.getLang());
         holder.groupCreationDateTextView.setText(getCreationDate(group));
-        //Button button = holder.messageButton;
         setParticipantNumber(holder.groupParticipantInfoTextView, group);
         setButton(holder.messageButton, group);
         if(getUserId().equals(group.getAdminID())) {
@@ -123,7 +99,6 @@ public class GroupsRecyclerAdapter extends BasicRecyclerAdapter implements Filte
             groupSize = gSize.intValue();
         }
         button.setText("Join");
-        //Pair pair =new Pair(userId, group.getGroupID().toString());
         if(groupSize < group.getMaxNoUsers()
                 &&!getuGroupIds().contains(group.getGroupID().getId())) {
             button.setText("Join");
@@ -148,7 +123,7 @@ public class GroupsRecyclerAdapter extends BasicRecyclerAdapter implements Filte
             @Override
             public void onClick(View v) {
                 Pair pair =new Pair(getUserId(), group.getGroupID().toString());
-                getFb().select("userGroup").select(Helper.hashCode(pair)).setVal(pair);
+                fb.select("userGroup").select(Helper.hashCode(pair)).setVal(pair);
                 Availability a = new ConnectedAvailability(pair.getKey(), pair.getValue());
                 if(getJoinConsumer() != null)
                 {

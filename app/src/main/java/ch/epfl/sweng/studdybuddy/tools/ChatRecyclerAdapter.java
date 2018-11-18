@@ -57,7 +57,7 @@ public class ChatRecyclerAdapter extends BasicRecyclerAdapter
         setGroupList(groupList);
         setFilterList(groupList);
         setMb(new MetaGroup());
-        setFb(new FirebaseReference());
+        fb = new FirebaseReference();
         setUserId(userId);
         setuGroups(new ArrayList<>());
         setSizes(new HashMap<>());
@@ -65,23 +65,7 @@ public class ChatRecyclerAdapter extends BasicRecyclerAdapter
         getMb().addListenner(new RecyclerAdapterAdapter(this));
         getMb().getUserGroups(userId, getuGroupIds(), getuGroups());
         getMb().getAllGroupSizes(getSizes());
-
-//        mb = new MetaGroup();
-//        fb = new FirebaseReference();
-//        this.userId = userId;
-//        this.uGroups = new ArrayList<>();
-//        this.sizes = new HashMap<>();
-//        this.uGroupIds = new ArrayList<>();
-//        mb.addListenner(new RecyclerAdapterAdapter(this));
-//        mb.getUserGroups(userId, uGroupIds, uGroups);
-//        mb.getAllGroupSizes(sizes);
     }
-
-
-//    @Override
-//    public ChatRecyclerAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
-//    {
-//    }
 
     @NonNull
     @Override

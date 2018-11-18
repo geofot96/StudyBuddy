@@ -17,17 +17,17 @@ import ch.epfl.sweng.studdybuddy.firebase.MetaGroup;
 import ch.epfl.sweng.studdybuddy.firebase.ReferenceWrapper;
 import ch.epfl.sweng.studdybuddy.util.FeedFilter;
 
-public abstract class BasicRecyclerAdapter extends RecyclerView.Adapter<BasicRecyclerAdapter.MyViewHolder>{
-    //will have to make it private + accessors
-        private List<Group> groupList, filterList;
-        FeedFilter filter;
-        private MetaGroup mb;
-        private ReferenceWrapper fb;
-        private String userId;
-        private List<Group> uGroups;
-        private HashMap<String, Integer> sizes;
-        private List<String> uGroupIds;
-        private Consumer<Intent> joinConsumer;
+public abstract class BasicRecyclerAdapter extends RecyclerView.Adapter<BasicRecyclerAdapter.MyViewHolder>
+{
+    private List<Group> groupList, filterList;
+    FeedFilter filter;
+    private MetaGroup mb;
+    public ReferenceWrapper fb;
+    private String userId;
+    private List<Group> uGroups;
+    private HashMap<String, Integer> sizes;
+    private List<String> uGroupIds;
+    private Consumer<Intent> joinConsumer;
 
     public List<Group> getGroupList()
     {
@@ -57,16 +57,6 @@ public abstract class BasicRecyclerAdapter extends RecyclerView.Adapter<BasicRec
     public void setMb(MetaGroup mb)
     {
         this.mb = mb;
-    }
-
-    public ReferenceWrapper getFb()
-    {
-        return fb;
-    }
-
-    public void setFb(ReferenceWrapper fb)
-    {
-        this.fb = fb;
     }
 
     public String getUserId()
@@ -141,14 +131,19 @@ public abstract class BasicRecyclerAdapter extends RecyclerView.Adapter<BasicRec
         }
     }
 
-    public MyViewHolder getViewHolder(View itemView){ return new MyViewHolder(itemView);}
+    public MyViewHolder getViewHolder(View itemView)
+    {
+        return new MyViewHolder(itemView);
+    }
 
-    public BasicRecyclerAdapter(){}
+    public BasicRecyclerAdapter()
+    {
+    }
 
     public BasicRecyclerAdapter(List<Group> groupList, String userId)
     {
         this.groupList = groupList;
-        this.filterList=groupList;
+        this.filterList = groupList;
         mb = new MetaGroup();
         fb = new FirebaseReference();
         this.userId = userId;
@@ -161,16 +156,21 @@ public abstract class BasicRecyclerAdapter extends RecyclerView.Adapter<BasicRec
     }
 
 
-    public void setParticipantNumber(TextView pNumber, Group group){
+    public void setParticipantNumber(TextView pNumber, Group group)
+    {
         int count = 0;
-        if(sizes.get(group.getGroupID().toString()) != null){
+        if(sizes.get(group.getGroupID().toString()) != null)
+        {
             count = sizes.get(group.getGroupID().toString());
         }
-        pNumber.setText(("Particip: " + count+ "/" + group.getMaxNoUsers()));
+        pNumber.setText(("Particip: " + count + "/" + group.getMaxNoUsers()));
     }
-    public int getParticipantNumber(Group group){
+
+    public int getParticipantNumber(Group group)
+    {
         int count = 0;
-        if(sizes.get(group.getGroupID().toString()) != null){
+        if(sizes.get(group.getGroupID().toString()) != null)
+        {
             count = sizes.get(group.getGroupID().toString());
         }
         return count;

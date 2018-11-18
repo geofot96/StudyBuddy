@@ -16,7 +16,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 
 import ch.epfl.sweng.studdybuddy.R;
-import ch.epfl.sweng.studdybuddy.firebase.FirebaseReference;
 import ch.epfl.sweng.studdybuddy.services.chat.ChatMessage;
 
 public class ChatActivity extends AppCompatActivity{
@@ -31,10 +30,9 @@ public class ChatActivity extends AppCompatActivity{
         else {
             Toast.makeText(this,
                     "Group not found in database",
-                    Toast.LENGTH_LONG)
-                    .show();
+                    Toast.LENGTH_LONG).show();
             finish();
-        };
+        }
         displayChatMessages();
         FloatingActionButton fab =
                 (FloatingActionButton)findViewById(R.id.fab);
@@ -44,15 +42,13 @@ public class ChatActivity extends AppCompatActivity{
                 EditText input = (EditText)findViewById(R.id.input);
                 FirebaseDatabase.getInstance().getReference().child("chat").child(groupID).push()
                         .setValue(new ChatMessage(input.getText().toString(),
-                        FirebaseAuth.getInstance()
-                                .getCurrentUser()
-                                .getDisplayName()));
+                        FirebaseAuth.getInstance().getCurrentUser().getDisplayName()));
                 input.setText("");
             }
         });
 
     }
-    public  void displayChatMessages()
+    public void displayChatMessages()
     {
         ListView listOfMessages = (ListView)findViewById(R.id.list_of_messages);
 
