@@ -106,7 +106,7 @@ public class GroupActivity extends AppCompatActivity {
     private void setupMeeting() {
         meetings = new ArrayList<>();
         Boolean admin = !group.isEmpty() && group.get(0).getAdminID().equals(userID);
-        mm.fetchMeetings(groupID, meetingConsumer(title, time, date, add, true));
+        mm.fetchMeetings(groupID, meetingConsumer(title, time, date, add, admin));
     }
 
     private void goToActivity(Intent intent){
