@@ -11,7 +11,6 @@ import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -20,9 +19,11 @@ import java.util.List;
 
 import ch.epfl.sweng.studdybuddy.R;
 import ch.epfl.sweng.studdybuddy.core.ID;
+import ch.epfl.sweng.studdybuddy.firebase.FirebaseReference;
 import ch.epfl.sweng.studdybuddy.firebase.MetaMeeting;
 import ch.epfl.sweng.studdybuddy.services.meeting.Meeting;
 import ch.epfl.sweng.studdybuddy.services.meeting.MeetingRecyclerAdapter;
+import ch.epfl.sweng.studdybuddy.util.Consumer;
 import ch.epfl.sweng.studdybuddy.util.Messages;
 
 public class MeetingsActivity extends AppCompatActivity {
@@ -57,9 +58,18 @@ public class MeetingsActivity extends AppCompatActivity {
 
         metaM = new MetaMeeting();
 
-        db = FirebaseDatabase.getInstance().getReference("meetings").child(groupId);
-        db.addChildEventListener(new MeetingsChildListener());
+    //   db = FirebaseDatabase.getInstance().getReference("meetings").child(groupId);
+    //   db.addChildEventListener(new MeetingsChildListener());
 
+        FirebaseReference ref = new FirebaseReference();
+        ref.select("meetings").select(groupId).getAll(Meeting.class, new Consumer<List<Meeting>>() {
+            @Override
+            public void accept(List<Meeting> meetings) {
+                meetingList.clear();
+                meetingList.addAll(meetings);
+                adapter.notifyDataSetChanged();
+            }
+        });
         adapter = new MeetingRecyclerAdapter(meetingList, this);
 
         meetingRV.setAdapter(adapter);
