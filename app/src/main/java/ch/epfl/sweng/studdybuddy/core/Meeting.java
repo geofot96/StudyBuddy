@@ -54,4 +54,11 @@ public final class Meeting {
         this.creation = creation;
     }
 
+    public MeetingLocation getLocation() {
+        return location;
+    }
+
+    public void setLocation(MeetingLocation location){
+        this.location = location;
+    }
 }

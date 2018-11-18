@@ -25,7 +25,7 @@ public final class Helper {
         }
     }
 
-    public static final MeetingLocation ROLEX_LOCATION = new MeetingLocation("Rolex",46.5182757,6.5660673);
+    public static final MeetingLocation ROLEX_LOCATION = new MeetingLocation("Rolex", "EPFL", 46.5182757,6.5660673);
 
 
 }

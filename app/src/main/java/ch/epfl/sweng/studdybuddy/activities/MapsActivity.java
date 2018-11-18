@@ -1,9 +1,14 @@
 package ch.epfl.sweng.studdybuddy.activities;
 
+import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -24,10 +29,17 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 
 import ch.epfl.sweng.studdybuddy.R;
+import ch.epfl.sweng.studdybuddy.core.Meeting;
+import ch.epfl.sweng.studdybuddy.core.MeetingLocation;
+import ch.epfl.sweng.studdybuddy.firebase.FirebaseReference;
+import ch.epfl.sweng.studdybuddy.util.Consumer;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
@@ -38,11 +50,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private FusedLocationProviderClient mFusedLocationProviderClient;
     private Location mLastKnownLocation;
     private LatLng mDefaultLocation;
-    private final float DEFAULT_ZOOM = 12.0f;
+    private final float DEFAULT_ZOOM = 14.0f;
     private final String TAG = "MAPS";
-    private  MarkerOptions mMarker;
+    private MarkerOptions mMarker;
     private Marker marker;
     private Button button;
+    private List<Meeting> meetings;
+    private FirebaseReference ref;
+    private MeetingLocation confirmedPlace;
+    PlaceAutocompleteFragment autocompleteFragment;
+    public static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,7 +69,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-        PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
+         autocompleteFragment = (PlaceAutocompleteFragment)
                 getFragmentManager().findFragmentById(R.id.place_autocomplete);
 
         autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
@@ -59,9 +77,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             public void onPlaceSelected(Place place) {
                 // TODO: Get info about the selected place.
                 Log.i("Maps", "Place: " + place.getName());
-                mMarker = new MarkerOptions().position(place.getLatLng()).title(place.getName().toString());
+                mMarker = new MarkerOptions().position(place.getLatLng()).title(place.getName().toString()).draggable(true);
                 marker.setPosition(place.getLatLng());
+                marker.setTitle(place.getName().toString());
                 mMap.moveCamera(CameraUpdateFactory.newLatLng(place.getLatLng()));
+                confirmedPlace = new MeetingLocation(place.getName().toString(), place.getAddress().toString(), place.getLatLng());
 
             }
 
@@ -72,20 +92,40 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
         });
 
-        ((Button)findViewById(R.id.confirmLocation)).setOnClickListener(new View.OnClickListener() {
+        ((Button) findViewById(R.id.confirmLocation)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (confirmedPlace != null) {
+                    int lastindex = meetings.size() - 1;
+                    Meeting lastMeeting = meetings.get(lastindex);
+                    lastMeeting.setLocation(confirmedPlace);
+                    meetings.set(lastindex, lastMeeting);
+                    ref.select("BoubaMeetings").setVal(meetings);
+                    finish();
+                }
 
-
-                finish();
 
             }
         });
 
+        meetings = new ArrayList<>();
+        ref = new FirebaseReference();
+        ref.select("BoubaMeetings").getAll(Meeting.class, new Consumer<List<Meeting>>() {
+            @Override
+            public void accept(List<Meeting> meetingsfb) {
+                meetings.clear();
+                meetings.addAll(meetingsfb);
+                MeetingLocation location = meetings.get(meetings.size() - 1).location;
+                mDefaultLocation = location.getLatLng();
 
 
+                mMarker = new MarkerOptions().position(mDefaultLocation).title(location.getTitle());
 
-        mDefaultLocation = new LatLng(46.4123266, 6.2650744);
+                marker = mMap.addMarker(mMarker.draggable(true));
+
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(mDefaultLocation, DEFAULT_ZOOM));
+            }
+        });
 
         // Construct a GeoDataClient.
         mGeoDataClient = Places.getGeoDataClient(this);
@@ -95,60 +135,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         // Construct a FusedLocationProviderClient.
         mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
-        getDeviceLocation();
+        //getDeviceLocation();
 
-    }
-    private void updateLocationUI() {
-        if (mMap == null) {
-            return;
-        }
-        try {
-            if (mLocationPermissionGranted) {
-                mMap.setMyLocationEnabled(true);
-                mMap.getUiSettings().setMyLocationButtonEnabled(true);
-            } else {
-                mMap.setMyLocationEnabled(false);
-                mMap.getUiSettings().setMyLocationButtonEnabled(false);
-                mLastKnownLocation = null;
-               // getLocationPermission();
-            }
-        } catch (SecurityException e)  {
-            Log.e("Exception: %s", e.getMessage());
-        }
-    }
-    private void getDeviceLocation() {
-        /*
-         * Get the best and most recent location of the device, which may be null in rare
-         * cases when a location is not available.
-         */
-        try {
-            if (mLocationPermissionGranted) {
-                Task locationResult = mFusedLocationProviderClient.getLastLocation();
-                locationResult.addOnCompleteListener(this, new OnCompleteListener() {
-                    @Override
-                    public void onComplete(@NonNull Task task) {
-                        if (task.isSuccessful()) {
-                            // Set the map's camera position to the current location of the device.
-                            mLastKnownLocation = (Location)task.getResult();
-                            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
-                                    new LatLng(mLastKnownLocation.getLatitude(),
-                                            mLastKnownLocation.getLongitude()), DEFAULT_ZOOM));
-                        } else {
-                            Log.d(TAG, "Current location is null. Using defaults.");
-                            Log.e(TAG, "Exception: %s", task.getException());
-                            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(mDefaultLocation, DEFAULT_ZOOM));
-                            mMap.getUiSettings().setMyLocationButtonEnabled(false);
-                        }
-                    }
-                });
-            }
-        } catch(SecurityException e)  {
-            Log.e("Exception: %s", e.getMessage());
-        }
     }
 
 
-    /*private void getLocationPermission() {
+    private void getLocationPermission() {
         //
         //Request location permission, so that we can get the location of the
         //device. The result of the permission request is handled by a callback,
@@ -158,10 +150,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 android.Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
             mLocationPermissionGranted = true;
+            mMap.setMyLocationEnabled(true);
+
+
         } else {
             ActivityCompat.requestPermissions(this,
                     new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
                     PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
+
         }
     }
 
@@ -176,11 +172,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     mLocationPermissionGranted = true;
+                    getLocationPermission();
+
                 }
             }
         }
-        updateLocationUI();
-    }*/
+        //updateLocationUI();
+    }
 
 
     /**
@@ -195,11 +193,33 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        mMarker = new MarkerOptions().position(mDefaultLocation).title("You are here");
-        // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-34, 151);
-        marker = mMap.addMarker(mMarker);
+        getLocationPermission();
 
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(mDefaultLocation));
+
+        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+            @Override
+            public void onMapClick(LatLng latLng) {
+                marker.setPosition(latLng);
+                Geocoder geocoder;
+                Address address = null;
+                geocoder = new Geocoder(MapsActivity.this, Locale.getDefault());
+                try {
+                    address = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1).get(0);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                if (address != null)
+                {
+                    marker.setTitle(address.getFeatureName() + " " + address.getAddressLine(0));
+                    marker.showInfoWindow();
+                    autocompleteFragment.setText(address.getFeatureName() + " " + address.getAddressLine(0));
+                    confirmedPlace = new MeetingLocation(address.getFeatureName(),address.getAddressLine(0), address.getLatitude(), address.getLongitude());
+                }
+            }
+        });
     }
+
+
+
 }

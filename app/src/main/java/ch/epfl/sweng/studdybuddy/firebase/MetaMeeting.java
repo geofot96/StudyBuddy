@@ -1,7 +1,6 @@
 package ch.epfl.sweng.studdybuddy.firebase;
 
 import ch.epfl.sweng.studdybuddy.core.Group;
-import ch.epfl.sweng.studdybuddy.core.ID;
 import ch.epfl.sweng.studdybuddy.core.Meeting;
 import ch.epfl.sweng.studdybuddy.core.Pair;
 import ch.epfl.sweng.studdybuddy.util.Helper;
@@ -20,5 +19,6 @@ public class MetaMeeting extends MetaGroup {
         db.select("meetings").select(mid).setVal(meeting);
         db.select("meetGroups").select(Helper.hashCode(binding)).setVal(binding);
     }
+
 
 }
