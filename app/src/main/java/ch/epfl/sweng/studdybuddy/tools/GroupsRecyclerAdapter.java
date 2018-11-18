@@ -58,17 +58,8 @@ public class GroupsRecyclerAdapter extends BasicRecyclerAdapter implements Filte
     public GroupsRecyclerAdapter(List<Group> groupList, String userId, Consumer<Intent> joinConsumer)
     {
         this(groupList, userId);
-        this.joinConsumer = joinConsumer;
+        setJoinConsumer(joinConsumer);
     }
-    public List<Group> getGroupList() {
-        return new ArrayList<>(groupList);
-    }
-
-    public void setGroupList(List<Group> groupList) {
-        this.groupList = groupList;
-    }
-
-
 
     public BasicRecyclerAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
     {
@@ -81,14 +72,14 @@ public class GroupsRecyclerAdapter extends BasicRecyclerAdapter implements Filte
 
     @Override
     public void onBindViewHolder(@NonNull BasicRecyclerAdapter.MyViewHolder holder, int position) {
-        Group group = groupList.get(position);
+        Group group = getGroupList().get(position);
         holder.groupCourseTextView.setText(group.getCourse().getCourseName());
         holder.groupLanguageTextView.setText(group.getLang());
         holder.groupCreationDateTextView.setText(getCreationDate(group));
         //Button button = holder.messageButton;
         setParticipantNumber(holder.groupParticipantInfoTextView, group);
         setButton(holder.messageButton, group);
-        if(userId.equals(group.getAdminID())) {
+        if(getUserId().equals(group.getAdminID())) {
             holder.admin.setText("\uD83D\uDC51");
         }
         else {
@@ -107,13 +98,13 @@ public class GroupsRecyclerAdapter extends BasicRecyclerAdapter implements Filte
     @Override
     public int getItemCount()
     {
-        return groupList.size();
+        return getGroupList().size();
     }
     @Override
     public Filter getFilter() {
         if(filter==null)
         {
-            filter=new FeedFilter(this,filterList);
+            filter=new FeedFilter(this,getFilterList());
         }
 
         return filter;
@@ -123,10 +114,10 @@ public class GroupsRecyclerAdapter extends BasicRecyclerAdapter implements Filte
     {
         getFilter();
         filter.setFilterList(newFilter);
-
     }
+
     private void setButton(Button button, Group group){
-        Integer gSize = sizes.get(group.getGroupID().toString());
+        Integer gSize = getSizes().get(group.getGroupID().toString());
         int groupSize = 1;
         if(gSize != null){
             groupSize = gSize.intValue();
@@ -134,12 +125,12 @@ public class GroupsRecyclerAdapter extends BasicRecyclerAdapter implements Filte
         button.setText("Join");
         //Pair pair =new Pair(userId, group.getGroupID().toString());
         if(groupSize < group.getMaxNoUsers()
-                &&!uGroupIds.contains(group.getGroupID().getId())) {
+                &&!getuGroupIds().contains(group.getGroupID().getId())) {
             button.setText("Join");
             button.setOnClickListener(joinButtonListener(group, button));
         }else {
             button.setText("More Info");
-            getTheRightMoreInfo(button, group, uGroupIds.contains(group.getGroupID().getId()));
+            getTheRightMoreInfo(button, group, getuGroupIds().contains(group.getGroupID().getId()));
 
         }
     }
@@ -156,16 +147,16 @@ public class GroupsRecyclerAdapter extends BasicRecyclerAdapter implements Filte
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Pair pair =new Pair(userId, group.getGroupID().toString());
-                fb.select("userGroup").select(Helper.hashCode(pair)).setVal(pair);
+                Pair pair =new Pair(getUserId(), group.getGroupID().toString());
+                getFb().select("userGroup").select(Helper.hashCode(pair)).setVal(pair);
                 Availability a = new ConnectedAvailability(pair.getKey(), pair.getValue());
-                if(joinConsumer != null)
+                if(getJoinConsumer() != null)
                 {
                     Intent intent = new Intent(button.getContext(), GroupActivity.class);
                     intent.putExtra(FeedFragment.GROUP_ID, group.getGroupID().getId());
-                    intent.putExtra(Messages.userID, userId);
+                    intent.putExtra(Messages.userID, getUserId());
                     intent.putExtra(Messages.maxUser, group.getMaxNoUsers());
-                    joinConsumer.accept(intent);
+                    getJoinConsumer().accept(intent);
                 }
             }
         };
@@ -175,11 +166,11 @@ public class GroupsRecyclerAdapter extends BasicRecyclerAdapter implements Filte
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(joinConsumer != null )
+                if(getJoinConsumer() != null )
                 {
                     Intent intent = new Intent(button.getContext(), GroupInfoActivity.class);
                     intent.putExtra(FeedFragment.GROUP_ID, gId);
-                    joinConsumer.accept(intent);
+                    getJoinConsumer().accept(intent);
                 }
             }
         };
@@ -189,13 +180,13 @@ public class GroupsRecyclerAdapter extends BasicRecyclerAdapter implements Filte
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(joinConsumer != null )
+                if(getJoinConsumer() != null )
                 {
                     Intent intent = new Intent(button.getContext(), GroupActivity.class);
                     intent.putExtra(FeedFragment.GROUP_ID, group.getGroupID().getId());
                     intent.putExtra(Messages.maxUser, group.getMaxNoUsers());
-                    intent.putExtra(Messages.userID, userId);
-                    joinConsumer.accept(intent);
+                    intent.putExtra(Messages.userID, getUserId());
+                    getJoinConsumer().accept(intent);
                 }
             }
         };

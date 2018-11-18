@@ -19,15 +19,105 @@ import ch.epfl.sweng.studdybuddy.util.FeedFilter;
 
 public abstract class BasicRecyclerAdapter extends RecyclerView.Adapter<BasicRecyclerAdapter.MyViewHolder>{
     //will have to make it private + accessors
-        public List<Group> groupList, filterList;
+        private List<Group> groupList, filterList;
         FeedFilter filter;
-        public MetaGroup mb;
-        public ReferenceWrapper fb;
-        public String userId;
-        public List<Group> uGroups;
-        public HashMap<String, Integer> sizes;
-        public List<String> uGroupIds;
-        public Consumer<Intent> joinConsumer;
+        private MetaGroup mb;
+        private ReferenceWrapper fb;
+        private String userId;
+        private List<Group> uGroups;
+        private HashMap<String, Integer> sizes;
+        private List<String> uGroupIds;
+        private Consumer<Intent> joinConsumer;
+
+    public List<Group> getGroupList()
+    {
+        return groupList;
+    }
+
+    public void setGroupList(List<Group> groupList)
+    {
+        this.groupList = groupList;
+    }
+
+    public List<Group> getFilterList()
+    {
+        return filterList;
+    }
+
+    public void setFilterList(List<Group> filterList)
+    {
+        this.filterList = filterList;
+    }
+
+    public MetaGroup getMb()
+    {
+        return mb;
+    }
+
+    public void setMb(MetaGroup mb)
+    {
+        this.mb = mb;
+    }
+
+    public ReferenceWrapper getFb()
+    {
+        return fb;
+    }
+
+    public void setFb(ReferenceWrapper fb)
+    {
+        this.fb = fb;
+    }
+
+    public String getUserId()
+    {
+        return userId;
+    }
+
+    public void setUserId(String userId)
+    {
+        this.userId = userId;
+    }
+
+    public List<Group> getuGroups()
+    {
+        return uGroups;
+    }
+
+    public void setuGroups(List<Group> uGroups)
+    {
+        this.uGroups = uGroups;
+    }
+
+    public HashMap<String, Integer> getSizes()
+    {
+        return sizes;
+    }
+
+    public void setSizes(HashMap<String, Integer> sizes)
+    {
+        this.sizes = sizes;
+    }
+
+    public List<String> getuGroupIds()
+    {
+        return uGroupIds;
+    }
+
+    public void setuGroupIds(List<String> uGroupIds)
+    {
+        this.uGroupIds = uGroupIds;
+    }
+
+    public Consumer<Intent> getJoinConsumer()
+    {
+        return joinConsumer;
+    }
+
+    public void setJoinConsumer(Consumer<Intent> joinConsumer)
+    {
+        this.joinConsumer = joinConsumer;
+    }
 
     public static class MyViewHolder extends RecyclerView.ViewHolder
     {
