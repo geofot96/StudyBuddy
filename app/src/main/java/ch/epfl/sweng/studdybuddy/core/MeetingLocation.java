@@ -17,7 +17,7 @@ public class MeetingLocation implements Serializable{
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
+        //if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         MeetingLocation that = (MeetingLocation) o;
         return Double.compare(that.latitude, latitude) == 0 &&
@@ -28,7 +28,7 @@ public class MeetingLocation implements Serializable{
 
 
     public MeetingLocation(String title, String address, double latitude, double Longitude){
-
+        this();
         this.title = title;
         this.latitude = latitude;
         longitude = Longitude;

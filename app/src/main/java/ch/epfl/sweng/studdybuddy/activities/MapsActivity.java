@@ -83,7 +83,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
     }
 
-
+    //Move camera and
     private PlaceSelectionListener placeSelectionListener(){
         return new PlaceSelectionListener() {
             @Override
@@ -95,7 +95,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 marker.setTitle(place.getName().toString());
                 mMap.moveCamera(CameraUpdateFactory.newLatLng(place.getLatLng()));
                 confirmedPlace = new MeetingLocation(place.getName().toString(), place.getAddress().toString(), place.getLatLng());
-
             }
 
             @Override
@@ -105,6 +104,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
         };
     }
+
+    //Write meeting location in firebase
     private View.OnClickListener confirmationListener(){
         return new View.OnClickListener() {
             @Override
