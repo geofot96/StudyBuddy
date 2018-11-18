@@ -72,7 +72,20 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
          autocompleteFragment = (PlaceAutocompleteFragment)
                 getFragmentManager().findFragmentById(R.id.place_autocomplete);
 
-        autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+        autocompleteFragment.setOnPlaceSelectedListener(placeSelectionListener());
+
+        ((Button) findViewById(R.id.confirmLocation)).setOnClickListener(confirmationListener());
+
+        setMeetings();
+
+        mGeoDataClient = Places.getGeoDataClient(this);
+        mPlaceDetectionClient = Places.getPlaceDetectionClient(this);
+        mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
+    }
+
+    
+    private PlaceSelectionListener placeSelectionListener(){
+        new PlaceSelectionListener() {
             @Override
             public void onPlaceSelected(Place place) {
                 // TODO: Get info about the selected place.
@@ -90,9 +103,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 // TODO: Handle the error.
                 Log.i("Maps", "An error occurred: " + status);
             }
-        });
-
-        ((Button) findViewById(R.id.confirmLocation)).setOnClickListener(new View.OnClickListener() {
+        };
+    }
+    private View.OnClickListener confirmationListener(){
+        return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (confirmedPlace != null) {
@@ -103,11 +117,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     ref.select("BoubaMeetings").setVal(meetings);
                     finish();
                 }
-
-
             }
-        });
+        };
+    }
 
+    private void setMeetings(){
         meetings = new ArrayList<>();
         ref = new FirebaseReference();
         ref.select("BoubaMeetings").getAll(Meeting.class, new Consumer<List<Meeting>>() {
@@ -126,19 +140,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(mDefaultLocation, DEFAULT_ZOOM));
             }
         });
-
-        // Construct a GeoDataClient.
-        mGeoDataClient = Places.getGeoDataClient(this);
-
-        // Construct a PlaceDetectionClient.
-        mPlaceDetectionClient = Places.getPlaceDetectionClient(this);
-
-        // Construct a FusedLocationProviderClient.
-        mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
-        //getDeviceLocation();
-
     }
-
 
     private void getLocationPermission() {
         //
