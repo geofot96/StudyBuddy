@@ -1,4 +1,4 @@
-package ch.epfl.sweng.studdybuddy.core;
+package ch.epfl.sweng.studdybuddy.services.meeting;
 
 import java.io.Serializable;
 

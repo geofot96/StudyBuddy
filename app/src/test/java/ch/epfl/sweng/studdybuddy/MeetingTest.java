@@ -3,7 +3,7 @@ package ch.epfl.sweng.studdybuddy;
 import org.junit.Test;
 
 import ch.epfl.sweng.studdybuddy.core.ID;
-import ch.epfl.sweng.studdybuddy.core.Meeting;
+import ch.epfl.sweng.studdybuddy.services.meeting.Meeting;
 import ch.epfl.sweng.studdybuddy.core.SerialDate;
 
 import static junit.framework.TestCase.assertEquals;
@@ -13,8 +13,8 @@ public class MeetingTest {
     SerialDate date = new SerialDate();
     @Test
     public void setGetDeadline() {
-        meeting.setDeadline(date);
-        assertEquals(date, meeting.getDeadline());
+        meeting.setEnding(date);
+        assertEquals(date, meeting.getEnding());
     }
 
     @Test
@@ -26,7 +26,7 @@ public class MeetingTest {
 
     @Test
     public void setGetCreation() {
-        meeting.setCreation(date);
-        assertEquals(date, meeting.getCreation());
+        meeting.setStarting(date);
+        assertEquals(date, meeting.getStarting());
     }
 }

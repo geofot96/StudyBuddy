@@ -7,6 +7,8 @@ import android.view.View;
 import android.widget.Button;
 
 import ch.epfl.sweng.studdybuddy.R;
+import ch.epfl.sweng.studdybuddy.activities.meetings.MeetingsActivity;
+import ch.epfl.sweng.studdybuddy.activities.meetings.createMeetingActivity;
 import ch.epfl.sweng.studdybuddy.util.Messages;
 
 public class GroupActivity extends AppCompatActivity {
@@ -17,6 +19,9 @@ public class GroupActivity extends AppCompatActivity {
     private Button calendarButton;
     private Button participantButton;
     private Button mapsButton;
+    private Button createMeetingBtn;
+    private Button meetingsBtn;
+
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -29,10 +34,13 @@ public class GroupActivity extends AppCompatActivity {
         calendarButton = findViewById(R.id.calendarBtn);
         participantButton = findViewById(R.id.participantsBtn);
         mapsButton = findViewById(R.id.mapsButton);
+        createMeetingBtn = findViewById(R.id.createMeeting);
+        meetingsBtn = findViewById(R.id.groupMeetingsBtn);
         calendarButton.setOnClickListener(new ClickListener(new Intent(this, ConnectedCalendarActivity.class)));
         participantButton.setOnClickListener(new ClickListener(new Intent(this, GroupInfoActivity.class)));
         mapsButton.setOnClickListener(new ClickListener(new Intent(this, MapsActivity.class)));
-
+        createMeetingBtn.setOnClickListener(new ClickListener(new Intent(this, createMeetingActivity.class)));
+        meetingsBtn.setOnClickListener(new ClickListener(new Intent(this, MeetingsActivity.class)));
     }
 
     private void goToActivity(Intent intent){

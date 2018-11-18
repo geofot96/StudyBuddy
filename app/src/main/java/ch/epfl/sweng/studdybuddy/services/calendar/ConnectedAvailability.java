@@ -10,7 +10,7 @@ import ch.epfl.sweng.studdybuddy.firebase.ReferenceWrapper;
 
 /**
  * The ConnectedAvailability is linked to an instance of Availability and will
- * update the database every time t
+ * update the database every time the availabilities are updated
  */
 public class ConnectedAvailability implements Availability {
     private Availability A;

@@ -20,6 +20,9 @@ public class SerialDate {
         this.minutes = minutes;
     }
 
+    public int getHour(){return hour;}
+    public void setHour(int hour){this.hour = hour;}
+
     public int getDay() {
         return day;
     }
@@ -44,37 +47,41 @@ public class SerialDate {
         this.year = year;
     }
 
-    int seconds;
-    int minutes;
-    int day;
-    int month;
-    int year;
+    private int seconds;
+    private int minutes;
+    private int hour;
+    private int day;
+    private int month;
+    private int year;
     private final Date d;
+
     public SerialDate() {
         d  = new Date();
-        day = d.getDay();
         year = d.getYear();
-        month = d.getMonth();
+        month = d.getMonth()+1;
+        day = d.getDay();
+        hour = d.getHours();
         minutes = d.getMinutes();
         seconds = d.getSeconds();
     }
 
-    public SerialDate(int y, int m, int d, int min ,int sec) {
+    public SerialDate(int y, int m, int d, int h, int min ,int sec) {
         day = d;
         year = y;
         month = m;
+        hour = h;
         minutes = min;
         seconds = sec;
         this.d = new Date();
-        //
     }
 
     protected Date getDate() {
         return d;
     }
 
+
     public boolean before(SerialDate when) {
-        return d.before(when.getDate());
+        return this.d.before(when.getDate());
     }
     public boolean after(SerialDate when) {
         return d.after(when.getDate());

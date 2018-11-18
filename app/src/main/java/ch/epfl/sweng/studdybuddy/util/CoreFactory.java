@@ -6,7 +6,7 @@ import java.util.UUID;
 
 import ch.epfl.sweng.studdybuddy.core.Course;
 import ch.epfl.sweng.studdybuddy.core.Group;
-import ch.epfl.sweng.studdybuddy.core.Meeting;
+import ch.epfl.sweng.studdybuddy.services.meeting.Meeting;
 import ch.epfl.sweng.studdybuddy.core.Pair;
 import ch.epfl.sweng.studdybuddy.core.User;
 

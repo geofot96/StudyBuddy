@@ -5,7 +5,7 @@ import com.google.firebase.database.DatabaseReference;
 import org.junit.Test;
 
 import ch.epfl.sweng.studdybuddy.core.Group;
-import ch.epfl.sweng.studdybuddy.core.Meeting;
+import ch.epfl.sweng.studdybuddy.services.meeting.Meeting;
 import ch.epfl.sweng.studdybuddy.core.Pair;
 import ch.epfl.sweng.studdybuddy.firebase.FirebaseReference;
 import ch.epfl.sweng.studdybuddy.firebase.MetaMeeting;

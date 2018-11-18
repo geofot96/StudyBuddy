@@ -82,6 +82,9 @@
             android:label="@string/title_activity_maps">
 
         </activity>
+
+        <activity android:name=".activities.meetings.createMeetingActivity"/>
+        <activity android:name=".activities.meetings.MeetingsActivity"/>
     </application>
 
 </manifest>
