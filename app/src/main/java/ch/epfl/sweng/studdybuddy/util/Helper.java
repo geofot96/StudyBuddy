@@ -3,10 +3,10 @@ package ch.epfl.sweng.studdybuddy.util;
 import java.util.List;
 import java.util.Map;
 
-import ch.epfl.sweng.studdybuddy.core.MeetingLocation;
 import ch.epfl.sweng.studdybuddy.core.Pair;
 
 public final class Helper {
+
 
     private Helper() {}
 
@@ -24,8 +24,4 @@ public final class Helper {
             ids.add(val);
         }
     }
-
-    public static final MeetingLocation ROLEX_LOCATION = new MeetingLocation("Rolex", "EPFL", 46.5182757,6.5660673);
-
-
 }
