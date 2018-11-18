@@ -1,19 +1,16 @@
 package ch.epfl.sweng.studdybuddy.tools;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.support.v7.widget.RecyclerView;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Filter;
 import android.widget.Filterable;
-import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import ch.epfl.sweng.studdybuddy.Fragments.FeedFragment;
@@ -22,18 +19,15 @@ import ch.epfl.sweng.studdybuddy.activities.GroupActivity;
 import ch.epfl.sweng.studdybuddy.activities.GroupInfoActivity;
 import ch.epfl.sweng.studdybuddy.core.Group;
 import ch.epfl.sweng.studdybuddy.core.Pair;
-import ch.epfl.sweng.studdybuddy.firebase.FirebaseReference;
-import ch.epfl.sweng.studdybuddy.firebase.MetaGroup;
-import ch.epfl.sweng.studdybuddy.firebase.ReferenceWrapper;
 import ch.epfl.sweng.studdybuddy.services.calendar.Availability;
 import ch.epfl.sweng.studdybuddy.services.calendar.ConnectedAvailability;
 import ch.epfl.sweng.studdybuddy.util.FeedFilter;
 import ch.epfl.sweng.studdybuddy.util.Helper;
 import ch.epfl.sweng.studdybuddy.util.Messages;
 
-public class GroupsRecyclerAdapter extends RecyclerView.Adapter<GroupsRecyclerAdapter.MyViewHolder> implements Filterable
+public class GroupsRecyclerAdapter extends BasicRecyclerAdapter implements Filterable
 {
-    private List<Group> groupList, filterList;
+   /* private List<Group> groupList, filterList;
     FeedFilter filter;
     private MetaGroup mb;
     private ReferenceWrapper fb;
@@ -42,32 +36,12 @@ public class GroupsRecyclerAdapter extends RecyclerView.Adapter<GroupsRecyclerAd
     private HashMap<String, Integer> sizes;
     private List<String> uGroupIds;
     public Consumer<Intent> joinConsumer;
+*/
 
-    public static class MyViewHolder extends RecyclerView.ViewHolder
-    {
-
-        public TextView groupCourseTextView;
-        public TextView groupParticipantInfoTextView;
-        public TextView groupLanguageTextView;
-        public Button messageButton;
-        public TextView groupCreationDateTextView;
-        public TextView admin;
-
-        public MyViewHolder(View itemView)
-        {
-            super(itemView);
-            groupCourseTextView = (TextView) itemView.findViewById(R.id.group_course_name);
-            groupParticipantInfoTextView = (TextView) itemView.findViewById(R.id.group_participant_info);
-            groupLanguageTextView = (TextView) itemView.findViewById(R.id.group_language);
-            messageButton = (Button) itemView.findViewById(R.id.message_button);
-            groupCreationDateTextView = (TextView) itemView.findViewById(R.id.creation_date);
-            admin = (TextView) itemView.findViewById(R.id.admin);
-        }
-    }
 
     public GroupsRecyclerAdapter(List<Group> groupList, String userId)
     {
-        this.groupList = groupList;
+        /*this.groupList = groupList;
         this.filterList=groupList;
         mb = new MetaGroup();
         fb = new FirebaseReference();
@@ -77,7 +51,8 @@ public class GroupsRecyclerAdapter extends RecyclerView.Adapter<GroupsRecyclerAd
         this.uGroupIds = new ArrayList<>();
         mb.addListenner(new RecyclerAdapterAdapter(this));
         mb.getUserGroups(userId, uGroupIds, uGroups);
-        mb.getAllGroupSizes(sizes);
+        mb.getAllGroupSizes(sizes);*/
+        super(groupList,userId);
     }
 
     public GroupsRecyclerAdapter(List<Group> groupList, String userId, Consumer<Intent> joinConsumer)
@@ -93,23 +68,19 @@ public class GroupsRecyclerAdapter extends RecyclerView.Adapter<GroupsRecyclerAd
         this.groupList = groupList;
     }
 
-    @Override
-    public GroupsRecyclerAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
+
+
+    public BasicRecyclerAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
     {
         Context context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
         View groupCardView = inflater.inflate(R.layout.recycle_viewer_row, parent, false);
-        MyViewHolder vh = new MyViewHolder(groupCardView);
+        BasicRecyclerAdapter.MyViewHolder vh = getViewHolder(groupCardView);
         return vh;
     }
 
-    private String getCreationDate(Group group){
-        return group.getCreationDate().toString();
-    }
-
-    @SuppressLint("DefaultLocale")
     @Override
-    public void onBindViewHolder(MyViewHolder holder, int position){
+    public void onBindViewHolder(@NonNull BasicRecyclerAdapter.MyViewHolder holder, int position) {
         Group group = groupList.get(position);
         holder.groupCourseTextView.setText(group.getCourse().getCourseName());
         holder.groupLanguageTextView.setText(group.getLang());
@@ -124,6 +95,14 @@ public class GroupsRecyclerAdapter extends RecyclerView.Adapter<GroupsRecyclerAd
             holder.admin.setText("");
         }
     }
+
+
+
+    private String getCreationDate(Group group){
+        return group.getCreationDate().toString();
+    }
+
+
 
     @Override
     public int getItemCount()
@@ -222,18 +201,5 @@ public class GroupsRecyclerAdapter extends RecyclerView.Adapter<GroupsRecyclerAd
         };
     }
 
-    private void setParticipantNumber(TextView pNumber, Group group){
-        int count = 0;
-       if(sizes.get(group.getGroupID().toString()) != null){
-           count = sizes.get(group.getGroupID().toString());
-       }
-       pNumber.setText(("Particip: " + count+ "/" + group.getMaxNoUsers()));
-    }
-    public int getParticipantNumber(Group group){
-        int count = 0;
-        if(sizes.get(group.getGroupID().toString()) != null){
-            count = sizes.get(group.getGroupID().toString());
-        }
-        return count;
-    }
+
 }
