@@ -15,6 +15,8 @@ import java.util.List;
 import ch.epfl.sweng.studdybuddy.core.Group;
 import ch.epfl.sweng.studdybuddy.core.Meeting;
 import ch.epfl.sweng.studdybuddy.firebase.MetaMeeting;
+import ch.epfl.sweng.studdybuddy.tools.AdapterAdapter;
+import ch.epfl.sweng.studdybuddy.tools.Consumer;
 
 public class ActivityHelper {
     public static View.OnClickListener showDropdown(AutoCompleteTextView tv) {
