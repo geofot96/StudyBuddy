@@ -6,6 +6,7 @@ import java.util.UUID;
 
 import ch.epfl.sweng.studdybuddy.core.Course;
 import ch.epfl.sweng.studdybuddy.core.Group;
+import ch.epfl.sweng.studdybuddy.core.Meeting;
 import ch.epfl.sweng.studdybuddy.core.Pair;
 import ch.epfl.sweng.studdybuddy.core.User;
 
@@ -46,7 +47,10 @@ public final class CoreFactory {
     public static List<Group> groups2() {
         return Arrays.asList(blankGroupWithCourse("algo"), blankGroupWithCourse("compnet"), blankGroupWithCourse("clp"), blankGroupWithCourse("algebra"), blankGroupWithCourse("sweng"));
     }
+    public static Meeting randomMeeting() {
+        return new Meeting();
+    }
     private CoreFactory(){
-        //throw new IllegalMonitorStateException(); //Safe but will drop code cvg a little
+        throw new IllegalMonitorStateException(); //Safe but will drop code cvg a little
     }
 }
