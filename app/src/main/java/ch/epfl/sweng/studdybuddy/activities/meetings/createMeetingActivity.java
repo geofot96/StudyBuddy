@@ -119,7 +119,6 @@ public class createMeetingActivity extends AppCompatActivity {
         }
     }
 
-    @SuppressLint("ShowToast")
     private void updateButton(){
         boolean correctTimeSlot = endingDate.after(startingDate);
         boolean isTooLate = startingDate.before(new Date());
