@@ -16,11 +16,14 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 
 import ch.epfl.sweng.studdybuddy.R;
+import ch.epfl.sweng.studdybuddy.firebase.FirebaseReference;
 import ch.epfl.sweng.studdybuddy.services.chat.ChatMessage;
 
 public class ChatActivity extends AppCompatActivity{
     private FirebaseListAdapter<ChatMessage> adapter;
     String groupID;
+    FirebaseReference ref;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,17 +39,23 @@ public class ChatActivity extends AppCompatActivity{
         displayChatMessages();
         FloatingActionButton fab =
                 (FloatingActionButton)findViewById(R.id.fab);
+
+        initRef();
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 EditText input = (EditText)findViewById(R.id.input);
-                FirebaseDatabase.getInstance().getReference().child("chat").child(groupID).push()
-                        .setValue(new ChatMessage(input.getText().toString(),
-                        FirebaseAuth.getInstance().getCurrentUser().getDisplayName()));
+              ref.select("chat").select(groupID).push(new ChatMessage(input.getText().toString(),
+                      FirebaseAuth.getInstance().getCurrentUser().getDisplayName()));
+
                 input.setText("");
             }
         });
 
+    }
+
+    public void initRef(){
+        this.ref = new FirebaseReference();
     }
     public void displayChatMessages()
     {
