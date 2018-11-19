@@ -14,10 +14,10 @@ import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
 import com.google.android.gms.location.places.ui.PlaceSelectionListener;
-import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
@@ -28,13 +28,13 @@ import ch.epfl.sweng.studdybuddy.R;
 import ch.epfl.sweng.studdybuddy.core.Meeting;
 import ch.epfl.sweng.studdybuddy.core.MeetingLocation;
 import ch.epfl.sweng.studdybuddy.firebase.FirebaseReference;
+import ch.epfl.sweng.studdybuddy.util.Consumer;
 import ch.epfl.sweng.studdybuddy.util.MapsHelper;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
 
-    private final float DEFAULT_ZOOM = 14.0f;
     private MarkerOptions mMarker;
     private Marker marker;
     private List<Meeting> meetings;
@@ -57,7 +57,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         ((Button) findViewById(R.id.confirmLocation)).setOnClickListener(confirmationListener());
         meetings = new ArrayList<>();
-        MapsHelper.setMeetings(this, ref, meetings);
+        ref = new FirebaseReference();
+        setMeetings( ref, meetings);
     }
 
     //Move camera and
@@ -65,13 +66,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         return new PlaceSelectionListener() {
             @Override
             public void onPlaceSelected(Place place) {
-                // TODO: Get info about the selected place.
-                Log.i("Maps", "Place: " + place.getName());
-                mMarker = new MarkerOptions().position(place.getLatLng()).title(place.getName().toString()).draggable(true);
-                marker.setPosition(place.getLatLng());
-                marker.setTitle(place.getName().toString());
-                mMap.moveCamera(CameraUpdateFactory.newLatLng(place.getLatLng()));
-                setConfirmedPlace(new MeetingLocation(place.getName().toString(), place.getAddress().toString(), place.getLatLng()));
+               MapsHelper.acceptSelectedPlace(place, mMarker, marker, confirmedPlace, mMap);
             }
 
             @Override
@@ -87,12 +82,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (confirmedPlace != null) {
-                    int lastindex = meetings.size() - 1;
-                    Meeting lastMeeting = meetings.get(lastindex);
-                    lastMeeting.setLocation(confirmedPlace);
-                    meetings.set(lastindex, lastMeeting);
-                    ref.select("BoubaMeetings").setVal(meetings);
+                if(MapsHelper.confirmationListener(v, confirmedPlace, meetings, ref)){
                     finish();
                 }
             }
@@ -151,23 +141,33 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         getLocationPermission();
-        mMap.setOnMapClickListener(MapsHelper.getMapClickListener(this, marker, autocompleteFragment));
+        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+
+           @Override
+           public void onMapClick(LatLng latLng) {
+               MeetingLocation tmp =  MapsHelper.mapListener(latLng, marker, autocompleteFragment, confirmedPlace, MapsActivity.this);
+
+               if(tmp != null) {
+                   confirmedPlace = tmp;
+               }
+           }
+       }
+        );
     }
 
-    public void setConfirmedPlace(MeetingLocation location){
-        confirmedPlace = location;
+
+    public  void setMeetings(FirebaseReference ref, final List<Meeting> meetings){
+        ref.select("BoubaMeetings").getAll(Meeting.class, new Consumer<List<Meeting>>() {
+            @Override
+            public void accept(List<Meeting> meetingsfb) {
+                Marker tmp =MapsHelper.acceptMeetings(meetingsfb,meetings,marker, mMap);
+                if(tmp != null){
+                    marker = tmp;
+                }
+            }
+        });
     }
 
-    public void setMarker(Marker marker){ this.marker = marker;}
-
-    public void setMarkerOption(MarkerOptions mo) {this.mMarker = mo;}
-
-    public void initMarker(){
-        setMarker(mMap.addMarker(mMarker.draggable(true)));
-    }
-    public void moveCamera(MeetingLocation location){
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location.getLatLng(), DEFAULT_ZOOM));
-    }
 
 
 }
