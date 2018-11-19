@@ -47,6 +47,10 @@ public class FirebaseReference implements ReferenceWrapper {
         return ref.setValue(o);
     }
 
+    public Task<Void> push(Object o) {
+        return ref.push().setValue(o);
+    }
+
     @Override
     public Task<Void> clear(){
         return ref.removeValue();

@@ -26,6 +26,13 @@ public interface ReferenceWrapper {
     Task<Void> setVal(Object o);
 
     /**
+     * Sets the object at current level
+     * @param o the new object
+     * @return a task
+     */
+    Task<Void> push(Object o);
+
+    /**
      * Sets the value at this location to `null`
      * @return a task
      */
@@ -40,4 +47,6 @@ public interface ReferenceWrapper {
      <T> ValueEventListener getAll(Class<T> type, Consumer<List<T>> callback);
 
      ReferenceWrapper parent();
+
+
 }
