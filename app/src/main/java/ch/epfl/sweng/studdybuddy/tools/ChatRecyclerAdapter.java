@@ -24,34 +24,6 @@ import ch.epfl.sweng.studdybuddy.util.FeedFilter;
 
 public class ChatRecyclerAdapter extends BasicRecyclerAdapter
 {
-    /*private List<Group> groupList, filterList;
-    FeedFilter filter;
-    private MetaGroup mb;
-    private ReferenceWrapper fb;
-    private String userId;
-    private List<Group> uGroups;
-    private HashMap<String, Integer> sizes;
-    private List<String> uGroupIds;
-    public Consumer<Intent> joinConsumer;*/
-//
-//    public static class MyViewHolder extends RecyclerView.ViewHolder
-//    {
-//
-//        public TextView groupCourseTextView;
-//        public TextView groupParticipantInfoTextView;
-//        public TextView groupLanguageTextView;
-//        public TextView admin;
-//
-//        public MyViewHolder(View itemView) {
-//            super(itemView);
-//            groupCourseTextView = (TextView) itemView.findViewById(R.id.group_course_name);
-//            groupParticipantInfoTextView = (TextView) itemView.findViewById(R.id.group_participant_info);
-//            groupLanguageTextView = (TextView) itemView.findViewById(R.id.group_language);
-//            admin = (TextView) itemView.findViewById(R.id.admin);
-//
-//        }
-//    }
-
     public ChatRecyclerAdapter(List<Group> groupList, String userId)
     {
         setGroupList(groupList);
