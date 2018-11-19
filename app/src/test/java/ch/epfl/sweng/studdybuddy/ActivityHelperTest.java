@@ -17,11 +17,13 @@ import ch.epfl.sweng.studdybuddy.core.Meeting;
 import ch.epfl.sweng.studdybuddy.firebase.MetaMeeting;
 import ch.epfl.sweng.studdybuddy.tools.AdapterAdapter;
 
+import static ch.epfl.sweng.studdybuddy.util.ActivityHelper.adminMeeting;
 import static ch.epfl.sweng.studdybuddy.util.ActivityHelper.listenDate;
 import static ch.epfl.sweng.studdybuddy.util.ActivityHelper.listenTime;
 import static ch.epfl.sweng.studdybuddy.util.ActivityHelper.meetingConsumer;
 import static ch.epfl.sweng.studdybuddy.util.CoreFactory.blankGroupWId;
 import static ch.epfl.sweng.studdybuddy.util.CoreFactory.randomMeeting;
+import static ch.epfl.sweng.studdybuddy.util.CoreFactory.withAdmin;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
@@ -71,6 +73,18 @@ public class ActivityHelperTest {
         verify(title).setVisibility(View.VISIBLE);
         verify(date).setText(mee.date());
         verify(timeB).setText(mee.time());
+        verify(plus).setVisibility(View.GONE);
+    }
+
+    @Test
+    public void testAdminSeesAddButton() {
+        adminMeeting(plus, withAdmin("a"), "a");
+        verify(plus).setVisibility(View.VISIBLE);
+    }
+
+    @Test
+    public void testUserCantAdd() {
+        adminMeeting(plus, withAdmin("--"), "sjdnn");
         verify(plus).setVisibility(View.GONE);
     }
 

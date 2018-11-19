@@ -69,4 +69,13 @@ public class ActivityHelper {
             }
         };
     }
+
+    public static void adminMeeting() {
+
+    }
+
+    public static void adminMeeting(Button add, Group group, String userID) {
+        Boolean admin = group.getAdminID().equals(userID);
+        add.setVisibility(admin ? View.VISIBLE : View.GONE);
+    }
 }

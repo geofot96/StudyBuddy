@@ -26,6 +26,7 @@ import ch.epfl.sweng.studdybuddy.firebase.MetaMeeting;
 import ch.epfl.sweng.studdybuddy.tools.AdapterAdapter;
 import ch.epfl.sweng.studdybuddy.util.Messages;
 
+import static ch.epfl.sweng.studdybuddy.util.ActivityHelper.adminMeeting;
 import static ch.epfl.sweng.studdybuddy.util.ActivityHelper.listenDate;
 import static ch.epfl.sweng.studdybuddy.util.ActivityHelper.listenTime;
 import static ch.epfl.sweng.studdybuddy.util.ActivityHelper.meetingConsumer;
@@ -71,7 +72,8 @@ public class GroupActivity extends AppCompatActivity {
         return new AdapterAdapter() {
             @Override
             public void update() {
-                setupMeeting();
+                adminMeeting(add, group, userID);
+                mm.fetchMeetings(group.getGroupID().getId(), meetingConsumer(title, time, date, add));
             }
         };
     }
@@ -92,13 +94,6 @@ public class GroupActivity extends AppCompatActivity {
     public Meeting getMeeting() {
         return singleton;//(meetings.size() > 0) ? meetings.get(0) : new Meeting();
     }
-    public void setupMeeting() {
-        //meetings.clear();
-        Boolean admin = group.getAdminID().equals(userID);
-        add.setVisibility(admin ? View.VISIBLE : View.GONE);
-        mm.fetchMeetings(group.getGroupID().getId(), meetingConsumer(title, time, date, add));
-    }
-
     private void goToActivity(Intent intent){
         intent.putExtra(Messages.userID, userID);
         intent.putExtra(Messages.groupID, groupID);
