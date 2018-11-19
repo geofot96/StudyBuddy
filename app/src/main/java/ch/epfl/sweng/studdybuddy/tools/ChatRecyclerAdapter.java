@@ -3,6 +3,7 @@ package ch.epfl.sweng.studdybuddy.tools;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,9 +22,9 @@ import ch.epfl.sweng.studdybuddy.firebase.MetaGroup;
 import ch.epfl.sweng.studdybuddy.firebase.ReferenceWrapper;
 import ch.epfl.sweng.studdybuddy.util.FeedFilter;
 
-public class ChatRecyclerAdapter extends RecyclerView.Adapter<ChatRecyclerAdapter.MyViewHolder>
+public class ChatRecyclerAdapter extends BasicRecyclerAdapter
 {
-    private List<Group> groupList, filterList;
+    /*private List<Group> groupList, filterList;
     FeedFilter filter;
     private MetaGroup mb;
     private ReferenceWrapper fb;
@@ -31,57 +32,57 @@ public class ChatRecyclerAdapter extends RecyclerView.Adapter<ChatRecyclerAdapte
     private List<Group> uGroups;
     private HashMap<String, Integer> sizes;
     private List<String> uGroupIds;
-    public Consumer<Intent> joinConsumer;
-
-    public static class MyViewHolder extends RecyclerView.ViewHolder
-    {
-
-        public TextView groupCourseTextView;
-        public TextView groupParticipantInfoTextView;
-        public TextView groupLanguageTextView;
-        public TextView admin;
-
-        public MyViewHolder(View itemView) {
-            super(itemView);
-            groupCourseTextView = (TextView) itemView.findViewById(R.id.group_course_name);
-            groupParticipantInfoTextView = (TextView) itemView.findViewById(R.id.group_participant_info);
-            groupLanguageTextView = (TextView) itemView.findViewById(R.id.group_language);
-            admin = (TextView) itemView.findViewById(R.id.admin);
-
-        }
-    }
+    public Consumer<Intent> joinConsumer;*/
+//
+//    public static class MyViewHolder extends RecyclerView.ViewHolder
+//    {
+//
+//        public TextView groupCourseTextView;
+//        public TextView groupParticipantInfoTextView;
+//        public TextView groupLanguageTextView;
+//        public TextView admin;
+//
+//        public MyViewHolder(View itemView) {
+//            super(itemView);
+//            groupCourseTextView = (TextView) itemView.findViewById(R.id.group_course_name);
+//            groupParticipantInfoTextView = (TextView) itemView.findViewById(R.id.group_participant_info);
+//            groupLanguageTextView = (TextView) itemView.findViewById(R.id.group_language);
+//            admin = (TextView) itemView.findViewById(R.id.admin);
+//
+//        }
+//    }
 
     public ChatRecyclerAdapter(List<Group> groupList, String userId)
     {
-        this.groupList = groupList;
-        this.filterList=groupList;
-        mb = new MetaGroup();
+        setGroupList(groupList);
+        setFilterList(groupList);
+        setMb(new MetaGroup());
         fb = new FirebaseReference();
-        this.userId = userId;
-        this.uGroups = new ArrayList<>();
-        this.sizes = new HashMap<>();
-        this.uGroupIds = new ArrayList<>();
-        mb.addListenner(new RecyclerAdapterAdapter(this));
-        mb.getUserGroups(userId, uGroupIds, uGroups);
-        mb.getAllGroupSizes(sizes);
+        setUserId(userId);
+        setuGroups(new ArrayList<>());
+        setSizes(new HashMap<>());
+        setuGroupIds(new ArrayList<>());
+        getMb().addListenner(new RecyclerAdapterAdapter(this));
+        getMb().getUserGroups(userId, getuGroupIds(), getuGroups());
+        getMb().getAllGroupSizes(getSizes());
     }
 
-
+    @NonNull
     @Override
-    public ChatRecyclerAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
+    public BasicRecyclerAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int i)
     {
         Context context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
         View groupCardView = inflater.inflate(R.layout.recycle_viewer_row_chat_list, parent, false);
         MyViewHolder vh = new MyViewHolder(groupCardView);
         return vh;
+
     }
 
-
-    @SuppressLint("DefaultLocale")
     @Override
-    public void onBindViewHolder(MyViewHolder holder, int position){
-        Group group = groupList.get(position);
+    public void onBindViewHolder(@NonNull BasicRecyclerAdapter.MyViewHolder holder, int position)
+    {
+        Group group = getGroupList().get(position);
         holder.groupCourseTextView.setText(group.getCourse().getCourseName());
         holder.groupLanguageTextView.setText(group.getLang());
 
@@ -95,7 +96,7 @@ public class ChatRecyclerAdapter extends RecyclerView.Adapter<ChatRecyclerAdapte
 
             }
         });
-        if(userId.equals(group.getAdminID()))
+        if(getUserId().equals(group.getAdminID()))
         {
             holder.admin.setText("\uD83D\uDC51");
         }
@@ -103,20 +104,19 @@ public class ChatRecyclerAdapter extends RecyclerView.Adapter<ChatRecyclerAdapte
         {
             holder.admin.setText("");
         }
+
     }
+
+
+//    @SuppressLint("DefaultLocale")
+////    @Override
+////    public void onBindViewHolder(MyViewHolder holder, int position){
+////
+////    }
 
     @Override
     public int getItemCount()
     {
-        return groupList.size();
-    }
-
-
-    private void setParticipantNumber(TextView pNumber, Group group){
-        int count = 0;
-       if(sizes.get(group.getGroupID().toString()) != null){
-           count = sizes.get(group.getGroupID().toString());
-       }
-       pNumber.setText(("Particip: " + count+ "/" + group.getMaxNoUsers()));
+        return getGroupList().size();
     }
 }

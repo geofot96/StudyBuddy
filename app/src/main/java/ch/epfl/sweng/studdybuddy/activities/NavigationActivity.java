@@ -24,8 +24,8 @@ import ch.epfl.sweng.studdybuddy.core.Account;
 
 public class NavigationActivity extends AppCompatActivity
 {
+    //TODO move the signout button from the main activity somewhere else and transfer the logic there
 
-    private AuthManager mAuth = null;
     private BottomNavigationView mMainNav;
     private FrameLayout mMainFrame;
     private ChatListsFragment chatFragment;
@@ -47,43 +47,11 @@ public class NavigationActivity extends AppCompatActivity
     }
 
 
-    @Override
-    protected void onStart()
-    {
-        super.onStart();
-        Account currentUser = getAuthManager().getCurrentUser();
-        if(currentUser == null)
-        {
-            signOut();
-        }
-        else
-        {
 
-        }
 
-    }
 
-    private void signOut()
-    {
-        getAuthManager().logout().addOnCompleteListener(this,
-                new OnCompleteListener<Void>()
-                {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task)
-                    {
-                        startActivity(new Intent(NavigationActivity.this, GoogleSignInActivity.class));
-                    }
-                });
-    }
 
-    public AuthManager getAuthManager()
-    {
-        if(mAuth == null)
-        {
-            mAuth = new FirebaseAuthManager(this, getString(R.string.default_web_client_id));
-        }
-        return mAuth;
-    }
+
 
     @NonNull
     private BottomNavigationView.OnNavigationItemSelectedListener getListener()
