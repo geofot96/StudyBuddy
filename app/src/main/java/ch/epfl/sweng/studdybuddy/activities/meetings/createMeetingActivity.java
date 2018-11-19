@@ -21,9 +21,11 @@ import java.util.Objects;
 
 import ch.epfl.sweng.studdybuddy.R;
 import ch.epfl.sweng.studdybuddy.activities.GroupActivity;
+import ch.epfl.sweng.studdybuddy.activities.MapsActivity;
 import ch.epfl.sweng.studdybuddy.core.ID;
 import ch.epfl.sweng.studdybuddy.firebase.MetaMeeting;
 import ch.epfl.sweng.studdybuddy.services.meeting.Meeting;
+import ch.epfl.sweng.studdybuddy.services.meeting.MeetingLocation;
 import ch.epfl.sweng.studdybuddy.util.Messages;
 
 public class createMeetingActivity extends AppCompatActivity {
@@ -38,6 +40,9 @@ public class createMeetingActivity extends AppCompatActivity {
     private TimePickerDialog.OnTimeSetListener endTimeSetListener;
     private Date startingDate = new Date();
     private Date endingDate = new Date();
+
+    private TextView mDisplayLocation;
+    private MeetingLocation meetingLocation;
 
     private Bundle origin;
     private MetaMeeting metaM;
@@ -85,12 +90,13 @@ public class createMeetingActivity extends AppCompatActivity {
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                 int realMonth = month+1;
                 mDisplayDate.setText(year + "/" + realMonth + "/" + dayOfMonth);
-                startingDate.setYear(year);
+                startingDate.setYear(year-1900);
                 startingDate.setMonth(month);
                 startingDate.setDate(dayOfMonth);
-                endingDate.setYear(year);
+                endingDate.setYear(year-1900);
                 endingDate.setMonth(month);
                 endingDate.setDate(dayOfMonth);
+                updateButton();
             }
         };
 
@@ -168,6 +174,16 @@ public class createMeetingActivity extends AppCompatActivity {
             }
         };
 
+
+        mDisplayLocation = findViewById(R.id.locationTitle);
+        mDisplayLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(createMeetingActivity.this, MapsActivity.class);
+                startActivityForResult(i, 1);
+            }
+        });
+
         saveBtn = findViewById(R.id.setMeeting);
         saveBtn.setEnabled(false);
         saveBtn.setOnClickListener(new View.OnClickListener() {
@@ -175,6 +191,7 @@ public class createMeetingActivity extends AppCompatActivity {
             public void onClick(View v) {
                 meeting.setStarting(startingDate);
                 meeting.setEnding(endingDate);
+                meeting.setLocation(meetingLocation);
                 metaM.pushMeeting(meeting, new ID<>(groupID));
                 Intent intent = new Intent(createMeetingActivity.this, GroupActivity.class);
                 intent.putExtras(origin);
@@ -183,14 +200,29 @@ public class createMeetingActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data){
+        super.onActivityResult(requestCode,resultCode,data);
+        if(requestCode == 1 && resultCode == RESULT_OK){
+            meetingLocation = new MeetingLocation(
+                    data.getStringExtra(Messages.LOCATION_TITLE),
+                    data.getDoubleExtra(Messages.LATITUDE, MapsActivity.mDefaultLocation.latitude),
+                    data.getDoubleExtra(Messages.LONGITUDE, MapsActivity.mDefaultLocation.longitude));
+            mDisplayLocation.setText(meetingLocation.getTitle());
+            updateButton();
+        }
+    }
+
     @SuppressLint("ShowToast")
     public void updateButton(){
-        int i = startingDate.compareTo(endingDate);
-        if( i < 0){
+        boolean correctTimeSlot = startingDate.before(endingDate);
+        boolean isTooLate = startingDate.before(new Date());
+        if(correctTimeSlot && !isTooLate && meetingLocation != null){
             saveBtn.setEnabled(true);
         }else{
             saveBtn.setEnabled(false);
             Toast.makeText(this, "Please set a correct time slot", Toast.LENGTH_LONG).show();
         }
     }
+
 }

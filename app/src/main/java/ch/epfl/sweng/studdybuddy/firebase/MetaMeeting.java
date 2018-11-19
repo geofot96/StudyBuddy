@@ -34,4 +34,8 @@ public class MetaMeeting extends MetaGroup {
         db.select("meetings").select(groupID.getId()).select(meetingID.getId()).clear();
     }
 
+    public ValueEventListener getMeetingsOfGroup(ID<Group> groupID, Consumer<List<Meeting>> consumer){
+        return db.select("meetings").select(groupID.getId()).getAll(Meeting.class, consumer);
+    }
+
 }

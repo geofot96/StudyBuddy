@@ -1,25 +1,21 @@
 package ch.epfl.sweng.studdybuddy.activities.meetings;
 
+import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
-import com.google.firebase.database.ChildEventListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 
 import ch.epfl.sweng.studdybuddy.R;
 import ch.epfl.sweng.studdybuddy.core.ID;
-import ch.epfl.sweng.studdybuddy.firebase.FirebaseReference;
 import ch.epfl.sweng.studdybuddy.firebase.MetaMeeting;
 import ch.epfl.sweng.studdybuddy.services.meeting.Meeting;
 import ch.epfl.sweng.studdybuddy.services.meeting.MeetingRecyclerAdapter;
@@ -53,64 +49,31 @@ public class MeetingsActivity extends AppCompatActivity {
         meetingRV = findViewById(R.id.meetingRV);
         meetingRV.setLayoutManager(new LinearLayoutManager(this));
 
-        hashMapMeetings = new HashMap<>();
         meetingList = new ArrayList<>();
 
         metaM = new MetaMeeting();
 
-    //   db = FirebaseDatabase.getInstance().getReference("meetings").child(groupId);
-    //   db.addChildEventListener(new MeetingsChildListener());
 
-        FirebaseReference ref = new FirebaseReference();
-        ref.select("meetings").select(groupId).getAll(Meeting.class, new Consumer<List<Meeting>>() {
+        metaM.getMeetingsOfGroup(new ID<>(groupId), new Consumer<List<Meeting>>() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void accept(List<Meeting> meetings) {
                 meetingList.clear();
                 meetingList.addAll(meetings);
+                meetingList.sort(new Comparator<Meeting>() {
+                    @Override
+                    public int compare(Meeting o1, Meeting o2) {
+                        return o1.getStarting().compareTo(o2.getStarting());
+                    }
+                });
                 adapter.notifyDataSetChanged();
             }
         });
+
         adapter = new MeetingRecyclerAdapter(meetingList, this);
 
         meetingRV.setAdapter(adapter);
 
     }
 
-    private class MeetingsChildListener implements ChildEventListener{
-
-        @Override
-        public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-            String targetID = dataSnapshot.getKey();
-            Meeting newMeeting = dataSnapshot.getValue(Meeting.class);
-            if(newMeeting.getStarting().compareTo(new Date()) < 0){
-                metaM.deleteMeeting(newMeeting.getId(), new ID<>(groupId));
-            }else{
-                hashMapMeetings.put(targetID, newMeeting);
-            }
-            meetingList = new ArrayList<>(hashMapMeetings.values());
-            adapter.notifyDataSetChanged();
-        }
-
-        @Override
-        public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-            onChildAdded(dataSnapshot,s);
-        }
-
-        @Override
-        public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-            hashMapMeetings.remove(dataSnapshot.getKey());
-            meetingList = new ArrayList<>(hashMapMeetings.values());
-            adapter.notifyDataSetChanged();
-        }
-
-        @Override
-        public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-        }
-
-        @Override
-        public void onCancelled(@NonNull DatabaseError databaseError) {
-
-        }
-    }
 }

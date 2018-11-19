@@ -1,5 +1,6 @@
 package ch.epfl.sweng.studdybuddy.activities;
 
+import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -28,6 +29,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
 import ch.epfl.sweng.studdybuddy.R;
+import ch.epfl.sweng.studdybuddy.activities.meetings.createMeetingActivity;
+import ch.epfl.sweng.studdybuddy.util.Messages;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
@@ -37,7 +40,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private PlaceDetectionClient mPlaceDetectionClient;
     private FusedLocationProviderClient mFusedLocationProviderClient;
     private Location mLastKnownLocation;
-    private LatLng mDefaultLocation;
+    public static final LatLng mDefaultLocation = new LatLng(46.5284586, 6.5824552);
     private final float DEFAULT_ZOOM = 12.0f;
     private final String TAG = "MAPS";
     private  MarkerOptions mMarker;
@@ -75,16 +78,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         ((Button)findViewById(R.id.confirmLocation)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                
+                Intent i = new Intent();
+                i.putExtra(Messages.LATITUDE, mMarker.getPosition().latitude);
+                i.putExtra(Messages.LONGITUDE, mMarker.getPosition().longitude);
+                i.putExtra(Messages.LOCATION_TITLE, mMarker.getTitle());
+                setResult(RESULT_OK, i);
                 finish();
-
             }
         });
-
-
-
-
-        mDefaultLocation = new LatLng(46.4123266, 6.2650744);
 
         // Construct a GeoDataClient.
         mGeoDataClient = Places.getGeoDataClient(this);

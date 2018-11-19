@@ -5,6 +5,7 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.os.Build;
 import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,12 +27,6 @@ public class MeetingRecyclerAdapter extends RecyclerView.Adapter<MeetingRecycler
 
     public MeetingRecyclerAdapter(List<Meeting> meetingList, Context context) {
         this.meetingList = meetingList;
-        this.meetingList.sort(new Comparator<Meeting>() {
-            @Override
-            public int compare(Meeting o1, Meeting o2) {
-                return o1.getStarting().compareTo(o2.getStarting());
-            }
-        });
         this.context = context;
     }
 
@@ -62,11 +57,14 @@ public class MeetingRecyclerAdapter extends RecyclerView.Adapter<MeetingRecycler
         Meeting meeting = meetingList.get(i);
         Date startingDate = meeting.getStarting();
         Date endingDate = meeting.getEnding();
+        int RealMonth = startingDate.getMonth() + 1;
+        int startMinutes = startingDate.getMinutes();
+        int endMinutes = endingDate.getMinutes();
         myViewHolder.textViewDate.setText(
-                startingDate.getMonth() + "/" +
-                        startingDate.getDay() +
-                        " From: " + startingDate.getHours()+ " : " + startingDate.getMinutes() +
-                        " To: "+ endingDate.getHours() + " : " + endingDate.getMinutes());
+                RealMonth + "/" +
+                        startingDate.getDate() +
+                        " From: " + startingDate.getHours()+ ":" + startMinutes/10 + startMinutes%10 +
+                        " To: "+ endingDate.getHours() + ":" + endMinutes/10 + startMinutes%10);
         myViewHolder.textViewLocation.setText(meeting.getLocation().getTitle());
     }
 

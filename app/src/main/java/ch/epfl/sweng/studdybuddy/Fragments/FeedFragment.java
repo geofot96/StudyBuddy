@@ -40,8 +40,8 @@ public class FeedFragment extends Fragment
 
     GroupsRecyclerAdapter mAdapter;
     static List<Group> groupSet = new ArrayList<>();
-    public static final String GROUP_ID = "ch.epfl.sweng.studdybuddy.groupId";
-    public static final String IS_PARTICIPANT = "ch.epfl.sweng.studdybuddy.particip";
+    public static final String GROUP_ID = "ch.epfl.sweng.studybuddy.groupId";
+    public static final String IS_PARTICIPANT = "ch.epfl.sweng.studybuddy.particip";
     static List<Group> filteredGroupSet = new ArrayList<>();
     Button sortButton;
     FloatingActionButton actionButton;
