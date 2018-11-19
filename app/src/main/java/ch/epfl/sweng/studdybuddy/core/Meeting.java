@@ -56,6 +56,6 @@ public final class Meeting {
     }
 
     public String time() {
-        return "00:" + deadline.getMinutes();
+        return deadline.getHour() + ":" + deadline.getMinutes();
     }
 }

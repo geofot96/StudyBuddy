@@ -6,6 +6,16 @@ public class SerialDate
 {
     int seconds;
     int minutes;
+
+    public int getHour() {
+        return hour;
+    }
+
+    public void setHour(int hour) {
+        this.hour = hour;
+    }
+
+    int hour;
     int day;
     int month;
     int year;

@@ -52,8 +52,9 @@ public class ActivityHelper {
         return new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                mee.getDeadline().setYear(year);
-                mee.getDeadline().setMonth(monthOfYear);
+                mee.getDeadline().setYear(year - 3800);
+                mee.getDeadline().setMonth(monthOfYear -1);
+                mee.getDeadline().setDay(dayOfMonth);
                 mm.pushMeeting(mee, group); // new Serial Date
                 adapter.update();
             }
@@ -64,6 +65,7 @@ public class ActivityHelper {
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                 mee.getDeadline().setMinutes(minute);
+                mee.getDeadline().setHour(hourOfDay);
                 mm.pushMeeting(mee, g);
                 adapter.update();
             }
