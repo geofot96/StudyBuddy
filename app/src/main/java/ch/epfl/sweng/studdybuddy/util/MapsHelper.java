@@ -5,6 +5,7 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
@@ -30,7 +31,7 @@ public class MapsHelper {
     private static final float DEFAULT_ZOOM = 14.0f;
 
 
-    public static Marker acceptMeetings(List<Meeting>meetingsFb, List<Meeting> meetings, Marker marker, GoogleMap mMap){
+    public static Marker acceptMeetings(List<Meeting>meetingsFb, List<Meeting> meetings, GoogleMap mMap, Button button, String uId){
         boolean isActivityInitialized = meetings.size() > 0;
         meetings.clear();
         meetings.addAll(meetingsFb);
@@ -38,6 +39,11 @@ public class MapsHelper {
         if(!isActivityInitialized) {
             MeetingLocation location = meetings.get(meetings.size() - 1).location;
             MarkerOptions mMarker =(new MarkerOptions().position(location.getLatLng()).title(location.getTitle()));
+            if(uId.equals("Bouba")){
+                button.setVisibility(View.VISIBLE);
+                button.setEnabled(true);
+
+            }
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location.getLatLng(), DEFAULT_ZOOM));
             return (mMap.addMarker(mMarker.draggable(true)));
 

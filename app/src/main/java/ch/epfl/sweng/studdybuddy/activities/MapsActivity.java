@@ -30,6 +30,7 @@ import ch.epfl.sweng.studdybuddy.core.MeetingLocation;
 import ch.epfl.sweng.studdybuddy.firebase.FirebaseReference;
 import ch.epfl.sweng.studdybuddy.util.Consumer;
 import ch.epfl.sweng.studdybuddy.util.MapsHelper;
+import ch.epfl.sweng.studdybuddy.util.StudyBuddy;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
@@ -41,7 +42,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private FirebaseReference ref;
     private MeetingLocation confirmedPlace;
     PlaceAutocompleteFragment autocompleteFragment;
-
+    String uId;
+    Button button;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,13 +54,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mapFragment.getMapAsync(this);
         autocompleteFragment = (PlaceAutocompleteFragment)
                 getFragmentManager().findFragmentById(R.id.place_autocomplete);
+        uId = ((StudyBuddy) MapsActivity.this.getApplication()).getAuthendifiedUser().getUserID().getId();
 
         autocompleteFragment.setOnPlaceSelectedListener(placeSelectionListener());
+        button = ((Button) findViewById(R.id.confirmLocation));
+        button.setOnClickListener((confirmationListener()));
 
-        ((Button) findViewById(R.id.confirmLocation)).setOnClickListener(confirmationListener());
         meetings = new ArrayList<>();
         ref = new FirebaseReference();
-        setMeetings( ref, meetings);
+        setMeetings( ref, meetings, button);
     }
 
     //Move camera and
@@ -156,11 +160,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
 
-    public  void setMeetings(FirebaseReference ref, final List<Meeting> meetings){
+    public  void setMeetings(FirebaseReference ref, final List<Meeting> meetings, Button button){
         ref.select("BoubaMeetings").getAll(Meeting.class, new Consumer<List<Meeting>>() {
             @Override
             public void accept(List<Meeting> meetingsfb) {
-                Marker tmp =MapsHelper.acceptMeetings(meetingsfb,meetings,marker, mMap);
+                Marker tmp =MapsHelper.acceptMeetings(meetingsfb,meetings, mMap, button, uId);
                 if(tmp != null){
                     marker = tmp;
                 }
