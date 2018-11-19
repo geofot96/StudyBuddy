@@ -44,6 +44,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private final float DEFAULT_ZOOM = 12.0f;
     private final String TAG = "MAPS";
     private  MarkerOptions mMarker;
+    private String address;
     private Marker marker;
     private Button button;
     @Override
@@ -63,6 +64,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 // TODO: Get info about the selected place.
                 Log.i("Maps", "Place: " + place.getName());
                 mMarker = new MarkerOptions().position(place.getLatLng()).title(place.getName().toString());
+                address = place.getAddress().toString();
                 marker.setPosition(place.getLatLng());
                 mMap.moveCamera(CameraUpdateFactory.newLatLng(place.getLatLng()));
 
@@ -81,7 +83,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 Intent i = new Intent();
                 i.putExtra(Messages.LATITUDE, mMarker.getPosition().latitude);
                 i.putExtra(Messages.LONGITUDE, mMarker.getPosition().longitude);
-                i.putExtra(Messages.LOCATION_TITLE, mMarker.getTitle());
+                i.putExtra(Messages.LOCATION_TITLE, mMarker.getTitle() + ": "+address);
                 setResult(RESULT_OK, i);
                 finish();
             }
