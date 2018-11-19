@@ -24,12 +24,15 @@ import ch.epfl.sweng.studdybuddy.core.Group;
 import ch.epfl.sweng.studdybuddy.core.Meeting;
 import ch.epfl.sweng.studdybuddy.firebase.MetaMeeting;
 import ch.epfl.sweng.studdybuddy.tools.AdapterAdapter;
+import ch.epfl.sweng.studdybuddy.tools.Consumer;
 import ch.epfl.sweng.studdybuddy.util.Messages;
 
+import static ch.epfl.sweng.studdybuddy.tools.Consumer.sequenced;
 import static ch.epfl.sweng.studdybuddy.util.ActivityHelper.adminMeeting;
 import static ch.epfl.sweng.studdybuddy.util.ActivityHelper.listenDate;
 import static ch.epfl.sweng.studdybuddy.util.ActivityHelper.listenTime;
 import static ch.epfl.sweng.studdybuddy.util.ActivityHelper.meetingConsumer;
+import static ch.epfl.sweng.studdybuddy.util.ActivityHelper.singleMeeting;
 
 public class GroupActivity extends AppCompatActivity {
     private String groupID;
@@ -73,7 +76,7 @@ public class GroupActivity extends AppCompatActivity {
             @Override
             public void update() {
                 adminMeeting(add, group, userID);
-                mm.fetchMeetings(group.getGroupID().getId(), meetingConsumer(title, time, date, add));
+                mm.fetchMeetings(group.getGroupID().getId(), sequenced(singleMeeting(singleton), meetingConsumer(title, time, date, add)));
             }
         };
     }
@@ -92,7 +95,7 @@ public class GroupActivity extends AppCompatActivity {
 
 
     public Meeting getMeeting() {
-        return singleton;//(meetings.size() > 0) ? meetings.get(0) : new Meeting();
+        return (singleton != null) ? singleton : new Meeting();
     }
     private void goToActivity(Intent intent){
         intent.putExtra(Messages.userID, userID);

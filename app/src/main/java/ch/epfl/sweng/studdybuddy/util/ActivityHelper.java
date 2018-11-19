@@ -48,6 +48,15 @@ public class ActivityHelper {
             }
         };
     }
+
+    public static Consumer<List<Meeting>> singleMeeting(Meeting dest) {
+        return new Consumer<List<Meeting>>() {
+            @Override
+            public void accept(List<Meeting> meetings) {
+                if(!meetings.isEmpty()) dest.copy(meetings.get(0));
+            }
+        };
+    }
     public static android.app.DatePickerDialog.OnDateSetListener listenDate(Meeting mee, Group group, MetaMeeting mm, AdapterAdapter adapter) {
         return new DatePickerDialog.OnDateSetListener() {
             @Override

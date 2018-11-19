@@ -46,6 +46,12 @@ public final class Meeting {
         this.creation = creation;
     }
 
+    public void copy(Meeting copy) {
+        this.setDeadline(copy.getDeadline());
+        this.setCreation(copy.getCreation());
+        this.setId(copy.getId());
+    }
+
     @Override
     public String toString() {
         return deadline.toString();
