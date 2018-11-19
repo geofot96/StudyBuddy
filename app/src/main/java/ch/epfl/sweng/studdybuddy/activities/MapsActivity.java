@@ -29,7 +29,6 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
 import ch.epfl.sweng.studdybuddy.R;
-import ch.epfl.sweng.studdybuddy.activities.meetings.createMeetingActivity;
 import ch.epfl.sweng.studdybuddy.util.Messages;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {

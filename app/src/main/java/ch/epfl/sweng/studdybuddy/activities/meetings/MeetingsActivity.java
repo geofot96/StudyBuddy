@@ -11,6 +11,7 @@ import com.google.firebase.database.DatabaseReference;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -36,7 +37,6 @@ public class MeetingsActivity extends AppCompatActivity {
 
     private MetaMeeting metaM;
 
-    private DatabaseReference db;
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -59,7 +59,14 @@ public class MeetingsActivity extends AppCompatActivity {
             @Override
             public void accept(List<Meeting> meetings) {
                 meetingList.clear();
-                meetingList.addAll(meetings);
+                Date currentDate = new Date();
+                for(Meeting m: meetings){
+                    if (m.getStarting().before(currentDate)){
+                        metaM.deleteMeeting(m.getId(), new ID<>(groupId));
+                    } else {
+                        meetingList.add(m);
+                    }
+                }
                 meetingList.sort(new Comparator<Meeting>() {
                     @Override
                     public int compare(Meeting o1, Meeting o2) {

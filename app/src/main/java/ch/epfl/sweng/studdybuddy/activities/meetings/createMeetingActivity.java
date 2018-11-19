@@ -1,6 +1,7 @@
 package ch.epfl.sweng.studdybuddy.activities.meetings;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
@@ -36,8 +37,6 @@ public class createMeetingActivity extends AppCompatActivity {
 
     private TextView mDisplayStartTime;
     private TextView mDisplayEndTime;
-    private TimePickerDialog.OnTimeSetListener startTimeSetListener;
-    private TimePickerDialog.OnTimeSetListener endTimeSetListener;
     private Date startingDate = new Date();
     private Date endingDate = new Date();
 
@@ -63,117 +62,24 @@ public class createMeetingActivity extends AppCompatActivity {
         groupID = origin.getString(Messages.groupID);
 
         mDisplayDate = findViewById(R.id.datePicker);
-        mDisplayDate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Calendar cal = Calendar.getInstance();
-                int year = cal.get(Calendar.YEAR);
-                int month = cal.get(Calendar.MONTH);
-                int day = cal.get(Calendar.DAY_OF_MONTH);
-
-                DatePickerDialog dialog = new DatePickerDialog(
-                        createMeetingActivity.this,
-                        android.R.style.Theme_Holo_Dialog_MinWidth,
-                        dateSetListener,
-                        year, month, day);
-
-                Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-                dialog.show();
-            }
-        });
-
-
-
+        mDisplayDate.setOnClickListener(fromDate());
         dateSetListener = new DatePickerDialog.OnDateSetListener() {
             @SuppressLint("SetTextI18n")
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                 int realMonth = month+1;
                 mDisplayDate.setText(year + "/" + realMonth + "/" + dayOfMonth);
-                startingDate.setYear(year-1900);
-                startingDate.setMonth(month);
-                startingDate.setDate(dayOfMonth);
-                endingDate.setYear(year-1900);
-                endingDate.setMonth(month);
-                endingDate.setDate(dayOfMonth);
+                setDate(startingDate, year, month, dayOfMonth);
+                setDate(endingDate, year, month, dayOfMonth);
                 updateButton();
             }
         };
 
         mDisplayStartTime = findViewById(R.id.timePicker);
-        mDisplayStartTime.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Calendar cal = Calendar.getInstance();
-                int hour = cal.get(Calendar.HOUR_OF_DAY);
-                int minute = cal.get(Calendar.MINUTE);
-
-                TimePickerDialog dialog = new TimePickerDialog(
-                        createMeetingActivity.this,
-                        android.R.style.Theme_Holo_Dialog_MinWidth,
-                        startTimeSetListener,
-                        hour, minute, true
-                );
-                Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-                dialog.show();
-            }
-        });
-
-        startTimeSetListener = new TimePickerDialog.OnTimeSetListener() {
-            @SuppressLint("SetTextI18n")
-            @Override
-            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                String amPm;
-                if(hourOfDay >= 12){
-                    amPm = " PM";
-                } else{
-                    amPm = " AM";
-                }
-                mDisplayStartTime.setText(hourOfDay%12 + " : " + minute/10 + minute%10 + amPm);
-                startingDate.setHours(hourOfDay);
-                startingDate.setMinutes(minute);
-                updateButton();
-            }
-        };
-
+        mDisplayStartTime.setOnClickListener(fromTime(forStarting()));
 
         mDisplayEndTime = findViewById(R.id.timePicker2);
-        mDisplayEndTime.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Calendar cal = Calendar.getInstance();
-                int hour = cal.get(Calendar.HOUR_OF_DAY);
-                int minute = cal.get(Calendar.MINUTE);
-
-                TimePickerDialog dialog = new TimePickerDialog(
-                        createMeetingActivity.this,
-                        android.R.style.Theme_Holo_Dialog_MinWidth,
-                        endTimeSetListener,
-                        hour, minute, true
-                );
-                Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-                dialog.show();
-            }
-        });
-
-
-        endTimeSetListener = new TimePickerDialog.OnTimeSetListener() {
-            @SuppressLint("SetTextI18n")
-            @Override
-            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                String amPm;
-                if(hourOfDay >= 12){
-                    amPm = " PM";
-                } else{
-                    amPm = " AM";
-                }
-                mDisplayEndTime.setText(hourOfDay%12 + " : " + minute/10 + minute%10 + amPm);
-                endingDate.setHours(hourOfDay);
-                endingDate.setMinutes(minute);
-                updateButton();
-            }
-        };
-
+        mDisplayEndTime.setOnClickListener(fromTime(forEnding()));
 
         mDisplayLocation = findViewById(R.id.locationTitle);
         mDisplayLocation.setOnClickListener(new View.OnClickListener() {
@@ -214,15 +120,128 @@ public class createMeetingActivity extends AppCompatActivity {
     }
 
     @SuppressLint("ShowToast")
-    public void updateButton(){
-        boolean correctTimeSlot = startingDate.before(endingDate);
+    private void updateButton(){
+        boolean correctTimeSlot = endingDate.after(startingDate);
         boolean isTooLate = startingDate.before(new Date());
-        if(correctTimeSlot && !isTooLate && meetingLocation != null){
-            saveBtn.setEnabled(true);
-        }else{
-            saveBtn.setEnabled(false);
-            Toast.makeText(this, "Please set a correct time slot", Toast.LENGTH_LONG).show();
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if(correctTimeSlot && !isTooLate && meetingLocation != null){
+                    saveBtn.setEnabled(true);
+                }else{
+                    saveBtn.setEnabled(false);
+                    Toast.makeText(createMeetingActivity.this, "Please set a correct time slot", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+    }
+
+
+    private MyClickListener fromTime(TimePickerDialog.OnTimeSetListener listener){
+        return new MyClickListener(listener);
+    }
+
+    private  MyClickListener fromDate(){
+        return new MyClickListener(true);
+    }
+
+    private MyTimeSetListener forStarting(){
+        return new MyTimeSetListener(startingDate, mDisplayStartTime);
+    }
+
+    private MyTimeSetListener forEnding(){
+        return new MyTimeSetListener(endingDate, mDisplayEndTime);
+    }
+
+    private void setDate(Date date, int year, int month, int dayOfMonth){
+        date.setYear(year-1900);
+        date.setMonth(month);
+        date.setDate(dayOfMonth);
+    }
+
+
+    private class MyClickListener implements View.OnClickListener{
+        private boolean forDate;
+        private TimePickerDialog.OnTimeSetListener listener;
+        public MyClickListener(boolean forDate){
+            super();
+            this.forDate = forDate;
+        }
+
+        public MyClickListener(TimePickerDialog.OnTimeSetListener listener){
+            super();
+            this.listener = listener;
+            this.forDate = false;
+        }
+
+        @Override
+        public void onClick(View v) {
+            Calendar cal = Calendar.getInstance();
+            int year = cal.get(Calendar.YEAR);
+            int month = cal.get(Calendar.MONTH);
+            int day = cal.get(Calendar.DAY_OF_MONTH);
+            int hour = cal.get(Calendar.HOUR_OF_DAY);
+            int minute = cal.get(Calendar.MINUTE);
+            AlertDialog dialog;
+
+            if(forDate){
+                dialog = new DatePickerDialog(
+                        createMeetingActivity.this,
+                        android.R.style.Theme_Holo_Dialog_MinWidth,
+                        dateSetListener,
+                        year, month, day
+                );
+            }else{
+                dialog = new TimePickerDialog(
+                        createMeetingActivity.this,
+                        android.R.style.Theme_Holo_Dialog_MinWidth,
+                        listener,
+                        hour, minute, true
+                );
+            }
+            Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            dialog.show();
         }
     }
 
+    private class MyTimeSetListener implements TimePickerDialog.OnTimeSetListener{
+        private Date dateToSet;
+        private TextView viewToSet;
+        private MyTimeSetListener(Date date, TextView view){
+            super();
+            dateToSet = date;
+            viewToSet = view;
+        }
+
+        @Override
+        public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+            String amPm;
+            if(hourOfDay >= 12){
+                amPm = " PM";
+            } else{
+                amPm = " AM";
+            }
+            viewToSet.setText(hourOfDay%12 + " : " + minute/10 + minute%10 + amPm);
+            dateToSet.setHours(hourOfDay);
+            dateToSet.setMinutes(minute);
+            updateButton();
+        }
+    }
+
+
+    public void setStartingDate(Date date) {
+        startingDate = date;
+        updateButton();
+    }
+
+
+    public void setEndingDate(Date date){
+        endingDate = date;
+        updateButton();
+    }
+
+    public void setLocation(MeetingLocation setter){
+        meetingLocation = setter;
+        updateButton();
+    }
 }

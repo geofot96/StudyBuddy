@@ -83,8 +83,22 @@
 
         </activity>
 
-        <activity android:name=".activities.meetings.createMeetingActivity"/>
-        <activity android:name=".activities.meetings.MeetingsActivity"/>
+        <activity android:name=".activities.meetings.createMeetingActivity"
+            android:parentActivityName=".activities.GroupActivity">
+
+            <!-- The meta-data tag is required if you support API level 15 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.GroupActivity" />
+        </activity>
+        <activity android:name=".activities.meetings.MeetingsActivity"
+            android:parentActivityName=".activities.GroupActivity">
+
+            <!-- The meta-data tag is required if you support API level 15 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.GroupActivity" />
+        </activity>
     </application>
 
 </manifest>

@@ -10,7 +10,7 @@ public class MessagesTest {
     private Messages m = new Messages();
     @Test
     public void groupID(){
-        assertEquals("ch.epfl.sweng.studdybuddy.groupId", m.groupID);
+        assertEquals("ch.epfl.sweng.studybuddy.groupId", m.groupID);
     }
 
     @Test
