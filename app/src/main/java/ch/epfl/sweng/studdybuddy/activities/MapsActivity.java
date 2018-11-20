@@ -15,6 +15,7 @@ import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
 import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
@@ -56,6 +57,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 getFragmentManager().findFragmentById(R.id.place_autocomplete);
         uId = ((StudyBuddy) MapsActivity.this.getApplication()).getAuthendifiedUser().getUserID().getId();
 
+        MapsInitializer.initialize(this);
         autocompleteFragment.setOnPlaceSelectedListener(placeSelectionListener());
         button = ((Button) findViewById(R.id.confirmLocation));
         button.setOnClickListener((confirmationListener()));

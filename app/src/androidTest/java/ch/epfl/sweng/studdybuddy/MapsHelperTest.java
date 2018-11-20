@@ -28,7 +28,7 @@ public class MapsHelperTest {
     @Before
     public void setup(){}
     @Test
-    public void acceptMeetingsTest(){
+    public void checkConfirmDoesntExistForNonAdmin(){
         try {
             Thread.sleep(2000);
             onView(withId(R.id.confirmLocation)).check(matches(not(ViewMatchers.isDisplayed())));
