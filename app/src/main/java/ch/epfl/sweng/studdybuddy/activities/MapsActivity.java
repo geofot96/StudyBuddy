@@ -1,5 +1,6 @@
 package ch.epfl.sweng.studdybuddy.activities;
 
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -31,6 +32,7 @@ import ch.epfl.sweng.studdybuddy.core.MeetingLocation;
 import ch.epfl.sweng.studdybuddy.firebase.FirebaseReference;
 import ch.epfl.sweng.studdybuddy.tools.Consumer;
 import ch.epfl.sweng.studdybuddy.util.MapsHelper;
+import ch.epfl.sweng.studdybuddy.util.Messages;
 import ch.epfl.sweng.studdybuddy.util.StudyBuddy;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
@@ -44,6 +46,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private MeetingLocation confirmedPlace;
     PlaceAutocompleteFragment autocompleteFragment;
     String uId;
+    String gId;
     Button button;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +58,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         autocompleteFragment = (PlaceAutocompleteFragment)
                 getFragmentManager().findFragmentById(R.id.place_autocomplete);
         uId = ((StudyBuddy) MapsActivity.this.getApplication()).getAuthendifiedUser().getUserID().getId();
+        Intent intent = getIntent();
+        gId = intent.getStringExtra(Messages.groupID);
         mapFragment.getMapAsync(this);
 
     }
@@ -83,7 +88,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(MapsHelper.confirmationListener(confirmedPlace, meetings, ref)){
+                if(MapsHelper.confirmationListener(confirmedPlace, meetings, ref, gId)){
                     finish();
                 }
             }
@@ -169,7 +174,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         ref.select("BoubaMeetings").getAll(Meeting.class, new Consumer<List<Meeting>>() {
             @Override
             public void accept(List<Meeting> meetingsfb) {
-                MarkerOptions tmp = MapsHelper.acceptMeetings(meetingsfb,meetings, button, uId);
+                MarkerOptions tmp = MapsHelper.acceptMeetings(meetingsfb,meetings, button, gId);
 
                 if(tmp != null){
                     marker =  mMap.addMarker(tmp);

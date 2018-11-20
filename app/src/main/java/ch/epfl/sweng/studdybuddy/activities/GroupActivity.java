@@ -60,10 +60,8 @@ public class GroupActivity extends AppCompatActivity {
         MaxNumUsers = origin.getIntExtra(Messages.maxUser, -1);
         calendarButton = findViewById(R.id.calendarBtn);
         participantButton = findViewById(R.id.participantsBtn);
-      /*  mapsButton = findViewById(R.id.mapsButton);
-        calendarButton.setOnClickListener(new ClickListener(new Intent(this, ConnectedCalendarActivity.class)));
-        participantButton.setOnClickListener(new ClickListener(new Intent(this, GroupInfoActivity.class)));
-        mapsButton.setOnClickListener(new ClickListener(new Intent(this, MapsActivity.class)));*/
+        mapsButton = findViewById(R.id.mapsButton);
+        mapsButton.setOnClickListener(new ClickListener(new Intent(this, MapsActivity.class)));
         time  = findViewById(R.id.time);
         date = findViewById(R.id.date);
         add = findViewById(R.id.addMeeting);

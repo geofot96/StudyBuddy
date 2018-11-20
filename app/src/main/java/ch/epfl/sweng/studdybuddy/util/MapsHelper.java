@@ -28,19 +28,28 @@ public class MapsHelper {
     public static final float DEFAULT_ZOOM = 14.0f;
 
 
-    public static MarkerOptions acceptMeetings(List<Meeting>meetingsFb, List<Meeting> meetings, Button button, String uId){
+    public static MarkerOptions acceptMeetings(List<Meeting>meetingsFb, List<Meeting> meetings, Button button, String gId){
         boolean isActivityInitialized = meetings.size() > 0;
         meetings.clear();
         meetings.addAll(meetingsFb);
+        //modularize
+        int meetingIndex = 0;
+        for(Meeting meeting: meetings){
+            if(!meeting.getId().getId().equals(gId)){
+                meetingIndex++;
+            }else {
+                break;
+            }
+        }
         //need to select the correct meeting
         if(!isActivityInitialized) {
-            MeetingLocation location = meetings.get(meetings.size() - 1).location;
+            MeetingLocation location = meetings.get(meetingIndex - 1).location;
             MarkerOptions mMarker =(new MarkerOptions().position(location.getLatLng()).title(location.getTitle()));
-            if(uId.equals("Bouba")){
+           //if(uId.equals("Bouba")){
                 button.setVisibility(View.VISIBLE);
                 button.setEnabled(true);
 
-            }
+            //}
             return ((mMarker.draggable(true)));
 
 
@@ -48,13 +57,13 @@ public class MapsHelper {
         return null;
     }
 
-    public static boolean confirmationListener(MeetingLocation confirmedPlace, List<Meeting> meetings, FirebaseReference ref){
+    public static boolean confirmationListener(MeetingLocation confirmedPlace, List<Meeting> meetings, FirebaseReference ref, String gId){
                 if (confirmedPlace != null) {
                     int lastindex = meetings.size() - 1;
                     Meeting lastMeeting = meetings.get(lastindex);
                     lastMeeting.setLocation(confirmedPlace);
                     meetings.set(lastindex, lastMeeting);
-                    ref.select("BoubaMeetings").setVal(meetings);
+                    ref.select("meetings").select(gId).setVal(meetings);
                     return true;
                 }
                 return false;
