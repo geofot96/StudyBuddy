@@ -44,44 +44,34 @@ public class ChatActivityTests
         intent.putExtra(Messages.maxUser, 1);
         intent.putExtra(Messages.userID, Messages.TEST);
         intent.putExtra("GroupID", Messages.TEST);
-        //FirebaseDatabase.getInstance().getReference().child("test_chat").removeValue();
+        FirebaseDatabase.getInstance().getReference().child("test_chat").removeValue();
 
     }
     @Test
     public void thisIsATest()
     {
         DummyChatActivityIntentRule.launchActivity(intent);
-
-
-
         onView(withId(R.id.fab)).perform(click());
 
+        List<ChatMessage> list = new ArrayList<>();
 
-//        try
-//        {
-//            Thread.sleep(3000);
-//        }
-//        catch(Exception e){}
-//        List<ChatMessage> list = new ArrayList<>();
-//
-//        FirebaseReference reference = new FirebaseReference();
-//
-//        reference.select("test_chat").select("1").getAll(ChatMessage.class, new Consumer<List<ChatMessage>>()
-//        {
-//            @Override
-//            public void accept(List<ChatMessage> messages)
-//            {
-//                list.clear();
-//                list.addAll(messages);
-//            }
-//        });
-//        try
-//        {
-//            Thread.sleep(3000);
-//        }
-//        catch(Exception e){}
-//
-//        assertEquals(1, list.size());
+        FirebaseReference reference = new FirebaseReference();
+
+        reference.select("test_chat").getAll(ChatMessage.class, new Consumer<List<ChatMessage>>()
+        {
+            @Override
+            public void accept(List<ChatMessage> messages)
+            {
+                list.clear();
+                list.addAll(messages);
+            }
+        });
+        try
+        {
+            Thread.sleep(1000);
+        }
+        catch(Exception e){}
+        assertEquals(1, list.size());
         DummyChatActivityIntentRule.finishActivity();
     }
 }
