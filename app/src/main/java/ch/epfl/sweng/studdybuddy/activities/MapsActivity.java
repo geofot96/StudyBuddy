@@ -14,6 +14,7 @@ import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
 import com.google.android.gms.location.places.ui.PlaceSelectionListener;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -51,7 +52,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
         autocompleteFragment = (PlaceAutocompleteFragment)
                 getFragmentManager().findFragmentById(R.id.place_autocomplete);
         uId = ((StudyBuddy) MapsActivity.this.getApplication()).getAuthendifiedUser().getUserID().getId();
@@ -64,7 +64,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         return new PlaceSelectionListener() {
             @Override
             public void onPlaceSelected(Place place) {
-               MapsHelper.acceptSelectedPlace(place, mMarker, marker, confirmedPlace, mMap);
+               confirmedPlace =MapsHelper.acceptSelectedPlace(place, marker);
+                mMarker = new MarkerOptions().position(place.getLatLng()).title(place.getName().toString()).draggable(true);
+                mMap.moveCamera(CameraUpdateFactory.newLatLng(place.getLatLng()));
+
             }
 
             @Override
@@ -80,7 +83,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(MapsHelper.confirmationListener(v, confirmedPlace, meetings, ref)){
+                if(MapsHelper.confirmationListener(confirmedPlace, meetings, ref)){
                     finish();
                 }
             }
@@ -151,7 +154,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
            @Override
            public void onMapClick(LatLng latLng) {
-               MeetingLocation tmp =  MapsHelper.mapListener(latLng, marker, autocompleteFragment, confirmedPlace, MapsActivity.this);
+               MeetingLocation tmp =  MapsHelper.mapListener(latLng, marker, autocompleteFragment, MapsActivity.this);
 
                if(tmp != null) {
                    confirmedPlace = tmp;
@@ -166,9 +169,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         ref.select("BoubaMeetings").getAll(Meeting.class, new Consumer<List<Meeting>>() {
             @Override
             public void accept(List<Meeting> meetingsfb) {
-                Marker tmp =MapsHelper.acceptMeetings(meetingsfb,meetings, mMap, button, uId);
+                MarkerOptions tmp = MapsHelper.acceptMeetings(meetingsfb,meetings, button, uId);
+
                 if(tmp != null){
-                    marker = tmp;
+                    marker =  mMap.addMarker(tmp);
+
+                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(marker.getPosition(), MapsHelper.DEFAULT_ZOOM));
                 }
             }
         });

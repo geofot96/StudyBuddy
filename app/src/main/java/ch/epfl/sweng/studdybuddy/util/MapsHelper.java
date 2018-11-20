@@ -3,14 +3,11 @@ package ch.epfl.sweng.studdybuddy.util;
 import android.content.Context;
 import android.location.Address;
 import android.location.Geocoder;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -28,10 +25,10 @@ public class MapsHelper {
     MapsActivity activity;
     public static final MeetingLocation ROLEX_LOCATION = new MeetingLocation("Rolex", "EPFL", 46.5182757,6.5660673);
     public static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
-    private static final float DEFAULT_ZOOM = 14.0f;
+    public static final float DEFAULT_ZOOM = 14.0f;
 
 
-    public static Marker acceptMeetings(List<Meeting>meetingsFb, List<Meeting> meetings, GoogleMap mMap, Button button, String uId){
+    public static MarkerOptions acceptMeetings(List<Meeting>meetingsFb, List<Meeting> meetings, Button button, String uId){
         boolean isActivityInitialized = meetings.size() > 0;
         meetings.clear();
         meetings.addAll(meetingsFb);
@@ -44,15 +41,14 @@ public class MapsHelper {
                 button.setEnabled(true);
 
             }
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location.getLatLng(), DEFAULT_ZOOM));
-            return (mMap.addMarker(mMarker.draggable(true)));
+            return ((mMarker.draggable(true)));
 
 
         }
         return null;
     }
 
-    public static boolean confirmationListener(View v, MeetingLocation confirmedPlace, List<Meeting> meetings, FirebaseReference ref){
+    public static boolean confirmationListener(MeetingLocation confirmedPlace, List<Meeting> meetings, FirebaseReference ref){
                 if (confirmedPlace != null) {
                     int lastindex = meetings.size() - 1;
                     Meeting lastMeeting = meetings.get(lastindex);
@@ -65,7 +61,7 @@ public class MapsHelper {
 
     };
 
-    public static MeetingLocation mapListener(LatLng latLng ,Marker marker, PlaceAutocompleteFragment autocompleteFragment, MeetingLocation confirmedPlace, Context ctx){
+    public static MeetingLocation mapListener(LatLng latLng ,Marker marker, PlaceAutocompleteFragment autocompleteFragment,  Context ctx){
         marker.setPosition(latLng);
         Geocoder geocoder;
         Address address = null;
@@ -86,14 +82,12 @@ public class MapsHelper {
         return null;
     }
 
-    public static void acceptSelectedPlace(Place place , MarkerOptions mMarker, Marker marker, MeetingLocation confirmedPlace, GoogleMap mMap){
+    public static MeetingLocation acceptSelectedPlace(Place place , Marker marker){
         // TODO: Get info about the selected place.
-        Log.i("Maps", "Place: " + place.getName());
-        mMarker = new MarkerOptions().position(place.getLatLng()).title(place.getName().toString()).draggable(true);
+      //  Log.i("Maps", "Place: " + place.getName());
         marker.setPosition(place.getLatLng());
         marker.setTitle(place.getName().toString());
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(place.getLatLng()));
-        confirmedPlace = (new MeetingLocation(place.getName().toString(), place.getAddress().toString(), place.getLatLng()));
+        return(new MeetingLocation(place.getName().toString(), place.getAddress().toString(), place.getLatLng()));
     }
 }
 
