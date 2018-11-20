@@ -65,4 +65,16 @@ public class MapsActivityTest {
         assertTrue(!MapsHelper.confirmationListener(null, meetings, ref));
 
     }
+
+
+  /*  @Test
+    public void mapListenerTest(){
+        Marker marker = mock(Marker.class);
+        PlaceAutocompleteFragment fragment = new PlaceAutocompleteFragment();
+        MeetingLocation rolex = MapsHelper.ROLEX_LOCATION;
+        MeetingLocation pos = MapsHelper.mapListener(rolex.getLatLng(), marker, fragment, mIntentsTestRule.getActivity());
+        assertTrue(pos.equals(new MeetingLocation(rolex.getTitle(), rolex.getAddress(), rolex.getLatLng())));
+    }*/
 }
+
+

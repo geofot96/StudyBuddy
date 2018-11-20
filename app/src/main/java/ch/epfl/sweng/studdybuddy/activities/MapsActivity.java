@@ -173,7 +173,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                 if(tmp != null){
                     marker =  mMap.addMarker(tmp);
-
                     mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(marker.getPosition(), MapsHelper.DEFAULT_ZOOM));
                 }
             }
