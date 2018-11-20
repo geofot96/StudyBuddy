@@ -1,7 +1,7 @@
 package ch.epfl.sweng.studdybuddy;
 
-import android.support.test.espresso.intent.rule.IntentsTestRule;
 import android.support.test.espresso.matcher.ViewMatchers;
+import android.support.test.rule.ActivityTestRule;
 
 import org.junit.Rule;
 import org.junit.Test;
@@ -16,7 +16,7 @@ import static org.hamcrest.core.IsNot.not;
 public class MapsHelperTest {
 
     @Rule
-    public IntentsTestRule<MapsActivity> mIntentsTestRule = new IntentsTestRule<>(MapsActivity.class);
+    public ActivityTestRule<MapsActivity> mIntentsTestRule = new ActivityTestRule<>(MapsActivity.class);
 
     @Test
     public void acceptMeetingsTest(){
