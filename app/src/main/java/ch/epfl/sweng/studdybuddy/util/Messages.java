@@ -7,5 +7,6 @@ public class Messages {
     public static final String meetingID = "ch.epfl.sweng.studdybuddy.meetingID";
     public static final String NO_MEETINGID = "NO MEETING";
     public static final String TEST = "test";
+    public static final String chatGroupID = "GroupID";
 }
 

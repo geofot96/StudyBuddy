@@ -8,7 +8,6 @@ import ch.epfl.sweng.studdybuddy.core.Account;
 
 public class DummyMainActivity extends MainActivity{
 
-    @Override
     public AuthManager getAuthManager(){
         return new AuthManager() {
             @Override
