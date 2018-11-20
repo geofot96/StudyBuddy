@@ -5,5 +5,6 @@ public class Messages {
     public static final String userID = "USERID";
     public static final String maxUser = "MAX_NUMBER_OF_USERS_IN_GROUP";
     public static final String TEST = "test";
+    public static final String chatGroupID = "GroupID";
 }
 

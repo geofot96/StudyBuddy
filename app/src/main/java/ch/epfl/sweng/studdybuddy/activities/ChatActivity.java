@@ -1,6 +1,7 @@
 package ch.epfl.sweng.studdybuddy.activities;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -29,7 +30,9 @@ public class ChatActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
         Bundle extras=getIntent().getExtras();
-        if(extras!=null)groupID=extras.getString("GroupID");
+        if(extras!=null){
+            groupID=extras.getString("GroupID");
+        }
         else {
             Toast.makeText(this,
                     "Group not found in database",
@@ -37,11 +40,16 @@ public class ChatActivity extends AppCompatActivity{
             finish();
         }
         displayChatMessages();
-        FloatingActionButton fab =
-                (FloatingActionButton)findViewById(R.id.fab);
-
+        FloatingActionButton fab = (FloatingActionButton)findViewById(R.id.fab);
         this.ref = initRef();
-        fab.setOnClickListener(new View.OnClickListener() {
+        fab.setOnClickListener(getFabListener());
+
+    }
+
+    @NonNull
+    protected View.OnClickListener getFabListener()
+    {
+        return new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 EditText input = (EditText)findViewById(R.id.input);
@@ -50,19 +58,19 @@ public class ChatActivity extends AppCompatActivity{
 
                 input.setText("");
             }
-        });
-
+        };
     }
 
     public FirebaseReference initRef(){
-        return (FirebaseReference) new FirebaseReference().select("chat");
+        return new FirebaseReference();
     }
     public void displayChatMessages()
     {
         ListView listOfMessages = (ListView)findViewById(R.id.list_of_messages);
 
         adapter = new FirebaseListAdapter<ChatMessage>(this, ChatMessage.class,
-                R.layout.message, ((FirebaseReference) ref.select("Chat").select(groupID)).getRef()) {
+                R.layout.message,
+                FirebaseDatabase.getInstance().getReference().child("chat").child(groupID)) {
             @Override
             protected void populateView(View v, ChatMessage model, int position) {
                 if (!model.getMessageText().isEmpty()) {
