@@ -22,7 +22,7 @@ import ch.epfl.sweng.studdybuddy.services.chat.ChatMessage;
 public class ChatActivity extends AppCompatActivity{
     private FirebaseListAdapter<ChatMessage> adapter;
     String groupID;
-    FirebaseReference ref;
+    public FirebaseReference ref;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -40,13 +40,13 @@ public class ChatActivity extends AppCompatActivity{
         FloatingActionButton fab =
                 (FloatingActionButton)findViewById(R.id.fab);
 
-        initRef();
+        this.ref = initRef();
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 EditText input = (EditText)findViewById(R.id.input);
-              ref.select("chat").select(groupID).push(new ChatMessage(input.getText().toString(),
-                      FirebaseAuth.getInstance().getCurrentUser().getDisplayName()));
+                ref.select(groupID).push(new ChatMessage(input.getText().toString(),
+                        FirebaseAuth.getInstance().getCurrentUser().getDisplayName()));
 
                 input.setText("");
             }
@@ -54,15 +54,15 @@ public class ChatActivity extends AppCompatActivity{
 
     }
 
-    public void initRef(){
-        this.ref = new FirebaseReference();
+    public FirebaseReference initRef(){
+        return (FirebaseReference) new FirebaseReference().select("chat");
     }
     public void displayChatMessages()
     {
         ListView listOfMessages = (ListView)findViewById(R.id.list_of_messages);
 
         adapter = new FirebaseListAdapter<ChatMessage>(this, ChatMessage.class,
-                R.layout.message, FirebaseDatabase.getInstance().getReference().child("chat").child(groupID)) {
+                R.layout.message, ((FirebaseReference) ref.select("Chat").select(groupID)).getRef()) {
             @Override
             protected void populateView(View v, ChatMessage model, int position) {
                 if (!model.getMessageText().isEmpty()) {
