@@ -1,5 +1,6 @@
 package ch.epfl.sweng.studdybuddy;
 
+import android.support.test.runner.AndroidJUnit4;
 import android.widget.Button;
 
 import com.google.android.gms.location.places.Place;
@@ -8,6 +9,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -22,6 +24,7 @@ import static junit.framework.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+@RunWith(AndroidJUnit4.class)
 
 public class MapsHelperTest {
 
@@ -71,4 +74,6 @@ public class MapsHelperTest {
         assertTrue(mo.getTitle().equals("Rolex") && mo.getPosition().equals(new LatLng(1,2)));
 
     }
+
+
 }
