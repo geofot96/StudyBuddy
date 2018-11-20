@@ -6,6 +6,7 @@ import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -35,11 +36,35 @@ public class MeetingsActivity extends AppCompatActivity {
 
     private MetaMeeting metaM;
 
+    private final Comparator<Meeting> comparator = new Comparator<Meeting>() {
+        @Override
+        public int compare(Meeting o1, Meeting o2) {
+            return o1.getStarting().compareTo(o2.getStarting());
+        }
+    };
+
+    private final Consumer<List<Meeting>> consumer = new Consumer<List<Meeting>>() {
+        @RequiresApi(api = Build.VERSION_CODES.N)
+        @Override
+        public void accept(List<Meeting> meetings) {
+            meetingList.clear();
+            Date currentDate = new Date();
+            for (Meeting m : meetings) {
+                if (m.getStarting().before(currentDate)) {
+                    metaM.deleteMeeting(m.getId(), new ID<>(groupId));
+                } else {
+                    meetingList.add(m);
+                }
+            }
+            meetingList.sort(comparator);
+            adapter.notifyDataSetChanged();
+        }
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_meetings);
-
         origin = getIntent().getExtras();
 
         groupId = origin.getString(Messages.groupID);
@@ -51,29 +76,7 @@ public class MeetingsActivity extends AppCompatActivity {
 
         metaM = new MetaMeeting();
 
-
-        metaM.getMeetingsOfGroup(new ID<>(groupId), new Consumer<List<Meeting>>() {
-            @RequiresApi(api = Build.VERSION_CODES.N)
-            @Override
-            public void accept(List<Meeting> meetings) {
-                meetingList.clear();
-                Date currentDate = new Date();
-                for(Meeting m: meetings){
-                    if (m.getStarting().before(currentDate)){
-                        metaM.deleteMeeting(m.getId(), new ID<>(groupId));
-                    } else {
-                        meetingList.add(m);
-                    }
-                }
-                meetingList.sort(new Comparator<Meeting>() {
-                    @Override
-                    public int compare(Meeting o1, Meeting o2) {
-                        return o1.getStarting().compareTo(o2.getStarting());
-                    }
-                });
-                adapter.notifyDataSetChanged();
-            }
-        });
+        metaM.getMeetingsOfGroup(new ID<>(groupId), consumer);
 
         adapter = new MeetingRecyclerAdapter(meetingList, this);
 

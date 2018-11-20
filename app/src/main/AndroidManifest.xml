@@ -59,10 +59,10 @@
         <activity android:name=".activities.ConnectedCalendarActivity" />
         <activity
             android:name=".activities.GroupActivity"
-            android:parentActivityName=".activities.GroupsActivity">
+            android:parentActivityName=".activities.NavigationActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activities.GroupsActivity" />
+                android:value=".activities.NavigationActivity" />
         </activity>
         <activity android:name=".activities.NavigationActivity" />
         <!--
@@ -84,20 +84,20 @@
         </activity>
 
         <activity android:name=".activities.meetings.createMeetingActivity"
-            android:parentActivityName=".activities.GroupActivity">
+            android:parentActivityName=".activities.GroupsActivity">
 
             <!-- The meta-data tag is required if you support API level 15 and lower -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activities.GroupActivity" />
+                android:value=".activities.GroupsActivity" />
         </activity>
         <activity android:name=".activities.meetings.MeetingsActivity"
-            android:parentActivityName=".activities.GroupActivity">
+            android:parentActivityName=".activities.GroupsActivity">
 
             <!-- The meta-data tag is required if you support API level 15 and lower -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activities.GroupActivity" />
+                android:value=".activities.GroupsActivity" />
         </activity>
     </application>
 

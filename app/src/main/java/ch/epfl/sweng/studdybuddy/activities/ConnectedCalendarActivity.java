@@ -126,7 +126,7 @@ public class ConnectedCalendarActivity extends AppCompatActivity
      */
     public void confirmSlots(Bundle origin) {
         //TODO : once the GroupActivity will be correctly set, launch the GroupActivity
-        Intent newIntent = new Intent(this, NavigationActivity.class);
+        Intent newIntent = new Intent(this, GroupActivity.class);
         startActivity(newIntent.putExtras(origin));
     }
 

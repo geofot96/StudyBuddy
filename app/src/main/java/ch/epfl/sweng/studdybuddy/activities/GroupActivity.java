@@ -3,6 +3,7 @@ package ch.epfl.sweng.studdybuddy.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -26,11 +27,13 @@ public class GroupActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group);
-
         Intent origin = getIntent();
         groupID = origin.getStringExtra(Messages.groupID);
         userID = origin.getStringExtra(Messages.userID);
         MaxNumUsers = origin.getIntExtra(Messages.maxUser, -1);
+        if(groupID == null || userID == null || MaxNumUsers == -1){
+            startActivity(new Intent(this, GroupActivity.class));
+        }
         calendarButton = findViewById(R.id.calendarBtn);
         participantButton = findViewById(R.id.participantsBtn);
         mapsButton = findViewById(R.id.mapsButton);

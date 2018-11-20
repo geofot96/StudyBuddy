@@ -9,6 +9,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -53,7 +54,6 @@ public class createMeetingActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_meeting);
-
         meeting = new Meeting();
         metaM = new MetaMeeting();
         origin = getIntent().getExtras();
@@ -64,14 +64,9 @@ public class createMeetingActivity extends AppCompatActivity {
         mDisplayDate = findViewById(R.id.datePicker);
         mDisplayDate.setOnClickListener(fromDate());
         dateSetListener = new DatePickerDialog.OnDateSetListener() {
-            @SuppressLint("SetTextI18n")
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                int realMonth = month+1;
-                mDisplayDate.setText(year + "/" + realMonth + "/" + dayOfMonth);
-                setDate(startingDate, year, month, dayOfMonth);
-                setDate(endingDate, year, month, dayOfMonth);
-                updateButton();
+                setDateAndTextView(year,month, dayOfMonth);
             }
         };
 
@@ -95,16 +90,12 @@ public class createMeetingActivity extends AppCompatActivity {
         saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                meeting.setStarting(startingDate);
-                meeting.setEnding(endingDate);
-                meeting.setLocation(meetingLocation);
-                metaM.pushMeeting(meeting, new ID<>(groupID));
-                Intent intent = new Intent(createMeetingActivity.this, GroupActivity.class);
-                intent.putExtras(origin);
-                startActivity(intent);
+                goToGroupActivity();
             }
         });
     }
+
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data){
@@ -133,6 +124,24 @@ public class createMeetingActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    private void goToGroupActivity(){
+        meeting.setStarting(startingDate);
+        meeting.setEnding(endingDate);
+        meeting.setLocation(meetingLocation);
+        metaM.pushMeeting(meeting, new ID<>(groupID));
+        Intent intent = new Intent(createMeetingActivity.this, GroupActivity.class);
+        intent.putExtras(origin);
+        startActivity(intent);
+    }
+
+    private void setDateAndTextView(int year, int month, int dayOfMonth) {
+        int realMonth = month+1;
+        mDisplayDate.setText(year + "/" + realMonth + "/" + dayOfMonth);
+        setDate(startingDate, year, month, dayOfMonth);
+        setDate(endingDate, year, month, dayOfMonth);
+        updateButton();
     }
 
 
