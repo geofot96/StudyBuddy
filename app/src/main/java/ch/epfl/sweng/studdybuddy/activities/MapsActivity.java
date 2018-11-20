@@ -2,20 +2,18 @@ package ch.epfl.sweng.studdybuddy.activities;
 
 import android.content.Intent;
 import android.location.Location;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
 import com.google.android.gms.common.api.Status;
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.location.places.GeoDataClient;
 import com.google.android.gms.location.places.Place;
-import com.google.android.gms.location.places.PlaceDetectionClient;
-import com.google.android.gms.location.places.Places;
 import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
 import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -25,27 +23,34 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import ch.epfl.sweng.studdybuddy.R;
+import ch.epfl.sweng.studdybuddy.core.Meeting;
+import ch.epfl.sweng.studdybuddy.core.MeetingLocation;
+import ch.epfl.sweng.studdybuddy.firebase.FirebaseReference;
+import ch.epfl.sweng.studdybuddy.tools.Consumer;
+import ch.epfl.sweng.studdybuddy.util.MapsHelper;
 import ch.epfl.sweng.studdybuddy.util.Messages;
+import ch.epfl.sweng.studdybuddy.util.StudyBuddy;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
-    private boolean mLocationPermissionGranted = true;
-    private GeoDataClient mGeoDataClient;
-    private PlaceDetectionClient mPlaceDetectionClient;
-    private FusedLocationProviderClient mFusedLocationProviderClient;
-    private Location mLastKnownLocation;
-    public static final LatLng mDefaultLocation = new LatLng(46.5284586, 6.5824552);
-    private final float DEFAULT_ZOOM = 12.0f;
-    private final String TAG = "MAPS";
-    private  MarkerOptions mMarker;
-    private String address;
+
+    private MarkerOptions mMarker;
     private Marker marker;
-    private Button button;
+    private List<Meeting> meetings;
+    private FirebaseReference ref;
+    private MeetingLocation confirmedPlace;
+    private String address;
+
+    PlaceAutocompleteFragment autocompleteFragment;
+    String uId;
+    String gId;
+    Button button;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,18 +58,22 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
-        PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
+        autocompleteFragment = (PlaceAutocompleteFragment)
                 getFragmentManager().findFragmentById(R.id.place_autocomplete);
+        uId = ((StudyBuddy) MapsActivity.this.getApplication()).getAuthendifiedUser().getUserID().getId();
+        Intent intent = getIntent();
+        gId = intent.getStringExtra(Messages.groupID);
+        mapFragment.getMapAsync(this);
 
-        autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+    }
+
+    //Move camera and
+    private PlaceSelectionListener placeSelectionListener(){
+        return new PlaceSelectionListener() {
             @Override
             public void onPlaceSelected(Place place) {
-                // TODO: Get info about the selected place.
-                Log.i("Maps", "Place: " + place.getName());
-                mMarker = new MarkerOptions().position(place.getLatLng()).title(place.getName().toString());
-                address = place.getAddress().toString();
-                marker.setPosition(place.getLatLng());
+               confirmedPlace = MapsHelper.acceptSelectedPlace(place, marker);
+                mMarker = new MarkerOptions().position(place.getLatLng()).title(place.getName().toString()).draggable(true);
                 mMap.moveCamera(CameraUpdateFactory.newLatLng(place.getLatLng()));
 
             }
@@ -74,82 +83,23 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 // TODO: Handle the error.
                 Log.i("Maps", "An error occurred: " + status);
             }
-        });
+        };
+    }
 
-        ((Button)findViewById(R.id.confirmLocation)).setOnClickListener(new View.OnClickListener() {
+    //Write meeting location in firebase
+    private View.OnClickListener confirmationListener(){
+        return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent();
-                i.putExtra(Messages.LATITUDE, mMarker.getPosition().latitude);
-                i.putExtra(Messages.LONGITUDE, mMarker.getPosition().longitude);
-                i.putExtra(Messages.LOCATION_TITLE, mMarker.getTitle() + ": "+address);
-                setResult(RESULT_OK, i);
-                finish();
+                if(MapsHelper.confirmationListener(confirmedPlace, meetings, ref, gId)){
+                    finish();
+                }
             }
-        });
-
-        // Construct a GeoDataClient.
-        mGeoDataClient = Places.getGeoDataClient(this);
-
-        // Construct a PlaceDetectionClient.
-        mPlaceDetectionClient = Places.getPlaceDetectionClient(this);
-
-        // Construct a FusedLocationProviderClient.
-        mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
-        getDeviceLocation();
-
-    }
-    private void updateLocationUI() {
-        if (mMap == null) {
-            return;
-        }
-        try {
-            if (mLocationPermissionGranted) {
-                mMap.setMyLocationEnabled(true);
-                mMap.getUiSettings().setMyLocationButtonEnabled(true);
-            } else {
-                mMap.setMyLocationEnabled(false);
-                mMap.getUiSettings().setMyLocationButtonEnabled(false);
-                mLastKnownLocation = null;
-               // getLocationPermission();
-            }
-        } catch (SecurityException e)  {
-            Log.e("Exception: %s", e.getMessage());
-        }
-    }
-    private void getDeviceLocation() {
-        /*
-         * Get the best and most recent location of the device, which may be null in rare
-         * cases when a location is not available.
-         */
-        try {
-            if (mLocationPermissionGranted) {
-                Task locationResult = mFusedLocationProviderClient.getLastLocation();
-                locationResult.addOnCompleteListener(this, new OnCompleteListener() {
-                    @Override
-                    public void onComplete(@NonNull Task task) {
-                        if (task.isSuccessful()) {
-                            // Set the map's camera position to the current location of the device.
-                            mLastKnownLocation = (Location)task.getResult();
-                            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
-                                    new LatLng(mLastKnownLocation.getLatitude(),
-                                            mLastKnownLocation.getLongitude()), DEFAULT_ZOOM));
-                        } else {
-                            Log.d(TAG, "Current location is null. Using defaults.");
-                            Log.e(TAG, "Exception: %s", task.getException());
-                            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(mDefaultLocation, DEFAULT_ZOOM));
-                            mMap.getUiSettings().setMyLocationButtonEnabled(false);
-                        }
-                    }
-                });
-            }
-        } catch(SecurityException e)  {
-            Log.e("Exception: %s", e.getMessage());
-        }
+        };
     }
 
 
-    /*private void getLocationPermission() {
+    private void getLocationPermission() {
         //
         //Request location permission, so that we can get the location of the
         //device. The result of the permission request is handled by a callback,
@@ -158,11 +108,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         if (ContextCompat.checkSelfPermission(this.getApplicationContext(),
                 android.Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
-            mLocationPermissionGranted = true;
+            mMap.setMyLocationEnabled(true);
+
+
         } else {
             ActivityCompat.requestPermissions(this,
                     new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
-                    PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
+                    MapsHelper.PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
+
         }
     }
 
@@ -170,18 +123,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onRequestPermissionsResult(int requestCode,
                                            @NonNull String permissions[],
                                            @NonNull int[] grantResults) {
-        mLocationPermissionGranted = false;
         switch (requestCode) {
-            case PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION: {
+            case MapsHelper.PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION: {
                 // If request is cancelled, the result arrays are empty.
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    mLocationPermissionGranted = true;
+                    getLocationPermission();
+
                 }
             }
         }
-        updateLocationUI();
-    }*/
+        //updateLocationUI();
+    }
 
 
     /**
@@ -196,11 +149,44 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        mMarker = new MarkerOptions().position(mDefaultLocation).title("You are here");
-        // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-34, 151);
-        marker = mMap.addMarker(mMarker);
 
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(mDefaultLocation));
+        getLocationPermission();
+        autocompleteFragment.setOnPlaceSelectedListener(placeSelectionListener());
+        button = ((Button) findViewById(R.id.confirmLocation));
+        button.setOnClickListener((confirmationListener()));
+
+        meetings = new ArrayList<>();
+        ref = new FirebaseReference();
+        setMeetings( ref, meetings, button);
+        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+
+           @Override
+           public void onMapClick(LatLng latLng) {
+               MeetingLocation tmp =  MapsHelper.mapListener(latLng, marker, autocompleteFragment, MapsActivity.this);
+
+               if(tmp != null) {
+                   confirmedPlace = tmp;
+               }
+           }
+       }
+        );
     }
+
+
+    public  void setMeetings(FirebaseReference ref, final List<Meeting> meetings, Button button){
+        ref.select("BoubaMeetings").getAll(Meeting.class, new Consumer<List<Meeting>>() {
+            @Override
+            public void accept(List<Meeting> meetingsfb) {
+                MarkerOptions tmp = MapsHelper.acceptMeetings(meetingsfb,meetings, button, gId);
+
+                if(tmp != null){
+                    marker =  mMap.addMarker(tmp);
+                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(marker.getPosition(), MapsHelper.DEFAULT_ZOOM));
+                }
+            }
+        });
+    }
+
+
+
 }

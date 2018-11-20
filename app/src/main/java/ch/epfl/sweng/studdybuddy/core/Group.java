@@ -108,6 +108,15 @@ public final class Group implements Comparable<Group> {
         return new Group(maxNoUsers, course, lang, groupID.getId(), adminID);
     }
 
+    public void copy(Group group) {
+        setCourse(group.getCourse());
+        setLang(group.getLang());
+        setAdminID(group.getAdminID());
+        setMaxNoUsers(group.getMaxNoUsers());
+        setGroupID(group.getGroupID());
+
+    }
+
     @Override
     public int compareTo(Group group)
     {

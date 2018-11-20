@@ -1,13 +1,15 @@
 package ch.epfl.sweng.studdybuddy.firebase;
 
+import android.support.v7.widget.RecyclerView;
+
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.LinkedList;
 import java.util.List;
 
 import ch.epfl.sweng.studdybuddy.core.User;
-import ch.epfl.sweng.studdybuddy.util.AdapterAdapter;
-import ch.epfl.sweng.studdybuddy.util.Consumer;
+import ch.epfl.sweng.studdybuddy.tools.AdapterAdapter;
+import ch.epfl.sweng.studdybuddy.tools.Consumer;
 
 abstract public class Metabase {
     protected ReferenceWrapper db;
@@ -44,5 +46,7 @@ abstract public class Metabase {
     public void addListenner(AdapterAdapter ad) {
         this.ads.add(ad);
     }
+
+    public void clearListeners() { this.ads.clear(); }
 
 }

@@ -27,11 +27,11 @@ import ch.epfl.sweng.studdybuddy.core.Pair;
 import ch.epfl.sweng.studdybuddy.core.User;
 import ch.epfl.sweng.studdybuddy.firebase.FirebaseReference;
 import ch.epfl.sweng.studdybuddy.firebase.ReferenceWrapper;
-import ch.epfl.sweng.studdybuddy.util.AdapterConsumer;
-import ch.epfl.sweng.studdybuddy.util.ArrayAdapterAdapter;
-import ch.epfl.sweng.studdybuddy.util.CourseAdapter;
+import ch.epfl.sweng.studdybuddy.tools.AdapterConsumer;
+import ch.epfl.sweng.studdybuddy.tools.ArrayAdapterAdapter;
+import ch.epfl.sweng.studdybuddy.tools.CourseAdapter;
 import ch.epfl.sweng.studdybuddy.util.Helper;
-import ch.epfl.sweng.studdybuddy.util.Holder;
+import ch.epfl.sweng.studdybuddy.tools.Holder;
 import ch.epfl.sweng.studdybuddy.util.StudyBuddy;
 
 import static ch.epfl.sweng.studdybuddy.util.ActivityHelper.showDropdown;

@@ -6,7 +6,7 @@ import android.widget.TextView;
 import org.junit.Before;
 import org.junit.Test;
 
-import ch.epfl.sweng.studdybuddy.util.Holder;
+import ch.epfl.sweng.studdybuddy.tools.Holder;
 
 import static junit.framework.TestCase.assertEquals;
 import static org.mockito.Mockito.mock;

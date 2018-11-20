@@ -1,5 +1,9 @@
 package ch.epfl.sweng.studdybuddy.firebase;
 
+import android.support.annotation.NonNull;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
@@ -10,8 +14,8 @@ import java.util.Map;
 import ch.epfl.sweng.studdybuddy.core.Group;
 import ch.epfl.sweng.studdybuddy.core.Pair;
 import ch.epfl.sweng.studdybuddy.core.User;
-import ch.epfl.sweng.studdybuddy.util.AdapterAdapter;
-import ch.epfl.sweng.studdybuddy.util.Consumer;
+import ch.epfl.sweng.studdybuddy.tools.AdapterAdapter;
+import ch.epfl.sweng.studdybuddy.tools.Consumer;
 import ch.epfl.sweng.studdybuddy.util.Helper;
 
 import static ch.epfl.sweng.studdybuddy.util.Helper.getOrDefault;
@@ -53,6 +57,15 @@ public class MetaGroup extends Metabase{
         });
     }
 
+    public ValueEventListener getGroup(String id, Group g, AdapterAdapter adapter) {
+        return db.select("groups").select(id).get(Group.class, new Consumer<Group>() {
+            @Override
+            public void accept(Group group) {
+                g.copy(group);
+                adapter.update();
+            }
+        });
+    }
     //protected ?
     public ValueEventListener getGroupsfromIds(List<String> gIds, List<Group> userGroups) {
         return db.select("groups").getAll(Group.class, groupsFromIds(gIds, userGroups));
