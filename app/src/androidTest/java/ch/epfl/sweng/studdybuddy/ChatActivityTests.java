@@ -82,5 +82,6 @@ public class ChatActivityTests
 //        catch(Exception e){}
 //
 //        assertEquals(1, list.size());
+        DummyChatActivityIntentRule.finishActivity();
     }
 }
