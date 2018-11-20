@@ -1,4 +1,4 @@
-package ch.epfl.sweng.studdybuddy.util;
+package ch.epfl.sweng.studdybuddy.tools;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -20,7 +20,6 @@ import ch.epfl.sweng.studdybuddy.Fragments.FeedFragment;
 import ch.epfl.sweng.studdybuddy.R;
 import ch.epfl.sweng.studdybuddy.activities.GroupActivity;
 import ch.epfl.sweng.studdybuddy.activities.GroupInfoActivity;
-import ch.epfl.sweng.studdybuddy.activities.GroupsActivity;
 import ch.epfl.sweng.studdybuddy.core.Group;
 import ch.epfl.sweng.studdybuddy.core.Pair;
 import ch.epfl.sweng.studdybuddy.firebase.FirebaseReference;
@@ -28,6 +27,9 @@ import ch.epfl.sweng.studdybuddy.firebase.MetaGroup;
 import ch.epfl.sweng.studdybuddy.firebase.ReferenceWrapper;
 import ch.epfl.sweng.studdybuddy.services.calendar.Availability;
 import ch.epfl.sweng.studdybuddy.services.calendar.ConnectedAvailability;
+import ch.epfl.sweng.studdybuddy.util.FeedFilter;
+import ch.epfl.sweng.studdybuddy.util.Helper;
+import ch.epfl.sweng.studdybuddy.util.Messages;
 
 public class GroupsRecyclerAdapter extends RecyclerView.Adapter<GroupsRecyclerAdapter.MyViewHolder> implements Filterable
 {
@@ -102,21 +104,7 @@ public class GroupsRecyclerAdapter extends RecyclerView.Adapter<GroupsRecyclerAd
     }
 
     private String getCreationDate(Group group){
-        Integer day =  group.getCreationDate().getDay();
-        String string_day = day.toString();
-        Integer month =  group.getCreationDate().getMonth();
-        String string_month = month.toString();
-        Integer year = group.getCreationDate().getYear();
-        String string_year = year.toString();
-
-        if (day < 10){
-            string_day = "0" + day.toString();
-        }
-
-        if (month < 10){
-            string_month = "0" + month.toString();
-        }
-        return string_day + "-" + string_month + "-" + string_year;
+        return group.getCreationDate().toString();
     }
 
     @SuppressLint("DefaultLocale")

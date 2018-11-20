@@ -1,8 +1,13 @@
 package ch.epfl.sweng.studdybuddy.firebase;
 
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.List;
+
 import ch.epfl.sweng.studdybuddy.core.Group;
 import ch.epfl.sweng.studdybuddy.core.Meeting;
 import ch.epfl.sweng.studdybuddy.core.Pair;
+import ch.epfl.sweng.studdybuddy.tools.Consumer;
 import ch.epfl.sweng.studdybuddy.util.Helper;
 
 public class MetaMeeting extends MetaGroup {
@@ -15,14 +20,10 @@ public class MetaMeeting extends MetaGroup {
     }
     public void pushMeeting(Meeting meeting, Group group) {
         String mid = meeting.getId().getId();
-        Pair binding = new Pair(mid, group.getGroupID().getId());
-        db.select("meetings").select(mid).setVal(meeting);
-        db.select("meetGroups").select(Helper.hashCode(binding)).setVal(binding);
+        db.select("meetings").select(group.getGroupID().getId()).select(mid).setVal(meeting);
     }
 
-
-
-
-
-
+    public ValueEventListener fetchMeetings(String groupId, Consumer<List<Meeting>> callback) {
+        return db.select("meetings").select(groupId).getAll(Meeting.class, callback);
+    }
 }

@@ -1,4 +1,4 @@
-package ch.epfl.sweng.studdybuddy.util;
+package ch.epfl.sweng.studdybuddy.tools;
 
 import android.content.Context;
 import android.support.annotation.IdRes;

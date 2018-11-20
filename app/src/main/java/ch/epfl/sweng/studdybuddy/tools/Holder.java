@@ -1,4 +1,4 @@
-package ch.epfl.sweng.studdybuddy.util;
+package ch.epfl.sweng.studdybuddy.tools;
 
 import android.support.annotation.IdRes;
 import android.support.v7.widget.RecyclerView;

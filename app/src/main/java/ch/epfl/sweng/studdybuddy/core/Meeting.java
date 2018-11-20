@@ -61,4 +61,23 @@ public final class Meeting {
     public void setLocation(MeetingLocation location){
         this.location = location;
     }
+
+    public void copy(Meeting copy) {
+        this.setDeadline(copy.getDeadline());
+        this.setCreation(copy.getCreation());
+        this.setId(copy.getId());
+    }
+
+    @Override
+    public String toString() {
+        return deadline.toString();
+    }
+
+    public String date() {
+        return deadline.toString();
+    }
+
+    public String time() {
+        return deadline.getHour() + ":" + deadline.getMinutes();
+    }
 }

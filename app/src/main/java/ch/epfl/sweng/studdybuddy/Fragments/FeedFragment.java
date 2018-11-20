@@ -26,10 +26,10 @@ import ch.epfl.sweng.studdybuddy.R;
 import ch.epfl.sweng.studdybuddy.activities.CreateGroupActivity;
 import ch.epfl.sweng.studdybuddy.core.Group;
 import ch.epfl.sweng.studdybuddy.firebase.FirebaseReference;
-import ch.epfl.sweng.studdybuddy.util.AdapterConsumer;
-import ch.epfl.sweng.studdybuddy.util.Consumer;
-import ch.epfl.sweng.studdybuddy.util.GroupsRecyclerAdapter;
-import ch.epfl.sweng.studdybuddy.util.RecyclerAdapterAdapter;
+import ch.epfl.sweng.studdybuddy.tools.AdapterConsumer;
+import ch.epfl.sweng.studdybuddy.tools.Consumer;
+import ch.epfl.sweng.studdybuddy.tools.GroupsRecyclerAdapter;
+import ch.epfl.sweng.studdybuddy.tools.RecyclerAdapterAdapter;
 import ch.epfl.sweng.studdybuddy.util.StudyBuddy;
 
 /**
