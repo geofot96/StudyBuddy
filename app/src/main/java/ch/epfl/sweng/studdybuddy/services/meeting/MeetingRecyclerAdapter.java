@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -18,22 +17,27 @@ import ch.epfl.sweng.studdybuddy.R;
 public class MeetingRecyclerAdapter extends RecyclerView.Adapter<MeetingRecyclerAdapter.ViewHolder> {
 
     private List<Meeting> meetingList;
-    private Context context;
 
 
-    public MeetingRecyclerAdapter(List<Meeting> meetingList, Context context) {
+    public MeetingRecyclerAdapter(List<Meeting> meetingList) {
         this.meetingList = meetingList;
-        this.context = context;
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder{
-        public TextView textViewDate;
-        public TextView textViewLocation;
-        public ViewHolder(@NonNull View itemView) {
+        TextView textViewDate;
+        TextView textViewLocation;
+        ViewHolder(@NonNull View itemView) {
             super(itemView);
 
             textViewDate = (TextView) itemView.findViewById(R.id.meetingDate);
             textViewLocation = (TextView) itemView.findViewById(R.id.meetingLocation);
+        }
+
+        //inject dependencies for testing
+        public ViewHolder(@NonNull View itemView, TextView t1, TextView t2){
+            super(itemView);
+            textViewDate = t1;
+            textViewLocation = t2;
         }
     }
 

@@ -6,12 +6,10 @@ import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 
 import ch.epfl.sweng.studdybuddy.R;
@@ -31,7 +29,6 @@ public class MeetingsActivity extends AppCompatActivity {
     private RecyclerView meetingRV;
     private RecyclerView.Adapter adapter;
 
-    private HashMap<String, Meeting> hashMapMeetings;
     private List<Meeting> meetingList;
 
     private MetaMeeting metaM;
@@ -78,7 +75,7 @@ public class MeetingsActivity extends AppCompatActivity {
 
         metaM.getMeetingsOfGroup(new ID<>(groupId), consumer);
 
-        adapter = new MeetingRecyclerAdapter(meetingList, this);
+        adapter = new MeetingRecyclerAdapter(meetingList);
 
         meetingRV.setAdapter(adapter);
 

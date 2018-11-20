@@ -1,6 +1,5 @@
 package ch.epfl.sweng.studdybuddy.activities.meetings;
 
-import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
@@ -9,7 +8,6 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -70,11 +68,7 @@ public class createMeetingActivity extends AppCompatActivity {
             }
         };
 
-        mDisplayStartTime = findViewById(R.id.timePicker);
-        mDisplayStartTime.setOnClickListener(fromTime(forStarting()));
-
-        mDisplayEndTime = findViewById(R.id.timePicker2);
-        mDisplayEndTime.setOnClickListener(fromTime(forEnding()));
+        initDisplayTime();
 
         mDisplayLocation = findViewById(R.id.locationTitle);
         mDisplayLocation.setOnClickListener(new View.OnClickListener() {
@@ -85,16 +79,35 @@ public class createMeetingActivity extends AppCompatActivity {
             }
         });
 
+        initSaveBtn();
+
+    }
+
+    private void initDisplayTime() {
+        mDisplayStartTime = findViewById(R.id.timePicker);
+        mDisplayStartTime.setOnClickListener(fromTime(forStarting()));
+
+        mDisplayEndTime = findViewById(R.id.timePicker2);
+        mDisplayEndTime.setOnClickListener(fromTime(forEnding()));
+
+    }
+
+    private void initSaveBtn() {
         saveBtn = findViewById(R.id.setMeeting);
         saveBtn.setEnabled(false);
         saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                goToGroupActivity();
+                meeting.setStarting(startingDate);
+                meeting.setEnding(endingDate);
+                meeting.setLocation(meetingLocation);
+                metaM.pushMeeting(meeting, new ID<>(groupID));
+                Intent intent = new Intent(createMeetingActivity.this, GroupActivity.class);
+                intent.putExtras(origin);
+                startActivity(intent);
             }
         });
     }
-
 
 
     @Override
@@ -126,15 +139,6 @@ public class createMeetingActivity extends AppCompatActivity {
         });
     }
 
-    private void goToGroupActivity(){
-        meeting.setStarting(startingDate);
-        meeting.setEnding(endingDate);
-        meeting.setLocation(meetingLocation);
-        metaM.pushMeeting(meeting, new ID<>(groupID));
-        Intent intent = new Intent(createMeetingActivity.this, GroupActivity.class);
-        intent.putExtras(origin);
-        startActivity(intent);
-    }
 
     private void setDateAndTextView(int year, int month, int dayOfMonth) {
         int realMonth = month+1;
