@@ -1,6 +1,5 @@
 package ch.epfl.sweng.studdybuddy;
 
-import android.support.test.runner.AndroidJUnit4;
 import android.widget.Button;
 
 import com.google.android.gms.location.places.Place;
@@ -9,7 +8,6 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import org.junit.Test;
-import org.junit.runner.RunWith;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -24,7 +22,6 @@ import static junit.framework.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-@RunWith(AndroidJUnit4.class)
 
 public class MapsHelperTest {
 
@@ -37,8 +34,8 @@ public class MapsHelperTest {
         FirebaseReference ref = mock(FirebaseReference.class);
         when(ref.select(anyString())).thenReturn(ref);
 
-        assertTrue(MapsHelper.confirmationListener(pos, meetings, ref));
-        assertTrue(!MapsHelper.confirmationListener(null, meetings, ref));
+        assertTrue(MapsHelper.confirmationListener(pos, meetings, ref, "a"));
+        assertTrue(!MapsHelper.confirmationListener(null, meetings, ref, "a"));
     }
 
     @Test
