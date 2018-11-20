@@ -1,5 +1,6 @@
 package ch.epfl.sweng.studdybuddy.activities;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
@@ -9,16 +10,25 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+
+import ch.epfl.sweng.studdybuddy.Fragments.ChatListsFragment;
 import ch.epfl.sweng.studdybuddy.Fragments.FeedFragment;
 import ch.epfl.sweng.studdybuddy.Fragments.ProfileFragment;
 import ch.epfl.sweng.studdybuddy.R;
+import ch.epfl.sweng.studdybuddy.auth.AuthManager;
+import ch.epfl.sweng.studdybuddy.auth.FirebaseAuthManager;
+import ch.epfl.sweng.studdybuddy.auth.GoogleSignInActivity;
+import ch.epfl.sweng.studdybuddy.core.Account;
 
 public class NavigationActivity extends AppCompatActivity
 {
+    //TODO move the signout button from the main activity somewhere else and transfer the logic there
 
     private BottomNavigationView mMainNav;
     private FrameLayout mMainFrame;
-    //private MergedCalendarFragment mergedCalendarFragment;
+    private ChatListsFragment chatFragment;
     private FeedFragment feedFragment;
     private ProfileFragment profileFragment;
 
@@ -29,12 +39,19 @@ public class NavigationActivity extends AppCompatActivity
         setContentView(R.layout.activity_navigation);
         mMainFrame = (FrameLayout) findViewById(R.id.main_frame);
         mMainNav = (BottomNavigationView) findViewById(R.id.bottom_navigation);
-      //  mergedCalendarFragment = new MergedCalendarFragment();
+        chatFragment = new ChatListsFragment();
         feedFragment = new FeedFragment();
         profileFragment = new ProfileFragment();
         setFragment(feedFragment);
         mMainNav.setOnNavigationItemSelectedListener(getListener());
     }
+
+
+
+
+
+
+
 
     @NonNull
     private BottomNavigationView.OnNavigationItemSelectedListener getListener()
@@ -46,9 +63,9 @@ public class NavigationActivity extends AppCompatActivity
             {
                 switch(menuItem.getItemId())
                 {
-//                    case R.id.navToCalendar:
-//                        setFragment(mergedCalendarFragment);
-//                        return true;
+                    case R.id.navToChat:
+                        setFragment(chatFragment);
+                        return true;
                     case R.id.navToHome:
                         setFragment(feedFragment);
                         return true;

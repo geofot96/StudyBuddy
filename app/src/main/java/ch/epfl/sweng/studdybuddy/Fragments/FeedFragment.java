@@ -3,7 +3,6 @@ package ch.epfl.sweng.studdybuddy.Fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
-
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -79,6 +78,7 @@ public class FeedFragment extends Fragment
         setUpActivity(rv, sv, v);
         ToggleButton toggleFull = (ToggleButton) v.findViewById(R.id.toggleButton);
         toggleFull.setOnCheckedChangeListener(getToggleListener());
+
 
         return v;
     }

@@ -40,7 +40,15 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activities.CourseSelectActivity" />
         </activity>
+        <activity
+            android:name=".activities.ChatActivity"
+            android:parentActivityName=".activities.MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.NavigationActivity" />
+        </activity>
         <activity android:name=".activities.ProfileTab" />
+
         <activity android:name=".auth.DummyGoogleSignInActivity" />
         <activity android:name=".auth.DummyMainActivity" />
         <activity android:name=".activities.MainActivity"></activity>
@@ -54,6 +62,7 @@
                 android:value=".activities.GroupsActivity" />
         </activity>
         <activity android:name=".activities.NavigationActivity"></activity>
+        <activity android:name=".DummyChatActivity"/>
     </application>
 
 
