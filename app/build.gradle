@@ -63,7 +63,6 @@ android {
         annotationProcessor 'com.google.dagger:dagger-android-processor:2.11'
         annotationProcessor 'com.google.dagger:dagger-compiler:2.11'
         implementation 'com.android.support:design:28.0.0'
-        implementation 'org.mockito:mockito-android:2.23.0'
     }
 
 tasks.withType(Test) {
