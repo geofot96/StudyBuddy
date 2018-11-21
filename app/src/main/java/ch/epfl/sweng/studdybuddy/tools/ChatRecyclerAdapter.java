@@ -37,6 +37,7 @@ public class ChatRecyclerAdapter extends BasicRecyclerAdapter
         getMb().addListenner(new RecyclerAdapterAdapter(this));
         getMb().getUserGroups(userId, getuGroupIds(), getuGroups());
         getMb().getAllGroupSizes(getSizes());
+
     }
 
     @NonNull
