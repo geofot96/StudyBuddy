@@ -1,6 +1,5 @@
 package ch.epfl.sweng.studdybuddy.activities.meetings;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -15,7 +14,6 @@ import java.util.Date;
 import java.util.List;
 
 import ch.epfl.sweng.studdybuddy.R;
-import ch.epfl.sweng.studdybuddy.core.Group;
 import ch.epfl.sweng.studdybuddy.core.ID;
 import ch.epfl.sweng.studdybuddy.firebase.MetaMeeting;
 import ch.epfl.sweng.studdybuddy.services.meeting.Meeting;

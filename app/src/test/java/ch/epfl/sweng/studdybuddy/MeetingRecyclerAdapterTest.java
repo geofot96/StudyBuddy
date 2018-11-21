@@ -20,6 +20,7 @@ import ch.epfl.sweng.studdybuddy.core.User;
 import ch.epfl.sweng.studdybuddy.services.meeting.Meeting;
 import ch.epfl.sweng.studdybuddy.services.meeting.MeetingLocation;
 import ch.epfl.sweng.studdybuddy.services.meeting.MeetingRecyclerAdapter;
+import ch.epfl.sweng.studdybuddy.util.CoreFactory;
 import ch.epfl.sweng.studdybuddy.util.StudyBuddy;
 
 import static org.junit.Assert.assertTrue;
@@ -36,8 +37,7 @@ public class MeetingRecyclerAdapterTest {
     Context context = mock(Context.class);
     Activity activity = mock(Activity.class);
     StudyBuddy app = mock(StudyBuddy.class);
-    User user = mock(User.class);
-
+    User random = new User("", new ID<>(""));
 
     TextView t = mock(TextView.class);
     CardView c = mock(CardView.class);
@@ -61,7 +61,7 @@ public class MeetingRecyclerAdapterTest {
         meetingList = Arrays.asList(meeting);
 
         when(activity.getApplication()).thenReturn(app);
-        when(app.getAuthendifiedUser()).thenReturn(user);
+
 
         h = new MeetingRecyclerAdapter.ViewHolder(v, t, t, c);
     }
@@ -76,7 +76,7 @@ public class MeetingRecyclerAdapterTest {
 
     @Test
     public void onBindViewHolderWithNotClickable() {
-        when(user.getUserID()).thenReturn(new ID<>(""));
+        when(app.getAuthendifiedUser()).thenReturn(random);
         MeetingRecyclerAdapter adapter = new MeetingRecyclerAdapter(context, activity, meetingList, groupID);
         adapter.onBindViewHolder(h, 0);
         verify(t, times(1)).setText(

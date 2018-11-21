@@ -4,19 +4,18 @@ import java.util.Date;
 import java.util.UUID;
 
 import ch.epfl.sweng.studdybuddy.core.ID;
-import ch.epfl.sweng.studdybuddy.core.SerialDate;
 import ch.epfl.sweng.studdybuddy.util.MapsHelper;
 
 public final class Meeting {
     private ID<Meeting> id;
-    private Date ending;
-    private Date starting;
+    private long ending;
+    private long starting;
     private MeetingLocation location;
 
 
     public Meeting(Date creation, Date deadline, String id) {
-        this.starting = creation;
-        this.ending = deadline;
+        this.starting = creation.getTime();
+        this.ending = deadline.getTime();
         this.id = new ID<>(id);
         this.location = MapsHelper.ROLEX_LOCATION;
     }
@@ -37,17 +36,17 @@ public final class Meeting {
     }
 
     public Meeting(Date creation, Date deadline, MeetingLocation location, String id) {
-        this.ending = deadline;
+        this.ending = deadline.getTime();
         this.id = new ID<>(id);
-        this.starting = creation;
+        this.starting = creation.getTime();
         this.location = location;
     }
 
     public Date getEnding() {
-        return ending;
+        return new Date(ending);
     }
     public void setEnding(Date deadline) {
-        this.ending = deadline;
+        this.ending = deadline.getTime();
     }
 
     public ID<Meeting> getId() {
@@ -59,13 +58,12 @@ public final class Meeting {
 
 
     public Date getStarting() {
-        return starting;
+        return new Date(starting);
     }
     public void setStarting(Date creation) {
-        this.starting = creation;
+        this.starting = creation.getTime();
     }
 
     public MeetingLocation getLocation(){return location;}
     public void setLocation(MeetingLocation meetingLocation){this.location = meetingLocation;}
-
 }
