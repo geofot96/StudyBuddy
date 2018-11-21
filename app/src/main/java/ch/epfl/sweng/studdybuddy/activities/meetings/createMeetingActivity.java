@@ -202,19 +202,17 @@ public class createMeetingActivity extends AppCompatActivity {
             if(forDate){
                 dialog = new DatePickerDialog(
                         createMeetingActivity.this,
-                        android.R.style.Theme_Holo_Dialog_MinWidth,
                         dateSetListener,
                         year, month, day
                 );
             }else{
                 dialog = new TimePickerDialog(
                         createMeetingActivity.this,
-                        android.R.style.Theme_Holo_Dialog_MinWidth,
                         listener,
                         hour, minute, true
                 );
             }
-            Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            Objects.requireNonNull(dialog.getWindow());
             dialog.show();
         }
     }
