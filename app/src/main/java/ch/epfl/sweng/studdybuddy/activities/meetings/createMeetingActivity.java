@@ -71,6 +71,13 @@ public class createMeetingActivity extends AppCompatActivity {
         initDisplayTime();
 
         mDisplayLocation = findViewById(R.id.locationTitle);
+        setClickOnLocation();
+
+
+        initSaveBtn();
+    }
+
+    private void setClickOnLocation() {
         mDisplayLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -80,9 +87,6 @@ public class createMeetingActivity extends AppCompatActivity {
                 startActivityForResult(i, 1);
             }
         });
-
-        initSaveBtn();
-
     }
 
     private void initDisplayTime() {
@@ -100,8 +104,8 @@ public class createMeetingActivity extends AppCompatActivity {
         saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                meeting.setStarting(startingDate);
-                meeting.setEnding(endingDate);
+                meeting.setStarting(startingDate.getTime());
+                meeting.setEnding(endingDate.getTime());
                 meeting.setLocation(meetingLocation);
                 metaM.pushMeeting(meeting, new ID<>(groupID));
                 Intent intent = new Intent(createMeetingActivity.this, GroupActivity.class);

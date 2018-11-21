@@ -73,7 +73,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         return new PlaceSelectionListener() {
             @Override
             public void onPlaceSelected(Place place) {
-               confirmedPlace = MapsHelper.acceptSelectedPlace(place, marker);
+                confirmedPlace = MapsHelper.acceptSelectedPlace(place, marker);
                 mMarker = new MarkerOptions().position(place.getLatLng()).title(place.getName().toString()).draggable(true);
                 mMap.moveCamera(CameraUpdateFactory.newLatLng(place.getLatLng()));
 
@@ -87,17 +87,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         };
     }
 
-    //Write meeting location in firebase
     private View.OnClickListener confirmationListener(){
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(MapsHelper.confirmationListener(confirmedPlace, ref, new ID<>(gId), new ID<>(meetingID))){
+                if(confirmedPlace != null) {
                     Intent resultIntent = new Intent();
                     resultIntent.putExtra(Messages.LOCATION_TITLE, confirmedPlace.getTitle());
                     resultIntent.putExtra(Messages.ADDRESS, confirmedPlace.getAddress());
                     resultIntent.putExtra(Messages.LATITUDE, confirmedPlace.getLatitude());
                     resultIntent.putExtra(Messages.LONGITUDE, confirmedPlace.getLongitude());
+                    resultIntent.putExtra(Messages.meetingID, meetingID);
                     setResult(RESULT_OK, resultIntent);
                     finish();
                 }
@@ -167,15 +167,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         setMeetings( ref, meetings, button);
         mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
 
-           @Override
-           public void onMapClick(LatLng latLng) {
-               MeetingLocation tmp =  MapsHelper.mapListener(latLng, marker, autocompleteFragment, MapsActivity.this);
+               @Override
+               public void onMapClick(LatLng latLng) {
+                   MeetingLocation tmp =  MapsHelper.mapListener(latLng, marker, autocompleteFragment, MapsActivity.this);
 
-               if(tmp != null) {
-                   confirmedPlace = tmp;
+                   if(tmp != null) {
+                       confirmedPlace = tmp;
+                   }
                }
            }
-       }
         );
     }
 

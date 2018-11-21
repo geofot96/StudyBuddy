@@ -8,14 +8,15 @@ import ch.epfl.sweng.studdybuddy.core.ID;
 import ch.epfl.sweng.studdybuddy.services.meeting.Meeting;
 
 import static junit.framework.TestCase.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class MeetingTest {
     Meeting meeting = new Meeting();
     Date date = new Date();
     @Test
     public void setGetEnding() {
-        meeting.setEnding(date);
-        assertEquals(date, meeting.getEnding());
+        meeting.setEnding(date.getTime());
+        assertTrue(date.getTime() == meeting.getEnding());
     }
 
     @Test
@@ -27,7 +28,7 @@ public class MeetingTest {
 
     @Test
     public void setGetStarting() {
-        meeting.setStarting(date);
-        assertEquals(date, meeting.getStarting());
+        meeting.setStarting(date.getTime());
+        assertTrue(date.getTime() == meeting.getStarting());
     }
 }

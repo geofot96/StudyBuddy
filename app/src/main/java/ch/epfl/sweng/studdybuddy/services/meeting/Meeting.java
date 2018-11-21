@@ -12,41 +12,40 @@ public final class Meeting {
     private long starting;
     private MeetingLocation location;
 
-
-    public Meeting(Date creation, Date deadline, String id) {
-        this.starting = creation.getTime();
-        this.ending = deadline.getTime();
+    public Meeting(long creation, long deadline, String id) {
+        this.starting = creation;
+        this.ending = deadline;
         this.id = new ID<>(id);
         this.location = MapsHelper.ROLEX_LOCATION;
     }
 
-
-    public void copy(Meeting copy) {
+    //not used
+    /*public void copy(Meeting copy) {
         this.setStarting(copy.getStarting());
         this.setEnding(copy.getEnding());
         this.setId(copy.getId());
-    }
+    }*/
 
     public Meeting() {
         this(UUID.randomUUID().toString());
     }
 
     public Meeting(String id) {
-        this(new Date(), new Date(), new MeetingLocation(), id);
+        this(new Date().getTime(), new Date().getTime(), new MeetingLocation(), id);
     }
 
-    public Meeting(Date creation, Date deadline, MeetingLocation location, String id) {
-        this.ending = deadline.getTime();
+    public Meeting(Long creation, Long deadline, MeetingLocation location, String id) {
+        this.ending = deadline;
         this.id = new ID<>(id);
-        this.starting = creation.getTime();
+        this.starting = creation;
         this.location = location;
     }
 
-    public Date getEnding() {
-        return new Date(ending);
+    public long getEnding() {
+        return ending;
     }
-    public void setEnding(Date deadline) {
-        this.ending = deadline.getTime();
+    public void setEnding(long deadline) {
+        this.ending = deadline;
     }
 
     public ID<Meeting> getId() {
@@ -57,11 +56,11 @@ public final class Meeting {
     }
 
 
-    public Date getStarting() {
-        return new Date(starting);
+    public long getStarting() {
+        return starting;
     }
-    public void setStarting(Date creation) {
-        this.starting = creation.getTime();
+    public void setStarting(long creation) {
+        this.starting = creation;
     }
 
     public MeetingLocation getLocation(){return location;}

@@ -10,6 +10,8 @@ import org.junit.Test;
 import ch.epfl.sweng.studdybuddy.activities.ConnectedCalendarActivity;
 import ch.epfl.sweng.studdybuddy.activities.GroupActivity;
 import ch.epfl.sweng.studdybuddy.activities.GroupInfoActivity;
+import ch.epfl.sweng.studdybuddy.activities.meetings.MeetingsActivity;
+import ch.epfl.sweng.studdybuddy.activities.meetings.createMeetingActivity;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
@@ -18,7 +20,6 @@ import static android.support.test.espresso.intent.matcher.IntentMatchers.hasCom
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 
 public class GroupActivityTest {
-    private Intent intent;
 
     @Rule
     public myRule mActivityRule =
@@ -34,6 +35,15 @@ public class GroupActivityTest {
         testIntent(R.id.participantsBtn, GroupInfoActivity.class.getName());
     }
 
+    @Test
+    public void leadsToCreateMeeting(){
+        testIntent(R.id.createMeeting, createMeetingActivity.class.getName());
+    }
+
+    @Test
+    public void leadsToMeetingsActivity(){
+        testIntent(R.id.groupMeetingsBtn, MeetingsActivity.class.getName());
+    }
 
     private void testIntent(int id, String name) {
         try {

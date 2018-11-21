@@ -7,6 +7,7 @@ import java.util.List;
 import ch.epfl.sweng.studdybuddy.core.Group;
 import ch.epfl.sweng.studdybuddy.core.ID;
 import ch.epfl.sweng.studdybuddy.services.meeting.Meeting;
+import ch.epfl.sweng.studdybuddy.services.meeting.MeetingLocation;
 import ch.epfl.sweng.studdybuddy.tools.Consumer;
 
 public class MetaMeeting extends MetaGroup {
@@ -25,6 +26,11 @@ public class MetaMeeting extends MetaGroup {
     public void pushMeeting(Meeting meeting, Group group) {
         String mid = meeting.getId().getId();
         db.select("meetings").select(group.getGroupID().getId()).select(mid).setVal(meeting);
+    }
+
+    public void pushLocation(MeetingLocation location, ID<Group> groupID, ID<Meeting> meetingID){
+        db.select("meetings").select(groupID.getId()).select(meetingID.getId()).select("location").setVal(location);
+
     }
 
     public void deleteMeeting(ID<Meeting> meetingID, ID<Group> groupID) {

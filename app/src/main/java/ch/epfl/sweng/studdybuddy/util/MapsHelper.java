@@ -18,10 +18,8 @@ import java.util.Locale;
 
 import ch.epfl.sweng.studdybuddy.core.Group;
 import ch.epfl.sweng.studdybuddy.core.ID;
-import ch.epfl.sweng.studdybuddy.firebase.FirebaseReference;
 import ch.epfl.sweng.studdybuddy.services.meeting.Meeting;
 import ch.epfl.sweng.studdybuddy.services.meeting.MeetingLocation;
-import ch.epfl.sweng.studdybuddy.tools.Consumer;
 
 public class MapsHelper {
     public static final MeetingLocation ROLEX_LOCATION = new MeetingLocation("Rolex", "EPFL", 46.5182757,6.5660673);
@@ -45,7 +43,7 @@ public class MapsHelper {
         //need to select the correct meeting
         if(!isActivityInitialized) {
             MeetingLocation location = meetings.get(meetingIndex - 1).getLocation();
-            MarkerOptions mMarker =(new MarkerOptions().position(location.getLatLng()).title(location.getTitle()));
+            MarkerOptions mMarker =(new MarkerOptions().position(new LatLng(location.getLatitude(), location.getLongitude())).title(location.getTitle()));
            //if(uId.equals("Bouba")){
                 button.setVisibility(View.VISIBLE);
                 button.setEnabled(true);
@@ -57,23 +55,6 @@ public class MapsHelper {
         }
         return null;
     }
-
-   public static boolean confirmationListener(MeetingLocation confirmedPlace, FirebaseReference ref, ID<Group> groupID, ID<Meeting> meetingID){
-                if (confirmedPlace != null) {
-                    ref.select("meetings").select(groupID.getId()).select(meetingID.getId()).get(Meeting.class, new Consumer<Meeting>() {
-                        @Override
-                        public void accept(Meeting meeting) {
-                            if (meeting != null){
-                                meeting.setLocation(confirmedPlace);
-                                ref.select("meetings").select(groupID.getId()).select(meetingID.getId()).setVal(meeting);
-                            }
-                        }
-                    });
-                    return true;
-                }
-                return false;
-
-    };
 
     public static MeetingLocation mapListener(LatLng latLng ,Marker marker, PlaceAutocompleteFragment autocompleteFragment,  Context ctx){
         marker.setPosition(latLng);
