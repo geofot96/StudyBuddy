@@ -5,7 +5,7 @@
     <!--
          The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
          Google Maps Android API v2, but you must specify either coarse or fine
-         location permissions for the 'MyLocation' functionality. 
+         location permissions for the 'MyLocation' functionality.
     -->
     <permission
         android:name="ch.epfl.sweng.studdybuddy.permission.MAPS_RECEIVE"
@@ -51,7 +51,15 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activities.CourseSelectActivity" />
         </activity>
+        <activity
+            android:name=".activities.ChatActivity"
+            android:parentActivityName=".activities.MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.NavigationActivity" />
+        </activity>
         <activity android:name=".activities.ProfileTab" />
+
         <activity android:name=".auth.DummyGoogleSignInActivity" />
         <activity android:name=".auth.DummyMainActivity" />
         <activity android:name=".activities.MainActivity" />
@@ -71,17 +79,15 @@
              Note that the API key is linked to the encryption key used to sign the APK.
              You need a different API key for each encryption key, including the release key that is used to
              sign the APK for publishing.
-             You can define the keys for the debug and release targets in src/debug/ and src/release/. 
+             You can define the keys for the debug and release targets in src/debug/ and src/release/.
         -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
-
+        <activity android:name=".DummyChatActivity"/>
         <activity
             android:name=".activities.MapsActivity"
-            android:label="@string/title_activity_maps">
-
-        </activity>
+            android:label="@string/title_activity_maps"/>
 
         <activity android:name=".activities.meetings.createMeetingActivity"
             android:parentActivityName=".activities.GroupsActivity">
@@ -100,5 +106,6 @@
                 android:value=".activities.GroupsActivity" />
         </activity>
     </application>
+
 
 </manifest>

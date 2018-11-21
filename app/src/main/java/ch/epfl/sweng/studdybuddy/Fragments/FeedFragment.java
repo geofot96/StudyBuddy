@@ -79,6 +79,7 @@ public class FeedFragment extends Fragment
         ToggleButton toggleFull = (ToggleButton) v.findViewById(R.id.toggleButton);
         toggleFull.setOnCheckedChangeListener(getToggleListener());
 
+
         return v;
     }
 
