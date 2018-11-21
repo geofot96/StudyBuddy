@@ -216,6 +216,7 @@ public class GroupsRecyclerAdapter extends RecyclerView.Adapter<GroupsRecyclerAd
                     intent.putExtra(FeedFragment.GROUP_ID, group.getGroupID().getId());
                     intent.putExtra(Messages.maxUser, group.getMaxNoUsers());
                     intent.putExtra(Messages.userID, userId);
+                    intent.putExtra(Messages.ADMIN, group.getAdminID());
                     joinConsumer.accept(intent);
                 }
             }

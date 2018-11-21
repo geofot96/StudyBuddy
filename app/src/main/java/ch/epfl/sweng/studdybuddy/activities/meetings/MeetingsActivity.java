@@ -1,5 +1,7 @@
 package ch.epfl.sweng.studdybuddy.activities.meetings;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
@@ -13,16 +15,18 @@ import java.util.Date;
 import java.util.List;
 
 import ch.epfl.sweng.studdybuddy.R;
+import ch.epfl.sweng.studdybuddy.core.Group;
 import ch.epfl.sweng.studdybuddy.core.ID;
 import ch.epfl.sweng.studdybuddy.firebase.MetaMeeting;
 import ch.epfl.sweng.studdybuddy.services.meeting.Meeting;
 import ch.epfl.sweng.studdybuddy.services.meeting.MeetingRecyclerAdapter;
-import ch.epfl.sweng.studdybuddy.util.Consumer;
+import ch.epfl.sweng.studdybuddy.tools.Consumer;
 import ch.epfl.sweng.studdybuddy.util.Messages;
 
 public class MeetingsActivity extends AppCompatActivity {
 
     private String groupId;
+    private String adminId;
 
     private Bundle origin;
 
@@ -65,6 +69,7 @@ public class MeetingsActivity extends AppCompatActivity {
         origin = getIntent().getExtras();
 
         groupId = origin.getString(Messages.groupID);
+        adminId = origin.getString(Messages.ADMIN);
 
         meetingRV = findViewById(R.id.meetingRV);
         meetingRV.setLayoutManager(new LinearLayoutManager(this));
@@ -75,10 +80,14 @@ public class MeetingsActivity extends AppCompatActivity {
 
         metaM.getMeetingsOfGroup(new ID<>(groupId), consumer);
 
-        adapter = new MeetingRecyclerAdapter(meetingList);
+        adapter = new MeetingRecyclerAdapter(this, this, meetingList, new ID<>(groupId));
 
         meetingRV.setAdapter(adapter);
 
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+    }
 }

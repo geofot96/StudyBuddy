@@ -75,6 +75,8 @@ public class createMeetingActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(createMeetingActivity.this, MapsActivity.class);
+                i.putExtra(Messages.groupID, groupID);
+                i.putExtra(Messages.meetingID, meeting.getId().getId());
                 startActivityForResult(i, 1);
             }
         });
@@ -116,9 +118,10 @@ public class createMeetingActivity extends AppCompatActivity {
         if(requestCode == 1 && resultCode == RESULT_OK){
             meetingLocation = new MeetingLocation(
                     data.getStringExtra(Messages.LOCATION_TITLE),
-                    data.getDoubleExtra(Messages.LATITUDE, MapsActivity.mDefaultLocation.latitude),
-                    data.getDoubleExtra(Messages.LONGITUDE, MapsActivity.mDefaultLocation.longitude));
-            mDisplayLocation.setText(meetingLocation.getTitle());
+                    data.getStringExtra(Messages.ADDRESS),
+                    data.getDoubleExtra(Messages.LATITUDE, 0),
+                    data.getDoubleExtra(Messages.LONGITUDE, 0));
+            mDisplayLocation.setText(meetingLocation.getTitle() + ": " + meetingLocation.getAddress());
             updateButton();
         }
     }

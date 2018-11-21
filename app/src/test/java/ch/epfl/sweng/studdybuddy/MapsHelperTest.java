@@ -13,9 +13,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import ch.epfl.sweng.studdybuddy.core.Meeting;
-import ch.epfl.sweng.studdybuddy.core.MeetingLocation;
+import ch.epfl.sweng.studdybuddy.core.Group;
+import ch.epfl.sweng.studdybuddy.core.ID;
 import ch.epfl.sweng.studdybuddy.firebase.FirebaseReference;
+import ch.epfl.sweng.studdybuddy.services.meeting.Meeting;
+import ch.epfl.sweng.studdybuddy.services.meeting.MeetingLocation;
 import ch.epfl.sweng.studdybuddy.util.MapsHelper;
 
 import static junit.framework.Assert.assertTrue;
@@ -34,8 +36,8 @@ public class MapsHelperTest {
         FirebaseReference ref = mock(FirebaseReference.class);
         when(ref.select(anyString())).thenReturn(ref);
 
-        assertTrue(MapsHelper.confirmationListener(pos, meetings, ref, "a"));
-        assertTrue(!MapsHelper.confirmationListener(null, meetings, ref, "a"));
+        assertTrue(MapsHelper.confirmationListener(pos, ref, new ID<Group>("test"), new ID<>("test")));
+        assertTrue(!MapsHelper.confirmationListener(null, ref, new ID<>("test"),new ID<>("test")));
     }
 
     @Test

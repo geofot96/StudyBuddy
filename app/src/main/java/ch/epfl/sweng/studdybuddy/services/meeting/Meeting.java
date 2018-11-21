@@ -5,12 +5,28 @@ import java.util.UUID;
 
 import ch.epfl.sweng.studdybuddy.core.ID;
 import ch.epfl.sweng.studdybuddy.core.SerialDate;
+import ch.epfl.sweng.studdybuddy.util.MapsHelper;
 
 public final class Meeting {
     private ID<Meeting> id;
     private Date ending;
     private Date starting;
     private MeetingLocation location;
+
+
+    public Meeting(Date creation, Date deadline, String id) {
+        this.starting = creation;
+        this.ending = deadline;
+        this.id = new ID<>(id);
+        this.location = MapsHelper.ROLEX_LOCATION;
+    }
+
+
+    public void copy(Meeting copy) {
+        this.setStarting(copy.getStarting());
+        this.setEnding(copy.getEnding());
+        this.setId(copy.getId());
+    }
 
     public Meeting() {
         this(UUID.randomUUID().toString());

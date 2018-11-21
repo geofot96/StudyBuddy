@@ -1,7 +1,6 @@
 package ch.epfl.sweng.studdybuddy.activities;
 
 import android.content.Intent;
-import android.location.Location;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -28,9 +27,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ch.epfl.sweng.studdybuddy.R;
-import ch.epfl.sweng.studdybuddy.core.Meeting;
-import ch.epfl.sweng.studdybuddy.core.MeetingLocation;
+import ch.epfl.sweng.studdybuddy.core.ID;
 import ch.epfl.sweng.studdybuddy.firebase.FirebaseReference;
+import ch.epfl.sweng.studdybuddy.services.meeting.Meeting;
+import ch.epfl.sweng.studdybuddy.services.meeting.MeetingLocation;
 import ch.epfl.sweng.studdybuddy.tools.Consumer;
 import ch.epfl.sweng.studdybuddy.util.MapsHelper;
 import ch.epfl.sweng.studdybuddy.util.Messages;
@@ -40,16 +40,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private GoogleMap mMap;
 
-    private MarkerOptions mMarker;
+    private MarkerOptions mMarker;  //TODO needs to be removed if not used
     private Marker marker;
     private List<Meeting> meetings;
     private FirebaseReference ref;
     private MeetingLocation confirmedPlace;
-    private String address;
 
     PlaceAutocompleteFragment autocompleteFragment;
     String uId;
     String gId;
+    String meetingID;
     Button button;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +63,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         uId = ((StudyBuddy) MapsActivity.this.getApplication()).getAuthendifiedUser().getUserID().getId();
         Intent intent = getIntent();
         gId = intent.getStringExtra(Messages.groupID);
+        meetingID = intent.getStringExtra(Messages.meetingID);
         mapFragment.getMapAsync(this);
 
     }
@@ -91,7 +92,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(MapsHelper.confirmationListener(confirmedPlace, meetings, ref, gId)){
+                if(MapsHelper.confirmationListener(confirmedPlace, ref, new ID<>(gId), new ID<>(meetingID))){
+                    Intent resultIntent = new Intent();
+                    resultIntent.putExtra(Messages.LOCATION_TITLE, confirmedPlace.getTitle());
+                    resultIntent.putExtra(Messages.ADDRESS, confirmedPlace.getAddress());
+                    resultIntent.putExtra(Messages.LATITUDE, confirmedPlace.getLatitude());
+                    resultIntent.putExtra(Messages.LONGITUDE, confirmedPlace.getLongitude());
+                    setResult(RESULT_OK, resultIntent);
                     finish();
                 }
             }

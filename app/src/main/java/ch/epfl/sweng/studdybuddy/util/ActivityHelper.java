@@ -2,7 +2,6 @@ package ch.epfl.sweng.studdybuddy.util;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
-import android.util.Log;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -13,8 +12,8 @@ import android.widget.TimePicker;
 import java.util.List;
 
 import ch.epfl.sweng.studdybuddy.core.Group;
-import ch.epfl.sweng.studdybuddy.core.Meeting;
 import ch.epfl.sweng.studdybuddy.firebase.MetaMeeting;
+import ch.epfl.sweng.studdybuddy.services.meeting.Meeting;
 import ch.epfl.sweng.studdybuddy.tools.AdapterAdapter;
 import ch.epfl.sweng.studdybuddy.tools.Consumer;
 
@@ -28,7 +27,7 @@ public class ActivityHelper {
             }
         };
     }
-    public static Consumer<List<Meeting>> meetingConsumer(TextView title, Button time, Button date, Button plus) {
+    /*public static Consumer<List<Meeting>> meetingConsumer(TextView title, Button time, Button date, Button plus) {
         return new Consumer<List<Meeting>>() {
             @Override
             public void accept(List<Meeting> meetings) {
@@ -81,9 +80,7 @@ public class ActivityHelper {
         };
     }
 
-    public static void adminMeeting() {
-
-    }
+*/
 
     public static void adminMeeting(Button add, Group group, String userID) {
         Boolean admin = group.getAdminID().equals(userID);

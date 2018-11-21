@@ -10,5 +10,7 @@ public class Messages {
     public static final String LATITUDE = "ch.epfl.sweng.studybuddy.latitude";
     public static final String LONGITUDE = "ch.epfl.sweng.studybuddy.longitude";
     public static final String LOCATION_TITLE = "ch.epfl.sweng.studybuddy.locationTitle";
+    public static final String ADDRESS = "ch.epfl.sweng.studybuddy.address";
+    public static final String ADMIN = "ch.epfl.sweng.studybuddy.adminID";
 }
 

@@ -5,7 +5,8 @@ import com.google.android.gms.maps.model.LatLng;
 import org.junit.Before;
 import org.junit.Test;
 
-import ch.epfl.sweng.studdybuddy.core.MeetingLocation;
+
+import ch.epfl.sweng.studdybuddy.services.meeting.MeetingLocation;
 
 import static junit.framework.TestCase.assertTrue;
 
