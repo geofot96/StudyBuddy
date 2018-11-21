@@ -26,23 +26,28 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 public class createMeetingActivityTest {
+    Intent intent = new Intent();
     private MeetingLocation mockLocation = mock(MeetingLocation.class);
     private Date alwaysBefore = mock(Date.class);
     private Date alwaysAfter = mock(Date.class);
 
 
     @Rule
-    public myRule mActivityRule =
-            new myRule(createMeetingActivity.class);
+    public ActivityTestRule<createMeetingActivity> mActivityRule =
+            new ActivityTestRule<>(createMeetingActivity.class, false, false);
 
     @Before
     public void setUp(){
+        intent.putExtra(Messages.maxUser, 1);
+        intent.putExtra(Messages.userID, Messages.TEST);
+        intent.putExtra(Messages.groupID, Messages.TEST);
         when(alwaysBefore.before(any())).thenReturn(true);
         when(alwaysAfter.after(any())).thenReturn(true);
     }
 
     @Test
     public void EveryThingIsDisplayed(){
+        mActivityRule.launchActivity(intent);
         onView(withId(R.id.textView)).check(matches(isDisplayed()));
         onView(withId(R.id.textView2)).check(matches(isDisplayed()));
         onView(withId(R.id.textView3)).check(matches(isDisplayed()));
@@ -52,11 +57,12 @@ public class createMeetingActivityTest {
         onView(withId(R.id.timePicker2)).check(matches(isClickable()));
         onView(withId(R.id.locationTitle)).check(matches(isClickable()));
         onView(withId(R.id.setMeeting)).check(matches(not(isEnabled())));
+        mActivityRule.finishActivity();
     }
 
     @Test
     public void ButtonIsEnabled(){
-        createMeetingActivity mActivity = mActivityRule.getActivity();
+        createMeetingActivity mActivity = mActivityRule.launchActivity(intent);
         mActivity.setLocation(mockLocation);
         mActivity.setStartingDate(alwaysAfter);
         mActivity.setEndingDate(alwaysAfter);
@@ -66,41 +72,21 @@ public class createMeetingActivityTest {
 
     @Test
     public void WrongTimeSlot(){
-        createMeetingActivity mActivity = mActivityRule.getActivity();
+        createMeetingActivity mActivity = mActivityRule.launchActivity(intent);
         mActivity.setLocation(mockLocation);
         mActivity.setStartingDate(alwaysAfter);
         mActivity.setEndingDate(alwaysBefore);
         onView(withId(R.id.setMeeting)).check(matches(not(isEnabled())));
+        mActivityRule.finishActivity();
     }
 
     @Test
     public void noLocation(){
-        createMeetingActivity mActivity = mActivityRule.getActivity();
+        createMeetingActivity mActivity = mActivityRule.launchActivity(intent);
         mActivity.setStartingDate(alwaysBefore);
         mActivity.setEndingDate(alwaysAfter);
         onView(withId(R.id.setMeeting)).check(matches(not(isEnabled())));
-    }
-
-    public static Intent setUpTestIntent(){
-        Intent intent = new Intent();
-        intent.putExtra(Messages.maxUser, 1);
-        intent.putExtra(Messages.userID, Messages.TEST);
-        intent.putExtra(Messages.groupID, Messages.TEST);
-        return intent;
-    }
-
-    private class myRule extends ActivityTestRule<createMeetingActivity> {
-
-
-        public myRule(Class<createMeetingActivity> activityClass) {
-            super(activityClass);
-        }
-
-        @Override
-        public createMeetingActivity launchActivity(@Nullable Intent startIntent) {
-            Intent intent = setUpTestIntent();
-            return super.launchActivity(intent);
-        }
+        mActivityRule.finishActivity();
     }
 
 }

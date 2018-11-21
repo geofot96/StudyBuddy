@@ -37,13 +37,11 @@ public class GroupActivity extends AppCompatActivity {
         }
         calendarButton = findViewById(R.id.calendarBtn);
         participantButton = findViewById(R.id.participantsBtn);
-        mapsButton = findViewById(R.id.mapsButton);
         createMeetingBtn = findViewById(R.id.createMeeting);
         meetingsBtn = findViewById(R.id.groupMeetingsBtn);
 
         calendarButton.setOnClickListener(new ClickListener(new Intent(this, ConnectedCalendarActivity.class)));
         participantButton.setOnClickListener(new ClickListener(new Intent(this, GroupInfoActivity.class)));
-        mapsButton.setOnClickListener(new ClickListener(new Intent(this, MapsActivity.class)));
         createMeetingBtn.setOnClickListener(new ClickListener(new Intent(this, createMeetingActivity.class)));
         meetingsBtn.setOnClickListener(new ClickListener(new Intent(this, MeetingsActivity.class)));
 

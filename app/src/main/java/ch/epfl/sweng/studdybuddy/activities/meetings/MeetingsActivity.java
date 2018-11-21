@@ -17,6 +17,7 @@ import ch.epfl.sweng.studdybuddy.R;
 import ch.epfl.sweng.studdybuddy.core.ID;
 import ch.epfl.sweng.studdybuddy.firebase.MetaMeeting;
 import ch.epfl.sweng.studdybuddy.services.meeting.Meeting;
+import ch.epfl.sweng.studdybuddy.services.meeting.MeetingLocation;
 import ch.epfl.sweng.studdybuddy.services.meeting.MeetingRecyclerAdapter;
 import ch.epfl.sweng.studdybuddy.tools.Consumer;
 import ch.epfl.sweng.studdybuddy.util.Messages;
@@ -38,7 +39,7 @@ public class MeetingsActivity extends AppCompatActivity {
     private final Comparator<Meeting> comparator = new Comparator<Meeting>() {
         @Override
         public int compare(Meeting o1, Meeting o2) {
-            return o1.getStarting().compareTo(o2.getStarting());
+            return (Long.compare(o1.getStarting(), o2.getStarting()));
         }
     };
 
@@ -49,7 +50,7 @@ public class MeetingsActivity extends AppCompatActivity {
             meetingList.clear();
             Date currentDate = new Date();
             for (Meeting m : meetings) {
-                if (m.getStarting().before(currentDate)) {
+                if (m.getStarting() < currentDate.getTime()) {
                     metaM.deleteMeeting(m.getId(), new ID<>(groupId));
                 } else {
                     meetingList.add(m);
@@ -85,7 +86,15 @@ public class MeetingsActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-
+    protected void onActivityResult(int requestCode, int resultCode, Intent data){
+        if(requestCode == 1 && resultCode == RESULT_OK){
+            MeetingLocation meetingLocation = new MeetingLocation(
+              data.getStringExtra(Messages.LOCATION_TITLE),
+                    data.getStringExtra(Messages.ADDRESS),
+                    data.getDoubleExtra(Messages.LATITUDE, 0),
+                    data.getDoubleExtra(Messages.LONGITUDE, 0)
+            );
+            metaM.pushLocation(meetingLocation, new ID<>(groupId), new ID<>(data.getStringExtra(Messages.meetingID)));
+        }
     }
 }

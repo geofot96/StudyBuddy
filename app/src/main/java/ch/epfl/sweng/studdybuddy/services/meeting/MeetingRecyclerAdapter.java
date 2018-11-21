@@ -74,8 +74,8 @@ public class MeetingRecyclerAdapter extends RecyclerView.Adapter<MeetingRecycler
     @Override
     public void onBindViewHolder(@NonNull MeetingRecyclerAdapter.ViewHolder myViewHolder, int i) {
         Meeting meeting = meetingList.get(i);
-        Date startingDate = meeting.getStarting();
-        Date endingDate = meeting.getEnding();
+        Date startingDate = new Date(meeting.getStarting());
+        Date endingDate = new Date(meeting.getEnding());
         int RealMonth = startingDate.getMonth() + 1;
         int startMinutes = startingDate.getMinutes();
         int endMinutes = endingDate.getMinutes();

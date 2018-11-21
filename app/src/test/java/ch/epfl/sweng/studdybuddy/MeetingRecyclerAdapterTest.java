@@ -12,6 +12,7 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 import ch.epfl.sweng.studdybuddy.core.Group;
@@ -51,12 +52,14 @@ public class MeetingRecyclerAdapterTest {
         MeetingLocation mL = mock(MeetingLocation.class);
         when(mL.getTitle()).thenReturn("test");
         when(mL.getAddress()).thenReturn("");
-        month = meeting.getStarting().getMonth()+1;
-        day = meeting.getStarting().getDate();
-        hourS = meeting.getStarting().getHours();
-        minS = meeting.getStarting().getMinutes();
-        hourE = meeting.getEnding().getHours();
-        minE = meeting.getEnding().getMinutes();
+        Date starting = new Date(meeting.getStarting());
+        Date ending = new Date(meeting.getEnding());
+        month = starting.getMonth()+1;
+        day = starting.getDate();
+        hourS = starting.getHours();
+        minS = starting.getMinutes();
+        hourE = ending.getHours();
+        minE = ending.getMinutes();
         meeting.setLocation(mL);
         meetingList = Arrays.asList(meeting);
 

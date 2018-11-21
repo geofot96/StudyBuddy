@@ -15,6 +15,7 @@ import ch.epfl.sweng.studdybuddy.firebase.MetaMeeting;
 import ch.epfl.sweng.studdybuddy.firebase.ReferenceWrapper;
 import ch.epfl.sweng.studdybuddy.services.meeting.Meeting;
 import ch.epfl.sweng.studdybuddy.tools.Consumer;
+import ch.epfl.sweng.studdybuddy.util.Messages;
 
 import static ch.epfl.sweng.studdybuddy.MetaFactory.deepFBReference;
 import static ch.epfl.sweng.studdybuddy.util.CoreFactory.blankGroupWId;
@@ -49,7 +50,7 @@ public class MetaMeetingTest {
        String mid = m.getId().getId();
        mm.pushMeeting(m, bg);
        when(testref.child(any())).thenReturn(testref);
-       verify(wb, times(1)).select("meetings");
+       verify(wb, times(1)).select(Messages.FirebaseNode.MEETINGS);
        verify(wb, times(1)).select(bg.getGroupID().getId());
        verify(wb, times(1)).select(mid);
        verify(wb, times(1)).setVal(m);
@@ -73,7 +74,7 @@ public class MetaMeetingTest {
    @Test
     public void deleteMeetingArgument() {
        mm.deleteMeeting(m.getId(), bg.getGroupID());
-       verify(wb, times(1)).select("meetings");
+       verify(wb, times(1)).select(Messages.FirebaseNode.MEETINGS);
        verify(wb, times(1)).select(bg.getGroupID().getId());
        verify(wb, times(1)).select(m.getId().getId());
        verify(wb, times(1)).clear();
@@ -84,7 +85,7 @@ public class MetaMeetingTest {
          String mid = m.getId().getId();
          mm.pushMeeting(m, bg.getGroupID());
          when(testref.child(any())).thenReturn(testref);
-         verify(wb, times(1)).select("meetings");
+         verify(wb, times(1)).select(Messages.FirebaseNode.MEETINGS);
          verify(wb, times(1)).select(bg.getGroupID().getId());
          verify(wb, times(1)).select(mid);
          verify(wb, times(1)).setVal(m);

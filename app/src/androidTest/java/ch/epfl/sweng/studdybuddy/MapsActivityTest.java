@@ -28,7 +28,8 @@ public class MapsActivityTest {
 
     @Before
     public void setup(){}
-  /*  @Test
+
+   /* @Test
     public void checkConfirmDoesntExistForNonAdmin(){
         try {
             Thread.sleep(2000);
