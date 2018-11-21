@@ -31,7 +31,6 @@ public class NavigationActivity extends AppCompatActivity
     private ChatListsFragment chatFragment;
     private FeedFragment feedFragment;
     private ProfileFragment profileFragment;
-
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -72,6 +71,7 @@ public class NavigationActivity extends AppCompatActivity
                     case R.id.navToProfile:
                         setFragment(profileFragment);
                         return true;
+
 
                     default:
                         return false;

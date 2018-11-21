@@ -13,6 +13,7 @@
         android:title="@string/nav_profile"
         android:id="@+id/navToProfile"/>
 
+
     <item
         android:id="@+id/navToChat"
         android:icon="@drawable/round_chat_black_24dp"

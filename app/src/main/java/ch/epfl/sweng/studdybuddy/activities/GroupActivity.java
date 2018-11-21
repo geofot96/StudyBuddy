@@ -5,14 +5,9 @@ import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.TextView;
-import android.widget.TimePicker;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -22,9 +17,10 @@ import java.util.List;
 import ch.epfl.sweng.studdybuddy.R;
 import ch.epfl.sweng.studdybuddy.core.Group;
 import ch.epfl.sweng.studdybuddy.core.Meeting;
+import ch.epfl.sweng.studdybuddy.firebase.FirebaseReference;
 import ch.epfl.sweng.studdybuddy.firebase.MetaMeeting;
 import ch.epfl.sweng.studdybuddy.tools.AdapterAdapter;
-import ch.epfl.sweng.studdybuddy.tools.Consumer;
+import ch.epfl.sweng.studdybuddy.util.MapsHelper;
 import ch.epfl.sweng.studdybuddy.util.Messages;
 
 import static ch.epfl.sweng.studdybuddy.tools.Consumer.sequenced;
@@ -41,6 +37,7 @@ public class GroupActivity extends AppCompatActivity {
 
     private Button calendarButton;
     private Button participantButton;
+    private Button mapsButton;
     Button time;
     Button date;
     Button add;
@@ -63,6 +60,8 @@ public class GroupActivity extends AppCompatActivity {
         MaxNumUsers = origin.getIntExtra(Messages.maxUser, -1);
         calendarButton = findViewById(R.id.calendarBtn);
         participantButton = findViewById(R.id.participantsBtn);
+        mapsButton = findViewById(R.id.mapsButton);
+        mapsButton.setOnClickListener(new ClickListener(new Intent(this, MapsActivity.class)));
         time  = findViewById(R.id.time);
         date = findViewById(R.id.date);
         add = findViewById(R.id.addMeeting);
@@ -101,6 +100,21 @@ public class GroupActivity extends AppCompatActivity {
         intent.putExtra(Messages.userID, userID);
         intent.putExtra(Messages.groupID, groupID);
         intent.putExtra(Messages.maxUser, MaxNumUsers);
+        intent.putExtra(Messages.meetingID, "1");
+
+        //Just for testing
+        FirebaseReference ref = new FirebaseReference();
+       ;
+        Meeting m1, m2 ,m3 ;
+        m1 = new Meeting("1");
+        m2 = new Meeting("2");
+        m3 = new Meeting("3");
+
+        List<Meeting> meetings = Arrays.asList(m1,m2,m3);
+        for(Meeting m: meetings){
+            m.setLocation(MapsHelper.ROLEX_LOCATION);
+        }
+        ref.select("BoubaMeetings").setVal(meetings);
         startActivity(intent);
     }
 

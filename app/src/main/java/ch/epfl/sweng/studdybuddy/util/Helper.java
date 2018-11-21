@@ -7,6 +7,7 @@ import ch.epfl.sweng.studdybuddy.core.Pair;
 
 public final class Helper {
 
+
     private Helper() {}
 
     static public String hashCode(Pair pair) {

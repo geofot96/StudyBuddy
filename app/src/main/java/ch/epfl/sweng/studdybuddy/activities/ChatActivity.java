@@ -53,7 +53,7 @@ public class ChatActivity extends AppCompatActivity{
             @Override
             public void onClick(View view) {
                 EditText input = (EditText)findViewById(R.id.input);
-                ref.select(groupID).push(new ChatMessage(input.getText().toString(),
+                ref.select("chat").select(groupID).push(new ChatMessage(input.getText().toString(),
                         FirebaseAuth.getInstance().getCurrentUser().getDisplayName()));
 
                 input.setText("");

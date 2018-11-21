@@ -5,7 +5,6 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.List;
 
 import ch.epfl.sweng.studdybuddy.core.Group;
-import ch.epfl.sweng.studdybuddy.core.ID;
 import ch.epfl.sweng.studdybuddy.core.Meeting;
 import ch.epfl.sweng.studdybuddy.core.Pair;
 import ch.epfl.sweng.studdybuddy.tools.Consumer;
