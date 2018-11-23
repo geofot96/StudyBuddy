@@ -12,10 +12,13 @@ public class Messages {
     public static final String LOCATION_TITLE = "ch.epfl.sweng.studybuddy.locationTitle";
     public static final String ADDRESS = "ch.epfl.sweng.studybuddy.address";
     public static final String ADMIN = "ch.epfl.sweng.studybuddy.adminID";
-    public static final String chatGroupID = "GroupID";
 
     public class FirebaseNode{
         public static final String AVAILABILITIES = "availabilities";
         public static final String MEETINGS = "meetings";
+        public static final String USERGROUP = "userGroup";
+        public static final String GROUPS = "YannGroups";
+        public static final String USERCOURSE = "userCourse";
+        public static final String CHAT = "chat";
     }
 }

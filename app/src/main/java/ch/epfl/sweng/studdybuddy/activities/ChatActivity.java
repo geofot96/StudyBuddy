@@ -32,7 +32,7 @@ public class ChatActivity extends AppCompatActivity{
         setContentView(R.layout.activity_chat);
         Bundle extras=getIntent().getExtras();
         if(extras!=null){
-            groupID=extras.getString(Messages.chatGroupID);
+            groupID=extras.getString(Messages.groupID);
         }
         else {
             Toast.makeText(this,
@@ -54,7 +54,7 @@ public class ChatActivity extends AppCompatActivity{
             @Override
             public void onClick(View view) {
                 EditText input = (EditText)findViewById(R.id.input);
-                ref.select("chat").select(groupID).push(new ChatMessage(input.getText().toString(),
+                ref.select(Messages.FirebaseNode.CHAT).select(groupID).push(new ChatMessage(input.getText().toString(),
                         FirebaseAuth.getInstance().getCurrentUser().getDisplayName()));
 
                 input.setText("");
@@ -71,7 +71,7 @@ public class ChatActivity extends AppCompatActivity{
 
         adapter = new FirebaseListAdapter<ChatMessage>(this, ChatMessage.class,
                 R.layout.message,
-                FirebaseDatabase.getInstance().getReference().child("chat").child(groupID)) {
+                FirebaseDatabase.getInstance().getReference().child(Messages.FirebaseNode.CHAT).child(groupID)) {
             @Override
             protected void populateView(View v, ChatMessage model, int position) {
                 if (!model.getMessageText().isEmpty()) {

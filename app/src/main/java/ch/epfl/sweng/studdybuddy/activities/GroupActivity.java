@@ -19,7 +19,6 @@ public class GroupActivity extends AppCompatActivity {
 
     private Button calendarButton;
     private Button participantButton;
-    private Button mapsButton;
     private Button createMeetingBtn;
     private Button meetingsBtn;
 

@@ -10,6 +10,7 @@ import org.junit.Test;
 import ch.epfl.sweng.studdybuddy.Fragments.FeedFragment;
 import ch.epfl.sweng.studdybuddy.activities.GroupInfoActivity;
 import ch.epfl.sweng.studdybuddy.activities.GroupsActivity;
+import ch.epfl.sweng.studdybuddy.util.Messages;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
@@ -28,7 +29,7 @@ public class GroupInfoActivityTest {
     public void quitButtonTest(){
         Activity activity = mActivityRule.getActivity();
         Intent intent = new Intent();
-        intent.putExtra(FeedFragment.GROUP_ID, "1");
+        intent.putExtra(Messages.groupID, "1");
         intent.putExtra(FeedFragment.IS_PARTICIPANT, true);
 
         mActivityRule.launchActivity(intent);

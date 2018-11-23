@@ -136,16 +136,17 @@ public class ConnectedCalendarActivity extends AppCompatActivity
      */
     public void updateColor() {
         List<Integer> groupAvailabilities = calendar.getComputedAvailabilities();
-        int size = calendarGrid.getColumnCount()*calendarGrid.getRowCount();
-        for(int i = 0; i < size; i++){
-            CardView cardView;
-            if(i%CalendarWidth!=0) {//Hours shouldn't be clickable
-                cardView = (CardView) calendarGrid.getChildAt(i);
-                int index = (i/CalendarWidth)*(CalendarWidth-1)+(i%CalendarWidth)-1;
-                cardView.setCardBackgroundColor(gradient((float) groupAvailabilities.get(index).intValue()));
+        if(groupAvailabilities.size() == 77) {
+            int size = calendarGrid.getColumnCount() * calendarGrid.getRowCount();
+            for (int i = 0; i < size; i++) {
+                CardView cardView;
+                if (i % CalendarWidth != 0) {//Hours shouldn't be clickable
+                    cardView = (CardView) calendarGrid.getChildAt(i);
+                    int index = (i / CalendarWidth) * (CalendarWidth - 1) + (i % CalendarWidth) - 1;
+                    cardView.setCardBackgroundColor(gradient((float) groupAvailabilities.get(index).intValue()));
+                }
             }
         }
-
     }
 
     /**

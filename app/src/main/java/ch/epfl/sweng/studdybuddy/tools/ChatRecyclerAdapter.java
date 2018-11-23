@@ -21,6 +21,7 @@ import ch.epfl.sweng.studdybuddy.firebase.FirebaseReference;
 import ch.epfl.sweng.studdybuddy.firebase.MetaGroup;
 import ch.epfl.sweng.studdybuddy.firebase.ReferenceWrapper;
 import ch.epfl.sweng.studdybuddy.util.FeedFilter;
+import ch.epfl.sweng.studdybuddy.util.Messages;
 
 public class ChatRecyclerAdapter extends BasicRecyclerAdapter
 {
@@ -63,7 +64,7 @@ public class ChatRecyclerAdapter extends BasicRecyclerAdapter
             @Override
             public void onClick(View v) {
                 Intent i=new Intent(holder.itemView.getContext(), ChatActivity.class);
-                i.putExtra("GroupID",group.getGroupID().getId());
+                i.putExtra(Messages.groupID,group.getGroupID().getId());
                 v.getContext().startActivity(i);
 
             }

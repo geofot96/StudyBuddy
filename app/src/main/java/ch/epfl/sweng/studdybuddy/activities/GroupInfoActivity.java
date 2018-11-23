@@ -10,13 +10,13 @@ import android.widget.Button;
 import java.util.ArrayList;
 import java.util.List;
 
-import ch.epfl.sweng.studdybuddy.Fragments.FeedFragment;
 import ch.epfl.sweng.studdybuddy.R;
 import ch.epfl.sweng.studdybuddy.core.Group;
 import ch.epfl.sweng.studdybuddy.core.User;
 import ch.epfl.sweng.studdybuddy.firebase.MetaGroupAdmin;
 import ch.epfl.sweng.studdybuddy.tools.ParticipantAdapter;
 import ch.epfl.sweng.studdybuddy.tools.RecyclerAdapterAdapter;
+import ch.epfl.sweng.studdybuddy.util.Messages;
 import ch.epfl.sweng.studdybuddy.util.StudyBuddy;
 
 public class GroupInfoActivity extends AppCompatActivity{
@@ -29,14 +29,14 @@ public class GroupInfoActivity extends AppCompatActivity{
     Button button;
     List<Group> group = new ArrayList<>();
     List<String> gIds = new ArrayList<>();
-    private Boolean isParticipant = false;
+   // private Boolean isParticipant = false; //not used
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group_info);
         uId = ((StudyBuddy) GroupInfoActivity.this.getApplication()).getAuthendifiedUser().getUserID().getId();
         Intent intent = getIntent();
-        gId = intent.getStringExtra(FeedFragment.GROUP_ID);
+        gId = intent.getStringExtra(Messages.groupID);
         gIds.add(gId);
         mb.getGroupsfromIds(gIds, group);
         mb.getGroupUsers(gId, participants);
