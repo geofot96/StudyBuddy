@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ch.epfl.sweng.studdybuddy.R;
+import ch.epfl.sweng.studdybuddy.core.Group;
 import ch.epfl.sweng.studdybuddy.core.ID;
 import ch.epfl.sweng.studdybuddy.firebase.FirebaseReference;
 import ch.epfl.sweng.studdybuddy.services.meeting.Meeting;
@@ -49,6 +50,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     PlaceAutocompleteFragment autocompleteFragment;
     String uId;
     String gId;
+    String adminID;
     String meetingID;
     Button button;
     @Override
@@ -63,6 +65,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         uId = ((StudyBuddy) MapsActivity.this.getApplication()).getAuthendifiedUser().getUserID().getId();
         Intent intent = getIntent();
         gId = intent.getStringExtra(Messages.groupID);
+        adminID = intent.getStringExtra(Messages.ADMIN);
         meetingID = intent.getStringExtra(Messages.meetingID);
         mapFragment.getMapAsync(this);
 
@@ -161,10 +164,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         autocompleteFragment.setOnPlaceSelectedListener(placeSelectionListener());
         button = ((Button) findViewById(R.id.confirmLocation));
         button.setOnClickListener((confirmationListener()));
-
         meetings = new ArrayList<>();
         ref = new FirebaseReference();
-        setMeetings( ref, meetings, button);
+        initialization(ref);
+        if(adminID.equals(uId)){
+            button.setVisibility(View.VISIBLE);
+            button.setEnabled(true);
+        }
         mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
 
                @Override
@@ -180,11 +186,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
 
-    public  void setMeetings(FirebaseReference ref, final List<Meeting> meetings, Button button){
-        ref.select("BoubaMeetings").getAll(Meeting.class, new Consumer<List<Meeting>>() {
+    public  void initialization(FirebaseReference ref){
+        ref.select(Messages.FirebaseNode.MEETINGS).select(gId).select(meetingID).get(Meeting.class, new Consumer<Meeting>() {
             @Override
-            public void accept(List<Meeting> meetingsfb) {
-                MarkerOptions tmp = MapsHelper.acceptMeetings(meetingsfb,meetings, button, gId);
+            public void accept(Meeting meeting) {
+                MarkerOptions tmp = MapsHelper.setInitialPosition(meeting);
 
                 if(tmp != null){
                     marker =  mMap.addMarker(tmp);

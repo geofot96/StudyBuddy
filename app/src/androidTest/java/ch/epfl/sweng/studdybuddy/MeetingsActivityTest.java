@@ -1,9 +1,7 @@
 package ch.epfl.sweng.studdybuddy;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.support.test.rule.ActivityTestRule;
-import android.support.v7.widget.RecyclerView;
 
 import org.junit.Before;
 import org.junit.Rule;

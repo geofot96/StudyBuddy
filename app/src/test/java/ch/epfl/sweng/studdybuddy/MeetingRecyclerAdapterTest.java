@@ -17,11 +17,13 @@ import java.util.List;
 
 import ch.epfl.sweng.studdybuddy.core.Group;
 import ch.epfl.sweng.studdybuddy.core.ID;
+import ch.epfl.sweng.studdybuddy.core.Pair;
 import ch.epfl.sweng.studdybuddy.core.User;
 import ch.epfl.sweng.studdybuddy.services.meeting.Meeting;
 import ch.epfl.sweng.studdybuddy.services.meeting.MeetingLocation;
 import ch.epfl.sweng.studdybuddy.services.meeting.MeetingRecyclerAdapter;
 import ch.epfl.sweng.studdybuddy.util.CoreFactory;
+import ch.epfl.sweng.studdybuddy.util.Messages;
 import ch.epfl.sweng.studdybuddy.util.StudyBuddy;
 
 import static org.junit.Assert.assertTrue;
@@ -33,8 +35,7 @@ import static org.mockito.Mockito.when;
 public class MeetingRecyclerAdapterTest {
     List<Meeting> meetingList;
     int month,day,hourS,minS, hourE, minE;
-    ID<Group> groupID = new ID<>("test");
-    ID<User> adminID = new ID<>("test");
+    String testString = Messages.TEST;
     Context context = mock(Context.class);
     Activity activity = mock(Activity.class);
     StudyBuddy app = mock(StudyBuddy.class);
@@ -64,23 +65,22 @@ public class MeetingRecyclerAdapterTest {
         meetingList = Arrays.asList(meeting);
 
         when(activity.getApplication()).thenReturn(app);
-
+        when(app.getAuthendifiedUser()).thenReturn(random);
 
         h = new MeetingRecyclerAdapter.ViewHolder(v, t, t, c);
     }
 
     @Test
     public void MeetingsCountTest(){
-        MeetingRecyclerAdapter ad = new MeetingRecyclerAdapter(context, activity, new ArrayList<>(), groupID);
-        MeetingRecyclerAdapter ad2 = new MeetingRecyclerAdapter(context, activity, meetingList, groupID);
+        MeetingRecyclerAdapter ad = new MeetingRecyclerAdapter(context, activity, new ArrayList<>(), new Pair(testString, testString));
+        MeetingRecyclerAdapter ad2 = new MeetingRecyclerAdapter(context, activity, meetingList, new Pair(testString, testString));
         assertTrue(ad.getItemCount() == 0);
         assertTrue(ad2.getItemCount() == 1);
     }
 
     @Test
-    public void onBindViewHolderWithNotClickable() {
-        when(app.getAuthendifiedUser()).thenReturn(random);
-        MeetingRecyclerAdapter adapter = new MeetingRecyclerAdapter(context, activity, meetingList, groupID);
+    public void onBindViewHolder() {
+        MeetingRecyclerAdapter adapter = new MeetingRecyclerAdapter(context, activity, meetingList, new Pair(testString,testString));
         adapter.onBindViewHolder(h, 0);
         verify(t, times(1)).setText(
                 month + "/" + day + " From: " + hourS +

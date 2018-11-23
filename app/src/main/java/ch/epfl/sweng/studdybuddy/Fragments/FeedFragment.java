@@ -158,10 +158,6 @@ public class FeedFragment extends Fragment
         }
     }
 
-    public void goToCalendarActivity(Intent target)
-    {
-        startActivity(target);
-    }
 
     @NonNull
     private View.OnClickListener getFloatingButtonListener()

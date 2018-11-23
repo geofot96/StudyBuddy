@@ -25,7 +25,7 @@
             android:layout_height="wrap_content"
             android:enabled="false"
             android:text="confirm"
-            android:visibility="invisible" />
+            android:visibility="visible" />
     </LinearLayout>
 
 

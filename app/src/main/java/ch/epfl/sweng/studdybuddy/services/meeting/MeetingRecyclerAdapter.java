@@ -19,6 +19,7 @@ import ch.epfl.sweng.studdybuddy.R;
 import ch.epfl.sweng.studdybuddy.activities.MapsActivity;
 import ch.epfl.sweng.studdybuddy.core.Group;
 import ch.epfl.sweng.studdybuddy.core.ID;
+import ch.epfl.sweng.studdybuddy.core.Pair;
 import ch.epfl.sweng.studdybuddy.core.User;
 import ch.epfl.sweng.studdybuddy.util.Messages;
 import ch.epfl.sweng.studdybuddy.util.StudyBuddy;
@@ -31,12 +32,17 @@ public class MeetingRecyclerAdapter extends RecyclerView.Adapter<MeetingRecycler
     private Context context;
     private Activity activity;
     private String groupID;
+    private String adminID;
+    private String userID;
 
-    public MeetingRecyclerAdapter(Context packageContext, Activity act, List<Meeting> meetingList, ID<Group> groupID) {
+    public MeetingRecyclerAdapter(Context packageContext, Activity act, List<Meeting> meetingList, Pair group_adminIDs) {
         this.meetingList = meetingList;
-        this.groupID = groupID.getId();
+        this.groupID = group_adminIDs.getKey();
         this.context = packageContext;
         this.activity = act;
+        this.adminID = group_adminIDs.getValue();
+        StudyBuddy s = (StudyBuddy) act.getApplication();
+        this.userID = s.getAuthendifiedUser().getUserID().getId();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder{
@@ -91,6 +97,7 @@ public class MeetingRecyclerAdapter extends RecyclerView.Adapter<MeetingRecycler
                 Intent intent = new Intent(context, MapsActivity.class);
                 intent.putExtra(Messages.groupID, groupID);
                 intent.putExtra(Messages.meetingID, meeting.getId().getId());
+                intent.putExtra(Messages.ADMIN, adminID);
                 startActivityForResult(activity, intent, 1, null);
             }
         });

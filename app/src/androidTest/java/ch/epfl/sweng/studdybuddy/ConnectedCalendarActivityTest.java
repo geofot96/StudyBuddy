@@ -110,6 +110,7 @@ public class ConnectedCalendarActivityTest{
         intent.putExtra(Messages.maxUser, 1);
         intent.putExtra(Messages.userID, Messages.TEST);
         intent.putExtra(Messages.groupID, Messages.TEST);
+        intent.putExtra(Messages.ADMIN, Messages.TEST);
         return intent;
     }
 

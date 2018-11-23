@@ -84,6 +84,7 @@ public class createMeetingActivity extends AppCompatActivity {
                 Intent i = new Intent(createMeetingActivity.this, MapsActivity.class);
                 i.putExtra(Messages.groupID, groupID);
                 i.putExtra(Messages.meetingID, meeting.getId().getId());
+                i.putExtra(Messages.ADMIN, origin.getString(Messages.ADMIN));
                 startActivityForResult(i, 1);
             }
         });

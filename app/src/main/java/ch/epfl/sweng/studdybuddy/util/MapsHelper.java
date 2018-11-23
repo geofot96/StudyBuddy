@@ -3,6 +3,7 @@ package ch.epfl.sweng.studdybuddy.util;
 import android.content.Context;
 import android.location.Address;
 import android.location.Geocoder;
+import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.Button;
 
@@ -27,33 +28,15 @@ public class MapsHelper {
     public static final float DEFAULT_ZOOM = 14.0f;
 
 
-    public static MarkerOptions acceptMeetings(List<Meeting>meetingsFb, List<Meeting> meetings, Button button, String gId){
-        boolean isActivityInitialized = meetings.size() > 0;
-        meetings.clear();
-        meetings.addAll(meetingsFb);
-        //modularize
-        int meetingIndex = 0;
-        for(Meeting meeting: meetings){
-            if(!meeting.getId().getId().equals(gId)){
-                meetingIndex++;
-            }else {
-                break;
-            }
-        }
+    public static MarkerOptions setInitialPosition(@Nullable Meeting meeting){
+        MarkerOptions mMarker = new MarkerOptions().position(new LatLng(ROLEX_LOCATION.getLatitude(), ROLEX_LOCATION.getLongitude()));
         //need to select the correct meeting
-        if(!isActivityInitialized) {
-            MeetingLocation location = meetings.get(meetingIndex - 1).getLocation();
-            MarkerOptions mMarker =(new MarkerOptions().position(new LatLng(location.getLatitude(), location.getLongitude())).title(location.getTitle()));
-           //if(uId.equals("Bouba")){
-                button.setVisibility(View.VISIBLE);
-                button.setEnabled(true);
-
-            //}
+        if(meeting != null) {
+            MeetingLocation location = meeting.getLocation();
+            mMarker = (new MarkerOptions().position(new LatLng(location.getLatitude(), location.getLongitude())).title(location.getTitle()));
             return ((mMarker.draggable(true)));
-
-
         }
-        return null;
+        return mMarker;
     }
 
     public static MeetingLocation mapListener(LatLng latLng ,Marker marker, PlaceAutocompleteFragment autocompleteFragment,  Context ctx){

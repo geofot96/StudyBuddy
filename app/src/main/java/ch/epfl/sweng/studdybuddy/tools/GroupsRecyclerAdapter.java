@@ -10,7 +10,7 @@ import android.widget.Button;
 import android.widget.Filter;
 import android.widget.Filterable;
 
-import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import ch.epfl.sweng.studdybuddy.Fragments.FeedFragment;
@@ -66,7 +66,7 @@ public class GroupsRecyclerAdapter extends BasicRecyclerAdapter implements Filte
 
 
     private String getCreationDate(Group group){
-        return group.getCreationDate().toString();
+        return (new Date(group.getCreationDate()).toString());
     }
 
 

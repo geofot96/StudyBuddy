@@ -15,6 +15,7 @@ import java.util.List;
 
 import ch.epfl.sweng.studdybuddy.R;
 import ch.epfl.sweng.studdybuddy.core.ID;
+import ch.epfl.sweng.studdybuddy.core.Pair;
 import ch.epfl.sweng.studdybuddy.firebase.MetaMeeting;
 import ch.epfl.sweng.studdybuddy.services.meeting.Meeting;
 import ch.epfl.sweng.studdybuddy.services.meeting.MeetingLocation;
@@ -79,7 +80,7 @@ public class MeetingsActivity extends AppCompatActivity {
 
         metaM.getMeetingsOfGroup(new ID<>(groupId), consumer);
 
-        adapter = new MeetingRecyclerAdapter(this, this, meetingList, new ID<>(groupId));
+        adapter = new MeetingRecyclerAdapter(this, this, meetingList, new Pair(groupId, adminId));
 
         meetingRV.setAdapter(adapter);
 
