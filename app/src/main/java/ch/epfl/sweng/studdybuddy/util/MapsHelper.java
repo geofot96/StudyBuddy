@@ -68,4 +68,3 @@ public class MapsHelper {
         return(new MeetingLocation(place.getName().toString(), place.getAddress().toString(), place.getLatLng()));
     }
 }
-

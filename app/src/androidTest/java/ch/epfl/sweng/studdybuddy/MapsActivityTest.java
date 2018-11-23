@@ -62,5 +62,3 @@ public class MapsActivityTest {
         assertTrue(pos.equals(new MeetingLocation(rolex.getTitle(), rolex.getAddress(), new LatLng(rolex.getLatitude(), rolex.getLongitude()))));
     }
 }
-
-

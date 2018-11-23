@@ -2,13 +2,14 @@ package ch.epfl.sweng.studdybuddy;
 
 import android.widget.Button;
 
-import com.google.android.gms.internal.maps.zzt;
-import com.google.android.gms.location.places.Place;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import ch.epfl.sweng.studdybuddy.services.meeting.Meeting;
 import ch.epfl.sweng.studdybuddy.services.meeting.MeetingLocation;
@@ -16,7 +17,6 @@ import ch.epfl.sweng.studdybuddy.util.MapsHelper;
 
 import static junit.framework.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 public class MapsHelperTest {
 

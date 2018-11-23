@@ -12,6 +12,8 @@ public class Messages {
     public static final String LOCATION_TITLE = "ch.epfl.sweng.studybuddy.locationTitle";
     public static final String ADDRESS = "ch.epfl.sweng.studybuddy.address";
     public static final String ADMIN = "ch.epfl.sweng.studybuddy.adminID";
+    public static final String chatGroupID = "GroupID";
+
 
     public class FirebaseNode{
         public static final String AVAILABILITIES = "availabilities";
