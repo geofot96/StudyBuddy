@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import ch.epfl.sweng.studdybuddy.core.Group;
 import ch.epfl.sweng.studdybuddy.core.ID;
 import ch.epfl.sweng.studdybuddy.services.calendar.ConnectedCalendar;
 
@@ -20,6 +21,8 @@ public class ConnectedCalendartest {
 
     List<Integer> expectedList = new ArrayList<>();
     HashMap<String, List<Boolean>> hashMap = new HashMap<>();
+    HashMap<String, List<Boolean>> emptyHashMap = new HashMap<>();
+    ID<Group> groupID = new ID<>("group");
 
     @Before
     public void setUp(){
@@ -45,13 +48,13 @@ public class ConnectedCalendartest {
 
     @Test
     public void GetCorrectComputedAvailabilities(){
-        calendar = new ConnectedCalendar(new ID<>("group"), hashMap);
+        calendar = new ConnectedCalendar(groupID, hashMap);
         assertEquals(expectedList, calendar.getComputedAvailabilities());
     }
 
     @Test
     public void AddingAUser(){
-        calendar = new ConnectedCalendar(new ID<>("group"), hashMap);
+        calendar = new ConnectedCalendar(groupID, hashMap);
         calendar.modify("user3", list3);
         List<Integer> newExcpectedList = new ArrayList<>(expectedList);
         newExcpectedList.set(0,3);
@@ -60,7 +63,7 @@ public class ConnectedCalendartest {
 
     @Test
     public void modifyWithWrongInputDoNothing(){
-        calendar = new ConnectedCalendar(new ID<>("group"), hashMap);
+        calendar = new ConnectedCalendar(groupID, hashMap);
         calendar.modify(null, list3);
         calendar.modify("user3", null);
         assertEquals(expectedList, calendar.getComputedAvailabilities());
@@ -68,7 +71,7 @@ public class ConnectedCalendartest {
 
     @Test
     public void removingUser(){
-        calendar = new ConnectedCalendar(new ID<>("group"), hashMap);
+        calendar = new ConnectedCalendar(groupID, hashMap);
         List<Integer> newExcpectedList = new ArrayList<>(expectedList);
         newExcpectedList.set(0,1);
         newExcpectedList.set(1,0);
@@ -78,9 +81,15 @@ public class ConnectedCalendartest {
 
     @Test
     public void removingWithWrongIDDoNothing(){
-        calendar = new ConnectedCalendar(new ID<>("group"), hashMap);
+        calendar = new ConnectedCalendar(groupID, hashMap);
         calendar.removeUser(null);
         calendar.removeUser("user3");
         assertEquals(expectedList, calendar.getComputedAvailabilities());
+    }
+
+    @Test
+    public void GetEmptyComputedAvailabilities(){
+        calendar = new ConnectedCalendar(groupID, emptyHashMap);
+        assertEquals(new ArrayList<>(), calendar.getComputedAvailabilities());
     }
 }

@@ -48,19 +48,19 @@ public final class Calendar {
     public List<Integer> sumBooleanLists(List<List<Boolean>> lists){
 
         int lists_len = lists.size();
-        int one_list_len = lists.get(0).size();
+        List<Integer> result = new ArrayList<>();
+        if(lists_len != 0) {
+            int one_list_len = lists.get(0).size();
 
-        List<Integer> result = new ArrayList<>(one_list_len);
+            for (int i = 0; i < one_list_len; i++) {
+                result.add(0);
+            }
 
-        for (int i = 0; i < one_list_len; i++){
-            result.add(0);
+            for (int j = 0; j < lists_len; j++) {
+                List<Integer> current_list = getIntegerListFromBooleanList(lists.get(j));
+                result = getSumOfTwoLists(result, current_list);
+            }
         }
-
-        for (int j = 0; j < lists_len; j++){
-            List<Integer> current_list = getIntegerListFromBooleanList(lists.get(j));
-            result = getSumOfTwoLists(result, current_list);
-        }
-
         return result;
     }
 

@@ -20,7 +20,6 @@ public final class ConnectedCalendar {
     private HashMap<String, List<Boolean>> availabilities = new HashMap<>() ;
 
     public ConnectedCalendar(ID<Group> groupID, HashMap<String, List<Boolean>> list){
-        assert(!list.isEmpty());
         calendar = new Calendar(groupID);
         availabilities.putAll(list);
     }
@@ -32,7 +31,6 @@ public final class ConnectedCalendar {
 
 
     public List<Integer> getComputedAvailabilities() {
-        assert(!availabilities.isEmpty());
         return calendar.sumBooleanLists(new ArrayList<>(availabilities.values()));
     }
 

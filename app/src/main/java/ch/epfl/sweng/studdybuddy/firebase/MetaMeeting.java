@@ -36,11 +36,6 @@ public class MetaMeeting extends MetaGroup {
 
     }
 
-    public void pushLocation(MeetingLocation location, ID<Group> groupID, ID<Meeting> meetingID){
-        db.select("meetings").select(groupID.getId()).select(meetingID.getId()).select("location").setVal(location);
-
-    }
-
     public void deleteMeeting(ID<Meeting> meetingID, ID<Group> groupID) {
         db.select(m).select(groupID.getId()).select(meetingID.getId()).clear();
     }
