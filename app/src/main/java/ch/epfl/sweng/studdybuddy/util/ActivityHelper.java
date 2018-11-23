@@ -1,21 +1,10 @@
 package ch.epfl.sweng.studdybuddy.util;
 
-import android.app.DatePickerDialog;
-import android.app.TimePickerDialog;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.DatePicker;
-import android.widget.TextView;
-import android.widget.TimePicker;
-
-import java.util.List;
 
 import ch.epfl.sweng.studdybuddy.core.Group;
-import ch.epfl.sweng.studdybuddy.firebase.MetaMeeting;
-import ch.epfl.sweng.studdybuddy.services.meeting.Meeting;
-import ch.epfl.sweng.studdybuddy.tools.AdapterAdapter;
-import ch.epfl.sweng.studdybuddy.tools.Consumer;
 
 public class ActivityHelper {
     public static View.OnClickListener showDropdown(AutoCompleteTextView tv) {

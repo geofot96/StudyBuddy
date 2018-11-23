@@ -10,7 +10,6 @@ import android.widget.Button;
 import android.widget.Filter;
 import android.widget.Filterable;
 
-import java.util.Date;
 import java.util.List;
 
 import ch.epfl.sweng.studdybuddy.R;
@@ -18,8 +17,6 @@ import ch.epfl.sweng.studdybuddy.activities.GroupActivity;
 import ch.epfl.sweng.studdybuddy.activities.GroupInfoActivity;
 import ch.epfl.sweng.studdybuddy.core.Group;
 import ch.epfl.sweng.studdybuddy.core.Pair;
-import ch.epfl.sweng.studdybuddy.services.calendar.Availability;
-import ch.epfl.sweng.studdybuddy.services.calendar.ConnectedAvailability;
 import ch.epfl.sweng.studdybuddy.util.DateTimeHelper;
 import ch.epfl.sweng.studdybuddy.util.FeedFilter;
 import ch.epfl.sweng.studdybuddy.util.Helper;

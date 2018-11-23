@@ -43,7 +43,7 @@ public class ChatActivityTests
         intent = new Intent();
         intent.putExtra(Messages.maxUser, 1);
         intent.putExtra(Messages.userID, Messages.TEST);
-        intent.putExtra("GroupID", Messages.TEST);
+        intent.putExtra(Messages.groupID, Messages.TEST);
         FirebaseDatabase.getInstance().getReference().child("test_chat").removeValue();
 
     }
