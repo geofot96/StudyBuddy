@@ -75,6 +75,10 @@ public class GroupActivity extends AppCompatActivity {
             @Override
             public void update() {
                 adminMeeting(add, group, userID);
+                if(!userID.equals(group.getAdminID())) {
+                    time.setClickable(false);
+                    date.setClickable(false);
+                }
                 mm.fetchMeetings(group.getGroupID().getId(), sequenced(singleMeeting(singleton), meetingConsumer(title, time, date, add)));
             }
         };
