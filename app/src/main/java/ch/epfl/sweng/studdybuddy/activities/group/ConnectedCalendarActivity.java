@@ -129,17 +129,21 @@ public class ConnectedCalendarActivity extends AppCompatActivity
      * change the color of every cell of the calendar when a change has been added to
      * the availabilities of the users.
      */
-    public void updateColor() {
+    public void update() {
         List<Integer> groupAvailabilities = calendar.getComputedAvailabilities();
         if(groupAvailabilities.size() == 77) {
-            int size = calendarGrid.getColumnCount() * calendarGrid.getRowCount();
-            for (int i = 0; i < size; i++) {
-                CardView cardView;
-                if (i % CalendarWidth != 0) {//Hours shouldn't be clickable
-                    cardView = (CardView) calendarGrid.getChildAt(i);
-                    int index = (i / CalendarWidth) * (CalendarWidth - 1) + (i % CalendarWidth) - 1;
-                    cardView.setCardBackgroundColor(gradient((float) groupAvailabilities.get(index).intValue()));
-                }
+            updateColor(groupAvailabilities);
+        }
+    }
+
+    public void updateColor(List<Integer> av){
+        int size = calendarGrid.getColumnCount() * calendarGrid.getRowCount();
+        for (int i = 0; i < size; i++) {
+            CardView cardView;
+            if (i % CalendarWidth != 0) {//Hours shouldn't be clickable
+                cardView = (CardView) calendarGrid.getChildAt(i);
+                int index = (i / CalendarWidth) * (CalendarWidth - 1) + (i % CalendarWidth) - 1;
+                cardView.setCardBackgroundColor(gradient((float) av.get(index).intValue()));
             }
         }
     }
@@ -199,7 +203,7 @@ public class ConnectedCalendarActivity extends AppCompatActivity
                 @Override
                 public void accept(List<Boolean> booleans) {
                     calendar.modify(targetID, booleans);
-                    updateColor();
+                    update();
                 }
             });
         }
@@ -213,7 +217,7 @@ public class ConnectedCalendarActivity extends AppCompatActivity
         public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
             String targetID = dataSnapshot.getKey();
             calendar.removeUser(targetID);
-            updateColor();
+            update();
         }
 
         @Override
