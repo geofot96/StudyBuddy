@@ -22,7 +22,7 @@ before_script:
   - ./cc-test-reporter before-build
 script:
   - chmod +x ./gradlew
-  - travis_wait 20 ./gradlew build connectedCheck jacocoTestReport
+  - travis_wait 30 ./gradlew build connectedCheck jacocoTestReport
 
 after_script:
   # Report test coverage to Code Climate
