@@ -110,14 +110,6 @@ public class ConnectedCalendarActivityTest{
         return cardView.getCardBackgroundColor().getDefaultColor();
     }
 
-    public static void setUpBundle(){
-        Bundle bundle = new Bundle();
-        bundle.putInt(Messages.maxUser, 1);
-        bundle.putString(Messages.userID, Messages.TEST);
-        bundle.putString(Messages.groupID, Messages.TEST);
-        bundle.putString(Messages.ADMIN, Messages.TEST);
-        GlobalBundle.getInstance().putAll(bundle);
-    }
 
     private class myRule extends ActivityTestRule<ConnectedCalendarActivity> {
 
@@ -137,7 +129,7 @@ public class ConnectedCalendarActivityTest{
             FirebaseReference fb = new FirebaseReference();
             Task<Void> task = fb.select(Messages.FirebaseNode.AVAILABILITIES).select(Messages.TEST).select(Messages.TEST).setVal(list);
             while (!(task.isComplete())) ;
-            setUpBundle();
+            GroupActivityTest.setup();
         }
     }
 }
