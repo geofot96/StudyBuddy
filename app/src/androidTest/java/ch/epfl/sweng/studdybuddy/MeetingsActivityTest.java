@@ -1,12 +1,15 @@
 package ch.epfl.sweng.studdybuddy;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.test.rule.ActivityTestRule;
 
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 
+import ch.epfl.sweng.studdybuddy.activities.group.GlobalBundle;
 import ch.epfl.sweng.studdybuddy.activities.group.meetings.MeetingsActivity;
 import ch.epfl.sweng.studdybuddy.util.Messages;
 
@@ -20,7 +23,13 @@ public class MeetingsActivityTest {
     @Rule
     public MeetingsRule mActivityRule = new MeetingsRule(MeetingsActivity.class);
 
-    @Before
+    @BeforeClass
+    public static void setup(){
+        Bundle bundle = new Bundle();
+        bundle.putString(Messages.groupID, Messages.TEST);
+        bundle.putString(Messages.ADMIN, Messages.TEST);
+        GlobalBundle.getInstance().putAll(bundle);
+    }
 
     @Test
     public void noCardViewInFeedback(){

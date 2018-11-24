@@ -1,6 +1,7 @@
 package ch.epfl.sweng.studdybuddy;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
@@ -18,12 +19,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ch.epfl.sweng.studdybuddy.activities.group.ConnectedCalendarActivity;
+import ch.epfl.sweng.studdybuddy.activities.group.GlobalBundle;
 import ch.epfl.sweng.studdybuddy.firebase.FirebaseReference;
 import ch.epfl.sweng.studdybuddy.util.Messages;
 
 import static android.support.test.internal.runner.junit4.statement.UiThreadStatement.runOnUiThread;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 @RunWith(AndroidJUnit4.class)
 
@@ -105,13 +110,13 @@ public class ConnectedCalendarActivityTest{
         return cardView.getCardBackgroundColor().getDefaultColor();
     }
 
-    public static Intent setUpTestIntent(){
-        Intent intent = new Intent();
-        intent.putExtra(Messages.maxUser, 1);
-        intent.putExtra(Messages.userID, Messages.TEST);
-        intent.putExtra(Messages.groupID, Messages.TEST);
-        intent.putExtra(Messages.ADMIN, Messages.TEST);
-        return intent;
+    public static void setUpBundle(){
+        Bundle bundle = new Bundle();
+        bundle.putInt(Messages.maxUser, 1);
+        bundle.putString(Messages.userID, Messages.TEST);
+        bundle.putString(Messages.groupID, Messages.TEST);
+        bundle.putString(Messages.ADMIN, Messages.TEST);
+        GlobalBundle.getInstance().putAll(bundle);
     }
 
     private class myRule extends ActivityTestRule<ConnectedCalendarActivity> {
@@ -132,12 +137,7 @@ public class ConnectedCalendarActivityTest{
             FirebaseReference fb = new FirebaseReference();
             Task<Void> task = fb.select(Messages.FirebaseNode.AVAILABILITIES).select(Messages.TEST).select(Messages.TEST).setVal(list);
             while (!(task.isComplete())) ;
-        }
-
-        @Override
-        public ConnectedCalendarActivity launchActivity(@Nullable Intent startIntent) {
-            Intent intent = setUpTestIntent();
-            return super.launchActivity(intent);
+            setUpBundle();
         }
     }
 }

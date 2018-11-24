@@ -20,6 +20,7 @@ import ch.epfl.sweng.studdybuddy.core.User;
 import ch.epfl.sweng.studdybuddy.firebase.FirebaseReference;
 import ch.epfl.sweng.studdybuddy.firebase.MetaGroup;
 import ch.epfl.sweng.studdybuddy.util.Helper;
+import ch.epfl.sweng.studdybuddy.util.Messages;
 
 import static ch.epfl.sweng.studdybuddy.MetaFactory.deepFBReference;
 import static ch.epfl.sweng.studdybuddy.util.CoreFactory.blankGroupWId;
@@ -164,16 +165,16 @@ public class MetabaseGroupsTest {
 
     @Test
     public void pushGroupCallsWithWellFormedArgs() {
-        when(testref.child("userGroup")).thenReturn(testref);
-        when(testref.child("groups")).thenReturn(testref);
+        when(testref.child(Messages.FirebaseNode.USERGROUP)).thenReturn(testref);
+        when(testref.child(Messages.FirebaseNode.GROUPS)).thenReturn(testref);
         when(testref.setValue(any(Pair.class))).thenReturn(null);
         when(testref.setValue(any(Group.class))).thenReturn(null);
         mb.pushGroup(blankGroupWId("ab"), "123");
         ArgumentCaptor<String> p = ArgumentCaptor.forClass(String.class);
         verify(testref, times(4)).child(p.capture());
         assertTrue(p.getAllValues().contains("ab"));
-        assertTrue(p.getAllValues().contains("groups"));
-        assertTrue(p.getAllValues().contains("userGroup"));
+        assertTrue(p.getAllValues().contains(Messages.FirebaseNode.GROUPS));
+        assertTrue(p.getAllValues().contains(Messages.FirebaseNode.USERGROUP));
         assertTrue(p.getAllValues().contains(Helper.hashCode(new Pair("123", "ab"))));
     }
 }

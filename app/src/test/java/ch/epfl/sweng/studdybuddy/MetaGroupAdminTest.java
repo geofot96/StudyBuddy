@@ -13,6 +13,7 @@ import ch.epfl.sweng.studdybuddy.core.Group;
 import ch.epfl.sweng.studdybuddy.core.Pair;
 import ch.epfl.sweng.studdybuddy.firebase.FirebaseReference;
 import ch.epfl.sweng.studdybuddy.firebase.MetaGroupAdmin;
+import ch.epfl.sweng.studdybuddy.util.Messages;
 
 import static ch.epfl.sweng.studdybuddy.MetaFactory.deepFBReference;
 import static ch.epfl.sweng.studdybuddy.util.CoreFactory.blankGroupWId;
@@ -45,8 +46,8 @@ public class MetaGroupAdminTest {
     @Test
     public void rotateAdminCallsClearIfGroupHasNoUser() {
         mg.rotateAdmin(ghostGroup).onDataChange(groups);
-        verify(testref, times(1)).child("userGroup");
-        verify(testref, times(1)).child("groups");
+        verify(testref, times(1)).child(Messages.FirebaseNode.USERGROUP);
+        verify(testref, times(1)).child(Messages.FirebaseNode.GROUPS);
     }
 
     @Test
@@ -85,7 +86,7 @@ public class MetaGroupAdminTest {
     @Test
     public void removeUserFromGroupReturnsNull() {
         assertEquals(null, mg.removeUserFromGroup("notingroup", ghostGroup));
-        verify(testref, times(1)).child("userGroup");
+        verify(testref, times(1)).child(Messages.FirebaseNode.USERGROUP);
     }
     @Test public void removeUserFromGroupDoesNotReturnNull() {
         assertNotNull(mg.removeUserFromGroup("123", withAdmin("123")));

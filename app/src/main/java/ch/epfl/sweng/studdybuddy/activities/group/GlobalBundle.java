@@ -1,6 +1,7 @@
 package ch.epfl.sweng.studdybuddy.activities.group;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 public class GlobalBundle {
@@ -11,11 +12,13 @@ public class GlobalBundle {
 
     private GlobalBundle(){}
 
+
     public static GlobalBundle getInstance(){
         synchronized (GlobalBundle.class){
             if(Instance == null){
                 Instance = new GlobalBundle();
             }
+            GlobalBundle.class.notifyAll();
             return Instance;
         }
     }
@@ -26,7 +29,7 @@ public class GlobalBundle {
         }
     }
 
-    public Bundle getSavedBundle(){
+    public Bundle getSavedBundle() {
         return savedBundle;
     }
 }

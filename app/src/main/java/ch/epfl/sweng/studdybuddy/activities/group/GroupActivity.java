@@ -54,6 +54,7 @@ public class GroupActivity extends AppCompatActivity {
         participantButton.setOnClickListener(new ClickListener(new Intent(this, GroupInfoActivity.class)));
         createMeetingBtn.setOnClickListener(new ClickListener(new Intent(this, createMeetingActivity.class)));
         meetingsBtn.setOnClickListener(new ClickListener(new Intent(this, MeetingsActivity.class)));
+        createMeetingBtn.setEnabled(userID.equals(adminID));
     }
 
 

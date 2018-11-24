@@ -1,13 +1,16 @@
 package ch.epfl.sweng.studdybuddy;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.test.espresso.intent.rule.IntentsTestRule;
 
+import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 
 import ch.epfl.sweng.studdybuddy.activities.group.ConnectedCalendarActivity;
+import ch.epfl.sweng.studdybuddy.activities.group.GlobalBundle;
 import ch.epfl.sweng.studdybuddy.activities.group.GroupActivity;
 import ch.epfl.sweng.studdybuddy.activities.group.GroupInfoActivity;
 import ch.epfl.sweng.studdybuddy.activities.group.meetings.MeetingsActivity;
@@ -26,13 +29,22 @@ import static org.hamcrest.CoreMatchers.not;
 public class GroupActivityTest {
 
     @Rule
-    public myRule mAutomaticRule =
-            new myRule(GroupActivity.class);
+    public IntentsTestRule<GroupActivity>  mAutomaticRule =
+            new IntentsTestRule<>(GroupActivity.class);
 
     @Rule
-    public myRule mManualRule =
-            new myRule(GroupActivity.class, false, false);
+    public IntentsTestRule<GroupActivity>  mManualRule =
+            new IntentsTestRule<>(GroupActivity.class, false, false);
 
+    @BeforeClass
+    public static void setup(){
+        Bundle bundle = new Bundle();
+        bundle.putInt(Messages.maxUser, 1);
+        bundle.putString(Messages.userID, Messages.TEST);
+        bundle.putString(Messages.groupID, Messages.TEST);
+        bundle.putString(Messages.ADMIN, Messages.TEST);
+        GlobalBundle.getInstance().putAll(bundle);
+    }
     @Test
     public void leadsToCalendar(){
         testIntent(R.id.calendarBtn, ConnectedCalendarActivity.class.getName());
@@ -45,15 +57,20 @@ public class GroupActivityTest {
 
     @Test
     public void NoAdminCantLeadToCreateMeeting(){
+        mAutomaticRule.finishActivity();
+        Bundle bundle = new Bundle();
+        bundle.putString(Messages.ADMIN, "");
+        GlobalBundle.getInstance().putAll(bundle);
+        mManualRule.launchActivity(new Intent());
         onView(withId(R.id.createMeeting)).check(matches(not(isEnabled())));
+        mManualRule.finishActivity();
+        bundle.putString(Messages.ADMIN, Messages.TEST);
+        GlobalBundle.getInstance().putAll(bundle);
     }
 
     @Test
     public void AdminCanLeadToCreateMeeting(){
-        mAutomaticRule.finishActivity();
-        mManualRule.launchActivity(new Intent());
         testIntent(R.id.createMeeting, createMeetingActivity.class.getName());
-        mManualRule.finishActivity();
     }
 
     @Test

@@ -9,7 +9,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import ch.epfl.sweng.studdybuddy.activities.CreateGroupActivity;
-import ch.epfl.sweng.studdybuddy.activities.GroupsActivity;
 import ch.epfl.sweng.studdybuddy.activities.NavigationActivity;
 
 import static android.support.test.InstrumentationRegistry.getTargetContext;

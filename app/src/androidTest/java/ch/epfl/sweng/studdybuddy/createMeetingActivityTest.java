@@ -1,6 +1,7 @@
 package ch.epfl.sweng.studdybuddy;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.test.rule.ActivityTestRule;
 
 import org.junit.Before;
@@ -9,6 +10,7 @@ import org.junit.Test;
 
 import java.util.Date;
 
+import ch.epfl.sweng.studdybuddy.activities.group.GlobalBundle;
 import ch.epfl.sweng.studdybuddy.activities.group.meetings.createMeetingActivity;
 import ch.epfl.sweng.studdybuddy.services.meeting.MeetingLocation;
 import ch.epfl.sweng.studdybuddy.util.Messages;
@@ -37,9 +39,11 @@ public class createMeetingActivityTest {
 
     @Before
     public void setUp(){
-        intent.putExtra(Messages.maxUser, 1);
-        intent.putExtra(Messages.userID, Messages.TEST);
-        intent.putExtra(Messages.groupID, Messages.TEST);
+        Bundle bundle = new Bundle();
+        bundle.putInt(Messages.maxUser, 1);
+        bundle.putString(Messages.userID, Messages.TEST);
+        bundle.putString(Messages.groupID, Messages.TEST);
+        GlobalBundle.getInstance().putAll(bundle);
         when(alwaysBefore.before(any())).thenReturn(true);
         when(alwaysAfter.after(any())).thenReturn(true);
     }
