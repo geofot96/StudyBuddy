@@ -7,12 +7,11 @@ import android.support.test.espresso.intent.rule.IntentsTestRule;
 import org.junit.Rule;
 import org.junit.Test;
 
-import ch.epfl.sweng.studdybuddy.activities.ConnectedCalendarActivity;
-import ch.epfl.sweng.studdybuddy.activities.GroupActivity;
-import ch.epfl.sweng.studdybuddy.activities.GroupInfoActivity;
-import ch.epfl.sweng.studdybuddy.activities.meetings.MeetingsActivity;
-import ch.epfl.sweng.studdybuddy.activities.meetings.createMeetingActivity;
-import ch.epfl.sweng.studdybuddy.core.Group;
+import ch.epfl.sweng.studdybuddy.activities.group.ConnectedCalendarActivity;
+import ch.epfl.sweng.studdybuddy.activities.group.GroupActivity;
+import ch.epfl.sweng.studdybuddy.activities.group.GroupInfoActivity;
+import ch.epfl.sweng.studdybuddy.activities.group.meetings.MeetingsActivity;
+import ch.epfl.sweng.studdybuddy.activities.group.meetings.createMeetingActivity;
 import ch.epfl.sweng.studdybuddy.util.Messages;
 
 import static android.support.test.espresso.Espresso.onView;

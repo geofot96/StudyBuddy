@@ -8,7 +8,7 @@ import org.junit.Rule;
 import org.junit.Test;
 
 import ch.epfl.sweng.studdybuddy.Fragments.FeedFragment;
-import ch.epfl.sweng.studdybuddy.activities.GroupInfoActivity;
+import ch.epfl.sweng.studdybuddy.activities.group.GroupInfoActivity;
 import ch.epfl.sweng.studdybuddy.activities.GroupsActivity;
 import ch.epfl.sweng.studdybuddy.util.Messages;
 

@@ -13,8 +13,8 @@ import android.widget.Filterable;
 import java.util.List;
 
 import ch.epfl.sweng.studdybuddy.R;
-import ch.epfl.sweng.studdybuddy.activities.GroupActivity;
-import ch.epfl.sweng.studdybuddy.activities.GroupInfoActivity;
+import ch.epfl.sweng.studdybuddy.activities.group.GroupActivity;
+import ch.epfl.sweng.studdybuddy.activities.group.GroupInfoActivity;
 import ch.epfl.sweng.studdybuddy.core.Group;
 import ch.epfl.sweng.studdybuddy.core.Pair;
 import ch.epfl.sweng.studdybuddy.util.DateTimeHelper;

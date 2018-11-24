@@ -11,7 +11,7 @@ import org.junit.runner.RunWith;
 
 import java.util.ArrayList;
 
-import ch.epfl.sweng.studdybuddy.activities.GroupInfoActivity;
+import ch.epfl.sweng.studdybuddy.activities.group.GroupInfoActivity;
 import ch.epfl.sweng.studdybuddy.tools.Adapter;
 import ch.epfl.sweng.studdybuddy.tools.ParticipantAdapter;
 

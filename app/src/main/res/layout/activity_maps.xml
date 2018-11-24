@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.MapsActivity"
+    tools:context=".activities.group.MapsActivity"
     android:orientation="vertical"
     android:weightSum="1">
 
@@ -35,6 +35,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/map"
-        tools:context=".activities.MapsActivity"
+        tools:context=".activities.group.MapsActivity"
         android:name="com.google.android.gms.maps.SupportMapFragment"/>
 </LinearLayout>

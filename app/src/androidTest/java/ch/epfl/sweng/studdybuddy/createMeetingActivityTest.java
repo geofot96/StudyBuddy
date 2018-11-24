@@ -1,7 +1,6 @@
 package ch.epfl.sweng.studdybuddy;
 
 import android.content.Intent;
-import android.support.annotation.Nullable;
 import android.support.test.rule.ActivityTestRule;
 
 import org.junit.Before;
@@ -10,7 +9,7 @@ import org.junit.Test;
 
 import java.util.Date;
 
-import ch.epfl.sweng.studdybuddy.activities.meetings.createMeetingActivity;
+import ch.epfl.sweng.studdybuddy.activities.group.meetings.createMeetingActivity;
 import ch.epfl.sweng.studdybuddy.services.meeting.MeetingLocation;
 import ch.epfl.sweng.studdybuddy.util.Messages;
 

@@ -16,7 +16,8 @@ import java.util.Date;
 import java.util.List;
 
 import ch.epfl.sweng.studdybuddy.R;
-import ch.epfl.sweng.studdybuddy.activities.MapsActivity;
+import ch.epfl.sweng.studdybuddy.activities.group.GlobalBundle;
+import ch.epfl.sweng.studdybuddy.activities.group.MapsActivity;
 import ch.epfl.sweng.studdybuddy.core.Pair;
 import ch.epfl.sweng.studdybuddy.util.Messages;
 import ch.epfl.sweng.studdybuddy.util.StudyBuddy;
@@ -95,6 +96,7 @@ public class MeetingRecyclerAdapter extends RecyclerView.Adapter<MeetingRecycler
                 intent.putExtra(Messages.groupID, groupID);
                 intent.putExtra(Messages.meetingID, meeting.getId().getId());
                 intent.putExtra(Messages.ADMIN, adminID);
+                GlobalBundle.getInstance().putAll(intent.getExtras());
                 startActivityForResult(activity, intent, 1, null);
             }
         });

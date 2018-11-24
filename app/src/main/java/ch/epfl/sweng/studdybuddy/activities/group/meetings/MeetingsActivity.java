@@ -1,4 +1,4 @@
-package ch.epfl.sweng.studdybuddy.activities.meetings;
+package ch.epfl.sweng.studdybuddy.activities.group.meetings;
 
 import android.content.Intent;
 import android.os.Build;
@@ -7,6 +7,7 @@ import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -14,6 +15,8 @@ import java.util.Date;
 import java.util.List;
 
 import ch.epfl.sweng.studdybuddy.R;
+import ch.epfl.sweng.studdybuddy.activities.NavigationActivity;
+import ch.epfl.sweng.studdybuddy.activities.group.GlobalBundle;
 import ch.epfl.sweng.studdybuddy.core.ID;
 import ch.epfl.sweng.studdybuddy.core.Pair;
 import ch.epfl.sweng.studdybuddy.firebase.MetaMeeting;
@@ -36,6 +39,8 @@ public class MeetingsActivity extends AppCompatActivity {
     private List<Meeting> meetingList;
 
     private MetaMeeting metaM;
+
+    private final String TAG = "MEETINGS_ACTIVITY";
 
     private final Comparator<Meeting> comparator = new Comparator<Meeting>() {
         @Override
@@ -66,10 +71,15 @@ public class MeetingsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_meetings);
-        origin = getIntent().getExtras();
+        origin = GlobalBundle.getInstance().getSavedBundle();
 
         groupId = origin.getString(Messages.groupID);
         adminId = origin.getString(Messages.ADMIN);
+
+        if(groupId == null || adminId == null ){
+            startActivity(new Intent(this, NavigationActivity.class));
+            Log.d(TAG, "Information of the group is not fully recovered");
+        }
 
         meetingRV = findViewById(R.id.meetingRV);
         meetingRV.setLayoutManager(new LinearLayoutManager(this));
@@ -87,15 +97,16 @@ public class MeetingsActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data){
+    protected void onActivityResult(int requestCode, int resultCode, Intent d){
         if(requestCode == 1 && resultCode == RESULT_OK){
+            Bundle data = GlobalBundle.getInstance().getSavedBundle();
             MeetingLocation meetingLocation = new MeetingLocation(
-              data.getStringExtra(Messages.LOCATION_TITLE),
-                    data.getStringExtra(Messages.ADDRESS),
-                    data.getDoubleExtra(Messages.LATITUDE, 0),
-                    data.getDoubleExtra(Messages.LONGITUDE, 0)
+              data.getString(Messages.LOCATION_TITLE),
+                    data.getString(Messages.ADDRESS),
+                    data.getDouble(Messages.LATITUDE, 0),
+                    data.getDouble(Messages.LONGITUDE, 0)
             );
-            metaM.pushLocation(meetingLocation, new ID<>(groupId), new ID<>(data.getStringExtra(Messages.meetingID)));
+            metaM.pushLocation(meetingLocation, new ID<>(groupId), new ID<>(data.getString(Messages.meetingID)));
         }
     }
 }

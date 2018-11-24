@@ -1,4 +1,4 @@
-package ch.epfl.sweng.studdybuddy.activities;
+package ch.epfl.sweng.studdybuddy.activities.group;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -23,9 +23,6 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import ch.epfl.sweng.studdybuddy.R;
 import ch.epfl.sweng.studdybuddy.firebase.FirebaseReference;
 import ch.epfl.sweng.studdybuddy.services.meeting.Meeting;
@@ -39,11 +36,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private GoogleMap mMap;
 
-    private MarkerOptions mMarker;  //TODO needs to be removed if not used
+    private MarkerOptions mMarker;  //TODO remove it if never used
     private Marker marker;
-    private List<Meeting> meetings;
     private FirebaseReference ref;
     private MeetingLocation confirmedPlace;
+    private Bundle origin;
 
     PlaceAutocompleteFragment autocompleteFragment;
     String uId;
@@ -61,10 +58,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         autocompleteFragment = (PlaceAutocompleteFragment)
                 getFragmentManager().findFragmentById(R.id.place_autocomplete);
         uId = ((StudyBuddy) MapsActivity.this.getApplication()).getAuthendifiedUser().getUserID().getId();
-        Intent intent = getIntent();
-        gId = intent.getStringExtra(Messages.groupID);
-        adminID = intent.getStringExtra(Messages.ADMIN);
-        meetingID = intent.getStringExtra(Messages.meetingID);
+        origin = GlobalBundle.getInstance().getSavedBundle();
+        gId = origin.getString(Messages.groupID);
+        adminID = origin.getString(Messages.ADMIN);
+        meetingID = origin.getString(Messages.meetingID);
         mapFragment.getMapAsync(this);
 
     }
@@ -94,11 +91,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             public void onClick(View v) {
                 if(confirmedPlace != null) {
                     Intent resultIntent = new Intent();
-                    resultIntent.putExtra(Messages.LOCATION_TITLE, confirmedPlace.getTitle());
-                    resultIntent.putExtra(Messages.ADDRESS, confirmedPlace.getAddress());
-                    resultIntent.putExtra(Messages.LATITUDE, confirmedPlace.getLatitude());
-                    resultIntent.putExtra(Messages.LONGITUDE, confirmedPlace.getLongitude());
-                    resultIntent.putExtra(Messages.meetingID, meetingID);
+                    origin.putString(Messages.LOCATION_TITLE, confirmedPlace.getTitle());
+                    origin.putString(Messages.ADDRESS, confirmedPlace.getAddress());
+                    origin.putDouble(Messages.LATITUDE, confirmedPlace.getLatitude());
+                    origin.putString(Messages.meetingID, meetingID);
+                    origin.putDouble(Messages.LONGITUDE, confirmedPlace.getLongitude());
+                    GlobalBundle.getInstance().putAll(origin);
+                    /*resultIntent.putExtras(origin);*/
                     setResult(RESULT_OK, resultIntent);
                     finish();
                 }
@@ -162,7 +161,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         autocompleteFragment.setOnPlaceSelectedListener(placeSelectionListener());
         button = ((Button) findViewById(R.id.confirmLocation));
         button.setOnClickListener((confirmationListener()));
-        meetings = new ArrayList<>();
         ref = new FirebaseReference();
         initialization(ref);
         if(adminID.equals(uId)){
@@ -197,7 +195,4 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
         });
     }
-
-
-
 }

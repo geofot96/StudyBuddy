@@ -1,4 +1,4 @@
-package ch.epfl.sweng.studdybuddy.activities;
+package ch.epfl.sweng.studdybuddy.activities.group;
 
 import android.content.Intent;
 import android.graphics.Color;
@@ -24,6 +24,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import ch.epfl.sweng.studdybuddy.R;
+import ch.epfl.sweng.studdybuddy.activities.group.GroupActivity;
 import ch.epfl.sweng.studdybuddy.core.ID;
 import ch.epfl.sweng.studdybuddy.core.Pair;
 import ch.epfl.sweng.studdybuddy.firebase.FirebaseReference;
@@ -50,7 +51,7 @@ public class ConnectedCalendarActivity extends AppCompatActivity
     private ConnectedCalendar calendar;
     private DatabaseReference database;
     private Pair pair = new Pair();
-    private Bundle extras;
+    private Bundle origin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) throws NullPointerException{
@@ -61,17 +62,13 @@ public class ConnectedCalendarActivity extends AppCompatActivity
         calendarGrid = findViewById(R.id.calendarGrid);
         Button button = findViewById(R.id.confirmSlots);
 
-        Intent intent = getIntent();
-        if(intent == null){
-            throw new NullPointerException("No intent grabbed by the activity");
-        }
+        GlobalBundle globalBundle = GlobalBundle.getInstance();
+        origin = globalBundle.getSavedBundle();
 
-        extras = intent.getExtras();
+        NmaxUsers = (float) origin.getInt(Messages.maxUser, -1);
 
-        NmaxUsers = (float) intent.getIntExtra(Messages.maxUser, -1);
-
-        pair.setKey(intent.getStringExtra(Messages.groupID));
-        pair.setValue(intent.getStringExtra(Messages.userID));
+        pair.setKey(origin.getString(Messages.groupID));
+        pair.setValue(origin.getString(Messages.userID));
         if(pair.getKey() == null || pair.getValue() == null){
             throw new NullPointerException("the intent didn't content expected data");
         }
@@ -84,7 +81,7 @@ public class ConnectedCalendarActivity extends AppCompatActivity
             @Override
             public void onClick(View v)
             {
-                confirmSlots(extras);
+                confirmSlots();
             }
         });
     }
@@ -121,13 +118,11 @@ public class ConnectedCalendarActivity extends AppCompatActivity
     }
 
     /**
-     * clicking on the confirm button leads us to the group Activity
-     * @param origin the intent got from the GroupActivity
+     * clicking on the confirm button leads us to GroupActivity
      */
-    public void confirmSlots(Bundle origin) {
-        //TODO : once the GroupActivity will be correctly set, launch the GroupActivity
+    public void confirmSlots() {
         Intent newIntent = new Intent(this, GroupActivity.class);
-        startActivity(newIntent.putExtras(origin));
+        startActivity(newIntent);
     }
 
     /**

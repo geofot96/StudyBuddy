@@ -1,4 +1,4 @@
-package ch.epfl.sweng.studdybuddy.activities;
+package ch.epfl.sweng.studdybuddy.activities.group;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ch.epfl.sweng.studdybuddy.R;
+import ch.epfl.sweng.studdybuddy.activities.NavigationActivity;
 import ch.epfl.sweng.studdybuddy.core.Group;
 import ch.epfl.sweng.studdybuddy.core.User;
 import ch.epfl.sweng.studdybuddy.firebase.MetaGroupAdmin;
@@ -35,8 +36,8 @@ public class GroupInfoActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group_info);
         uId = ((StudyBuddy) GroupInfoActivity.this.getApplication()).getAuthendifiedUser().getUserID().getId();
-        Intent intent = getIntent();
-        gId = intent.getStringExtra(Messages.groupID);
+        Bundle origin = GlobalBundle.getInstance().getSavedBundle();
+        gId = origin.getString(Messages.groupID);
         gIds.add(gId);
         mb.getGroupsfromIds(gIds, group);
         mb.getGroupUsers(gId, participants);

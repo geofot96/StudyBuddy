@@ -1,11 +1,13 @@
-package ch.epfl.sweng.studdybuddy.activities.meetings;
+package ch.epfl.sweng.studdybuddy.activities.group.meetings;
 
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -18,8 +20,10 @@ import java.util.Date;
 import java.util.Objects;
 
 import ch.epfl.sweng.studdybuddy.R;
-import ch.epfl.sweng.studdybuddy.activities.GroupActivity;
-import ch.epfl.sweng.studdybuddy.activities.MapsActivity;
+import ch.epfl.sweng.studdybuddy.activities.group.GlobalBundle;
+import ch.epfl.sweng.studdybuddy.activities.group.GroupActivity;
+import ch.epfl.sweng.studdybuddy.activities.group.MapsActivity;
+import ch.epfl.sweng.studdybuddy.activities.NavigationActivity;
 import ch.epfl.sweng.studdybuddy.core.ID;
 import ch.epfl.sweng.studdybuddy.firebase.MetaMeeting;
 import ch.epfl.sweng.studdybuddy.services.meeting.Meeting;
@@ -45,6 +49,7 @@ public class createMeetingActivity extends AppCompatActivity {
     private Button saveBtn;
 
     private String groupID;
+    private final String TAG = "CREATE_MEETING_ACTIVITY";
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -52,10 +57,13 @@ public class createMeetingActivity extends AppCompatActivity {
         setContentView(R.layout.activity_create_meeting);
         meeting = new Meeting();
         metaM = new MetaMeeting();
-        origin = getIntent().getExtras();
-
-        assert origin != null;
+        origin = GlobalBundle.getInstance().getSavedBundle();
         groupID = origin.getString(Messages.groupID);
+
+        if(groupID == null){
+            startActivity(new Intent(this, NavigationActivity.class));
+            Log.d(TAG, "Information of the group is not fully recovered");
+        }
 
         mDisplayDate = findViewById(R.id.datePicker);
         mDisplayDate.setOnClickListener(fromDate());
@@ -75,6 +83,11 @@ public class createMeetingActivity extends AppCompatActivity {
         initSaveBtn();
     }
 
+    @Override
+    public void onBackPressed(){
+
+    }
+
     private void setClickOnLocation() {
         mDisplayLocation.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -83,6 +96,7 @@ public class createMeetingActivity extends AppCompatActivity {
                 i.putExtra(Messages.groupID, groupID);
                 i.putExtra(Messages.meetingID, meeting.getId().getId());
                 i.putExtra(Messages.ADMIN, origin.getString(Messages.ADMIN));
+                GlobalBundle.getInstance().putAll(i.getExtras());
                 startActivityForResult(i, 1);
             }
         });
@@ -108,7 +122,7 @@ public class createMeetingActivity extends AppCompatActivity {
                 meeting.setLocation(meetingLocation);
                 metaM.pushMeeting(meeting, new ID<>(groupID));
                 Intent intent = new Intent(createMeetingActivity.this, GroupActivity.class);
-                intent.putExtras(origin);
+                GlobalBundle.getInstance().putAll(origin);
                 startActivity(intent);
             }
         });
@@ -116,14 +130,15 @@ public class createMeetingActivity extends AppCompatActivity {
 
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data){
-        super.onActivityResult(requestCode,resultCode,data);
+    protected void onActivityResult(int requestCode, int resultCode, Intent d){
+        super.onActivityResult(requestCode,resultCode,d);
         if(requestCode == 1 && resultCode == RESULT_OK){
+            Bundle data = GlobalBundle.getInstance().getSavedBundle();
             meetingLocation = new MeetingLocation(
-                    data.getStringExtra(Messages.LOCATION_TITLE),
-                    data.getStringExtra(Messages.ADDRESS),
-                    data.getDoubleExtra(Messages.LATITUDE, 0),
-                    data.getDoubleExtra(Messages.LONGITUDE, 0));
+                    data.getString(Messages.LOCATION_TITLE),
+                    data.getString(Messages.ADDRESS),
+                    data.getDouble(Messages.LATITUDE, 0),
+                    data.getDouble(Messages.LONGITUDE, 0));
             mDisplayLocation.setText(meetingLocation.getTitle() + ": " + meetingLocation.getAddress());
             updateButton();
         }
