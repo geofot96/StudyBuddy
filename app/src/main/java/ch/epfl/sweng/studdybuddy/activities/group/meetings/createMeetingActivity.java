@@ -15,6 +15,8 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import org.w3c.dom.Text;
+
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Objects;
@@ -28,13 +30,14 @@ import ch.epfl.sweng.studdybuddy.core.ID;
 import ch.epfl.sweng.studdybuddy.firebase.MetaMeeting;
 import ch.epfl.sweng.studdybuddy.services.meeting.Meeting;
 import ch.epfl.sweng.studdybuddy.services.meeting.MeetingLocation;
+import ch.epfl.sweng.studdybuddy.tools.AdapterAdapter;
+import ch.epfl.sweng.studdybuddy.util.ActivityHelper;
 import ch.epfl.sweng.studdybuddy.util.Messages;
 
 public class createMeetingActivity extends AppCompatActivity {
     private Meeting meeting;
 
     private TextView mDisplayDate;
-    private DatePickerDialog.OnDateSetListener dateSetListener;
 
     private TextView mDisplayStartTime;
     private TextView mDisplayEndTime;
@@ -49,6 +52,9 @@ public class createMeetingActivity extends AppCompatActivity {
     private Button saveBtn;
 
     private String groupID;
+
+    private AdapterAdapter ButtonListener;
+
     private final String TAG = "CREATE_MEETING_ACTIVITY";
 
     @Override
@@ -67,10 +73,11 @@ public class createMeetingActivity extends AppCompatActivity {
 
         mDisplayDate = findViewById(R.id.datePicker);
         mDisplayDate.setOnClickListener(fromDate());
-        dateSetListener = new DatePickerDialog.OnDateSetListener() {
+
+        ButtonListener = new AdapterAdapter() {
             @Override
-            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                setDateAndTextView(year,month, dayOfMonth);
+            public void update() {
+                updateButton();
             }
         };
 
@@ -104,10 +111,10 @@ public class createMeetingActivity extends AppCompatActivity {
 
     private void initDisplayTime() {
         mDisplayStartTime = findViewById(R.id.timePicker);
-        mDisplayStartTime.setOnClickListener(fromTime(forStarting()));
+        mDisplayStartTime.setOnClickListener(fromTime(mDisplayStartTime, startingDate));
 
         mDisplayEndTime = findViewById(R.id.timePicker2);
-        mDisplayEndTime.setOnClickListener(fromTime(forEnding()));
+        mDisplayEndTime.setOnClickListener(fromTime(mDisplayEndTime, endingDate));
 
     }
 
@@ -161,49 +168,28 @@ public class createMeetingActivity extends AppCompatActivity {
     }
 
 
-    private void setDateAndTextView(int year, int month, int dayOfMonth) {
-        int realMonth = month+1;
-        mDisplayDate.setText(year + "/" + realMonth + "/" + dayOfMonth);
-        setDate(startingDate, year, month, dayOfMonth);
-        setDate(endingDate, year, month, dayOfMonth);
-        updateButton();
-    }
-
-
-    private MyClickListener fromTime(TimePickerDialog.OnTimeSetListener listener){
-        return new MyClickListener(listener);
+    private MyClickListener fromTime(TextView tv, Date d){
+        return new MyClickListener(tv, d);
     }
 
     private  MyClickListener fromDate(){
         return new MyClickListener(true);
     }
 
-    private MyTimeSetListener forStarting(){
-        return new MyTimeSetListener(startingDate, mDisplayStartTime);
-    }
-
-    private MyTimeSetListener forEnding(){
-        return new MyTimeSetListener(endingDate, mDisplayEndTime);
-    }
-
-    private void setDate(Date date, int year, int month, int dayOfMonth){
-        date.setYear(year-1900);
-        date.setMonth(month);
-        date.setDate(dayOfMonth);
-    }
-
-
     private class MyClickListener implements View.OnClickListener{
         private boolean forDate;
-        private TimePickerDialog.OnTimeSetListener listener;
+        private TextView mDisplayTime;
+        private Date dateToSet;
+
         public MyClickListener(boolean forDate){
             super();
             this.forDate = forDate;
         }
 
-        public MyClickListener(TimePickerDialog.OnTimeSetListener listener){
+        public MyClickListener(TextView tv, Date d){
             super();
-            this.listener = listener;
+            this.mDisplayTime = tv;
+            this.dateToSet = d ;
             this.forDate = false;
         }
 
@@ -220,13 +206,13 @@ public class createMeetingActivity extends AppCompatActivity {
             if(forDate){
                 dialog = new DatePickerDialog(
                         createMeetingActivity.this,
-                        dateSetListener,
+                        ActivityHelper.listenDate(mDisplayDate, startingDate,endingDate, ButtonListener),
                         year, month, day
                 );
             }else{
                 dialog = new TimePickerDialog(
                         createMeetingActivity.this,
-                        listener,
+                        ActivityHelper.listenTime(mDisplayTime, dateToSet, ButtonListener),
                         hour, minute, true
                 );
             }
@@ -234,31 +220,6 @@ public class createMeetingActivity extends AppCompatActivity {
             dialog.show();
         }
     }
-
-    private class MyTimeSetListener implements TimePickerDialog.OnTimeSetListener{
-        private Date dateToSet;
-        private TextView viewToSet;
-        private MyTimeSetListener(Date date, TextView view){
-            super();
-            dateToSet = date;
-            viewToSet = view;
-        }
-
-        @Override
-        public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-            String amPm;
-            if(hourOfDay >= 12){
-                amPm = " PM";
-            } else{
-                amPm = " AM";
-            }
-            viewToSet.setText(hourOfDay%12 + " : " + minute/10 + minute%10 + amPm);
-            dateToSet.setHours(hourOfDay);
-            dateToSet.setMinutes(minute);
-            updateButton();
-        }
-    }
-
 
     public void setStartingDate(Date date) {
         startingDate = date;
