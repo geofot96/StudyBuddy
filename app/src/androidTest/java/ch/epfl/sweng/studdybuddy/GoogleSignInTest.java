@@ -35,7 +35,7 @@ public class GoogleSignInTest {
     @Test
     public void SignInTest() {
         try{
-        //interaction(DummyGoogleSignInActivityIntentRule, R.id.googleBtn, CourseSelectActivity.class);
+        interaction(DummyGoogleSignInActivityIntentRule, R.id.googleBtn, CourseSelectActivity.class);
         interaction(DummyMainActivityIntentRule, R.id.signout_btn, GoogleSignInActivity.class);
         }catch(InterruptedException e){
 

@@ -99,7 +99,7 @@ public class GoogleSignInActivity extends AppCompatActivity {
     }
 
     private ValueEventListener fetchUserAndStart(Account acct, Class destination) {
-        return fetchUserAndStart(new FirebaseReference(true), acct, destination);
+        return fetchUserAndStart(new FirebaseReference(), acct, destination);
     }
 
     private ValueEventListener fetchUserAndStart(ReferenceWrapper fb, Account acct, Class destination) {

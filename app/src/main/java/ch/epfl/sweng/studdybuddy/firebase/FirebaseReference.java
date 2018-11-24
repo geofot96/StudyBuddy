@@ -23,14 +23,13 @@ public class FirebaseReference implements ReferenceWrapper {
 
     //Reference to firebase
     private final DatabaseReference ref;
-    private boolean persistenceEnabled;
-    private static FirebaseReference oneInstance = new FirebaseReference();
+    private static boolean persistenceEnabled = false;
 
-    private FirebaseReference() {
+    public FirebaseReference() {
         //If I have already set persistence return a new reference”
 
 
-        if (this.persistenceEnabled){
+        if(this.persistenceEnabled){
             ref = FirebaseDatabase.getInstance().getReference();
         }
         else {
@@ -38,24 +37,8 @@ public class FirebaseReference implements ReferenceWrapper {
             temp.setPersistenceEnabled(true);
             persistenceEnabled = true;
             this.ref = temp.getReference();
-
         }
-
-
-
-
     }
-
-//    public FirebaseReference(boolean persistence)
-//    {
-//        FirebaseDatabase temp = FirebaseDatabase.getInstance();
-//        temp.setPersistenceEnabled(true);
-//        this.ref = temp.getReference();
-//    }
-
-
-
-
 
     public FirebaseReference(DatabaseReference firebaseRef) {
         this.ref = firebaseRef;
