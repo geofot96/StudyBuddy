@@ -1,4 +1,5 @@
 language: android
+cache: bundler
 android:
   components:
     # The BuildTools version used by your project
@@ -28,3 +29,6 @@ after_script:
   - export JACOCO_SOURCE_PATH=app/src/main/java/
   - ./cc-test-reporter format-coverage ./app/build/reports/jacoco/jacocoTestReport/jacocoTestReport.xml --input-type jacoco
   - ./cc-test-reporter upload-coverage
+after_failure:
+  - if [ -f tests/tests.log ]; then cat tests/tests.log && sleep 10; fi
+  - echo == End of test log ==

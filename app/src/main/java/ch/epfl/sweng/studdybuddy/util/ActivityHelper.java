@@ -115,9 +115,8 @@ public class ActivityHelper {
             @Override
             public void accept(List<Meeting> meetings) {
                 meetingList.clear();
-                Date currentDate = new Date();
                 for (Meeting m : meetings) {
-                    checkMeeting(m, currentDate, metaM, groupId, meetingList);
+                    checkMeeting(m, metaM, groupId, meetingList);
                 }
                 Collections.sort(meetingList, comparator);
                 adapter.notifyDataSetChanged();
@@ -125,7 +124,8 @@ public class ActivityHelper {
         };
     }
 
-    private static void checkMeeting(Meeting m, Date currentDate, MetaMeeting metaM, ID<Group> groupId, List<Meeting> meetingList){
+    private static void checkMeeting(Meeting m, MetaMeeting metaM, ID<Group> groupId, List<Meeting> meetingList){
+        Date currentDate = new Date();
         if (m.getStarting() < currentDate.getTime()) {
             metaM.deleteMeeting(m.getId(), groupId);
         } else {
