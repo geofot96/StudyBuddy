@@ -65,12 +65,6 @@ public class createMeetingActivity extends AppCompatActivity {
         metaM = new MetaMeeting();
         origin = GlobalBundle.getInstance().getSavedBundle();
         groupID = origin.getString(Messages.groupID);
-
-        if(groupID == null){
-            startActivity(new Intent(this, NavigationActivity.class));
-            Log.d(TAG, "Information of the group is not fully recovered");
-        }
-
         mDisplayDate = findViewById(R.id.datePicker);
         mDisplayDate.setOnClickListener(fromDate());
 
@@ -88,11 +82,6 @@ public class createMeetingActivity extends AppCompatActivity {
 
 
         initSaveBtn();
-    }
-
-    @Override
-    public void onBackPressed(){
-
     }
 
     private void setClickOnLocation() {
@@ -137,7 +126,7 @@ public class createMeetingActivity extends AppCompatActivity {
 
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent d){
+    public void onActivityResult(int requestCode, int resultCode, Intent d){
         super.onActivityResult(requestCode,resultCode,d);
         if(requestCode == 1 && resultCode == RESULT_OK){
             Bundle data = GlobalBundle.getInstance().getSavedBundle();
@@ -161,7 +150,7 @@ public class createMeetingActivity extends AppCompatActivity {
                     saveBtn.setEnabled(true);
                 }else{
                     saveBtn.setEnabled(false);
-                    Toast.makeText(createMeetingActivity.this, "Please set a correct time slot", Toast.LENGTH_LONG).show();
+                    Toast.makeText(createMeetingActivity.this, "Please set a correct time slot or/and a location", Toast.LENGTH_SHORT).show();
                 }
             }
         });

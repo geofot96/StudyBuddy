@@ -106,4 +106,5 @@ public class MeetingRecyclerAdapter extends RecyclerView.Adapter<MeetingRecycler
     public int getItemCount() {
         return meetingList.size();
     }
+
 }

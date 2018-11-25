@@ -2,6 +2,9 @@ package ch.epfl.sweng.studdybuddy.util;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -9,16 +12,29 @@ import android.widget.DatePicker;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
 import ch.epfl.sweng.studdybuddy.core.Group;
+import ch.epfl.sweng.studdybuddy.core.ID;
 import ch.epfl.sweng.studdybuddy.firebase.MetaMeeting;
 import ch.epfl.sweng.studdybuddy.services.meeting.Meeting;
+import ch.epfl.sweng.studdybuddy.tools.Adapter;
 import ch.epfl.sweng.studdybuddy.tools.AdapterAdapter;
 import ch.epfl.sweng.studdybuddy.tools.Consumer;
 
 public class ActivityHelper {
+
+    public static final Comparator<Meeting> comparator = new Comparator<Meeting>() {
+        @Override
+        public int compare(Meeting o1, Meeting o2) {
+            return (Long.compare(o1.getStarting(), o2.getStarting()));
+        }
+    };
+
     public static View.OnClickListener showDropdown(AutoCompleteTextView tv) {
         return new View.OnClickListener(){
             @Override
@@ -93,7 +109,26 @@ public class ActivityHelper {
         };
     }
 
+    public static Consumer<List<Meeting>> getConsumerForMeetings(List<Meeting> meetingList, MetaMeeting metaM, ID<Group> groupId, RecyclerView.Adapter adapter){
 
+     return new Consumer<List<Meeting>>() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void accept(List<Meeting> meetings) {
+                meetingList.clear();
+                Date currentDate = new Date();
+                for (Meeting m : meetings) {
+                    if (m.getStarting() < currentDate.getTime()) {
+                        metaM.deleteMeeting(m.getId(), new ID<>(groupId));
+                    } else {
+                        meetingList.add(m);
+                    }
+                }
+                Collections.sort(meetingList, comparator);
+                adapter.notifyDataSetChanged();
+            }
+        };
+    }
 
     public static void adminMeeting(Button add, Group group, String userID) {
         Boolean admin = group.getAdminID().equals(userID);

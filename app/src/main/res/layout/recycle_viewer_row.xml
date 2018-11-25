@@ -18,7 +18,7 @@
 
     <TextView
         android:id="@+id/group_participant_info"
-        android:layout_width="80dp"
+        android:layout_width="90dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:paddingLeft="5dp"
@@ -26,7 +26,7 @@
 
     <TextView
         android:id="@+id/group_language"
-        android:layout_width="80dp"
+        android:layout_width="70dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:paddingTop="15dp" />

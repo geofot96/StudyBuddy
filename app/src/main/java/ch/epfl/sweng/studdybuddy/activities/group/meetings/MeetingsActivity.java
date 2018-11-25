@@ -1,17 +1,13 @@
 package ch.epfl.sweng.studdybuddy.activities.group.meetings;
 
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 
 import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.Date;
 import java.util.List;
 
 import ch.epfl.sweng.studdybuddy.R;
@@ -23,7 +19,7 @@ import ch.epfl.sweng.studdybuddy.firebase.MetaMeeting;
 import ch.epfl.sweng.studdybuddy.services.meeting.Meeting;
 import ch.epfl.sweng.studdybuddy.services.meeting.MeetingLocation;
 import ch.epfl.sweng.studdybuddy.services.meeting.MeetingRecyclerAdapter;
-import ch.epfl.sweng.studdybuddy.tools.Consumer;
+import ch.epfl.sweng.studdybuddy.util.ActivityHelper;
 import ch.epfl.sweng.studdybuddy.util.Messages;
 
 public class MeetingsActivity extends AppCompatActivity {
@@ -42,30 +38,6 @@ public class MeetingsActivity extends AppCompatActivity {
 
     private final String TAG = "MEETINGS_ACTIVITY";
 
-    private final Comparator<Meeting> comparator = new Comparator<Meeting>() {
-        @Override
-        public int compare(Meeting o1, Meeting o2) {
-            return (Long.compare(o1.getStarting(), o2.getStarting()));
-        }
-    };
-
-    private final Consumer<List<Meeting>> consumer = new Consumer<List<Meeting>>() {
-        @RequiresApi(api = Build.VERSION_CODES.N)
-        @Override
-        public void accept(List<Meeting> meetings) {
-            meetingList.clear();
-            Date currentDate = new Date();
-            for (Meeting m : meetings) {
-                if (m.getStarting() < currentDate.getTime()) {
-                    metaM.deleteMeeting(m.getId(), new ID<>(groupId));
-                } else {
-                    meetingList.add(m);
-                }
-            }
-            meetingList.sort(comparator);
-            adapter.notifyDataSetChanged();
-        }
-    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -88,16 +60,16 @@ public class MeetingsActivity extends AppCompatActivity {
 
         metaM = new MetaMeeting();
 
-        metaM.getMeetingsOfGroup(new ID<>(groupId), consumer);
-
         adapter = new MeetingRecyclerAdapter(this, this, meetingList, new Pair(groupId, adminId));
+
+        metaM.getMeetingsOfGroup(new ID<>(groupId), ActivityHelper.getConsumerForMeetings(meetingList, metaM, new ID<>(groupId), adapter));
 
         meetingRV.setAdapter(adapter);
 
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent d){
+    public void onActivityResult(int requestCode, int resultCode, Intent d){
         if(requestCode == 1 && resultCode == RESULT_OK){
             Bundle data = GlobalBundle.getInstance().getSavedBundle();
             MeetingLocation meetingLocation = new MeetingLocation(
@@ -108,5 +80,9 @@ public class MeetingsActivity extends AppCompatActivity {
             );
             metaM.pushLocation(meetingLocation, new ID<>(groupId), new ID<>(data.getString(Messages.meetingID)));
         }
+    }
+
+    public void setMetaM(MetaMeeting m){
+        this.metaM = m;
     }
 }

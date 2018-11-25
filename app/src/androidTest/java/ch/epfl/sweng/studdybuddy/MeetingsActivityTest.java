@@ -4,30 +4,36 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.test.rule.ActivityTestRule;
 
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 
 import ch.epfl.sweng.studdybuddy.activities.group.GlobalBundle;
 import ch.epfl.sweng.studdybuddy.activities.group.meetings.MeetingsActivity;
+import ch.epfl.sweng.studdybuddy.firebase.MetaMeeting;
 import ch.epfl.sweng.studdybuddy.util.Messages;
 
+import static android.app.Activity.RESULT_OK;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 public class MeetingsActivityTest {
-
+    MetaMeeting mM = mock(MetaMeeting.class);
     @Rule
-    public MeetingsRule mActivityRule = new MeetingsRule(MeetingsActivity.class);
+    public ActivityTestRule<MeetingsActivity> mActivityRule = new ActivityTestRule<>(MeetingsActivity.class);
 
     @BeforeClass
     public static void setup(){
+        GroupActivityTest.setup();
         Bundle bundle = new Bundle();
-        bundle.putString(Messages.groupID, Messages.TEST);
-        bundle.putString(Messages.ADMIN, Messages.TEST);
+        bundle.putString(Messages.LOCATION_TITLE, Messages.TEST);
+        bundle.putString(Messages.ADDRESS, Messages.TEST);
         GlobalBundle.getInstance().putAll(bundle);
     }
 
@@ -36,19 +42,12 @@ public class MeetingsActivityTest {
         onView(withId(R.id.meetingRV)).check(matches(isDisplayed()));
     }
 
-
-    private class MeetingsRule extends ActivityTestRule<MeetingsActivity> {
-        Intent intent = new Intent();
-        public MeetingsRule(Class<MeetingsActivity> activityClass) {
-            super(activityClass);
-            intent.putExtra(Messages.groupID, Messages.TEST);
-            intent.putExtra(Messages.ADMIN, Messages.TEST);
-        }
-
-        @Override
-        public MeetingsActivity launchActivity(Intent intent){
-            return super.launchActivity(this.intent);
-        }
+    @Test
+    public void testOnActivityResult(){
+        MeetingsActivity activity = mActivityRule.getActivity();
+        activity.setMetaM(mM);
+        activity.onActivityResult(1, RESULT_OK, new Intent());
+        verify(mM, times(1)).pushLocation(any(), any(), any());
     }
 
 }
