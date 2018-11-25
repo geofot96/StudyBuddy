@@ -112,17 +112,12 @@ public class ActivityHelper {
     public static Consumer<List<Meeting>> getConsumerForMeetings(List<Meeting> meetingList, MetaMeeting metaM, ID<Group> groupId, RecyclerView.Adapter adapter){
 
      return new Consumer<List<Meeting>>() {
-            @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void accept(List<Meeting> meetings) {
                 meetingList.clear();
                 Date currentDate = new Date();
                 for (Meeting m : meetings) {
-                    if (m.getStarting() < currentDate.getTime()) {
-                        metaM.deleteMeeting(m.getId(), new ID<>(groupId));
-                    } else {
-                        meetingList.add(m);
-                    }
+                    checkMeeting(m, currentDate, metaM, groupId, meetingList);
                 }
                 Collections.sort(meetingList, comparator);
                 adapter.notifyDataSetChanged();
@@ -130,8 +125,18 @@ public class ActivityHelper {
         };
     }
 
+    private static void checkMeeting(Meeting m, Date currentDate, MetaMeeting metaM, ID<Group> groupId, List<Meeting> meetingList){
+        if (m.getStarting() < currentDate.getTime()) {
+            metaM.deleteMeeting(m.getId(), groupId);
+        } else {
+            meetingList.add(m);
+        }
+    }
+
+    /*
     public static void adminMeeting(Button add, Group group, String userID) {
         Boolean admin = group.getAdminID().equals(userID);
         add.setVisibility(admin ? View.VISIBLE : View.GONE);
     }
+    */
 }
