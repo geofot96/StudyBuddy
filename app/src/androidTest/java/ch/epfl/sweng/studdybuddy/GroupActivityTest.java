@@ -35,6 +35,12 @@ public class GroupActivityTest {
     public IntentsTestRule<GroupActivity>  mManualRule =
             new IntentsTestRule<>(GroupActivity.class, false, false);
 
+    @Rule
+    public myRule mNotAdmin = new myRule(GroupActivity.class, true);
+
+    @Rule
+    public myRule mWrongInputInBundle = new myRule(GroupActivity.class, false);
+
     @BeforeClass
     public static void setup(){
         Bundle bundle = new Bundle();
@@ -59,19 +65,12 @@ public class GroupActivityTest {
         mManualRule.finishActivity();
     }
 
-  /*  @Test
+    @Test
     public void NoAdminCantLeadToCreateMeeting(){
-        Bundle bundle = new Bundle();
-        bundle.putString(Messages.ADMIN, "");
-        GlobalBundle.getInstance().putAll(bundle);
-        bundle = GlobalBundle.getInstance().getSavedBundle();
-        assertEquals("", bundle.getString(Messages.ADMIN));
-        mManualRule.launchActivity(new Intent());
+        mNotAdmin.launchActivity(new Intent());
         onView(withId(R.id.createMeeting)).check(matches(not(isEnabled())));
-        bundle.putString(Messages.ADMIN, Messages.TEST);
-        GlobalBundle.getInstance().putAll(bundle);
-        mManualRule.finishActivity();
-    }*/
+        mNotAdmin.finishActivity();
+    }
 
     @Test
     public void AdminCanLeadToCreateMeeting(){
@@ -86,19 +85,14 @@ public class GroupActivityTest {
         testIntent(R.id.groupMeetingsBtn, MeetingsActivity.class.getName());
         mManualRule.finishActivity();
     }
-
-  /*  @Test
+/*
+    @Test
     public void leadsToNavigationActivity(){
-        Bundle bundle = new Bundle();
-        bundle.putInt(Messages.maxUser, -1);
-        GlobalBundle.getInstance().putAll(bundle);
-        mManualRule.launchActivity(new Intent());
+        mWrongInputInBundle.launchActivity(new Intent());
         intended(hasComponent(NavigationActivity.class.getName()));
-        bundle.putInt(Messages.maxUser, 1);
-        GlobalBundle.getInstance().putAll(bundle);
-        mManualRule.finishActivity();
-    }*/
-
+        mWrongInputInBundle.finishActivity();
+    }
+*/
     private void testIntent(int id, String name) {
         try {
             onView(withId(id)).perform(click());
@@ -109,6 +103,41 @@ public class GroupActivityTest {
         }
     }
 
+    private class myRule extends IntentsTestRule<GroupActivity>{
+        private boolean b;
+        private final Bundle bundle = new Bundle();
 
+        public myRule(Class<GroupActivity> activityClass, boolean initialTouchMode, boolean launchActivity) {
+            super(activityClass, initialTouchMode, launchActivity);
+        }
+
+        public myRule(Class<GroupActivity> activityClass, boolean noAdmin){
+            this(activityClass, false, false);
+            this.b = noAdmin;
+        }
+
+        @Override
+        protected void beforeActivityLaunched(){
+            super.beforeActivityLaunched();
+            if(b){
+                bundle.putString(Messages.ADMIN, "");
+            }else{
+                bundle.putInt(Messages.maxUser, -1);
+            }
+            GlobalBundle.getInstance().putAll(bundle);
+        }
+
+        @Override
+        protected void afterActivityFinished(){
+            super.afterActivityFinished();
+            if(b){
+                bundle.putString(Messages.ADMIN, Messages.TEST);
+            }else{
+                bundle.putInt(Messages.maxUser, 1);
+            }
+            GlobalBundle.getInstance().putAll(bundle);
+        }
+
+    }
 
 }
