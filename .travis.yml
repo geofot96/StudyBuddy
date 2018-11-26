@@ -1,11 +1,4 @@
 language: android
-before_cache:
-  - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
-  - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
-cache:
-  directories:
-    - $HOME/.gradle/caches/
-    - $HOME/.gradle/wrapper/
 android:
   components:
     # The BuildTools version used by your project
@@ -29,7 +22,7 @@ before_script:
   - ./cc-test-reporter before-build
 script:
   - chmod +x ./gradlew
-  - travis_wait 45 ./gradlew build connectedCheck jacocoTestReport
+  - travis_wait 20 ./gradlew build connectedCheck jacocoTestReport
 after_script:
   # Report test coverage to Code Climate
   - export JACOCO_SOURCE_PATH=app/src/main/java/

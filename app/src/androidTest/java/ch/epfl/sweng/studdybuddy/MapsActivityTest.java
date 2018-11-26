@@ -63,7 +63,7 @@ public class MapsActivityTest {
 
     }
 
-    @Ignore
+  /*
     @Test
     public void mapListenerTest(){
         zzt mockZZT = mock(zzt.class);
@@ -72,5 +72,5 @@ public class MapsActivityTest {
         MeetingLocation rolex = MapsHelper.ROLEX_LOCATION;
         MeetingLocation pos = MapsHelper.mapListener(new LatLng(rolex.getLatitude(), rolex.getLongitude()), marker, fragment, mIntentsTestRule.getActivity());
         assertTrue(pos.equals(new MeetingLocation(rolex.getTitle(), rolex.getAddress(), new LatLng(rolex.getLatitude(), rolex.getLongitude()))));
-    }
+    }*/
 }
