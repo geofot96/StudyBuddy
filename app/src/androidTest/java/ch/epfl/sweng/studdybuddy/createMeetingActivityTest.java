@@ -128,13 +128,8 @@ public class createMeetingActivityTest {
     @Test
     public void testOnActivityResult(){
         createMeetingActivity mActivity = mActivityRule.launchActivity(intent);
-        mActivity.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                mActivity.onActivityResult(1, Activity.RESULT_OK, new Intent());
-                onView(withId(R.id.locationTitle)).check(matches(withText("test: test")));
-            }
-        });
+        mActivity.onActivityResult(1, Activity.RESULT_OK, new Intent());
+        onView(withId(R.id.locationTitle)).check(matches(withText("test: test")));
     }
 
 
