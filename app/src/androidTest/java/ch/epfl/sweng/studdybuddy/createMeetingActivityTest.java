@@ -46,6 +46,7 @@ import static org.hamcrest.Matchers.not;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import static android.support.test.internal.runner.junit4.statement.UiThreadStatement.runOnUiThread;
 
 public class createMeetingActivityTest {
     Intent intent = new Intent();
@@ -89,21 +90,31 @@ public class createMeetingActivityTest {
     }
 
     @Test
-    public void ButtonIsEnabled(){
+    public void ButtonIsEnabled() throws Throwable {
         createMeetingActivity mActivity = mActivityRule.launchActivity(intent);
-        mActivity.setLocation(mockLocation);
-        mActivity.setStartingDate(alwaysAfter);
-        mActivity.setEndingDate(alwaysAfter);
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                mActivity.setLocation(mockLocation);
+                mActivity.setStartingDate(alwaysAfter);
+                mActivity.setEndingDate(alwaysAfter);
+            }
+        });
         onView(withId(R.id.setMeeting)).check(matches(isEnabled()));
         onView(withId(R.id.setMeeting)).check(matches(isClickable()));
     }
 
     @Test
-    public void WrongTimeSlot(){
+    public void WrongTimeSlot() throws Throwable {
         createMeetingActivity mActivity = mActivityRule.launchActivity(intent);
-        mActivity.setLocation(mockLocation);
-        mActivity.setStartingDate(alwaysAfter);
-        mActivity.setEndingDate(alwaysBefore);
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                mActivity.setLocation(mockLocation);
+                mActivity.setStartingDate(alwaysAfter);
+                mActivity.setEndingDate(alwaysBefore);
+            }
+        });
         onView(withId(R.id.setMeeting)).check(matches(not(isEnabled())));
         mActivityRule.finishActivity();
     }
@@ -198,4 +209,5 @@ public class createMeetingActivityTest {
             }
         };
     }
+
 }

@@ -5,17 +5,11 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.TextView;
-import android.widget.TimePicker;
 import android.widget.Toast;
-
-import org.w3c.dom.Text;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -25,7 +19,6 @@ import ch.epfl.sweng.studdybuddy.R;
 import ch.epfl.sweng.studdybuddy.activities.group.GlobalBundle;
 import ch.epfl.sweng.studdybuddy.activities.group.GroupActivity;
 import ch.epfl.sweng.studdybuddy.activities.group.MapsActivity;
-import ch.epfl.sweng.studdybuddy.activities.NavigationActivity;
 import ch.epfl.sweng.studdybuddy.core.ID;
 import ch.epfl.sweng.studdybuddy.firebase.MetaMeeting;
 import ch.epfl.sweng.studdybuddy.services.meeting.Meeting;
@@ -33,6 +26,7 @@ import ch.epfl.sweng.studdybuddy.services.meeting.MeetingLocation;
 import ch.epfl.sweng.studdybuddy.tools.AdapterAdapter;
 import ch.epfl.sweng.studdybuddy.util.ActivityHelper;
 import ch.epfl.sweng.studdybuddy.util.Messages;
+
 
 public class createMeetingActivity extends AppCompatActivity {
     private Meeting meeting;
@@ -141,17 +135,12 @@ public class createMeetingActivity extends AppCompatActivity {
     private void updateButton(){
         boolean correctTimeSlot = endingDate.after(startingDate);
         boolean isTooLate = startingDate.before(new Date());
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                if(correctTimeSlot && !isTooLate && meetingLocation != null){
-                    saveBtn.setEnabled(true);
-                }else{
-                    saveBtn.setEnabled(false);
-                    Toast.makeText(createMeetingActivity.this, "Please set a correct time slot or/and a location", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
+        if(correctTimeSlot && !isTooLate && meetingLocation != null){
+            saveBtn.setEnabled(true);
+        }else{
+            saveBtn.setEnabled(false);
+        }
+
     }
 
 
