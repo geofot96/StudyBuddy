@@ -89,35 +89,30 @@ public class createMeetingActivityTest {
         mActivityRule.finishActivity();
     }
 
-   /* @Test
-    public void ButtonIsEnabled() throws Throwable {
+   @Test
+    public void ButtonIsEnabled() {
         createMeetingActivity mActivity = mActivityRule.launchActivity(intent);
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
+
+
                 mActivity.setLocation(mockLocation);
                 mActivity.setStartingDate(alwaysAfter);
                 mActivity.setEndingDate(alwaysAfter);
-            }
-        });
+
         onView(withId(R.id.setMeeting)).check(matches(isEnabled()));
         onView(withId(R.id.setMeeting)).check(matches(isClickable()));
     }
 
     @Test
-    public void WrongTimeSlot() throws Throwable {
+    public void WrongTimeSlot() {
         createMeetingActivity mActivity = mActivityRule.launchActivity(intent);
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
+
                 mActivity.setLocation(mockLocation);
                 mActivity.setStartingDate(alwaysAfter);
                 mActivity.setEndingDate(alwaysBefore);
-            }
-        });
+
         onView(withId(R.id.setMeeting)).check(matches(not(isEnabled())));
         mActivityRule.finishActivity();
-    }*/
+    }
 
     @Test
     public void noLocation(){
@@ -135,14 +130,14 @@ public class createMeetingActivityTest {
         intended(hasComponent(MapsActivity.class.getName()));
         mIntentRule.finishActivity();
     }
-/*
+
     @Test
     public void testOnActivityResult(){
         createMeetingActivity mActivity = mActivityRule.launchActivity(intent);
         mActivity.onActivityResult(1, Activity.RESULT_OK, new Intent());
         onView(withId(R.id.locationTitle)).check(matches(withText("test: test")));
     }
-*/
+
 
     private void timerDialog(int id){
         mActivityRule.launchActivity(intent);
