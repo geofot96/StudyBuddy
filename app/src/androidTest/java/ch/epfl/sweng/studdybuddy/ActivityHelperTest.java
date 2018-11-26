@@ -105,7 +105,7 @@ public class ActivityHelperTest {
 
     @Test
     public void testGetConsumerForMeetingsWithEmptyList(){
-        Consumer<List<Meeting>> consumer = getConsumerForMeetings(meetingsList, mm, new ID<Group>(Messages.TEST), rvAdapter);
+        Consumer<List<Meeting>> consumer = getConsumerForMeetings(meetingsList, mm, new ID<>(Messages.TEST), rvAdapter);
         consumer.accept(new ArrayList<>());
         verify(mm, times(0)).deleteMeeting(any(), any());
         //verify(rvAdapter, times(1)).notifyDataSetChanged();

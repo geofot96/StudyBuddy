@@ -24,6 +24,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import ch.epfl.sweng.studdybuddy.R;
+import ch.epfl.sweng.studdybuddy.activities.NavigationActivity;
 import ch.epfl.sweng.studdybuddy.firebase.FirebaseReference;
 import ch.epfl.sweng.studdybuddy.services.meeting.Meeting;
 import ch.epfl.sweng.studdybuddy.services.meeting.MeetingLocation;
@@ -41,12 +42,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private MeetingLocation confirmedPlace;
     private Bundle origin;
 
-    PlaceAutocompleteFragment autocompleteFragment;
-    String uId;
-    String gId;
-    String adminID;
-    String meetingID;
-    Button button;
+    private PlaceAutocompleteFragment autocompleteFragment;
+    private String uId;
+    private String gId;
+    private String adminID;
+    private String meetingID;
+    private Button button;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,7 +62,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         gId = origin.getString(Messages.groupID);
         adminID = origin.getString(Messages.ADMIN);
         meetingID = origin.getString(Messages.meetingID);
-        mapFragment.getMapAsync(this);
+        try{
+            mapFragment.getMapAsync(this);
+        }catch(NullPointerException e){
+            startActivity(new Intent(this, NavigationActivity.class));
+            e.printStackTrace();
+        }
 
     }
 
@@ -158,7 +164,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         getLocationPermission();
         autocompleteFragment.setOnPlaceSelectedListener(placeSelectionListener());
-        button = ((Button) findViewById(R.id.confirmLocation));
+        button = findViewById(R.id.confirmLocation);
         button.setOnClickListener((confirmationListener()));
         FirebaseReference ref = new FirebaseReference();
         initialization(ref);
@@ -181,7 +187,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
 
-    public  void initialization(FirebaseReference ref){
+    private void initialization(FirebaseReference ref){
         ref.select(Messages.FirebaseNode.MEETINGS).select(gId).select(meetingID).get(Meeting.class, new Consumer<Meeting>() {
             @Override
             public void accept(Meeting meeting) {

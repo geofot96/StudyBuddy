@@ -10,7 +10,7 @@ final public class AdapterConsumer {
             @Override
             public void accept(List<T> list) {
                 if(list != null) { // set == null is a programmer error so we let excpetion be thrown
-                    set.removeAll(set);
+                    set.clear();
                     set.addAll(list);
                     adapter.update();
                 }

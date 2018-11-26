@@ -60,10 +60,10 @@ public class MeetingRecyclerAdapterTest {
         c.setTime(starting);
         month = c.get(Calendar.MONTH) +1;
         day = c.get(Calendar.DAY_OF_MONTH);
-        hourS = c.get(Calendar.HOUR);
+        hourS = c.get(Calendar.HOUR_OF_DAY);
         minS = c.get(Calendar.MINUTE);
         c.setTime(ending);
-        hourE = c.get(Calendar.HOUR);
+        hourE = c.get(Calendar.HOUR_OF_DAY);
         minE = c.get(Calendar.MINUTE);
         meeting.setLocation(mL);
         meetingList = Arrays.asList(meeting);

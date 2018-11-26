@@ -95,7 +95,7 @@ public class CourseSelectActivity extends AppCompatActivity
     }
 
     private ArrayAdapter<String> setUpAutoComplete(){
-        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, coursesDB);
+        adapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, coursesDB);
         autocomplete = (AutoCompleteTextView) findViewById(R.id.courseComplete);
         autocomplete.setAdapter(adapter);
         autocomplete.setOnClickListener(showDropdown(autocomplete));

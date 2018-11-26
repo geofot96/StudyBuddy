@@ -85,10 +85,10 @@ public class MeetingRecyclerAdapter extends RecyclerView.Adapter<MeetingRecycler
         c.setTime(startingDate);
         int RealMonth = c.get(Calendar.MONTH) + 1;
         int dayOfMonth = c.get(Calendar.DAY_OF_MONTH);
-        int startHour = c.get(Calendar.HOUR);
+        int startHour = c.get(Calendar.HOUR_OF_DAY);
         int startMinutes = c.get(Calendar.MINUTE);
         c.setTime(endingDate);
-        int endHour = c.get(Calendar.HOUR);
+        int endHour = c.get(Calendar.HOUR_OF_DAY);
         int endMinutes = c.get(Calendar.MINUTE);
         myViewHolder.textViewDate.setText(
                 RealMonth + "/" +

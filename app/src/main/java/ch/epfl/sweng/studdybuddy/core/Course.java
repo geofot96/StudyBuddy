@@ -15,7 +15,7 @@ public class Course
     {
         this();
         this.courseName = courseName;
-        courseID = new ID<Course>(courseName);
+        courseID = new ID<>(courseName);
     }
 
     public Course(Course sourceCourse)

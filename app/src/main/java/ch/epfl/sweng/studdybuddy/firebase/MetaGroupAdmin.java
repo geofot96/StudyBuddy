@@ -46,7 +46,7 @@ public class MetaGroupAdmin extends MetaGroup {
 
     public ValueEventListener removeUserFromGroup(String uId, Group g) {
         db.select(Messages.FirebaseNode.USERGROUP).select(Helper.hashCode(new Pair(uId, g.getGroupID().getId()))).clear(); //redundant
-        ConnectedAvailability.removeAvailabiliity(g.getGroupID(), new ID<User>(uId), db);
+        ConnectedAvailability.removeAvailabiliity(g.getGroupID(), new ID<>(uId), db);
         if(g.getAdminID().equals(uId)) {
             return rotateAdmin(g);
         }
