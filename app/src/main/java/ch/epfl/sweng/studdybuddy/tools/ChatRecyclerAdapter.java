@@ -42,8 +42,7 @@ public class ChatRecyclerAdapter extends BasicRecyclerAdapter
         Context context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
         View groupCardView = inflater.inflate(R.layout.recycle_viewer_row_chat_list, parent, false);
-        MyViewHolder vh = new MyViewHolder(groupCardView);
-        return vh;
+        return new MyViewHolder(groupCardView);
 
     }
 

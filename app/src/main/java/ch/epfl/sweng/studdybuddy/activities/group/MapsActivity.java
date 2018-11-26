@@ -38,7 +38,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private MarkerOptions mMarker;  //TODO remove it if never used
     private Marker marker;
-    private FirebaseReference ref;
     private MeetingLocation confirmedPlace;
     private Bundle origin;
 
@@ -161,7 +160,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         autocompleteFragment.setOnPlaceSelectedListener(placeSelectionListener());
         button = ((Button) findViewById(R.id.confirmLocation));
         button.setOnClickListener((confirmationListener()));
-        ref = new FirebaseReference();
+        FirebaseReference ref = new FirebaseReference();
         initialization(ref);
         if(adminID.equals(uId)){
             button.setVisibility(View.VISIBLE);

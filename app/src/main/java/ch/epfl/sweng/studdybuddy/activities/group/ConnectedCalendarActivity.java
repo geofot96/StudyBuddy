@@ -51,7 +51,6 @@ public class ConnectedCalendarActivity extends AppCompatActivity
     private ConnectedCalendar calendar;
     private DatabaseReference database;
     private Pair pair = new Pair();
-    private Bundle origin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) throws NullPointerException{
@@ -63,7 +62,7 @@ public class ConnectedCalendarActivity extends AppCompatActivity
         Button button = findViewById(R.id.confirmSlots);
 
         GlobalBundle globalBundle = GlobalBundle.getInstance();
-        origin = globalBundle.getSavedBundle();
+        Bundle origin = globalBundle.getSavedBundle();
 
         NmaxUsers = (float) origin.getInt(Messages.maxUser, -1);
 
@@ -143,7 +142,7 @@ public class ConnectedCalendarActivity extends AppCompatActivity
             if (i % CalendarWidth != 0) {//Hours shouldn't be clickable
                 cardView = (CardView) calendarGrid.getChildAt(i);
                 int index = (i / CalendarWidth) * (CalendarWidth - 1) + (i % CalendarWidth) - 1;
-                cardView.setCardBackgroundColor(gradient((float) av.get(index).intValue()));
+                cardView.setCardBackgroundColor(gradient((float) av.get(index)));
             }
         }
     }
@@ -164,8 +163,7 @@ public class ConnectedCalendarActivity extends AppCompatActivity
         Color.colorToHSV(Color.GREEN, hsv);
         float coef = nAvailableUser/NmaxUsers;
         hsv[1] = s +  coef * (hsv[1] - s);
-        int color = Color.HSVToColor(hsv);
-        return color;
+        return Color.HSVToColor(hsv);
     }
 
     /**
@@ -243,7 +241,6 @@ public class ConnectedCalendarActivity extends AppCompatActivity
             for(DataSnapshot ds: dataSnapshot.getChildren()){
                 list.add(ds.getValue(Boolean.class));
             }
-            assert(!(list.isEmpty()));
             userAvailabilities = new ConnectedAvailability(pair.getValue(), pair.getKey(), new ConcreteAvailability(list), new FirebaseReference());
         }
 

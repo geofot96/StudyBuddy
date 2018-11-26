@@ -23,8 +23,6 @@ import ch.epfl.sweng.studdybuddy.util.StudyBuddy;
 public class GroupInfoActivity extends AppCompatActivity{
     List<User> participants  = new ArrayList<>();
     MetaGroupAdmin mb  = new MetaGroupAdmin();
-    private RecyclerView participantsRv;
-    private ParticipantAdapter participantAdapter;
     private String uId;
     private String gId;
     Button button;
@@ -45,9 +43,9 @@ public class GroupInfoActivity extends AppCompatActivity{
     }
 
     public void setUI(){
-        participantAdapter = new ParticipantAdapter(participants);
+        ParticipantAdapter participantAdapter = new ParticipantAdapter(participants);
         mb.addListenner(new RecyclerAdapterAdapter(participantAdapter));
-        participantsRv = (RecyclerView) findViewById(R.id.participantsRecyclerVIew);
+        RecyclerView participantsRv = (RecyclerView) findViewById(R.id.participantsRecyclerVIew);
         participantAdapter.initRecyclerView(this, participantsRv);
         button = findViewById(R.id.quitGroup);
         button.setOnClickListener(new View.OnClickListener() {

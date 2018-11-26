@@ -12,6 +12,7 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -42,7 +43,7 @@ public class MeetingRecyclerAdapterTest {
     User random = new User("", new ID<>(""));
 
     TextView t = mock(TextView.class);
-    CardView c = mock(CardView.class);
+    CardView cMock = mock(CardView.class);
     View v = mock(View.class);
     MeetingRecyclerAdapter.ViewHolder h ;
 
@@ -55,19 +56,22 @@ public class MeetingRecyclerAdapterTest {
         when(mL.getAddress()).thenReturn("");
         Date starting = new Date(meeting.getStarting());
         Date ending = new Date(meeting.getEnding());
-        month = starting.getMonth()+1;
-        day = starting.getDate();
-        hourS = starting.getHours();
-        minS = starting.getMinutes();
-        hourE = ending.getHours();
-        minE = ending.getMinutes();
+        Calendar c = Calendar.getInstance();
+        c.setTime(starting);
+        month = c.get(Calendar.MONTH) +1;
+        day = c.get(Calendar.DAY_OF_MONTH);
+        hourS = c.get(Calendar.HOUR);
+        minS = c.get(Calendar.MINUTE);
+        c.setTime(ending);
+        hourE = c.get(Calendar.HOUR);
+        minE = c.get(Calendar.MINUTE);
         meeting.setLocation(mL);
         meetingList = Arrays.asList(meeting);
 
         when(activity.getApplication()).thenReturn(app);
         when(app.getAuthendifiedUser()).thenReturn(random);
 
-        h = new MeetingRecyclerAdapter.ViewHolder(v, t, t, c);
+        h = new MeetingRecyclerAdapter.ViewHolder(v, t, t, cMock);
     }
 
     @Test

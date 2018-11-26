@@ -22,7 +22,6 @@ import ch.epfl.sweng.studdybuddy.services.chat.ChatMessage;
 import ch.epfl.sweng.studdybuddy.util.Messages;
 
 public class ChatActivity extends AppCompatActivity{
-    private FirebaseListAdapter<ChatMessage> adapter;
     String groupID;
     public FirebaseReference ref;
 
@@ -69,7 +68,7 @@ public class ChatActivity extends AppCompatActivity{
     {
         ListView listOfMessages = (ListView)findViewById(R.id.list_of_messages);
 
-        adapter = new FirebaseListAdapter<ChatMessage>(this, ChatMessage.class,
+        FirebaseListAdapter<ChatMessage> adapter = new FirebaseListAdapter<ChatMessage>(this, ChatMessage.class,
                 R.layout.message,
                 FirebaseDatabase.getInstance().getReference().child(Messages.FirebaseNode.CHAT).child(groupID)) {
             @Override

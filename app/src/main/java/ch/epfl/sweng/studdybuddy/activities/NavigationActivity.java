@@ -18,8 +18,6 @@ public class NavigationActivity extends AppCompatActivity
 {
     //TODO move the signout button from the main activity somewhere else and transfer the logic there
 
-    private BottomNavigationView mMainNav;
-    private FrameLayout mMainFrame;
     private ChatListsFragment chatFragment;
     private FeedFragment feedFragment;
     private ProfileFragment profileFragment;
@@ -28,8 +26,8 @@ public class NavigationActivity extends AppCompatActivity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_navigation);
-        mMainFrame = (FrameLayout) findViewById(R.id.main_frame);
-        mMainNav = (BottomNavigationView) findViewById(R.id.bottom_navigation);
+        FrameLayout mMainFrame = (FrameLayout) findViewById(R.id.main_frame);
+        BottomNavigationView mMainNav = (BottomNavigationView) findViewById(R.id.bottom_navigation);
         chatFragment = new ChatListsFragment();
         feedFragment = new FeedFragment();
         profileFragment = new ProfileFragment();

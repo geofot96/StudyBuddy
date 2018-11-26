@@ -39,8 +39,6 @@ public class createMeetingActivity extends AppCompatActivity {
 
     private TextView mDisplayDate;
 
-    private TextView mDisplayStartTime;
-    private TextView mDisplayEndTime;
     private Date startingDate = new Date();
     private Date endingDate = new Date();
 
@@ -99,10 +97,10 @@ public class createMeetingActivity extends AppCompatActivity {
     }
 
     private void initDisplayTime() {
-        mDisplayStartTime = findViewById(R.id.timePicker);
+        TextView mDisplayStartTime = findViewById(R.id.timePicker);
         mDisplayStartTime.setOnClickListener(fromTime(mDisplayStartTime, startingDate));
 
-        mDisplayEndTime = findViewById(R.id.timePicker2);
+        TextView mDisplayEndTime = findViewById(R.id.timePicker2);
         mDisplayEndTime.setOnClickListener(fromTime(mDisplayEndTime, endingDate));
 
     }

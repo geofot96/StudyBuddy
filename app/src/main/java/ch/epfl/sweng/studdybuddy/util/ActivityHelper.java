@@ -12,6 +12,7 @@ import android.widget.DatePicker;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
@@ -78,17 +79,22 @@ public class ActivityHelper {
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                 int realMonth = month+1;
                 mDisplayDate.setText(realMonth + "/" + dayOfMonth + "/" + year);
-                setDate(startingDate, year, month, dayOfMonth);
-                setDate(endingDate, year, month, dayOfMonth);
+                Date tmp = setDate(startingDate, year, month, dayOfMonth);
+                startingDate.setTime(tmp.getTime());
+                tmp = setDate(endingDate, year, month, dayOfMonth);
+                endingDate.setTime(tmp.getTime());
                 adapter.update();
             }
         };
     }
 
-    private static void setDate(Date date, int year, int month, int dayOfMonth){
-        date.setYear(year-1900);
-        date.setMonth(month);
-        date.setDate(dayOfMonth);
+    private static Date setDate(Date date, int year, int month, int dayOfMonth){
+        Calendar c = Calendar.getInstance();
+        c.setTime(date);
+        c.set(Calendar.YEAR, year);
+        c.set(Calendar.MONTH, month);
+        c.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+        return c.getTime();
     }
 
     public static TimePickerDialog.OnTimeSetListener listenTime(TextView mDisplayTime, Date dateToSet, AdapterAdapter adapter) {
@@ -102,8 +108,12 @@ public class ActivityHelper {
                     amPm = " AM";
                 }
                 mDisplayTime.setText(hourOfDay%12 + " : " + minute/10 + minute%10 + amPm);
-                dateToSet.setHours(hourOfDay);
-                dateToSet.setMinutes(minute);
+                Calendar c = Calendar.getInstance();
+                c.setTime(dateToSet);
+                c.set(Calendar.HOUR_OF_DAY, hourOfDay);
+                c.set(Calendar.MINUTE, minute);
+                Date tmp = c.getTime();
+                dateToSet.setTime(tmp.getTime());
                 adapter.update();
             }
         };

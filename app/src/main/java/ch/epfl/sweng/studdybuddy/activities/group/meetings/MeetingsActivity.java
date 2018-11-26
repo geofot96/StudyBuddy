@@ -25,42 +25,33 @@ import ch.epfl.sweng.studdybuddy.util.Messages;
 public class MeetingsActivity extends AppCompatActivity {
 
     private String groupId;
-    private String adminId;
-
-    private Bundle origin;
-
-    private RecyclerView meetingRV;
-    private RecyclerView.Adapter adapter;
-
-    private List<Meeting> meetingList;
 
     private MetaMeeting metaM;
-
-    private final String TAG = "MEETINGS_ACTIVITY";
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_meetings);
-        origin = GlobalBundle.getInstance().getSavedBundle();
+        Bundle origin = GlobalBundle.getInstance().getSavedBundle();
 
         groupId = origin.getString(Messages.groupID);
-        adminId = origin.getString(Messages.ADMIN);
+        String adminId = origin.getString(Messages.ADMIN);
 
         if(groupId == null || adminId == null ){
             startActivity(new Intent(this, NavigationActivity.class));
+            String TAG = "MEETINGS_ACTIVITY";
             Log.d(TAG, "Information of the group is not fully recovered");
         }
 
-        meetingRV = findViewById(R.id.meetingRV);
+        RecyclerView meetingRV = findViewById(R.id.meetingRV);
         meetingRV.setLayoutManager(new LinearLayoutManager(this));
 
-        meetingList = new ArrayList<>();
+        List<Meeting> meetingList = new ArrayList<>();
 
         metaM = new MetaMeeting();
 
-        adapter = new MeetingRecyclerAdapter(this, this, meetingList, new Pair(groupId, adminId));
+        RecyclerView.Adapter adapter = new MeetingRecyclerAdapter(this, this, meetingList, new Pair(groupId, adminId));
 
         metaM.getMeetingsOfGroup(new ID<>(groupId), ActivityHelper.getConsumerForMeetings(meetingList, metaM, new ID<>(groupId), adapter));
 

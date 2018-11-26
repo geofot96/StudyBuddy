@@ -32,10 +32,8 @@ public class ChatListsFragment extends Fragment
 {
 
     private  final List<Group> userGroups = new ArrayList<>();
-    private RecyclerView recyclerView_groups;
     protected ReferenceWrapper firebase;
     private ChatRecyclerAdapter ad;
-    private User user;
     private String userID;
     private MetaGroup metabase;
 
@@ -53,7 +51,7 @@ public class ChatListsFragment extends Fragment
         View v = inflater.inflate(R.layout.fragment_chat_lists, container, false);
 
         firebase = getDB();
-        user = ((StudyBuddy) getActivity().getApplication()).getAuthendifiedUser();
+        User user = ((StudyBuddy) getActivity().getApplication()).getAuthendifiedUser();
         userID = user.getUserID().toString();
         metabase = new MetaGroup();
         setUI(v);
@@ -74,7 +72,7 @@ public class ChatListsFragment extends Fragment
 
 
         ad = new ChatRecyclerAdapter(userGroups, userID);
-        recyclerView_groups = (RecyclerView) v.findViewById(R.id.chats_list);
+        RecyclerView recyclerView_groups = (RecyclerView) v.findViewById(R.id.chats_list);
         recyclerView_groups.setLayoutManager(new LinearLayoutManager(v.getContext()));
         recyclerView_groups.setAdapter(ad);
     }

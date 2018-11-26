@@ -38,7 +38,6 @@ public class CreateGroupActivity extends AppCompatActivity implements AdapterVie
     private static List<String> coursesDB;
 
     private static final List<String> courseSelection = new ArrayList<>();
-    private static AutoCompleteTextView textView;
     FirebaseReference firebase;
     MetaGroup mb;
     Button create;
@@ -63,15 +62,14 @@ public class CreateGroupActivity extends AppCompatActivity implements AdapterVie
     ArrayAdapter<String> setUpAutoComplete() {
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_dropdown_item_1line, coursesDB);
-        textView = (AutoCompleteTextView) findViewById(R.id.courseComplete2);
+        AutoCompleteTextView textView = (AutoCompleteTextView) findViewById(R.id.courseComplete2);
         textView.setAdapter(adapter);
         textView.setOnClickListener(showDropdown(textView));
         textView.setOnItemClickListener(new AdapterView.OnItemClickListener()
         {
             @Override public void onItemClick(AdapterView<?> parent, View view, int position, long id)
             {
-                String textInput = parent.getItemAtPosition(position).toString();
-                selectedCourse = textInput;
+                selectedCourse =  parent.getItemAtPosition(position).toString();;
                 create.setEnabled(true);
             }
         });

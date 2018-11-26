@@ -40,8 +40,7 @@ public class GroupsRecyclerAdapter extends BasicRecyclerAdapter implements Filte
         Context context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
         View groupCardView = inflater.inflate(R.layout.recycle_viewer_row, parent, false);
-        BasicRecyclerAdapter.MyViewHolder vh = getViewHolder(groupCardView);
-        return vh;
+        return getViewHolder(groupCardView);
     }
 
     @Override
@@ -93,7 +92,7 @@ public class GroupsRecyclerAdapter extends BasicRecyclerAdapter implements Filte
         Integer gSize = getSizes().get(group.getGroupID().toString());
         int groupSize = 1;
         if(gSize != null){
-            groupSize = gSize.intValue();
+            groupSize = gSize;
         }
         button.setText("Join");
         if(groupSize < group.getMaxNoUsers()

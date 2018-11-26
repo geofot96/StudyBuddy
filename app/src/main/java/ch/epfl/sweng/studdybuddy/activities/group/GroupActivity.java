@@ -14,19 +14,6 @@ import ch.epfl.sweng.studdybuddy.activities.group.meetings.createMeetingActivity
 import ch.epfl.sweng.studdybuddy.util.Messages;
 
 public class GroupActivity extends AppCompatActivity {
-    private Bundle origin;
-
-    private String groupID;
-    private String userID;
-    private String adminID;
-    private int MaxNumUsers;
-
-    private Button calendarButton;
-    private Button participantButton;
-    private Button createMeetingBtn;
-    private Button meetingsBtn;
-
-    private final String TAG = "GROUP_ACTIVITY";
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -34,21 +21,22 @@ public class GroupActivity extends AppCompatActivity {
         setContentView(R.layout.activity_group);
         GlobalBundle globalBundle = GlobalBundle.getInstance();
         globalBundle.putAll(getIntent().getExtras());
-        origin = globalBundle.getSavedBundle();
-        groupID = origin.getString(Messages.groupID);
-        userID = origin.getString(Messages.userID);
-        adminID = origin.getString(Messages.ADMIN);
-        MaxNumUsers = origin.getInt(Messages.maxUser, -1);
+        Bundle origin = globalBundle.getSavedBundle();
+        String groupID = origin.getString(Messages.groupID);
+        String userID = origin.getString(Messages.userID);
+        String adminID = origin.getString(Messages.ADMIN);
+        int maxNumUsers = origin.getInt(Messages.maxUser, -1);
 
-        if(groupID == null || userID == null || adminID == null || MaxNumUsers == -1){
+        if(groupID == null || userID == null || adminID == null || maxNumUsers == -1){
             startActivity(new Intent(this, NavigationActivity.class));
+            String TAG = "GROUP_ACTIVITY";
             Log.d(TAG, "Information of the group is not fully recovered");
         }
 
-        calendarButton = findViewById(R.id.calendarBtn);
-        participantButton = findViewById(R.id.participantsBtn);
-        createMeetingBtn = findViewById(R.id.createMeeting);
-        meetingsBtn = findViewById(R.id.groupMeetingsBtn);
+        Button calendarButton = findViewById(R.id.calendarBtn);
+        Button participantButton = findViewById(R.id.participantsBtn);
+        Button createMeetingBtn = findViewById(R.id.createMeeting);
+        Button meetingsBtn = findViewById(R.id.groupMeetingsBtn);
 
         calendarButton.setOnClickListener(new ClickListener(new Intent(this, ConnectedCalendarActivity.class)));
         participantButton.setOnClickListener(new ClickListener(new Intent(this, GroupInfoActivity.class)));

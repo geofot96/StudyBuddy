@@ -14,6 +14,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -58,7 +59,7 @@ public class ActivityHelperTest {
     Button timeB = mock(Button.class);
     //Button date = mock(Button.class);
     Button plus = mock(Button.class);
-    Date date = mock(Date.class);
+    Date date;
     List<Meeting> meetingsList = new ArrayList<>();
 
     RecyclerView.Adapter rvAdapter;
@@ -82,15 +83,15 @@ public class ActivityHelperTest {
                 return 0;
             }
         };
+        Calendar c = Calendar.getInstance();
+        c.set(2018, 10, 25, 0, 0);
+        date = c.getTime();
     }
 
     @Test
     public void testListenDate() {
         listenDate(title, date, date, adapter).onDateSet(view, 2018, 10, 5);
         verify(title, times(1)).setText("11/5/2018");
-        verify(date, times(2)).setYear(118);
-        verify(date, times(2)).setMonth(10);
-        verify(date, times(2)).setDate(5);
         verify(adapter, times(1)).update();
         //verify(mee).getDeadline().setMonth(11);
     }
@@ -99,8 +100,6 @@ public class ActivityHelperTest {
     public void testListenTime() {
         listenTime(title, date, adapter).onTimeSet(time, 0, 0);
         verify(title, times(1)).setText("0 : 00 AM");
-        verify(date, times(1)).setHours(0);
-        verify(date, times(1)).setMinutes(0);
         verify(adapter, times(1)).update();
     }
 
@@ -136,10 +135,11 @@ public class ActivityHelperTest {
     }
 
     private Date setDate(int i){
-        Date date = new Date();
-        int year = date.getYear();
-        date.setYear(year + i);
-        return date;
+        Calendar c = Calendar.getInstance();
+        c.setTime(new Date());
+        int year = c.get(Calendar.YEAR);
+        c.set(Calendar.YEAR, year + i);
+        return c.getTime();
     }
 
    /* @Test

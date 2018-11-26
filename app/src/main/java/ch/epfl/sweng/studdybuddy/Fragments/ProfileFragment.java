@@ -34,8 +34,6 @@ public class ProfileFragment extends Fragment
 
     private final List<String> userCourses =  new ArrayList<>();
     private  final List<Group> userGroups = new ArrayList<>();
-    private RecyclerView recyclerView_groups;
-    private RecyclerView recyclerView_courses;
     protected ReferenceWrapper firebase;
     private GroupsRecyclerAdapter ad;
     private CourseAdapter adCourse;
@@ -82,11 +80,11 @@ public class ProfileFragment extends Fragment
         nameView.setText(user.getName());
 
         adCourse = new CourseAdapter(userCourses);
-        recyclerView_courses = (RecyclerView) v.findViewById(R.id.courses_list);
+        RecyclerView recyclerView_courses = (RecyclerView) v.findViewById(R.id.courses_list);
         adCourse.initRecyclerView(v.getContext(), recyclerView_courses);
 
         ad = new GroupsRecyclerAdapter(userGroups, userID);
-        recyclerView_groups = (RecyclerView) v.findViewById(R.id.groups_list);
+        RecyclerView recyclerView_groups = (RecyclerView) v.findViewById(R.id.groups_list);
         recyclerView_groups.setLayoutManager(new LinearLayoutManager(v.getContext()));
         recyclerView_groups.setAdapter(ad);
     }
