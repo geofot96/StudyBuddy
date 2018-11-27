@@ -66,6 +66,7 @@ public final class Meeting {
         this.setDeadline(copy.getDeadline());
         this.setCreation(copy.getCreation());
         this.setId(copy.getId());
+        this.setLocation(copy.getLocation());
     }
 
     @Override

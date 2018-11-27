@@ -47,6 +47,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     PlaceAutocompleteFragment autocompleteFragment;
     String uId;
     String gId;
+    String meetingId;
     Button button;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +61,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         uId = ((StudyBuddy) MapsActivity.this.getApplication()).getAuthendifiedUser().getUserID().getId();
         Intent intent = getIntent();
         gId = intent.getStringExtra(Messages.groupID);
+        meetingId = intent.getStringExtra(Messages.meetingID);
         mapFragment.getMapAsync(this);
 
     }
@@ -88,7 +90,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(MapsHelper.confirmationListener(confirmedPlace, meetings, ref, gId)){
+                if(MapsHelper.confirmationListener(confirmedPlace, meetings, ref, gId, meetingId)){
                     finish();
                 }
             }
@@ -171,7 +173,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
 
     public  void setMeetings(FirebaseReference ref, final List<Meeting> meetings, Button button){
-        ref.select("BoubaMeetings").getAll(Meeting.class, new Consumer<List<Meeting>>() {
+        ref.select("meetings").select(gId).getAll(Meeting.class, new Consumer<List<Meeting>>() {
             @Override
             public void accept(List<Meeting> meetingsfb) {
                 MarkerOptions tmp = MapsHelper.acceptMeetings(meetingsfb,meetings, button, gId);

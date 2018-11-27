@@ -33,17 +33,18 @@ public class MapsHelper {
         meetings.clear();
         meetings.addAll(meetingsFb);
         //modularize
-        int meetingIndex = 0;
+       /* int meetingIndex = 0;
         for(Meeting meeting: meetings){
             if(!meeting.getId().getId().equals(gId)){
                 meetingIndex++;
             }else {
                 break;
             }
-        }
+        }*/
         //need to select the correct meeting
         if(!isActivityInitialized) {
-            MeetingLocation location = meetings.get(meetingIndex - 1).location;
+
+            MeetingLocation location = meetings.size() > 0 ? meetings.get(0).location: ROLEX_LOCATION;
             MarkerOptions mMarker =(new MarkerOptions().position(location.getLatLng()).title(location.getTitle()));
            //if(uId.equals("Bouba")){
                 button.setVisibility(View.VISIBLE);
@@ -57,13 +58,13 @@ public class MapsHelper {
         return null;
     }
 
-    public static boolean confirmationListener(MeetingLocation confirmedPlace, List<Meeting> meetings, FirebaseReference ref, String gId){
+    public static boolean confirmationListener(MeetingLocation confirmedPlace, List<Meeting> meetings, FirebaseReference ref, String gId ,String meetingId){
                 if (confirmedPlace != null) {
                     int lastindex = meetings.size() - 1;
                     Meeting lastMeeting = meetings.get(lastindex);
                     lastMeeting.setLocation(confirmedPlace);
                     meetings.set(lastindex, lastMeeting);
-                    ref.select("meetings").select(gId).setVal(meetings);
+                    ref.select("meetings").select(gId).select(meetingId).setVal(meetings.get(0));
                     return true;
                 }
                 return false;
@@ -74,7 +75,7 @@ public class MapsHelper {
         marker.setPosition(latLng);
         Geocoder geocoder;
         Address address = null;
-        geocoder = new Geocoder(ctx, Locale.getDefault());
+            geocoder = new Geocoder(ctx, Locale.getDefault());
         try {
             address = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1).get(0);
         } catch (IOException e) {

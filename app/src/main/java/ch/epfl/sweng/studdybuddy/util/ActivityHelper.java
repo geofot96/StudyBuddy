@@ -2,7 +2,6 @@ package ch.epfl.sweng.studdybuddy.util;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
-import android.util.Log;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -28,7 +27,7 @@ public class ActivityHelper {
             }
         };
     }
-    public static Consumer<List<Meeting>> meetingConsumer(TextView title, Button time, Button date, Button plus) {
+    public static Consumer<List<Meeting>> meetingConsumer(TextView title, Button time, Button date, Button plus, Consumer<Boolean> callback) {
         return new Consumer<List<Meeting>>() {
             @Override
             public void accept(List<Meeting> meetings) {
@@ -36,6 +35,7 @@ public class ActivityHelper {
                     title.setVisibility(View.GONE);
                     time.setVisibility(View.GONE);
                     date.setVisibility(View.GONE);
+
                 }
                 else {
                     date.setText(meetings.get(0).date());
@@ -45,6 +45,8 @@ public class ActivityHelper {
                     date.setVisibility(View.VISIBLE);
                     plus.setVisibility(View.GONE);
                 }
+
+                callback.accept(meetings.size() == 0);
             }
         };
     }

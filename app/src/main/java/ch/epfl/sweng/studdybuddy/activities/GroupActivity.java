@@ -10,17 +10,15 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 
 import ch.epfl.sweng.studdybuddy.R;
 import ch.epfl.sweng.studdybuddy.core.Group;
 import ch.epfl.sweng.studdybuddy.core.Meeting;
-import ch.epfl.sweng.studdybuddy.firebase.FirebaseReference;
 import ch.epfl.sweng.studdybuddy.firebase.MetaMeeting;
 import ch.epfl.sweng.studdybuddy.tools.AdapterAdapter;
-import ch.epfl.sweng.studdybuddy.util.MapsHelper;
+import ch.epfl.sweng.studdybuddy.tools.Consumer;
 import ch.epfl.sweng.studdybuddy.util.Messages;
 
 import static ch.epfl.sweng.studdybuddy.tools.Consumer.sequenced;
@@ -42,6 +40,7 @@ public class GroupActivity extends AppCompatActivity {
     Button date;
     Button add;
     TextView title;
+    TextView location;
     MetaMeeting mm;
     Group group = new Group();
     List<Meeting> meetings = new ArrayList<>();
@@ -65,9 +64,20 @@ public class GroupActivity extends AppCompatActivity {
         time  = findViewById(R.id.time);
         date = findViewById(R.id.date);
         add = findViewById(R.id.addMeeting);
+        location = findViewById(R.id.meetingLocation);
+        location.setOnClickListener(new ClickListener(new Intent(this, MapsActivity.class)));
         calendarButton.setOnClickListener(new ClickListener(new Intent(this, ConnectedCalendarActivity.class)));
         participantButton.setOnClickListener(new ClickListener(new Intent(this, GroupInfoActivity.class)));
         //setupMeeting();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(group.getAdminID() != null){
+            updateMeeting().update();
+        }
+       // updateMeeting().update();
     }
 
     private AdapterAdapter updateMeeting() {
@@ -75,7 +85,14 @@ public class GroupActivity extends AppCompatActivity {
             @Override
             public void update() {
                 adminMeeting(add, group, userID);
-                mm.fetchMeetings(group.getGroupID().getId(), sequenced(singleMeeting(singleton), meetingConsumer(title, time, date, add)));
+                Consumer<Boolean> callback = new Consumer<Boolean>() {
+                    @Override
+                    public void accept(Boolean aBoolean) {
+                        location.setText("Meeting Location: " + singleton.location.getAddress());
+                    }
+                };
+                mm.fetchMeetings(group.getGroupID().getId(), sequenced(singleMeeting(singleton), meetingConsumer(title, time, date, add, callback)));
+
             }
         };
     }
@@ -100,21 +117,8 @@ public class GroupActivity extends AppCompatActivity {
         intent.putExtra(Messages.userID, userID);
         intent.putExtra(Messages.groupID, groupID);
         intent.putExtra(Messages.maxUser, MaxNumUsers);
-        intent.putExtra(Messages.meetingID, "1");
+        intent.putExtra(Messages.meetingID, singleton.id.getId());
 
-        //Just for testing
-        FirebaseReference ref = new FirebaseReference();
-       ;
-        Meeting m1, m2 ,m3 ;
-        m1 = new Meeting("1");
-        m2 = new Meeting("2");
-        m3 = new Meeting("3");
-
-        List<Meeting> meetings = Arrays.asList(m1,m2,m3);
-        for(Meeting m: meetings){
-            m.setLocation(MapsHelper.ROLEX_LOCATION);
-        }
-        ref.select("BoubaMeetings").setVal(meetings);
         startActivity(intent);
     }
 
