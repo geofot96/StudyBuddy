@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 
@@ -19,6 +20,7 @@ import ch.epfl.sweng.studdybuddy.core.Meeting;
 import ch.epfl.sweng.studdybuddy.firebase.MetaMeeting;
 import ch.epfl.sweng.studdybuddy.tools.AdapterAdapter;
 import ch.epfl.sweng.studdybuddy.tools.Consumer;
+import ch.epfl.sweng.studdybuddy.util.ActivityHelper;
 import ch.epfl.sweng.studdybuddy.util.Messages;
 
 import static ch.epfl.sweng.studdybuddy.tools.Consumer.sequenced;
@@ -85,11 +87,7 @@ public class GroupActivity extends AppCompatActivity {
                     }
                 };
 
-                if(!userID.equals(group.getAdminID())) {
-                    time.setClickable(false);
-                    date.setClickable(false);
-                    location.setClickable(false);
-                }
+                ActivityHelper.setButtonsClickable(userID.equals(group.getAdminID()), Arrays.asList(time,date, add));
                 mm.fetchMeetings(group.getGroupID().getId(), sequenced(sequenced(singleMeeting(singleton), meetingConsumer(title, time, date, add)), locationCaallback));
             }
         };

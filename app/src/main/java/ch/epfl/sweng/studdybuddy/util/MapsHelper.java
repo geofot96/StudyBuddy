@@ -47,6 +47,7 @@ public class MapsHelper {
             MeetingLocation location = meetings.size() > 0 ? meetings.get(0).location: ROLEX_LOCATION;
             MarkerOptions mMarker =(new MarkerOptions().position(location.getLatLng()).title(location.getTitle()));
            //if(uId.equals("Bouba")){
+
                 button.setVisibility(View.VISIBLE);
                 button.setEnabled(true);
 

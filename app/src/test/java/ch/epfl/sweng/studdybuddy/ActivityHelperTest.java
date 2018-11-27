@@ -8,14 +8,16 @@ import android.widget.TimePicker;
 
 import org.junit.Test;
 
-import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import ch.epfl.sweng.studdybuddy.core.Group;
 import ch.epfl.sweng.studdybuddy.core.Meeting;
 import ch.epfl.sweng.studdybuddy.firebase.MetaMeeting;
 import ch.epfl.sweng.studdybuddy.tools.AdapterAdapter;
+import ch.epfl.sweng.studdybuddy.tools.Consumer;
+import ch.epfl.sweng.studdybuddy.util.ActivityHelper;
 
 import static ch.epfl.sweng.studdybuddy.util.ActivityHelper.adminMeeting;
 import static ch.epfl.sweng.studdybuddy.util.ActivityHelper.listenDate;
@@ -86,6 +88,19 @@ public class ActivityHelperTest {
     public void testUserCantAdd() {
         adminMeeting(plus, withAdmin("--"), "sjdnn");
         verify(plus).setVisibility(View.GONE);
+    }
+
+    @Test
+    public void testButtonsUnclickable(){
+        ActivityHelper.setButtonsClickable(true, Arrays.asList(timeB));
+        verify(timeB, times(1)).setClickable(true);
+    }
+
+    @Test
+    public void setLocationTextConsumerTest(){
+        Consumer<List<Meeting>>  setLocationConsumer = ActivityHelper.setLocationTextConsumer(title, mee);
+        setLocationConsumer.accept(Arrays.asList(mee));
+        verify(title, times(1)).setText(any());
     }
 
 }

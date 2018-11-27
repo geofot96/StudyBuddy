@@ -90,4 +90,21 @@ public class ActivityHelper {
         Boolean admin = group.getAdminID().equals(userID);
         add.setVisibility(admin ? View.VISIBLE : View.GONE);
     }
+
+    public static void setButtonsClickable(boolean clickable, List<Button> buttons){
+        for(Button button: buttons){
+            button.setClickable(clickable);
+        }
+    }
+
+    public static Consumer<List<Meeting>> setLocationTextConsumer(TextView location, Meeting meeting){
+        return new Consumer<List<Meeting>>() {
+            @Override
+            public void accept(List<Meeting> meetings) {
+                location.setText("Meeting Location: " + meeting.location.getAddress());
+
+            }
+        };
+    }
+
 }
