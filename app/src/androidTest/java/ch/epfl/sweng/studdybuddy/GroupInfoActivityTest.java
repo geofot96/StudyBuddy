@@ -27,7 +27,6 @@ public class GroupInfoActivityTest {
 
     @Test
     public void quitButtonTest(){
-        Activity activity = mActivityRule.getActivity();
         Intent intent = new Intent();
         intent.putExtra(Messages.groupID, "1");
         intent.putExtra(FeedFragment.IS_PARTICIPANT, true);
@@ -42,6 +41,7 @@ public class GroupInfoActivityTest {
         catch (Exception e) {
 
         }
+        mActivityRule.finishActivity();
     }
 
   /*  @Test
