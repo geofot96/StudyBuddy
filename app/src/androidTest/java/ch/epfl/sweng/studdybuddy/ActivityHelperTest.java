@@ -51,7 +51,7 @@ import static org.mockito.Mockito.when;
 public class ActivityHelperTest {
   @Test
   public void EmptyTest(){}
-/*    Meeting mee = randomMeeting();
+    Meeting mee = randomMeeting();
     Group group = blankGroupWId("?");
     MetaMeeting mm = mock(MetaMeeting.class);
     AdapterAdapter adapter = mock(AdapterAdapter.class);
