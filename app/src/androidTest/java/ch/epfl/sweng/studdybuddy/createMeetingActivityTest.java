@@ -103,11 +103,21 @@ public class createMeetingActivityTest {
         });
         onView(withId(R.id.setMeeting)).check(matches(isEnabled()));
         onView(withId(R.id.setMeeting)).check(matches(isClickable()));
+        mActivityRule.finishActivity();
     }
 
+
     @Test
-    public void WrongTimeSlot() {
-        mActivityRule.launchActivity(intent);
+    public void WrongTimeSlot() throws Throwable {
+        createMeetingActivity mActivity = mActivityRule.launchActivity(intent);
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                mActivity.setLocation(mockLocation);
+                mActivity.setStartingDate(alwaysAfter);
+                mActivity.setEndingDate(alwaysBefore);
+            }
+        });
         onView(withId(R.id.setMeeting)).check(matches(not(isEnabled())));
         mActivityRule.finishActivity();
     }
@@ -132,12 +142,18 @@ public class createMeetingActivityTest {
 */
 
     //work locally
-   /* @Test
+    @Test
     public void testOnActivityResult() throws Throwable {
         createMeetingActivity mActivity = mActivityRule.launchActivity(intent);
-        mActivity.onActivityResult(1, Activity.RESULT_OK, new Intent());
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                mActivity.onActivityResult(1, Activity.RESULT_OK, new Intent());
+            }
+        });
         onView(withId(R.id.locationTitle)).check(matches(withText("test: test")));
-    }*/
+        mActivityRule.finishActivity();
+    }
 
 
     private void timerDialog(int id){
