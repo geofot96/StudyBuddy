@@ -112,7 +112,7 @@ public class ColorChaningTest
                                         1)),
                         69),
                         isDisplayed()));
-        frameLayout4.check(matches(isDisplayed()));*/
+        frameLayout4.check(matches(isDisplayed()));
     }
     */
 }
