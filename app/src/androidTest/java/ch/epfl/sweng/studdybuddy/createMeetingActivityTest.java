@@ -49,9 +49,7 @@ import static org.mockito.Mockito.when;
 import static android.support.test.internal.runner.junit4.statement.UiThreadStatement.runOnUiThread;
 
 public class createMeetingActivityTest {
-  @Test
-  public void EmptyTest(){}
-/*    Intent intent = new Intent();
+    Intent intent = new Intent();
     private MeetingLocation mockLocation = mock(MeetingLocation.class);
     private Date alwaysBefore = mock(Date.class);
     private Date alwaysAfter = mock(Date.class);
@@ -91,27 +89,33 @@ public class createMeetingActivityTest {
         mActivityRule.finishActivity();
     }
 
-   @Test
-    public void ButtonIsEnabled() {
+    //Work locally
+   /* @Test
+    public void ButtonIsEnabled() throws Throwable {
         createMeetingActivity mActivity = mActivityRule.launchActivity(intent);
-
-
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
                 mActivity.setLocation(mockLocation);
                 mActivity.setStartingDate(alwaysAfter);
                 mActivity.setEndingDate(alwaysAfter);
-
+            }
+        });
         onView(withId(R.id.setMeeting)).check(matches(isEnabled()));
         onView(withId(R.id.setMeeting)).check(matches(isClickable()));
     }
 
     @Test
-    public void WrongTimeSlot() {
+    public void WrongTimeSlot() throws Throwable {
         createMeetingActivity mActivity = mActivityRule.launchActivity(intent);
-
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
                 mActivity.setLocation(mockLocation);
                 mActivity.setStartingDate(alwaysAfter);
                 mActivity.setEndingDate(alwaysBefore);
-
+            }
+        });
         onView(withId(R.id.setMeeting)).check(matches(not(isEnabled())));
         mActivityRule.finishActivity();
     }
@@ -124,17 +128,19 @@ public class createMeetingActivityTest {
         onView(withId(R.id.setMeeting)).check(matches(not(isEnabled())));
         mActivityRule.finishActivity();
     }
+    //work locally
+       @Test
+       public void leadsToMapsActivity(){
+           mIntentRule.launchActivity(intent);
+           onView(withId(R.id.locationTitle)).perform(click());
+           intended(hasComponent(MapsActivity.class.getName()));
+           mIntentRule.finishActivity();
+       }
 
-    @Test
-    public void leadsToMapsActivity(){
-        mIntentRule.launchActivity(intent);
-        onView(withId(R.id.locationTitle)).perform(click());
-        intended(hasComponent(MapsActivity.class.getName()));
-        mIntentRule.finishActivity();
-    }
 
-    @Test
-    public void testOnActivityResult(){
+    //work locally
+   /* @Test
+    public void testOnActivityResult() throws Throwable {
         createMeetingActivity mActivity = mActivityRule.launchActivity(intent);
         mActivity.onActivityResult(1, Activity.RESULT_OK, new Intent());
         onView(withId(R.id.locationTitle)).check(matches(withText("test: test")));
@@ -166,7 +172,7 @@ public class createMeetingActivityTest {
         ViewInteraction dP = onView(withClassName(Matchers.equalTo(DatePicker.class.getName()))).perform(PickerActions.setDate(2018,10+1, 25));
         dP.check(matches(matchesDate(2018,10, 25)));
         mActivityRule.finishActivity();
-    }
+    }*/
 
     private static Matcher<View> matchesTime(final int hours, final int minutes) {
         return new BoundedMatcher<View, TimePicker>(TimePicker.class) {
@@ -206,6 +212,5 @@ public class createMeetingActivityTest {
             }
         };
     }
-    */
 
 }
