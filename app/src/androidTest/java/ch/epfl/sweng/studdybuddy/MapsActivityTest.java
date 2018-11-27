@@ -1,5 +1,6 @@
 package ch.epfl.sweng.studdybuddy;
 
+import android.content.Intent;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.rule.GrantPermissionRule;
 import android.support.test.runner.AndroidJUnit4;
@@ -10,6 +11,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import ch.epfl.sweng.studdybuddy.activities.MapsActivity;
+import ch.epfl.sweng.studdybuddy.util.Messages;
 
 @RunWith(AndroidJUnit4.class)
 public class MapsActivityTest {
@@ -27,15 +29,18 @@ public class MapsActivityTest {
     @Test
     public void checkConfirmDoesntExistForNonAdmin() {
 
-      /* Intent intent = new Intent();
-        try {
+       Intent intent = new Intent();
+       intent.putExtra(Messages.groupID, "1");
+       intent.putExtra(Messages.userID,"bouba");
+       mIntentsTestRule.launchActivity(intent);
+       /* try {
             Thread.sleep(2000);
             onView(withId(R.id.confirmLocation)).check(matches(not(ViewMatchers.isDisplayed())));
 
         } catch (InterruptedException e) {
             e.printStackTrace();
-        }*/
-
+        }
+*/
 //        try {
 //            Thread.sleep(2000);
 //            onView(withId(R.id.confirmLocation)).check(matches(not(ViewMatchers.isDisplayed())));
