@@ -126,5 +126,5 @@ public class ConnectedCalendarActivityTest{
             GroupActivityTest.setup();
         }
     }
-    
+
 }
