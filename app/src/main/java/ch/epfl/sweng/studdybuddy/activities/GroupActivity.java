@@ -105,7 +105,6 @@ public class GroupActivity extends AppCompatActivity {
         intent.putExtra(Messages.groupID, groupID);
         intent.putExtra(Messages.maxUser, MaxNumUsers);
         intent.putExtra(Messages.meetingID, singleton.id.getId());
-
         startActivity(intent);
     }
 

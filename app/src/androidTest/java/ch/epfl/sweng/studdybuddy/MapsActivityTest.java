@@ -15,17 +15,19 @@ import ch.epfl.sweng.studdybuddy.activities.MapsActivity;
 public class MapsActivityTest {
 
     @Rule
-    public ActivityTestRule<MapsActivity> mIntentsTestRule = new ActivityTestRule<>(MapsActivity.class/*, true, false*/);
+    public ActivityTestRule<MapsActivity> mIntentsTestRule = new ActivityTestRule<>(MapsActivity.class, true, false);
 
     @Rule
     public GrantPermissionRule permissionRule = GrantPermissionRule.grant(android.Manifest.permission.ACCESS_FINE_LOCATION);
 
     @Before
-    public void setup(){}
-    @Test
-    public void checkConfirmDoesntExistForNonAdmin(){
+    public void setup() {
+    }
 
-    /*   Intent intent = new Intent();
+    @Test
+    public void checkConfirmDoesntExistForNonAdmin() {
+
+      /* Intent intent = new Intent();
         try {
             Thread.sleep(2000);
             onView(withId(R.id.confirmLocation)).check(matches(not(ViewMatchers.isDisplayed())));
@@ -43,8 +45,8 @@ public class MapsActivityTest {
 //        }
 
 
-
     }
+
 
   /*  @Test
     public void mapListenerTest(){
@@ -53,7 +55,7 @@ public class MapsActivityTest {
         MeetingLocation rolex = MapsHelper.ROLEX_LOCATION;
         MeetingLocation pos = MapsHelper.mapListener(rolex.getLatLng(), marker, fragment, mIntentsTestRule.getActivity());
         assertTrue(pos.equals(new MeetingLocation(rolex.getTitle(), rolex.getAddress(), rolex.getLatLng())));
-    }*/
+    }
+}*/
 }
-
 

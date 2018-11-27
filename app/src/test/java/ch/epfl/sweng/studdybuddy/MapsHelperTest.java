@@ -3,6 +3,7 @@ package ch.epfl.sweng.studdybuddy;
 import android.widget.Button;
 
 import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -71,6 +72,8 @@ public class MapsHelperTest {
         assertTrue(mo.getTitle().equals("Rolex") && mo.getPosition().equals(new LatLng(1,2)));
 
     }
+
+
 
 
 }
