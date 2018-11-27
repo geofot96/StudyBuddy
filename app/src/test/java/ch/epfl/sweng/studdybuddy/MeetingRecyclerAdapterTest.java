@@ -28,6 +28,7 @@ import ch.epfl.sweng.studdybuddy.util.Messages;
 import ch.epfl.sweng.studdybuddy.util.StudyBuddy;
 
 import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -46,6 +47,7 @@ public class MeetingRecyclerAdapterTest {
     CardView cMock = mock(CardView.class);
     View v = mock(View.class);
     MeetingRecyclerAdapter.ViewHolder h ;
+    MeetingRecyclerAdapter.ViewHolder viewHolder ;
 
 
     @Before

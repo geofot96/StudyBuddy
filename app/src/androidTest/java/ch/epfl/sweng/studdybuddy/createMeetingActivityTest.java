@@ -5,14 +5,10 @@ import android.content.Intent;
 import android.support.test.espresso.ViewInteraction;
 import android.support.test.espresso.contrib.PickerActions;
 import android.support.test.espresso.intent.rule.IntentsTestRule;
-import android.support.test.espresso.matcher.BoundedMatcher;
 import android.support.test.rule.ActivityTestRule;
-import android.view.View;
 import android.widget.DatePicker;
 import android.widget.TimePicker;
 
-import org.hamcrest.Description;
-import org.hamcrest.Matcher;
 import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -37,6 +33,8 @@ import static android.support.test.espresso.matcher.ViewMatchers.withClassName;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static android.support.test.internal.runner.junit4.statement.UiThreadStatement.runOnUiThread;
+import static ch.epfl.sweng.studdybuddy.ExampleInstrumentedTest.matchesDate;
+import static ch.epfl.sweng.studdybuddy.ExampleInstrumentedTest.matchesTime;
 import static org.hamcrest.Matchers.not;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
@@ -176,45 +174,6 @@ public class createMeetingActivityTest {
         ViewInteraction dP = onView(withClassName(Matchers.equalTo(DatePicker.class.getName()))).perform(PickerActions.setDate(2018,10+1, 25));
         dP.check(matches(matchesDate(2018,10, 25)));
         mActivityRule.finishActivity();
-    }
-
-    private static Matcher<View> matchesTime(final int hours, final int minutes) {
-        return new BoundedMatcher<View, TimePicker>(TimePicker.class) {
-
-            @Override
-            public void describeTo(Description description) {
-                description.appendText("matches date:");
-            }
-
-            @Override
-            protected boolean matchesSafely(TimePicker item) {
-                int h, min;
-                int currentApiVersion = android.os.Build.VERSION.SDK_INT;
-                if (currentApiVersion > android.os.Build.VERSION_CODES.LOLLIPOP_MR1){
-                    h = item.getHour();
-                    min = item.getMinute();
-                } else {
-                    h = item.getCurrentHour();
-                    min = item.getCurrentMinute();
-                }
-                return (hours == h && minutes == min);
-            }
-        };
-    }
-
-    public static Matcher<View> matchesDate(final int year, final int month, final int day) {
-        return new BoundedMatcher<View, DatePicker>(DatePicker.class) {
-
-            @Override
-            public void describeTo(Description description) {
-                description.appendText("matches date:");
-            }
-
-            @Override
-            protected boolean matchesSafely(DatePicker item) {
-                return (year == item.getYear() && month == item.getMonth() && day == item.getDayOfMonth());
-            }
-        };
     }
 
 }
