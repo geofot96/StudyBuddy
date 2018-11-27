@@ -15,7 +15,7 @@ import ch.epfl.sweng.studdybuddy.activities.MapsActivity;
 public class MapsActivityTest {
 
     @Rule
-    public ActivityTestRule<MapsActivity> mIntentsTestRule = new ActivityTestRule<>(MapsActivity.class);
+    public ActivityTestRule<MapsActivity> mIntentsTestRule = new ActivityTestRule<>(MapsActivity.class, true, false);
 
     @Rule
     public GrantPermissionRule permissionRule = GrantPermissionRule.grant(android.Manifest.permission.ACCESS_FINE_LOCATION);
@@ -24,14 +24,15 @@ public class MapsActivityTest {
     public void setup(){}
     @Test
     public void checkConfirmDoesntExistForNonAdmin(){
-       /* try {
+/*        Intent intent = new Intent();
+        try {
             Thread.sleep(2000);
             onView(withId(R.id.confirmLocation)).check(matches(not(ViewMatchers.isDisplayed())));
 
         } catch (InterruptedException e) {
             e.printStackTrace();
-        }
-*/
+        }*/
+
 
     }
 
