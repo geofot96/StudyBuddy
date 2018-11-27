@@ -21,6 +21,7 @@ import ch.epfl.sweng.studdybuddy.R;
 import ch.epfl.sweng.studdybuddy.activities.group.GlobalBundle;
 import ch.epfl.sweng.studdybuddy.activities.group.MapsActivity;
 import ch.epfl.sweng.studdybuddy.core.Pair;
+import ch.epfl.sweng.studdybuddy.util.DateTimeHelper;
 import ch.epfl.sweng.studdybuddy.util.Messages;
 import ch.epfl.sweng.studdybuddy.util.StudyBuddy;
 
@@ -79,18 +80,7 @@ public class MeetingRecyclerAdapter extends RecyclerView.Adapter<MeetingRecycler
     @Override
     public void onBindViewHolder(@NonNull MeetingRecyclerAdapter.ViewHolder myViewHolder, int i) {
         Meeting meeting = meetingList.get(i);
-        Date startingDate = new Date(meeting.getStarting());
-        Date endingDate = new Date(meeting.getEnding());
-        Calendar c = Calendar.getInstance();
-        c.setTime(startingDate);
-        List<Integer> start = Arrays.asList(c.get(Calendar.MONTH) + 1, c.get(Calendar.DAY_OF_MONTH), c.get(Calendar.HOUR_OF_DAY), c.get(Calendar.MINUTE));
-        c.setTime(endingDate);
-        List<Integer> end = Arrays.asList(c.get(Calendar.HOUR_OF_DAY), c.get(Calendar.MINUTE));
-        myViewHolder.textViewDate.setText(
-                 start.get(0)+ "/" +
-                         start.get(1) +
-                        " From: " + start.get(2)+ ":" + start.get(3)/10 + start.get(3)%10 +
-                        " To: "+ end.get(0)+ ":" + end.get(1)/10 + end.get(1)%10);
+        myViewHolder.textViewDate.setText(DateTimeHelper.printMeetingDate(meeting.getStarting(), meeting.getEnding()));
         myViewHolder.textViewLocation.setText(meeting.getLocation().getTitle() + ": " + meeting.getLocation().getAddress());
         myViewHolder.cardViewMeeting.setOnClickListener(new View.OnClickListener() {
             @Override
