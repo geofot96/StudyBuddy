@@ -26,9 +26,8 @@ import static org.junit.Assert.assertTrue;
 @RunWith(AndroidJUnit4.class)
 
 public class ConnectedCalendarActivityTest{
-  @Test
-  public void EmptyTest(){}
-/*    private GridLayout calendar;
+
+    private GridLayout calendar;
 
     @Rule
     public myRule mActivityRule =
@@ -64,7 +63,7 @@ public class ConnectedCalendarActivityTest{
      * @param start the index head of the sublist of the calendar we want to test
      * @return <tt>true</tt> if every cell from <tt>start</tt> are white
      */
-/*    private boolean checkAreWhite(int start) {
+   private boolean checkAreWhite(int start) {
         CardView cardView;
         for (int i = start; i < 88; i += (i % 8 == 7) ? 2 : 1) {
                 cardView = (CardView) calendar.getChildAt(i);
@@ -80,7 +79,7 @@ public class ConnectedCalendarActivityTest{
      * @param cardView
      * @throws Throwable
      */
-/*    private void clickOnCardView(final CardView cardView) throws Throwable {
+    private void clickOnCardView(final CardView cardView) throws Throwable {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -127,5 +126,5 @@ public class ConnectedCalendarActivityTest{
             GroupActivityTest.setup();
         }
     }
-    */
+    
 }
