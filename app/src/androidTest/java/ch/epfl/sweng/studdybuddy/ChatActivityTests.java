@@ -32,9 +32,7 @@ import static org.junit.Assert.*;
 
 public class ChatActivityTests
 {
-  @Test
-  public void EmptyTest(){}
-  /*  Intent intent;
+    Intent intent;
 
 
     @Rule
@@ -77,5 +75,5 @@ public class ChatActivityTests
         assertEquals(1, list.size());
         DummyChatActivityIntentRule.finishActivity();
     }
-    */
+    
 }
