@@ -1,21 +1,17 @@
 package ch.epfl.sweng.studdybuddy;
 
 import android.content.Context;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.matcher.ViewMatchers;
 import android.support.test.rule.ActivityTestRule;
-import android.support.test.rule.GrantPermissionRule;
 import android.support.test.runner.AndroidJUnit4;
-
-import com.google.android.gms.internal.maps.zzt;
-import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
+import android.support.v4.content.ContextCompat;
 
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -26,8 +22,6 @@ import androidx.test.uiautomator.UiObjectNotFoundException;
 import androidx.test.uiautomator.UiSelector;
 import ch.epfl.sweng.studdybuddy.activities.group.GlobalBundle;
 import ch.epfl.sweng.studdybuddy.activities.group.MapsActivity;
-import ch.epfl.sweng.studdybuddy.services.meeting.MeetingLocation;
-import ch.epfl.sweng.studdybuddy.util.MapsHelper;
 import ch.epfl.sweng.studdybuddy.util.Messages;
 
 import static android.support.test.InstrumentationRegistry.getInstrumentation;
@@ -35,14 +29,6 @@ import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static org.hamcrest.core.IsNot.not;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.mock;
-
-import android.app.Activity;
-import android.content.pm.PackageManager;
-import android.os.Build;
-
-import android.support.v4.content.ContextCompat;
 
 
 @RunWith(AndroidJUnit4.class)
@@ -74,8 +60,7 @@ public class MapsActivityTest {
         try {
             Thread.sleep(2000);
             onView(withId(R.id.confirmLocation)).check(matches(not(ViewMatchers.isDisplayed())));
-
-        } catch (InterruptedException e) {
+            } catch (InterruptedException e) {
             e.printStackTrace();
         }
 

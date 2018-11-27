@@ -75,6 +75,7 @@ public class ChatListsFragment extends Fragment
         RecyclerView recyclerView_groups = (RecyclerView) v.findViewById(R.id.chats_list);
         recyclerView_groups.setLayoutManager(new LinearLayoutManager(v.getContext()));
         recyclerView_groups.setAdapter(ad);
+
     }
 
     public ReferenceWrapper getDB(){
