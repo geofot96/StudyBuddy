@@ -124,7 +124,7 @@ public class createMeetingActivityTest {
         onView(withId(R.id.setMeeting)).check(matches(not(isEnabled())));
         mActivityRule.finishActivity();
     }
-
+/*
     @Test
     public void noLocation(){
         createMeetingActivity mActivity = mActivityRule.launchActivity(intent);
@@ -133,7 +133,7 @@ public class createMeetingActivityTest {
         onView(withId(R.id.setMeeting)).check(matches(not(isEnabled())));
         mActivityRule.finishActivity();
     }
-
+*/
     @Test
    public void leadsToMapsActivity(){
        mIntentRule.launchActivity(intent);
