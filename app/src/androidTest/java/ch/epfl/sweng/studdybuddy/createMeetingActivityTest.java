@@ -11,6 +11,7 @@ import android.support.test.espresso.contrib.PickerActions;
 import android.support.test.espresso.intent.rule.IntentsTestRule;
 import android.support.test.espresso.matcher.BoundedMatcher;
 import android.support.test.rule.ActivityTestRule;
+import android.support.test.rule.GrantPermissionRule;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.TimePicker;
@@ -63,6 +64,9 @@ public class createMeetingActivityTest {
     public IntentsTestRule<createMeetingActivity> mIntentRule =
             new IntentsTestRule<>(createMeetingActivity.class, false, false);
 
+    @Rule
+    public GrantPermissionRule permissionRule = GrantPermissionRule.grant(android.Manifest.permission.ACCESS_FINE_LOCATION);
+
     @BeforeClass
     public static void setUpBeforeClass(){
         MeetingsActivityTest.setup();
@@ -89,7 +93,6 @@ public class createMeetingActivityTest {
         mActivityRule.finishActivity();
     }
 
-    //Work locall
     @Test
     public void ButtonIsEnabled() throws Throwable {
         createMeetingActivity mActivity = mActivityRule.launchActivity(intent);
@@ -131,17 +134,15 @@ public class createMeetingActivityTest {
         mActivityRule.finishActivity();
     }
 
-    /*
-       @Test
-       public void leadsToMapsActivity(){
-           mIntentRule.launchActivity(intent);
-           onView(withId(R.id.locationTitle)).perform(click());
-           intended(hasComponent(MapsActivity.class.getName()));
-           mIntentRule.finishActivity();
-       }
-*/
+    @Test
+   public void leadsToMapsActivity(){
+       mIntentRule.launchActivity(intent);
+       onView(withId(R.id.locationTitle)).perform(click());
+       intended(hasComponent(MapsActivity.class.getName()));
+       mIntentRule.finishActivity();
+   }
 
-    //work locally
+
     @Test
     public void testOnActivityResult() throws Throwable {
         createMeetingActivity mActivity = mActivityRule.launchActivity(intent);
