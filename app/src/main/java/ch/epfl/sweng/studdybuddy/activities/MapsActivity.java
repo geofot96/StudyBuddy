@@ -177,7 +177,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         ref.select("meetings").select(gId).getAll(Meeting.class, new Consumer<List<Meeting>>() {
             @Override
             public void accept(List<Meeting> meetingsfb) {
-                MarkerOptions tmp = MapsHelper.acceptMeetings(meetingsfb,meetings, button, gId);
+                MarkerOptions tmp = MapsHelper.acceptMeetings(meetingsfb,meetings, button, Arrays.asList(gId,uId));
 
                 if(tmp != null){
                     marker =  mMap.addMarker(tmp);

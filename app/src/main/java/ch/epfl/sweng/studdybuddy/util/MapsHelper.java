@@ -28,7 +28,7 @@ public class MapsHelper {
     public static final float DEFAULT_ZOOM = 14.0f;
 
 
-    public static MarkerOptions acceptMeetings(List<Meeting>meetingsFb, List<Meeting> meetings, Button button, String gId){
+    public static MarkerOptions acceptMeetings(List<Meeting>meetingsFb, List<Meeting> meetings, Button button, List<String> gIdUId){
         boolean isActivityInitialized = meetings.size() > 0;
         meetings.clear();
         meetings.addAll(meetingsFb);
@@ -47,7 +47,6 @@ public class MapsHelper {
             MeetingLocation location = meetings.size() > 0 ? meetings.get(0).location: ROLEX_LOCATION;
             MarkerOptions mMarker =(new MarkerOptions().position(location.getLatLng()).title(location.getTitle()));
            //if(uId.equals("Bouba")){
-
                 button.setVisibility(View.VISIBLE);
                 button.setEnabled(true);
 

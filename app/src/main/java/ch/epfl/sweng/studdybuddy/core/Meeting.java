@@ -33,6 +33,8 @@ public final class Meeting {
         this.location = MapsHelper.ROLEX_LOCATION;
     }
 
+
+
     public SerialDate getDeadline() {
         return deadline;
     }
@@ -69,10 +71,6 @@ public final class Meeting {
         this.setLocation(copy.getLocation());
     }
 
-    @Override
-    public String toString() {
-        return deadline.toString();
-    }
 
     public String date() {
         return deadline.toString();

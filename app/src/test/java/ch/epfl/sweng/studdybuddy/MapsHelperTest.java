@@ -67,7 +67,7 @@ public class MapsHelperTest {
         Button button = mock(Button.class);
 
         String uId = "Bouba";
-        MarkerOptions mo = MapsHelper.acceptMeetings(meetingsFB, meetings, button,"Bouba");
+        MarkerOptions mo = MapsHelper.acceptMeetings(meetingsFB, meetings, button,Arrays.asList("superGroup","Bouba"));
         assertTrue(mo.getTitle().equals("Rolex") && mo.getPosition().equals(new LatLng(1,2)));
 
     }
