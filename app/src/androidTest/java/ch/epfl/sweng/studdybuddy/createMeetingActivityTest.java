@@ -89,27 +89,32 @@ public class createMeetingActivityTest {
         mActivityRule.finishActivity();
     }
 
-   @Test
-    public void ButtonIsEnabled() {
+    @Test
+    public void ButtonIsEnabled() throws Throwable {
         createMeetingActivity mActivity = mActivityRule.launchActivity(intent);
-
-
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
                 mActivity.setLocation(mockLocation);
                 mActivity.setStartingDate(alwaysAfter);
                 mActivity.setEndingDate(alwaysAfter);
-
+            }
+        });
         onView(withId(R.id.setMeeting)).check(matches(isEnabled()));
         onView(withId(R.id.setMeeting)).check(matches(isClickable()));
     }
 
     @Test
-    public void WrongTimeSlot() {
+    public void WrongTimeSlot() throws Throwable {
         createMeetingActivity mActivity = mActivityRule.launchActivity(intent);
-
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
                 mActivity.setLocation(mockLocation);
                 mActivity.setStartingDate(alwaysAfter);
                 mActivity.setEndingDate(alwaysBefore);
-
+            }
+        });
         onView(withId(R.id.setMeeting)).check(matches(not(isEnabled())));
         mActivityRule.finishActivity();
     }
@@ -123,19 +128,25 @@ public class createMeetingActivityTest {
         mActivityRule.finishActivity();
     }
 
- /*   @Test
-    public void leadsToMapsActivity(){
-        mIntentRule.launchActivity(intent);
-        onView(withId(R.id.locationTitle)).perform(click());
-        intended(hasComponent(MapsActivity.class.getName()));
-        mIntentRule.finishActivity();
-    }
-*/
+    /*   @Test
+       public void leadsToMapsActivity(){
+           mIntentRule.launchActivity(intent);
+           onView(withId(R.id.locationTitle)).perform(click());
+           intended(hasComponent(MapsActivity.class.getName()));
+           mIntentRule.finishActivity();
+       }
+   */
     @Test
-    public void testOnActivityResult(){
+    public void testOnActivityResult() throws Throwable {
         createMeetingActivity mActivity = mActivityRule.launchActivity(intent);
-        mActivity.onActivityResult(1, Activity.RESULT_OK, new Intent());
-        onView(withId(R.id.locationTitle)).check(matches(withText("test: test")));
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                mActivity.onActivityResult(1, Activity.RESULT_OK, new Intent());
+                onView(withId(R.id.locationTitle)).check(matches(withText("test: test")));
+            }
+        });
+
     }
 
 
