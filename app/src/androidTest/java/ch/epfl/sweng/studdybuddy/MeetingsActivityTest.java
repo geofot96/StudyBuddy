@@ -42,11 +42,11 @@ public class MeetingsActivityTest {
         onView(withId(R.id.meetingRV)).check(matches(isDisplayed()));
     }
 
-    @Test
+   /* @Test
     public void testOnActivityResult(){
         MeetingsActivity activity = mActivityRule.getActivity();
         activity.setMetaM(mM);
         activity.onActivityResult(1, RESULT_OK, new Intent());
         verify(mM, times(1)).pushLocation(any(), any(), any());
-    }
+    }*/
 }
