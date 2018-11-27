@@ -24,6 +24,7 @@ public class MapsActivityTest {
     public void setup(){}
     @Test
     public void checkConfirmDoesntExistForNonAdmin(){
+
 /*        Intent intent = new Intent();
         try {
             Thread.sleep(2000);
@@ -32,6 +33,15 @@ public class MapsActivityTest {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }*/
+
+//        try {
+//            Thread.sleep(2000);
+//            onView(withId(R.id.confirmLocation)).check(matches(not(ViewMatchers.isDisplayed())));
+//
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
+
 
 
     }

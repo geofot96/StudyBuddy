@@ -71,28 +71,26 @@ public class GroupActivity extends AppCompatActivity {
         //setupMeeting();
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        if(group.getAdminID() != null){
-            updateMeeting().update();
-        }
-       // updateMeeting().update();
-    }
 
     private AdapterAdapter updateMeeting() {
         return new AdapterAdapter() {
             @Override
             public void update() {
                 adminMeeting(add, group, userID);
-                Consumer<Boolean> callback = new Consumer<Boolean>() {
+                Consumer<List<Meeting>> locationCaallback  = new Consumer<List<Meeting>>() {
                     @Override
-                    public void accept(Boolean aBoolean) {
+                    public void accept(List<Meeting> meetings) {
                         location.setText("Meeting Location: " + singleton.location.getAddress());
+
                     }
                 };
-                mm.fetchMeetings(group.getGroupID().getId(), sequenced(singleMeeting(singleton), meetingConsumer(title, time, date, add, callback)));
 
+                if(!userID.equals(group.getAdminID())) {
+                    time.setClickable(false);
+                    date.setClickable(false);
+                    location.setClickable(false);
+                }
+                mm.fetchMeetings(group.getGroupID().getId(), sequenced(sequenced(singleMeeting(singleton), meetingConsumer(title, time, date, add)), locationCaallback));
             }
         };
     }

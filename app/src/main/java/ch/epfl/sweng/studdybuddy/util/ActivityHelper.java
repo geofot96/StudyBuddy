@@ -27,7 +27,7 @@ public class ActivityHelper {
             }
         };
     }
-    public static Consumer<List<Meeting>> meetingConsumer(TextView title, Button time, Button date, Button plus, Consumer<Boolean> callback) {
+    public static Consumer<List<Meeting>> meetingConsumer(TextView title, Button time, Button date, Button plus) {
         return new Consumer<List<Meeting>>() {
             @Override
             public void accept(List<Meeting> meetings) {
@@ -46,7 +46,6 @@ public class ActivityHelper {
                     plus.setVisibility(View.GONE);
                 }
 
-                callback.accept(meetings.size() == 0);
             }
         };
     }
