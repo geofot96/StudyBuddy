@@ -25,9 +25,7 @@ import static org.hamcrest.Matchers.not;
 
 @RunWith(AndroidJUnit4.class)
 public class CreateGroupTest {
-  @Test
-  public void EmptyTest(){}
-/*
+
     @Rule
     public IntentsTestRule<NavigationActivity> mIntentsTestRule = new IntentsTestRule<>(NavigationActivity.class);
 
@@ -50,7 +48,7 @@ public class CreateGroupTest {
         intended(hasComponent(new ComponentName(getTargetContext(), GroupsActivity.class)));
     }
 */
-/*    @Test
+    @Test
     public void createButtonDisabledIfNoCourseSelected() {
         try {
             Thread.sleep(100);
@@ -67,5 +65,5 @@ public class CreateGroupTest {
         onView(withId(R.id.confirmGroupCreation)).perform(click());
         intended(hasComponent(new ComponentName(getTargetContext(), CreateGroupActivity.class)));
     }
-*/
+
 }

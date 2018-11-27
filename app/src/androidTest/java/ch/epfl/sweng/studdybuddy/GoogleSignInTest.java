@@ -26,7 +26,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.withId;
 public class GoogleSignInTest {
   @Test
   public void EmptyTest(){}
-/*    @Rule
+    @Rule
     public IntentsTestRule<DummyGoogleSignInActivity> DummyGoogleSignInActivityIntentRule =
             new IntentsTestRule<>(DummyGoogleSignInActivity.class, false, false);
 
@@ -50,5 +50,4 @@ public class GoogleSignInTest {
         intended(hasComponent(new ComponentName(getTargetContext(), expected)));
         rule.finishActivity();
     }
-    */
 }

@@ -17,9 +17,7 @@ import static org.junit.Assert.assertEquals;
 @RunWith(AndroidJUnit4.class)
 public class ExampleInstrumentedTest
 {
-  @Test
-  public void EmptyTest(){}
-  /*  @Test
+ @Test
     public void useAppContext()
     {
         // Context of the app under test.
@@ -27,7 +25,5 @@ public class ExampleInstrumentedTest
 
         assertEquals("ch.epfl.sweng.studdybuddy", appContext.getPackageName());
     }
-
-    */
 
 }

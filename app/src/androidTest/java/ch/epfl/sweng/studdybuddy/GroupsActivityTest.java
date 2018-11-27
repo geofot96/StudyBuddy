@@ -21,9 +21,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.withId;
 @RunWith(AndroidJUnit4.class)
 public class GroupsActivityTest
 {
-  @Test
-  public void EmptyTest(){}
-    /*
+
     @Rule
     public final IntentsTestRule<NavigationActivity> mActivityRule =
             new IntentsTestRule<>(NavigationActivity.class);
@@ -47,5 +45,4 @@ public class GroupsActivityTest
         onView(withId(R.id.toggleButton)).perform(click());
         onView(withId(R.id.toggleButton)).perform(click());
     }
-    */
 }
