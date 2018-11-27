@@ -1,5 +1,7 @@
 package ch.epfl.sweng.studdybuddy.services.calendar;
 
+import android.support.annotation.NonNull;
+
 import java.util.List;
 
 import ch.epfl.sweng.studdybuddy.core.Group;
@@ -7,10 +9,11 @@ import ch.epfl.sweng.studdybuddy.core.ID;
 import ch.epfl.sweng.studdybuddy.core.User;
 import ch.epfl.sweng.studdybuddy.firebase.FirebaseReference;
 import ch.epfl.sweng.studdybuddy.firebase.ReferenceWrapper;
+import ch.epfl.sweng.studdybuddy.util.Messages;
 
 /**
  * The ConnectedAvailability is linked to an instance of Availability and will
- * update the database every time t
+ * update the database every time the availabilities are updated
  */
 public class ConnectedAvailability implements Availability {
     private Availability A;
@@ -18,15 +21,15 @@ public class ConnectedAvailability implements Availability {
     private String userID;
     private String groupID;
 
-    public ConnectedAvailability(String user, String group){
+    public ConnectedAvailability(@NonNull String user, @NonNull String group){
         this(user, group, new ConcreteAvailability());
     }
 
-    public ConnectedAvailability(String user, String group, Availability A){
+    public ConnectedAvailability(@NonNull String user, @NonNull String group, @NonNull Availability A){
         this(user, group, A, new FirebaseReference());
     }
 
-    public ConnectedAvailability(String user, String group, Availability A, ReferenceWrapper ref){
+    public ConnectedAvailability(@NonNull String user, @NonNull String group, @NonNull Availability A, @NonNull ReferenceWrapper ref){
         this.A = A;
         this.ref = ref;
         this.userID = user;
@@ -51,10 +54,10 @@ public class ConnectedAvailability implements Availability {
     }
 
     private void update(){
-        ref.select("availabilities").select(groupID).select(userID).setVal(A.getUserAvailabilities());
+        ref.select(Messages.FirebaseNode.AVAILABILITIES).select(groupID).select(userID).setVal(A.getUserAvailabilities());
     }
 
     public static void removeAvailabiliity(ID<Group> group, ID<User> user, ReferenceWrapper ref){
-        ref.select("availabilities").select(group.getId()).select(user.getId()).clear();
+        ref.select(Messages.FirebaseNode.AVAILABILITIES).select(group.getId()).select(user.getId()).clear();
     }
 }

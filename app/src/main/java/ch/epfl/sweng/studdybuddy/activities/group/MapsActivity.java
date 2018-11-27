@@ -1,4 +1,4 @@
-package ch.epfl.sweng.studdybuddy.activities;
+package ch.epfl.sweng.studdybuddy.activities.group;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -23,13 +23,11 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import ch.epfl.sweng.studdybuddy.R;
-import ch.epfl.sweng.studdybuddy.core.Meeting;
-import ch.epfl.sweng.studdybuddy.core.MeetingLocation;
+import ch.epfl.sweng.studdybuddy.activities.NavigationActivity;
 import ch.epfl.sweng.studdybuddy.firebase.FirebaseReference;
+import ch.epfl.sweng.studdybuddy.services.meeting.Meeting;
+import ch.epfl.sweng.studdybuddy.services.meeting.MeetingLocation;
 import ch.epfl.sweng.studdybuddy.tools.Consumer;
 import ch.epfl.sweng.studdybuddy.util.MapsHelper;
 import ch.epfl.sweng.studdybuddy.util.Messages;
@@ -39,15 +37,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private GoogleMap mMap;
 
-    private MarkerOptions mMarker;
+    private MarkerOptions mMarker;  //TODO remove it if never used
     private Marker marker;
-    private List<Meeting> meetings;
-    private FirebaseReference ref;
     private MeetingLocation confirmedPlace;
-    PlaceAutocompleteFragment autocompleteFragment;
-    String uId;
-    String gId;
-    Button button;
+    private Bundle origin;
+
+    private PlaceAutocompleteFragment autocompleteFragment;
+    private String uId;
+    private String gId;
+    private String adminID;
+    private String meetingID;
+    private Button button;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,9 +58,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         autocompleteFragment = (PlaceAutocompleteFragment)
                 getFragmentManager().findFragmentById(R.id.place_autocomplete);
         uId = ((StudyBuddy) MapsActivity.this.getApplication()).getAuthendifiedUser().getUserID().getId();
-        Intent intent = getIntent();
-        gId = intent.getStringExtra(Messages.groupID);
-        mapFragment.getMapAsync(this);
+        origin = GlobalBundle.getInstance().getSavedBundle();
+        gId = origin.getString(Messages.groupID);
+        adminID = origin.getString(Messages.ADMIN);
+        meetingID = origin.getString(Messages.meetingID);
+        try{
+            mapFragment.getMapAsync(this);
+        }catch(NullPointerException e){
+            startActivity(new Intent(this, NavigationActivity.class));
+            e.printStackTrace();
+        }
 
     }
 
@@ -69,7 +76,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         return new PlaceSelectionListener() {
             @Override
             public void onPlaceSelected(Place place) {
-               confirmedPlace =MapsHelper.acceptSelectedPlace(place, marker);
+                confirmedPlace = MapsHelper.acceptSelectedPlace(place, marker);
                 mMarker = new MarkerOptions().position(place.getLatLng()).title(place.getName().toString()).draggable(true);
                 mMap.moveCamera(CameraUpdateFactory.newLatLng(place.getLatLng()));
 
@@ -83,12 +90,20 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         };
     }
 
-    //Write meeting location in firebase
     private View.OnClickListener confirmationListener(){
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(MapsHelper.confirmationListener(confirmedPlace, meetings, ref, gId)){
+                if(confirmedPlace != null) {
+                    Intent resultIntent = new Intent();
+                    origin.putString(Messages.LOCATION_TITLE, confirmedPlace.getTitle());
+                    origin.putString(Messages.ADDRESS, confirmedPlace.getAddress());
+                    origin.putDouble(Messages.LATITUDE, confirmedPlace.getLatitude());
+                    origin.putString(Messages.meetingID, meetingID);
+                    origin.putDouble(Messages.LONGITUDE, confirmedPlace.getLongitude());
+                    GlobalBundle.getInstance().putAll(origin);
+                    /*resultIntent.putExtras(origin);*/
+                    setResult(RESULT_OK, resultIntent);
                     finish();
                 }
             }
@@ -149,32 +164,34 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         getLocationPermission();
         autocompleteFragment.setOnPlaceSelectedListener(placeSelectionListener());
-        button = ((Button) findViewById(R.id.confirmLocation));
+        button = findViewById(R.id.confirmLocation);
         button.setOnClickListener((confirmationListener()));
-
-        meetings = new ArrayList<>();
-        ref = new FirebaseReference();
-        setMeetings( ref, meetings, button);
+        FirebaseReference ref = new FirebaseReference();
+        initialization(ref);
+        if(adminID.equals(uId)){
+            button.setVisibility(View.VISIBLE);
+            button.setEnabled(true);
+        }
         mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
 
-           @Override
-           public void onMapClick(LatLng latLng) {
-               MeetingLocation tmp =  MapsHelper.mapListener(latLng, marker, autocompleteFragment, MapsActivity.this);
+               @Override
+               public void onMapClick(LatLng latLng) {
+                   MeetingLocation tmp =  MapsHelper.mapListener(latLng, marker, autocompleteFragment, MapsActivity.this);
 
-               if(tmp != null) {
-                   confirmedPlace = tmp;
+                   if(tmp != null) {
+                       confirmedPlace = tmp;
+                   }
                }
            }
-       }
         );
     }
 
 
-    public  void setMeetings(FirebaseReference ref, final List<Meeting> meetings, Button button){
-        ref.select("BoubaMeetings").getAll(Meeting.class, new Consumer<List<Meeting>>() {
+    private void initialization(FirebaseReference ref){
+        ref.select(Messages.FirebaseNode.MEETINGS).select(gId).select(meetingID).get(Meeting.class, new Consumer<Meeting>() {
             @Override
-            public void accept(List<Meeting> meetingsfb) {
-                MarkerOptions tmp = MapsHelper.acceptMeetings(meetingsfb,meetings, button, gId);
+            public void accept(Meeting meeting) {
+                MarkerOptions tmp = MapsHelper.setInitialPosition(meeting);
 
                 if(tmp != null){
                     marker =  mMap.addMarker(tmp);
@@ -183,7 +200,4 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
         });
     }
-
-
-
 }

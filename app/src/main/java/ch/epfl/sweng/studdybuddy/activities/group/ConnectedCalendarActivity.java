@@ -1,4 +1,4 @@
-package ch.epfl.sweng.studdybuddy.activities;
+package ch.epfl.sweng.studdybuddy.activities.group;
 
 import android.content.Intent;
 import android.graphics.Color;
@@ -24,6 +24,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import ch.epfl.sweng.studdybuddy.R;
+import ch.epfl.sweng.studdybuddy.activities.group.GroupActivity;
 import ch.epfl.sweng.studdybuddy.core.ID;
 import ch.epfl.sweng.studdybuddy.core.Pair;
 import ch.epfl.sweng.studdybuddy.firebase.FirebaseReference;
@@ -41,7 +42,7 @@ import ch.epfl.sweng.studdybuddy.util.Messages;
  * availabilities dynamically. Touching a cell of the calendar will
  * modify our availability
  */
-public class ConnectedCalendarActivity extends AppCompatActivity implements ICalendarActivity
+public class ConnectedCalendarActivity extends AppCompatActivity
 {
     GridLayout calendarGrid;
     private static final int CalendarWidth = 8;
@@ -50,7 +51,6 @@ public class ConnectedCalendarActivity extends AppCompatActivity implements ICal
     private ConnectedCalendar calendar;
     private DatabaseReference database;
     private Pair pair = new Pair();
-    private Bundle extras;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) throws NullPointerException{
@@ -61,17 +61,13 @@ public class ConnectedCalendarActivity extends AppCompatActivity implements ICal
         calendarGrid = findViewById(R.id.calendarGrid);
         Button button = findViewById(R.id.confirmSlots);
 
-        Intent intent = getIntent();
-        if(intent == null){
-            throw new NullPointerException("No intent grabbed by the activity");
-        }
+        GlobalBundle globalBundle = GlobalBundle.getInstance();
+        Bundle origin = globalBundle.getSavedBundle();
 
-        extras = intent.getExtras();
+        NmaxUsers = (float) origin.getInt(Messages.maxUser, -1);
 
-        NmaxUsers = (float) intent.getIntExtra(Messages.maxUser, -1);
-
-        pair.setKey(intent.getStringExtra(Messages.groupID));
-        pair.setValue(intent.getStringExtra(Messages.userID));
+        pair.setKey(origin.getString(Messages.groupID));
+        pair.setValue(origin.getString(Messages.userID));
         if(pair.getKey() == null || pair.getValue() == null){
             throw new NullPointerException("the intent didn't content expected data");
         }
@@ -84,7 +80,7 @@ public class ConnectedCalendarActivity extends AppCompatActivity implements ICal
             @Override
             public void onClick(View v)
             {
-                confirmSlots(extras);
+                confirmSlots();
             }
         });
     }
@@ -103,7 +99,6 @@ public class ConnectedCalendarActivity extends AppCompatActivity implements ICal
      * appropriate time slot
      * @param calendarGrid the View of the calendar
      */
-    @Override
     public void setOnToggleBehavior(GridLayout calendarGrid){
         for(int i = 0; i < calendarGrid.getChildCount(); i++)
         {
@@ -122,33 +117,34 @@ public class ConnectedCalendarActivity extends AppCompatActivity implements ICal
     }
 
     /**
-     * clicking on the confirm button leads us to the group Activity
-     * @param origin the intent got from the GroupActivity
+     * clicking on the confirm button leads us to GroupActivity
      */
-    @Override
-    public void confirmSlots(Bundle origin) {
-        //TODO : once the GroupActivity will be correctly set, launch the GroupActivity
-        Intent newIntent = new Intent(this, NavigationActivity.class);
-        startActivity(newIntent.putExtras(origin));
+    public void confirmSlots() {
+        Intent newIntent = new Intent(this, GroupActivity.class);
+        startActivity(newIntent);
     }
 
     /**
      * change the color of every cell of the calendar when a change has been added to
      * the availabilities of the users.
      */
-    @Override
-    public void updateColor() {
+    public void update() {
         List<Integer> groupAvailabilities = calendar.getComputedAvailabilities();
-        int size = calendarGrid.getColumnCount()*calendarGrid.getRowCount();
-        for(int i = 0; i < size; i++){
+        if(groupAvailabilities.size() == 77) {
+            updateColor(groupAvailabilities);
+        }
+    }
+
+    public void updateColor(List<Integer> av){
+        int size = calendarGrid.getColumnCount() * calendarGrid.getRowCount();
+        for (int i = 0; i < size; i++) {
             CardView cardView;
-            if(i%CalendarWidth!=0) {//Hours shouldn't be clickable
+            if (i % CalendarWidth != 0) {//Hours shouldn't be clickable
                 cardView = (CardView) calendarGrid.getChildAt(i);
-                int index = (i/CalendarWidth)*(CalendarWidth-1)+(i%CalendarWidth)-1;
-                cardView.setCardBackgroundColor(gradient((float) groupAvailabilities.get(index).intValue()));
+                int index = (i / CalendarWidth) * (CalendarWidth - 1) + (i % CalendarWidth) - 1;
+                cardView.setCardBackgroundColor(gradient((float) av.get(index)));
             }
         }
-
     }
 
     /**
@@ -167,8 +163,7 @@ public class ConnectedCalendarActivity extends AppCompatActivity implements ICal
         Color.colorToHSV(Color.GREEN, hsv);
         float coef = nAvailableUser/NmaxUsers;
         hsv[1] = s +  coef * (hsv[1] - s);
-        int color = Color.HSVToColor(hsv);
-        return color;
+        return Color.HSVToColor(hsv);
     }
 
     /**
@@ -206,7 +201,7 @@ public class ConnectedCalendarActivity extends AppCompatActivity implements ICal
                 @Override
                 public void accept(List<Boolean> booleans) {
                     calendar.modify(targetID, booleans);
-                    updateColor();
+                    update();
                 }
             });
         }
@@ -220,7 +215,7 @@ public class ConnectedCalendarActivity extends AppCompatActivity implements ICal
         public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
             String targetID = dataSnapshot.getKey();
             calendar.removeUser(targetID);
-            updateColor();
+            update();
         }
 
         @Override
@@ -246,7 +241,6 @@ public class ConnectedCalendarActivity extends AppCompatActivity implements ICal
             for(DataSnapshot ds: dataSnapshot.getChildren()){
                 list.add(ds.getValue(Boolean.class));
             }
-            assert(!(list.isEmpty()));
             userAvailabilities = new ConnectedAvailability(pair.getValue(), pair.getKey(), new ConcreteAvailability(list), new FirebaseReference());
         }
 

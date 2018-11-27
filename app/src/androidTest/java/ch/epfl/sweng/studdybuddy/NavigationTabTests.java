@@ -21,6 +21,7 @@ import static org.hamcrest.Matchers.allOf;
 @RunWith(AndroidJUnit4.class)
 public class NavigationTabTests
 {
+
     @Rule
     public ActivityTestRule<NavigationActivity> mActivityTestRule = new ActivityTestRule<>(NavigationActivity.class);
 
@@ -65,5 +66,4 @@ public class NavigationTabTests
                         isDisplayed()));
         bottomNavigationItemView4.perform(click());
     }
-
 }

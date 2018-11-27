@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.FirebaseDatabase;
 
 import org.junit.Before;
@@ -43,7 +44,7 @@ public class ChatActivityTests
         intent = new Intent();
         intent.putExtra(Messages.maxUser, 1);
         intent.putExtra(Messages.userID, Messages.TEST);
-        intent.putExtra("GroupID", Messages.TEST);
+        intent.putExtra(Messages.groupID, Messages.TEST);
         FirebaseDatabase.getInstance().getReference().child("test_chat").removeValue();
 
     }
@@ -74,4 +75,5 @@ public class ChatActivityTests
         assertEquals(1, list.size());
         DummyChatActivityIntentRule.finishActivity();
     }
+    
 }

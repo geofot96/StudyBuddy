@@ -1,14 +1,11 @@
 package ch.epfl.sweng.studdybuddy.tools;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -19,8 +16,7 @@ import ch.epfl.sweng.studdybuddy.activities.ChatActivity;
 import ch.epfl.sweng.studdybuddy.core.Group;
 import ch.epfl.sweng.studdybuddy.firebase.FirebaseReference;
 import ch.epfl.sweng.studdybuddy.firebase.MetaGroup;
-import ch.epfl.sweng.studdybuddy.firebase.ReferenceWrapper;
-import ch.epfl.sweng.studdybuddy.util.FeedFilter;
+import ch.epfl.sweng.studdybuddy.util.Messages;
 
 public class ChatRecyclerAdapter extends BasicRecyclerAdapter
 {
@@ -47,8 +43,7 @@ public class ChatRecyclerAdapter extends BasicRecyclerAdapter
         Context context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
         View groupCardView = inflater.inflate(R.layout.recycle_viewer_row_chat_list, parent, false);
-        MyViewHolder vh = new MyViewHolder(groupCardView);
-        return vh;
+        return new MyViewHolder(groupCardView);
 
     }
 
@@ -64,7 +59,7 @@ public class ChatRecyclerAdapter extends BasicRecyclerAdapter
             @Override
             public void onClick(View v) {
                 Intent i=new Intent(holder.itemView.getContext(), ChatActivity.class);
-                i.putExtra("GroupID",group.getGroupID().getId());
+                i.putExtra(Messages.groupID,group.getGroupID().getId());
                 v.getContext().startActivity(i);
 
             }

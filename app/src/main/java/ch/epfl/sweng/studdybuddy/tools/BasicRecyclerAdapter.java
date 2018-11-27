@@ -163,7 +163,7 @@ public abstract class BasicRecyclerAdapter extends RecyclerView.Adapter<BasicRec
         {
             count = sizes.get(group.getGroupID().toString());
         }
-        pNumber.setText(("Particip: " + count + "/" + group.getMaxNoUsers()));
+        pNumber.setText(count + "/" + group.getMaxNoUsers());
     }
 
     public int getParticipantNumber(Group group)

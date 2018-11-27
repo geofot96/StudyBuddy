@@ -28,7 +28,7 @@ public class UserUnitTests
     @Test
     public void setUserIDWorksCorrectly(){
 
-        user.setUserID(new ID<User>("foobar"));
+        user.setUserID(new ID<>("foobar"));
         assert(user.getUserID().getId().equals("foobar"));
     }
 

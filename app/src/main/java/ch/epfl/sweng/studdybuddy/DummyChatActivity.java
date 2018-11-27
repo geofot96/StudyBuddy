@@ -2,7 +2,6 @@ package ch.epfl.sweng.studdybuddy;
 
 import android.view.View;
 
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import ch.epfl.sweng.studdybuddy.activities.ChatActivity;

@@ -22,17 +22,17 @@ public class HolderTest {
     public void setup() {
 
         when(v.findViewById(-1)).thenReturn(tx);
-        when(tx.getText()).thenReturn("TA MERE");
+        when(tx.getText()).thenReturn("test");
         h = new Holder(v, -1);
     }
     @Test
     public void holderGetter() {
-        assertEquals("TA MERE", h.get());
+        assertEquals("test", h.get());
     }
 
     @Test
     public void holderBind() {
-        h.bind("NTM");
-        verify(tx, times(1)).setText("NTM");
+        h.bind("test2");
+        verify(tx, times(1)).setText("test2");
     }
 }

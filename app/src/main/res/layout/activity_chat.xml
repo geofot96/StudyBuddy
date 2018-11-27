@@ -19,7 +19,8 @@
         app:fabSize="mini"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@android:drawable/ic_menu_send" />
+        app:srcCompat="@android:drawable/ic_menu_send"
+        android:focusable="true" />
 
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"

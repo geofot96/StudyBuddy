@@ -12,6 +12,7 @@ import ch.epfl.sweng.studdybuddy.core.User;
 import ch.epfl.sweng.studdybuddy.services.calendar.ConnectedAvailability;
 import ch.epfl.sweng.studdybuddy.tools.Consumer;
 import ch.epfl.sweng.studdybuddy.util.Helper;
+import ch.epfl.sweng.studdybuddy.util.Messages;
 
 public class MetaGroupAdmin extends MetaGroup {
 
@@ -20,11 +21,11 @@ public class MetaGroupAdmin extends MetaGroup {
     }
     public MetaGroupAdmin() { super(); }
     public ValueEventListener rotateAdmin(Group g) {
-        return db.select("userGroup").getAll(Pair.class, new Consumer<List<Pair>>() {
+        return db.select(Messages.FirebaseNode.USERGROUP).getAll(Pair.class, new Consumer<List<Pair>>() {
             @Override
             public void accept(List<Pair> pairs) {
                 Group updated = findNextAdmin(g, pairs.iterator());
-                ReferenceWrapper gField = db.select("groups").select(g.getGroupID().getId());
+                ReferenceWrapper gField = db.select(Messages.FirebaseNode.GROUPS).select(g.getGroupID().getId());
                 if(updated == null) gField.clear(); //Last user left => wipe the group
                 else gField.setVal(updated);
             }
@@ -44,8 +45,8 @@ public class MetaGroupAdmin extends MetaGroup {
     }
 
     public ValueEventListener removeUserFromGroup(String uId, Group g) {
-        db.select("userGroup").select(Helper.hashCode(new Pair(uId, g.getGroupID().getId()))).clear(); //redundant
-        ConnectedAvailability.removeAvailabiliity(g.getGroupID(), new ID<User>(uId), db);
+        db.select(Messages.FirebaseNode.USERGROUP).select(Helper.hashCode(new Pair(uId, g.getGroupID().getId()))).clear(); //redundant
+        ConnectedAvailability.removeAvailabiliity(g.getGroupID(), new ID<>(uId), db);
         if(g.getAdminID().equals(uId)) {
             return rotateAdmin(g);
         }

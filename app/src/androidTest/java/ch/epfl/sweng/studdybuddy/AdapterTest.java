@@ -11,7 +11,7 @@ import org.junit.runner.RunWith;
 
 import java.util.ArrayList;
 
-import ch.epfl.sweng.studdybuddy.activities.GroupInfoActivity;
+import ch.epfl.sweng.studdybuddy.activities.group.GroupInfoActivity;
 import ch.epfl.sweng.studdybuddy.tools.Adapter;
 import ch.epfl.sweng.studdybuddy.tools.ParticipantAdapter;
 
@@ -19,7 +19,6 @@ import static junit.framework.TestCase.assertTrue;
 
 @RunWith(AndroidJUnit4.class)
 public class AdapterTest {
-
 
     @Rule
     public final IntentsTestRule<GroupInfoActivity> mActivityRule =
@@ -33,5 +32,4 @@ public class AdapterTest {
         ad.initRecyclerView(ctx, rv);
         assertTrue(rv.getAdapter().equals(ad));
     }
-
 }

@@ -5,7 +5,7 @@
     <!--
          The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
          Google Maps Android API v2, but you must specify either coarse or fine
-         location permissions for the 'MyLocation' functionality. 
+         location permissions for the 'MyLocation' functionality.
     -->
     <permission
         android:name="ch.epfl.sweng.studdybuddy.permission.MAPS_RECEIVE"
@@ -63,14 +63,14 @@
         <activity android:name=".auth.DummyGoogleSignInActivity" />
         <activity android:name=".auth.DummyMainActivity" />
         <activity android:name=".activities.MainActivity" />
-        <activity android:name=".activities.GroupInfoActivity" />
-        <activity android:name=".activities.ConnectedCalendarActivity" />
+        <activity android:name=".activities.group.GroupInfoActivity" />
+        <activity android:name=".activities.group.ConnectedCalendarActivity" />
         <activity
-            android:name=".activities.GroupActivity"
-            android:parentActivityName=".activities.GroupsActivity">
+            android:name=".activities.group.GroupActivity"
+            android:parentActivityName=".activities.NavigationActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activities.GroupsActivity" />
+                android:value=".activities.NavigationActivity" />
         </activity>
         <activity android:name=".activities.NavigationActivity" />
         <!--
@@ -79,19 +79,33 @@
              Note that the API key is linked to the encryption key used to sign the APK.
              You need a different API key for each encryption key, including the release key that is used to
              sign the APK for publishing.
-             You can define the keys for the debug and release targets in src/debug/ and src/release/. 
+             You can define the keys for the debug and release targets in src/debug/ and src/release/.
         -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
         <activity android:name=".DummyChatActivity"/>
         <activity
-            android:name=".activities.MapsActivity"
+            android:name=".activities.group.MapsActivity"
             android:label="@string/title_activity_maps"/>
 
+        <activity android:name=".activities.group.meetings.createMeetingActivity"
+            android:parentActivityName=".activities.group.GroupActivity">
 
+            <!-- The meta-data tag is required if you support API level 15 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.group.GroupActivity" />
+        </activity>
+        <activity android:name=".activities.group.meetings.MeetingsActivity"
+            android:parentActivityName=".activities.group.GroupActivity">
+
+            <!-- The meta-data tag is required if you support API level 15 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.group.GroupActivity" />
+        </activity>
     </application>
 
 
 </manifest>
-

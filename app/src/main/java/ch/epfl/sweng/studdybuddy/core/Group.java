@@ -1,5 +1,6 @@
 package ch.epfl.sweng.studdybuddy.core;
 
+import java.util.Date;
 import java.util.UUID;
 
 /**
@@ -15,6 +16,8 @@ public final class Group implements Comparable<Group> {
 
     private ID<Group> groupID; //TODO add getters and setters
     private String lang;
+    private long creationDate;
+    private String adminID;
 
     public String getAdminID() {
         return adminID;
@@ -24,17 +27,17 @@ public final class Group implements Comparable<Group> {
         this.adminID = adminID;
     }
 
-    private String adminID;
 
-    public SerialDate getCreationDate() {
+
+    public long getCreationDate() {
         return creationDate;
     }
 
-    public void setCreationDate(SerialDate creationDate) {
+    public void setCreationDate(long creationDate) {
         this.creationDate = creationDate;
     }
 
-    private SerialDate creationDate;
+
     //TODO add schedule and Chat
     //private commonSchedule;
     //private groupChat;
@@ -55,7 +58,7 @@ public final class Group implements Comparable<Group> {
         this.maxNoUsers = maxNoUsers;
         this.course = course;
         this.lang = lang;
-        this.creationDate = new SerialDate();
+        this.creationDate = new Date().getTime();
         this.adminID = adminID;
     }
 
@@ -120,11 +123,11 @@ public final class Group implements Comparable<Group> {
     @Override
     public int compareTo(Group group)
     {
-        if(this.getCreationDate().before(group.getCreationDate()))
+        if(this.getCreationDate() < (group.getCreationDate()))
         {
             return 1;
         }
-        else if(this.getCreationDate().after(group.getCreationDate()))
+        else if(this.getCreationDate() > (group.getCreationDate()))
         {
             return -1;
         }

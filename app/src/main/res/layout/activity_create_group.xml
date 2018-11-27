@@ -14,7 +14,6 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="47dp"
         android:layout_marginEnd="16dp"
-        android:contentDescription="Courses"
         android:hint="Please select a Course"
         android:imeOptions="actionDone"
         android:inputType="text"

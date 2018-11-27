@@ -24,6 +24,8 @@ import static android.support.test.espresso.matcher.ViewMatchers.withId;
 
 @RunWith(AndroidJUnit4.class)
 public class GoogleSignInTest {
+  @Test
+  public void EmptyTest(){}
     @Rule
     public IntentsTestRule<DummyGoogleSignInActivity> DummyGoogleSignInActivityIntentRule =
             new IntentsTestRule<>(DummyGoogleSignInActivity.class, false, false);

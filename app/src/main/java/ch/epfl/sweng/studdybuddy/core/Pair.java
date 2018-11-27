@@ -1,6 +1,6 @@
 package ch.epfl.sweng.studdybuddy.core;
 
-public class Pair implements Consumable{
+public class Pair {
     String key;
     String value;
 

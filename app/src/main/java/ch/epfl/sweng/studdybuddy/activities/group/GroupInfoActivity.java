@@ -1,4 +1,4 @@
-package ch.epfl.sweng.studdybuddy.activities;
+package ch.epfl.sweng.studdybuddy.activities.group;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,33 +10,32 @@ import android.widget.Button;
 import java.util.ArrayList;
 import java.util.List;
 
-import ch.epfl.sweng.studdybuddy.Fragments.FeedFragment;
 import ch.epfl.sweng.studdybuddy.R;
+import ch.epfl.sweng.studdybuddy.activities.NavigationActivity;
 import ch.epfl.sweng.studdybuddy.core.Group;
 import ch.epfl.sweng.studdybuddy.core.User;
 import ch.epfl.sweng.studdybuddy.firebase.MetaGroupAdmin;
 import ch.epfl.sweng.studdybuddy.tools.ParticipantAdapter;
 import ch.epfl.sweng.studdybuddy.tools.RecyclerAdapterAdapter;
+import ch.epfl.sweng.studdybuddy.util.Messages;
 import ch.epfl.sweng.studdybuddy.util.StudyBuddy;
 
 public class GroupInfoActivity extends AppCompatActivity{
     List<User> participants  = new ArrayList<>();
     MetaGroupAdmin mb  = new MetaGroupAdmin();
-    private RecyclerView participantsRv;
-    private ParticipantAdapter participantAdapter;
     private String uId;
     private String gId;
     Button button;
     List<Group> group = new ArrayList<>();
     List<String> gIds = new ArrayList<>();
-    private Boolean isParticipant = false;
+   // private Boolean isParticipant = false; //not used
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group_info);
         uId = ((StudyBuddy) GroupInfoActivity.this.getApplication()).getAuthendifiedUser().getUserID().getId();
-        Intent intent = getIntent();
-        gId = intent.getStringExtra(FeedFragment.GROUP_ID);
+        Bundle origin = GlobalBundle.getInstance().getSavedBundle();
+        gId = origin.getString(Messages.groupID);
         gIds.add(gId);
         mb.getGroupsfromIds(gIds, group);
         mb.getGroupUsers(gId, participants);
@@ -44,9 +43,9 @@ public class GroupInfoActivity extends AppCompatActivity{
     }
 
     public void setUI(){
-        participantAdapter = new ParticipantAdapter(participants);
+        ParticipantAdapter participantAdapter = new ParticipantAdapter(participants);
         mb.addListenner(new RecyclerAdapterAdapter(participantAdapter));
-        participantsRv = (RecyclerView) findViewById(R.id.participantsRecyclerVIew);
+        RecyclerView participantsRv = (RecyclerView) findViewById(R.id.participantsRecyclerVIew);
         participantAdapter.initRecyclerView(this, participantsRv);
         button = findViewById(R.id.quitGroup);
         button.setOnClickListener(new View.OnClickListener() {

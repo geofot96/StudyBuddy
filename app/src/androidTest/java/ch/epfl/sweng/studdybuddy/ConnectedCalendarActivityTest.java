@@ -1,7 +1,5 @@
 package ch.epfl.sweng.studdybuddy;
 
-import android.content.Intent;
-import android.support.annotation.Nullable;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.support.v7.widget.CardView;
@@ -17,7 +15,7 @@ import org.junit.runner.RunWith;
 import java.util.ArrayList;
 import java.util.List;
 
-import ch.epfl.sweng.studdybuddy.activities.ConnectedCalendarActivity;
+import ch.epfl.sweng.studdybuddy.activities.group.ConnectedCalendarActivity;
 import ch.epfl.sweng.studdybuddy.firebase.FirebaseReference;
 import ch.epfl.sweng.studdybuddy.util.Messages;
 
@@ -28,6 +26,7 @@ import static org.junit.Assert.assertTrue;
 @RunWith(AndroidJUnit4.class)
 
 public class ConnectedCalendarActivityTest{
+
     private GridLayout calendar;
 
     @Rule
@@ -64,7 +63,7 @@ public class ConnectedCalendarActivityTest{
      * @param start the index head of the sublist of the calendar we want to test
      * @return <tt>true</tt> if every cell from <tt>start</tt> are white
      */
-    private boolean checkAreWhite(int start) {
+   private boolean checkAreWhite(int start) {
         CardView cardView;
         for (int i = start; i < 88; i += (i % 8 == 7) ? 2 : 1) {
                 cardView = (CardView) calendar.getChildAt(i);
@@ -98,20 +97,13 @@ public class ConnectedCalendarActivityTest{
         }
 
         try{
-            Thread.sleep(2000);
+            Thread.sleep(3000);
         }catch(InterruptedException e){
             e.printStackTrace();
         }
         return cardView.getCardBackgroundColor().getDefaultColor();
     }
 
-    public static Intent setUpTestIntent(){
-        Intent intent = new Intent();
-        intent.putExtra(Messages.maxUser, 1);
-        intent.putExtra(Messages.userID, Messages.TEST);
-        intent.putExtra(Messages.groupID, Messages.TEST);
-        return intent;
-    }
 
     private class myRule extends ActivityTestRule<ConnectedCalendarActivity> {
 
@@ -129,14 +121,10 @@ public class ConnectedCalendarActivityTest{
             }
             list.set(0, true);
             FirebaseReference fb = new FirebaseReference();
-            Task<Void> task = fb.select("availabilities").select(Messages.TEST).select(Messages.TEST).setVal(list);
+            Task<Void> task = fb.select(Messages.FirebaseNode.AVAILABILITIES).select(Messages.TEST).select(Messages.TEST).setVal(list);
             while (!(task.isComplete())) ;
-        }
-
-        @Override
-        public ConnectedCalendarActivity launchActivity(@Nullable Intent startIntent) {
-            Intent intent = setUpTestIntent();
-            return super.launchActivity(intent);
+            GroupActivityTest.setup();
         }
     }
+
 }

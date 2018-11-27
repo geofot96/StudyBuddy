@@ -2,19 +2,21 @@ package ch.epfl.sweng.studdybuddy;
 
 import org.junit.Test;
 
+import java.util.Date;
+
 import ch.epfl.sweng.studdybuddy.core.ID;
-import ch.epfl.sweng.studdybuddy.core.Meeting;
-import ch.epfl.sweng.studdybuddy.core.SerialDate;
+import ch.epfl.sweng.studdybuddy.services.meeting.Meeting;
 
 import static junit.framework.TestCase.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class MeetingTest {
     Meeting meeting = new Meeting();
-    SerialDate date = new SerialDate();
+    Date date = new Date();
     @Test
-    public void setGetDeadline() {
-        meeting.setDeadline(date);
-        assertEquals(date, meeting.getDeadline());
+    public void setGetEnding() {
+        meeting.setEnding(date.getTime());
+        assertTrue(date.getTime() == meeting.getEnding());
     }
 
     @Test
@@ -25,8 +27,8 @@ public class MeetingTest {
     }
 
     @Test
-    public void setGetCreation() {
-        meeting.setCreation(date);
-        assertEquals(date, meeting.getCreation());
+    public void setGetStarting() {
+        meeting.setStarting(date.getTime());
+        assertTrue(date.getTime() == meeting.getStarting());
     }
 }

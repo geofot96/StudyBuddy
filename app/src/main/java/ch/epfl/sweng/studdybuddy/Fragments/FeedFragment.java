@@ -30,6 +30,7 @@ import ch.epfl.sweng.studdybuddy.tools.AdapterConsumer;
 import ch.epfl.sweng.studdybuddy.tools.Consumer;
 import ch.epfl.sweng.studdybuddy.tools.GroupsRecyclerAdapter;
 import ch.epfl.sweng.studdybuddy.tools.RecyclerAdapterAdapter;
+import ch.epfl.sweng.studdybuddy.util.Messages;
 import ch.epfl.sweng.studdybuddy.util.StudyBuddy;
 
 /**
@@ -40,8 +41,7 @@ public class FeedFragment extends Fragment
 
     GroupsRecyclerAdapter mAdapter;
     static List<Group> groupSet = new ArrayList<>();
-    public static final String GROUP_ID = "ch.epfl.sweng.studdybuddy.groupId";
-    public static final String IS_PARTICIPANT = "ch.epfl.sweng.studdybuddy.particip";
+    public static final String IS_PARTICIPANT = "ch.epfl.sweng.studybuddy.particip";
     static List<Group> filteredGroupSet = new ArrayList<>();
     Button sortButton;
     FloatingActionButton actionButton;
@@ -73,7 +73,7 @@ public class FeedFragment extends Fragment
 
         mAdapter = new GroupsRecyclerAdapter(groupSet, userId, buttonClickConsumer);
         rv.setAdapter(mAdapter);
-        firebase.select("groups").getAll(Group.class, AdapterConsumer.adapterConsumer(Group.class, groupSet, new RecyclerAdapterAdapter(mAdapter)));
+        firebase.select(Messages.FirebaseNode.GROUPS).getAll(Group.class, AdapterConsumer.adapterConsumer(Group.class, groupSet, new RecyclerAdapterAdapter(mAdapter)));
         SearchView sv = (SearchView) v.findViewById(R.id.feed_search);
         setUpActivity(rv, sv, v);
         ToggleButton toggleFull = (ToggleButton) v.findViewById(R.id.toggleButton);
@@ -158,10 +158,6 @@ public class FeedFragment extends Fragment
         }
     }
 
-    public void goToCalendarActivity(Intent target)
-    {
-        startActivity(target);
-    }
 
     @NonNull
     private View.OnClickListener getFloatingButtonListener()

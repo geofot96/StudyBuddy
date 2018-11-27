@@ -1,9 +1,5 @@
 package ch.epfl.sweng.studdybuddy.firebase;
 
-import android.support.annotation.NonNull;
-
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
@@ -17,6 +13,7 @@ import ch.epfl.sweng.studdybuddy.core.User;
 import ch.epfl.sweng.studdybuddy.tools.AdapterAdapter;
 import ch.epfl.sweng.studdybuddy.tools.Consumer;
 import ch.epfl.sweng.studdybuddy.util.Helper;
+import ch.epfl.sweng.studdybuddy.util.Messages;
 
 import static ch.epfl.sweng.studdybuddy.util.Helper.getOrDefault;
 import static ch.epfl.sweng.studdybuddy.util.Helper.safeAddId;
@@ -44,7 +41,7 @@ public class MetaGroup extends Metabase{
     }
 
     public ValueEventListener getUserGroups(String userId, List<String> gIds, List<Group> groups) {
-        return db.select("userGroup").getAll(Pair.class, new Consumer<List<Pair>>() {
+        return db.select(Messages.FirebaseNode.USERGROUP).getAll(Pair.class, new Consumer<List<Pair>>() {
             @Override
             public void accept(List<Pair> pairs) {
                 groups.clear();
@@ -58,7 +55,7 @@ public class MetaGroup extends Metabase{
     }
 
     public ValueEventListener getGroup(String id, Group g, AdapterAdapter adapter) {
-        return db.select("groups").select(id).get(Group.class, new Consumer<Group>() {
+        return db.select(Messages.FirebaseNode.GROUPS).select(id).get(Group.class, new Consumer<Group>() {
             @Override
             public void accept(Group group) {
                 g.copy(group);
@@ -68,7 +65,7 @@ public class MetaGroup extends Metabase{
     }
     //protected ?
     public ValueEventListener getGroupsfromIds(List<String> gIds, List<Group> userGroups) {
-        return db.select("groups").getAll(Group.class, groupsFromIds(gIds, userGroups));
+        return db.select(Messages.FirebaseNode.GROUPS).getAll(Group.class, groupsFromIds(gIds, userGroups));
     }
 
     private Consumer<List<Group>> groupsFromIds(List<String> gIds, List<Group> userGroups) {
@@ -86,7 +83,7 @@ public class MetaGroup extends Metabase{
     }
 
     public ValueEventListener getUserCourses(String uId, List<String> courses) {
-        return db.select("userCourse").getAll(Pair.class, new Consumer<List<Pair>>() {
+        return db.select(Messages.FirebaseNode.USERCOURSE).getAll(Pair.class, new Consumer<List<Pair>>() {
             @Override
             public void accept(List<Pair> pairs) {
                 courses.clear();
@@ -101,7 +98,7 @@ public class MetaGroup extends Metabase{
     }
 
     public ValueEventListener getAllGroupSizes(Map<String, Integer> sizes) {
-        return db.select("userGroup").getAll(Pair.class, new Consumer<List<Pair>>() {
+        return db.select(Messages.FirebaseNode.USERGROUP).getAll(Pair.class, new Consumer<List<Pair>>() {
             @Override
             public void accept(List<Pair> pairs) {
                 sizes.clear();
@@ -121,7 +118,7 @@ public class MetaGroup extends Metabase{
     }
 
     public ValueEventListener getGroupUsers(String gId, List<String> uIds, List<User> groupUsers) {
-        return db.select("userGroup").getAll(Pair.class, new Consumer<List<Pair>>() {
+        return db.select(Messages.FirebaseNode.USERGROUP).getAll(Pair.class, new Consumer<List<Pair>>() {
             @Override
             public void accept(List<Pair> pairs) {
                 uIds.clear();
@@ -135,8 +132,9 @@ public class MetaGroup extends Metabase{
     }
 
     public void pushGroup(Group g, String creatorId) {
-        db.select("groups").select(g.getGroupID().getId()).setVal(g);
+        db.select(Messages.FirebaseNode.GROUPS).select(g.getGroupID().getId()).setVal(g);
         Pair pair = new Pair(creatorId,g.getGroupID().toString());
-        db.select("userGroup").select(Helper.hashCode(pair)).setVal(pair);
+        db.select(Messages.FirebaseNode.USERGROUP).select(Helper.hashCode(pair)).setVal(pair);
     }
+
 }

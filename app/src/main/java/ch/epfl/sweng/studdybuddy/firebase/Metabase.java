@@ -1,7 +1,5 @@
 package ch.epfl.sweng.studdybuddy.firebase;
 
-import android.support.v7.widget.RecyclerView;
-
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.LinkedList;

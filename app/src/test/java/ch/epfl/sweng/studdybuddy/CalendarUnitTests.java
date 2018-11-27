@@ -21,7 +21,7 @@ public class CalendarUnitTests {
     private Calendar randomCalendar;
     @Before
     public void setUp(){
-        randomCalendar = new Calendar(new ID<Group>("test"));
+        randomCalendar = new Calendar(new ID<>("test"));
     }
 
     @Test

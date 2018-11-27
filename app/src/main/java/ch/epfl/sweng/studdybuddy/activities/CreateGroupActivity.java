@@ -38,7 +38,6 @@ public class CreateGroupActivity extends AppCompatActivity implements AdapterVie
     private static List<String> coursesDB;
 
     private static final List<String> courseSelection = new ArrayList<>();
-    private static AutoCompleteTextView textView;
     FirebaseReference firebase;
     MetaGroup mb;
     Button create;
@@ -61,17 +60,16 @@ public class CreateGroupActivity extends AppCompatActivity implements AdapterVie
     }
 
     ArrayAdapter<String> setUpAutoComplete() {
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_dropdown_item_1line, coursesDB);
-        textView = (AutoCompleteTextView) findViewById(R.id.courseComplete2);
+        AutoCompleteTextView textView = (AutoCompleteTextView) findViewById(R.id.courseComplete2);
         textView.setAdapter(adapter);
         textView.setOnClickListener(showDropdown(textView));
         textView.setOnItemClickListener(new AdapterView.OnItemClickListener()
         {
             @Override public void onItemClick(AdapterView<?> parent, View view, int position, long id)
             {
-                String textInput = parent.getItemAtPosition(position).toString();
-                selectedCourse = textInput;
+                selectedCourse =  parent.getItemAtPosition(position).toString();;
                 create.setEnabled(true);
             }
         });
@@ -91,7 +89,7 @@ public class CreateGroupActivity extends AppCompatActivity implements AdapterVie
         Spinner spinnerLanguage = (Spinner) findViewById(R.id.spinnerLanguage);
         spinnerLanguage.setOnItemSelectedListener(this);
         List<String> languagesList = Arrays.asList("\uD83C\uDDEC\uD83C\uDDE7","\uD83C\uDDEB\uD83C\uDDF7","\uD83C\uDDE9\uD83C\uDDEA","\uD83C\uDDEE\uD83C\uDDF9");
-        ArrayAdapter<String> dataAdapterLanguages = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, languagesList);
+        ArrayAdapter<String> dataAdapterLanguages = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, languagesList);
         dataAdapterLanguages.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerLanguage.setAdapter(dataAdapterLanguages);
     }

@@ -9,7 +9,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import ch.epfl.sweng.studdybuddy.activities.CreateGroupActivity;
-import ch.epfl.sweng.studdybuddy.activities.GroupsActivity;
 import ch.epfl.sweng.studdybuddy.activities.NavigationActivity;
 
 import static android.support.test.InstrumentationRegistry.getTargetContext;
@@ -22,6 +21,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.withId;
 @RunWith(AndroidJUnit4.class)
 public class GroupsActivityTest
 {
+
     @Rule
     public final IntentsTestRule<NavigationActivity> mActivityRule =
             new IntentsTestRule<>(NavigationActivity.class);

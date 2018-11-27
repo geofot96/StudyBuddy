@@ -1,4 +1,4 @@
-package ch.epfl.sweng.studdybuddy.core;
+package ch.epfl.sweng.studdybuddy.services.meeting;
 
 import com.google.android.gms.maps.model.LatLng;
 
@@ -27,11 +27,11 @@ public class MeetingLocation implements Serializable{
     }
 
 
-    public MeetingLocation(String title, String address, double latitude, double Longitude){
+    public MeetingLocation(String title, String address, double latitude, double longitude){
         this();
         this.title = title;
         this.latitude = latitude;
-        longitude = Longitude;
+        this.longitude = longitude;
         this.address = address;
     }
 
@@ -60,11 +60,6 @@ public class MeetingLocation implements Serializable{
     
     public void setTitle(String title){
         this.title = title;
-    }
-
-
-    public  LatLng getLatLng() {
-        return new LatLng(getLatitude(), getLongitude());
     }
 
     public String getAddress() {
