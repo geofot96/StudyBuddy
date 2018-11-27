@@ -15,19 +15,16 @@ import ch.epfl.sweng.studdybuddy.auth.DummyMainActivity;
 @RunWith(AndroidJUnit4.class)
 public class ColorChaningTest
 {
-  @Test
-  public void EmptyTest(){}
-/*
-    @Rule
-    public ActivityTestRule<DummyMainActivity> mActivityTestRule = new ActivityTestRule<>(DummyMainActivity.class);
 
-    @Test
-    public void colorChaningTest()
-    {
-        // Added a sleep statement to match the app's execution delay.
+  @Rule
+  public ActivityTestRule<DummyMainActivity> mActivityTestRule = new ActivityTestRule<>(DummyMainActivity.class);
+
+  @Test
+  public void colorChaningTest()
+  {
+        /*// Added a sleep statement to match the app's execution delay.
         // The recommended way to handle such scenarios is to use Espresso idling resources:
         // https://google.github.io/android-testing-support-library/docs/espresso/idling-resource/index.html
-
         ViewInteraction appCompatButton = onView(
                 allOf(withId(R.id.calendarButton), withText("Calendar"),
                         childAtPosition(
@@ -37,11 +34,9 @@ public class ColorChaningTest
                                 3),
                         isDisplayed()));
         appCompatButton.perform(click());
-
         // Added a sleep statement to match the app's execution delay.
         // The recommended way to handle such scenarios is to use Espresso idling resources:
         // https://google.github.io/android-testing-support-library/docs/espresso/idling-resource/index.html
-
         ViewInteraction cardView = onView(
                 childAtPosition(
                         allOf(withId(R.id.calendarGrid),
@@ -50,11 +45,9 @@ public class ColorChaningTest
                                         1)),
                         1));
         cardView.perform(closeSoftKeyboard(), click());
-
         // Added a sleep statement to match the app's execution delay.
         // The recommended way to handle such scenarios is to use Espresso idling resources:
         // https://google.github.io/android-testing-support-library/docs/espresso/idling-resource/index.html
-
         ViewInteraction cardView2 = onView(
                 childAtPosition(
                         allOf(withId(R.id.calendarGrid),
@@ -63,7 +56,6 @@ public class ColorChaningTest
                                         1)),
                         35));
         cardView2.perform(closeSoftKeyboard(), click());
-
         ViewInteraction cardView3 = onView(
                 childAtPosition(
                         allOf(withId(R.id.calendarGrid),
@@ -72,7 +64,6 @@ public class ColorChaningTest
                                         1)),
                         69));
         cardView3.perform(closeSoftKeyboard(), click());
-
         ViewInteraction frameLayout = onView(
                 allOf(childAtPosition(
                         allOf(withId(R.id.calendarGrid),
@@ -81,9 +72,7 @@ public class ColorChaningTest
                                         1)),
                         1),
                         isDisplayed()));
-
         frameLayout.check(matches(isDisplayed()));
-
         ViewInteraction frameLayout2 = onView(
                 allOf(childAtPosition(
                         allOf(withId(R.id.calendarGrid),
@@ -93,7 +82,6 @@ public class ColorChaningTest
                         35),
                         isDisplayed()));
         frameLayout2.check(matches(isDisplayed()));
-
         ViewInteraction frameLayout3 = onView(
                 allOf(childAtPosition(
                         allOf(withId(R.id.calendarGrid),
@@ -103,7 +91,6 @@ public class ColorChaningTest
                         69),
                         isDisplayed()));
         frameLayout3.check(matches(isDisplayed()));
-
         ViewInteraction frameLayout4 = onView(
                 allOf(childAtPosition(
                         allOf(withId(R.id.calendarGrid),
@@ -112,7 +99,6 @@ public class ColorChaningTest
                                         1)),
                         69),
                         isDisplayed()));
-        frameLayout4.check(matches(isDisplayed()));
-    }
-    */
+        frameLayout4.check(matches(isDisplayed()));*/
+  }
 }
