@@ -123,14 +123,14 @@ public class createMeetingActivityTest {
         mActivityRule.finishActivity();
     }
 
-    @Test
+ /*   @Test
     public void leadsToMapsActivity(){
         mIntentRule.launchActivity(intent);
         onView(withId(R.id.locationTitle)).perform(click());
         intended(hasComponent(MapsActivity.class.getName()));
         mIntentRule.finishActivity();
     }
-
+*/
     @Test
     public void testOnActivityResult(){
         createMeetingActivity mActivity = mActivityRule.launchActivity(intent);
