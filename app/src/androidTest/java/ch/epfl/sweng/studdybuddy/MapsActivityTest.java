@@ -55,7 +55,7 @@ public class MapsActivityTest {
 //            e.printStackTrace();
 //        }
 
-        mIntentsTestRule.finishActivity();
+      //  mIntentsTestRule.finishActivity();
     }
 
     @Test
@@ -74,7 +74,7 @@ public class MapsActivityTest {
             e.printStackTrace();
         }
 
-        mIntentsTestRule.finishActivity();
+        //mIntentsTestRule.finishActivity();
     }
 
 
