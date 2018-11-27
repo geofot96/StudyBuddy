@@ -24,6 +24,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import ch.epfl.sweng.studdybuddy.R;
@@ -90,7 +91,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(MapsHelper.confirmationListener(confirmedPlace, meetings, ref, gId, meetingId)){
+                if(MapsHelper.confirmationListener(confirmedPlace, meetings, ref, Arrays.asList(gId, meetingId))){
                     finish();
                 }
             }

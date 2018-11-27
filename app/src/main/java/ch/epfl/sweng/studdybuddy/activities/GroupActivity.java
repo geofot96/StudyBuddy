@@ -19,7 +19,6 @@ import ch.epfl.sweng.studdybuddy.core.Group;
 import ch.epfl.sweng.studdybuddy.core.Meeting;
 import ch.epfl.sweng.studdybuddy.firebase.MetaMeeting;
 import ch.epfl.sweng.studdybuddy.tools.AdapterAdapter;
-import ch.epfl.sweng.studdybuddy.tools.Consumer;
 import ch.epfl.sweng.studdybuddy.util.ActivityHelper;
 import ch.epfl.sweng.studdybuddy.util.Messages;
 
@@ -79,16 +78,8 @@ public class GroupActivity extends AppCompatActivity {
             @Override
             public void update() {
                 adminMeeting(add, group, userID);
-                Consumer<List<Meeting>> locationCaallback  = new Consumer<List<Meeting>>() {
-                    @Override
-                    public void accept(List<Meeting> meetings) {
-                        location.setText("Meeting Location: " + singleton.location.getAddress());
-
-                    }
-                };
-
                 ActivityHelper.setButtonsClickable(userID.equals(group.getAdminID()), Arrays.asList(time,date, add));
-                mm.fetchMeetings(group.getGroupID().getId(), sequenced(sequenced(singleMeeting(singleton), meetingConsumer(title, time, date, add)), locationCaallback));
+                mm.fetchMeetings(group.getGroupID().getId(), sequenced(sequenced(singleMeeting(singleton), meetingConsumer(title, time, date, add)), ActivityHelper.setLocationTextConsumer(location, singleton)));
             }
         };
     }

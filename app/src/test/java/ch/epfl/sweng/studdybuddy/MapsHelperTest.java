@@ -34,8 +34,8 @@ public class MapsHelperTest {
         FirebaseReference ref = mock(FirebaseReference.class);
         when(ref.select(anyString())).thenReturn(ref);
 
-        assertTrue(MapsHelper.confirmationListener(pos, meetings, ref, "a", "b"));
-        assertTrue(!MapsHelper.confirmationListener(null, meetings, ref, "a", "b"));
+        assertTrue(MapsHelper.confirmationListener(pos, meetings, ref, Arrays.asList("a", "b")));
+        assertTrue(!MapsHelper.confirmationListener(null, meetings, ref, Arrays.asList("a", "b")));
     }
 
     @Test

@@ -59,13 +59,13 @@ public class MapsHelper {
         return null;
     }
 
-    public static boolean confirmationListener(MeetingLocation confirmedPlace, List<Meeting> meetings, FirebaseReference ref, String gId ,String meetingId){
+    public static boolean confirmationListener(MeetingLocation confirmedPlace, List<Meeting> meetings, FirebaseReference ref, List<String> gIdMeetingId){
                 if (confirmedPlace != null) {
                     int lastindex = meetings.size() - 1;
                     Meeting lastMeeting = meetings.get(lastindex);
                     lastMeeting.setLocation(confirmedPlace);
                     meetings.set(lastindex, lastMeeting);
-                    ref.select("meetings").select(gId).select(meetingId).setVal(meetings.get(0));
+                    ref.select("meetings").select(gIdMeetingId.get(0)).select(gIdMeetingId.get(1)).setVal(meetings.get(0));
                     return true;
                 }
                 return false;
