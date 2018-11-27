@@ -1,17 +1,12 @@
 package ch.epfl.sweng.studdybuddy;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.DatePickerDialog;
-import android.app.TimePickerDialog;
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.test.espresso.ViewInteraction;
 import android.support.test.espresso.contrib.PickerActions;
 import android.support.test.espresso.intent.rule.IntentsTestRule;
 import android.support.test.espresso.matcher.BoundedMatcher;
 import android.support.test.rule.ActivityTestRule;
-import android.support.test.rule.GrantPermissionRule;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.TimePicker;
@@ -26,11 +21,9 @@ import org.junit.Test;
 
 import java.util.Date;
 
-import ch.epfl.sweng.studdybuddy.activities.group.GlobalBundle;
 import ch.epfl.sweng.studdybuddy.activities.group.MapsActivity;
 import ch.epfl.sweng.studdybuddy.activities.group.meetings.createMeetingActivity;
 import ch.epfl.sweng.studdybuddy.services.meeting.MeetingLocation;
-import ch.epfl.sweng.studdybuddy.util.Messages;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
@@ -43,11 +36,11 @@ import static android.support.test.espresso.matcher.ViewMatchers.isEnabled;
 import static android.support.test.espresso.matcher.ViewMatchers.withClassName;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static android.support.test.internal.runner.junit4.statement.UiThreadStatement.runOnUiThread;
 import static org.hamcrest.Matchers.not;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import static android.support.test.internal.runner.junit4.statement.UiThreadStatement.runOnUiThread;
 
 public class createMeetingActivityTest {
     Intent intent = new Intent();
@@ -64,9 +57,9 @@ public class createMeetingActivityTest {
     public IntentsTestRule<createMeetingActivity> mIntentRule =
             new IntentsTestRule<>(createMeetingActivity.class, false, false);
 
-    @Rule
+   /* @Rule
     public GrantPermissionRule permissionRule = GrantPermissionRule.grant(android.Manifest.permission.ACCESS_FINE_LOCATION);
-
+*/
     @BeforeClass
     public static void setUpBeforeClass(){
         MeetingsActivityTest.setup();
@@ -76,6 +69,7 @@ public class createMeetingActivityTest {
     public void setUpBefore(){
         when(alwaysBefore.before(any())).thenReturn(true);
         when(alwaysAfter.after(any())).thenReturn(true);
+        MapsActivityTest.allowPermissionsIfNeeded(android.Manifest.permission.ACCESS_FINE_LOCATION);
     }
 
     @Test
@@ -124,7 +118,7 @@ public class createMeetingActivityTest {
         onView(withId(R.id.setMeeting)).check(matches(not(isEnabled())));
         mActivityRule.finishActivity();
     }
-/*
+
     @Test
     public void noLocation(){
         createMeetingActivity mActivity = mActivityRule.launchActivity(intent);
@@ -133,7 +127,7 @@ public class createMeetingActivityTest {
         onView(withId(R.id.setMeeting)).check(matches(not(isEnabled())));
         mActivityRule.finishActivity();
     }
-*/
+
     @Test
    public void leadsToMapsActivity(){
        mIntentRule.launchActivity(intent);
