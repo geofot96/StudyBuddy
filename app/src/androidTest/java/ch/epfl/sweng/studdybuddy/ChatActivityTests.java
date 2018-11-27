@@ -75,4 +75,5 @@ public class ChatActivityTests
         assertEquals(1, list.size());
         DummyChatActivityIntentRule.finishActivity();
     }
+    
 }

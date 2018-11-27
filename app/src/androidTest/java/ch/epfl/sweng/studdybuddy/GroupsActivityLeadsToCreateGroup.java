@@ -32,17 +32,17 @@ import static org.hamcrest.Matchers.allOf;
 public class GroupsActivityLeadsToCreateGroup
 {
 
-    @Rule
-    public ActivityTestRule<NavigationActivity> mActivityTestRule = new ActivityTestRule(NavigationActivity.class);
+  @Rule
+  public ActivityTestRule<NavigationActivity> mActivityTestRule = new ActivityTestRule(NavigationActivity.class);
 
 
-    @Test
-    public void addGroupButtonExists()
-    {
-       // refactor();
-        ViewInteraction linearLayout = onView(withId(R.id.createGroup));
-        linearLayout.check(matches(isDisplayed()));
-    }
+  @Test
+  public void addGroupButtonExists()
+  {
+    // refactor();
+    ViewInteraction linearLayout = onView(withId(R.id.createGroup));
+    linearLayout.check(matches(isDisplayed()));
+  }
 
  /* @Test
     public void algoTest()
@@ -71,72 +71,70 @@ public class GroupsActivityLeadsToCreateGroup
         textView.check(matches(withText("Algorithms CS-250")));
     }*/
 
-    @Test
-    public void searchBarExists()
-    {
-       // refactor();
-        ViewInteraction linearLayout = onView(withId(R.id.feed_search));
-        linearLayout.check(matches(isDisplayed()));
+  @Test
+  public void searchBarExists()
+  {
+    // refactor();
+    ViewInteraction linearLayout = onView(withId(R.id.feed_search));
+    linearLayout.check(matches(isDisplayed()));
+  }
+  @Test
+  public void recyclerViewerExists()
+  {
+    //  refactor();
+    try {
+      Thread.sleep(100);
+    } catch (InterruptedException e) {
+      e.printStackTrace();
     }
-    @Test
-    public void recyclerViewerExists()
-    {
-      //  refactor();
-        try {
-            Thread.sleep(100);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        ViewInteraction linearLayout = onView(withId(R.id.feedRecycleViewer));
-        linearLayout.check(matches(isDisplayed()));
-    }
+    ViewInteraction linearLayout = onView(withId(R.id.feedRecycleViewer));
+    linearLayout.check(matches(isDisplayed()));
+  }
   /*  @Test
     public void sortButtonExists()
     {
         refactor(); //TODO update the UI so that the sorting button is never hidden
         ViewInteraction linearLayout = onView(withId(R.id.sortButton));
-
         try{
             Thread.sleep(2000);
         }catch (InterruptedException e ){
             e.printStackTrace();
         }
-
         linearLayout.check(matches(isDisplayed()));
     }
 */
-    void refactor(){
-        ViewInteraction appCompatButton = onView(
-                allOf(withId(R.id.gotoGroups), withText("Groups"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                0),
-                        isDisplayed()));
-        appCompatButton.perform(click());
-    }
+  void refactor(){
+    ViewInteraction appCompatButton = onView(
+            allOf(withId(R.id.gotoGroups), withText("Groups"),
+                    childAtPosition(
+                            childAtPosition(
+                                    withId(android.R.id.content),
+                                    0),
+                            0),
+                    isDisplayed()));
+    appCompatButton.perform(click());
+  }
 
-    static Matcher<View> childAtPosition(
-            final Matcher<View> parentMatcher, final int position)
+  static Matcher<View> childAtPosition(
+          final Matcher<View> parentMatcher, final int position)
+  {
+
+    return new TypeSafeMatcher<View>()
     {
+      @Override
+      public void describeTo(Description description)
+      {
+        description.appendText("Child at position " + position + " in parent ");
+        parentMatcher.describeTo(description);
+      }
 
-        return new TypeSafeMatcher<View>()
-        {
-            @Override
-            public void describeTo(Description description)
-            {
-                description.appendText("Child at position " + position + " in parent ");
-                parentMatcher.describeTo(description);
-            }
-
-            @Override
-            public boolean matchesSafely(View view)
-            {
-                ViewParent parent = view.getParent();
-                return parent instanceof ViewGroup && parentMatcher.matches(parent)
-                        && view.equals(((ViewGroup) parent).getChildAt(position));
-            }
-        };
-    }
+      @Override
+      public boolean matchesSafely(View view)
+      {
+        ViewParent parent = view.getParent();
+        return parent instanceof ViewGroup && parentMatcher.matches(parent)
+                && view.equals(((ViewGroup) parent).getChildAt(position));
+      }
+    };
+  }
 }

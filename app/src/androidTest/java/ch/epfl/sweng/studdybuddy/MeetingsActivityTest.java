@@ -22,6 +22,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static android.support.test.internal.runner.junit4.statement.UiThreadStatement.runOnUiThread;
 
 public class MeetingsActivityTest {
     MetaMeeting mM = mock(MetaMeeting.class);
@@ -42,12 +43,16 @@ public class MeetingsActivityTest {
         onView(withId(R.id.meetingRV)).check(matches(isDisplayed()));
     }
 
-    @Test
-    public void testOnActivityResult(){
+   @Test
+    public void testOnActivityResult() throws Throwable {
         MeetingsActivity activity = mActivityRule.getActivity();
-        activity.setMetaM(mM);
-        activity.onActivityResult(1, RESULT_OK, new Intent());
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                activity.setMetaM(mM);
+                activity.onActivityResult(1, RESULT_OK, new Intent());
+            }
+        });
         verify(mM, times(1)).pushLocation(any(), any(), any());
     }
-
 }

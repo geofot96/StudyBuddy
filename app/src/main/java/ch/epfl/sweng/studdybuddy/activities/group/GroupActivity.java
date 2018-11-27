@@ -14,6 +14,7 @@ import ch.epfl.sweng.studdybuddy.activities.group.meetings.createMeetingActivity
 import ch.epfl.sweng.studdybuddy.util.Messages;
 
 public class GroupActivity extends AppCompatActivity {
+    private boolean wrongInput = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -28,9 +29,10 @@ public class GroupActivity extends AppCompatActivity {
         int maxNumUsers = origin.getInt(Messages.maxUser, -1);
 
         if(groupID == null || userID == null || adminID == null || maxNumUsers == -1){
-            startActivity(new Intent(this, NavigationActivity.class));
             String TAG = "GROUP_ACTIVITY";
             Log.d(TAG, "Information of the group is not fully recovered");
+            wrongInput = true;
+            startActivity(new Intent(this, NavigationActivity.class));
         }
 
         Button calendarButton = findViewById(R.id.calendarBtn);
@@ -60,5 +62,9 @@ public class GroupActivity extends AppCompatActivity {
         public void onClick(View v) {
             goToActivity(intent);
         }
+    }
+
+    public boolean getInfoWrongInput(){
+        return wrongInput;
     }
 }

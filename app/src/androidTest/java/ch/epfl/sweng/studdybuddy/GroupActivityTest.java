@@ -1,5 +1,6 @@
 package ch.epfl.sweng.studdybuddy;
 
+import android.content.ComponentName;
 import android.content.Intent;
 import android.os.Bundle;
 import android.provider.Settings;
@@ -10,6 +11,9 @@ import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 
+import ch.epfl.sweng.studdybuddy.Fragments.FeedFragment;
+import ch.epfl.sweng.studdybuddy.activities.CreateGroupActivity;
+import ch.epfl.sweng.studdybuddy.activities.GroupsActivity;
 import ch.epfl.sweng.studdybuddy.activities.NavigationActivity;
 import ch.epfl.sweng.studdybuddy.activities.group.ConnectedCalendarActivity;
 import ch.epfl.sweng.studdybuddy.activities.group.GlobalBundle;
@@ -17,8 +21,10 @@ import ch.epfl.sweng.studdybuddy.activities.group.GroupActivity;
 import ch.epfl.sweng.studdybuddy.activities.group.GroupInfoActivity;
 import ch.epfl.sweng.studdybuddy.activities.group.meetings.MeetingsActivity;
 import ch.epfl.sweng.studdybuddy.activities.group.meetings.createMeetingActivity;
+import ch.epfl.sweng.studdybuddy.core.Group;
 import ch.epfl.sweng.studdybuddy.util.Messages;
 
+import static android.support.test.InstrumentationRegistry.getTargetContext;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
@@ -28,8 +34,11 @@ import static android.support.test.espresso.matcher.ViewMatchers.isEnabled;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static org.hamcrest.CoreMatchers.not;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class GroupActivityTest {
+  @Test
+  public void EmptyTest(){}
 
     @Rule
     public IntentsTestRule<GroupActivity>  mManualRule =
@@ -85,14 +94,14 @@ public class GroupActivityTest {
         testIntent(R.id.groupMeetingsBtn, MeetingsActivity.class.getName());
         mManualRule.finishActivity();
     }
-/*
+
     @Test
     public void leadsToNavigationActivity(){
-        mWrongInputInBundle.launchActivity(new Intent());
-        intended(hasComponent(NavigationActivity.class.getName()));
+        GroupActivity mActivity = mWrongInputInBundle.launchActivity(new Intent());
+        assertTrue(mActivity.getInfoWrongInput());
         mWrongInputInBundle.finishActivity();
     }
-*/
+
     private void testIntent(int id, String name) {
         try {
             onView(withId(id)).perform(click());

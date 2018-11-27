@@ -20,7 +20,6 @@ import static junit.framework.TestCase.assertTrue;
 @RunWith(AndroidJUnit4.class)
 public class AdapterTest {
 
-
     @Rule
     public final IntentsTestRule<GroupInfoActivity> mActivityRule =
             new IntentsTestRule<>(GroupInfoActivity.class);
@@ -33,5 +32,4 @@ public class AdapterTest {
         ad.initRecyclerView(ctx, rv);
         assertTrue(rv.getAdapter().equals(ad));
     }
-
 }

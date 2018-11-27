@@ -21,6 +21,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.withId;
 @RunWith(AndroidJUnit4.class)
 public class GroupsActivityTest
 {
+
     @Rule
     public final IntentsTestRule<NavigationActivity> mActivityRule =
             new IntentsTestRule<>(NavigationActivity.class);

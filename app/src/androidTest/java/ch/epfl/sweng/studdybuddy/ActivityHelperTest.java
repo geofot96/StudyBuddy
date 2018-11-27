@@ -49,6 +49,8 @@ import static org.mockito.Mockito.when;
 //import static ch.epfl.sweng.studdybuddy.util.ActivityHelper.meetingConsumer;
 
 public class ActivityHelperTest {
+  @Test
+  public void EmptyTest(){}
     Meeting mee = randomMeeting();
     Group group = blankGroupWId("?");
     MetaMeeting mm = mock(MetaMeeting.class);

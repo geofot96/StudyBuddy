@@ -12,6 +12,7 @@ import static junit.framework.TestCase.assertTrue;
 import static org.junit.Assert.assertEquals;
 
 public class GlobalBundleTest {
+
     Bundle bundle = new Bundle();
 
     @Before
