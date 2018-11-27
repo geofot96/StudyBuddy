@@ -12,10 +12,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.CancellationException;
 
 import ch.epfl.sweng.studdybuddy.R;
 import ch.epfl.sweng.studdybuddy.activities.group.GlobalBundle;
@@ -83,18 +83,14 @@ public class MeetingRecyclerAdapter extends RecyclerView.Adapter<MeetingRecycler
         Date endingDate = new Date(meeting.getEnding());
         Calendar c = Calendar.getInstance();
         c.setTime(startingDate);
-        int RealMonth = c.get(Calendar.MONTH) + 1;
-        int dayOfMonth = c.get(Calendar.DAY_OF_MONTH);
-        int startHour = c.get(Calendar.HOUR_OF_DAY);
-        int startMinutes = c.get(Calendar.MINUTE);
+        List<Integer> start = Arrays.asList(c.get(Calendar.MONTH) + 1, c.get(Calendar.DAY_OF_MONTH), c.get(Calendar.HOUR_OF_DAY), c.get(Calendar.MINUTE));
         c.setTime(endingDate);
-        int endHour = c.get(Calendar.HOUR_OF_DAY);
-        int endMinutes = c.get(Calendar.MINUTE);
+        List<Integer> end = Arrays.asList(c.get(Calendar.HOUR_OF_DAY), c.get(Calendar.MINUTE));
         myViewHolder.textViewDate.setText(
-                RealMonth + "/" +
-                        dayOfMonth +
-                        " From: " + startHour+ ":" + startMinutes/10 + startMinutes%10 +
-                        " To: "+ endHour+ ":" + endMinutes/10 + startMinutes%10);
+                 start.get(0)+ "/" +
+                         start.get(1) +
+                        " From: " + start.get(2)+ ":" + start.get(3)/10 + start.get(3)%10 +
+                        " To: "+ end.get(0)+ ":" + end.get(1)/10 + end.get(1)%10);
         myViewHolder.textViewLocation.setText(meeting.getLocation().getTitle() + ": " + meeting.getLocation().getAddress());
         myViewHolder.cardViewMeeting.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -108,6 +104,7 @@ public class MeetingRecyclerAdapter extends RecyclerView.Adapter<MeetingRecycler
             }
         });
     }
+
 
     @Override
     public int getItemCount() {
