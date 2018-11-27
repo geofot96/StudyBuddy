@@ -3,7 +3,6 @@ package ch.epfl.sweng.studdybuddy.util;
 import android.content.Context;
 import android.location.Address;
 import android.location.Geocoder;
-import android.view.View;
 import android.widget.Button;
 
 import com.google.android.gms.location.places.Place;
@@ -32,28 +31,12 @@ public class MapsHelper {
         boolean isActivityInitialized = meetings.size() > 0;
         meetings.clear();
         meetings.addAll(meetingsFb);
-        //modularize
-       /* int meetingIndex = 0;
-        for(Meeting meeting: meetings){
-            if(!meeting.getId().getId().equals(gId)){
-                meetingIndex++;
-            }else {
-                break;
-            }
-        }*/
+
         //need to select the correct meeting
         if(!isActivityInitialized) {
-
             MeetingLocation location = meetings.size() > 0 ? meetings.get(0).location: ROLEX_LOCATION;
             MarkerOptions mMarker =(new MarkerOptions().position(location.getLatLng()).title(location.getTitle()));
-           //if(uId.equals("Bouba")){
-                button.setVisibility(View.VISIBLE);
-                button.setEnabled(true);
-
-            //}
             return ((mMarker.draggable(true)));
-
-
         }
         return null;
     }

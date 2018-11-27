@@ -50,6 +50,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     String gId;
     String meetingId;
     Button button;
+    boolean isAdmin;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,6 +65,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         gId = intent.getStringExtra(Messages.groupID);
         meetingId = intent.getStringExtra(Messages.meetingID);
         mapFragment.getMapAsync(this);
+        isAdmin = intent.getBooleanExtra(Messages.isAdmin, false);
+
 
     }
 
@@ -154,7 +157,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         autocompleteFragment.setOnPlaceSelectedListener(placeSelectionListener());
         button = ((Button) findViewById(R.id.confirmLocation));
         button.setOnClickListener((confirmationListener()));
-
+        button.setClickable(isAdmin);
+        if(isAdmin) {
+            button.setVisibility(View.VISIBLE);
+        }else{
+            button.setVisibility(View.GONE);
+        }
+        button.setEnabled(isAdmin);
         meetings = new ArrayList<>();
         ref = new FirebaseReference();
         setMeetings( ref, meetings, button);

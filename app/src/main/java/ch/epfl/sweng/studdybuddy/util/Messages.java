@@ -8,5 +8,6 @@ public class Messages {
     public static final String NO_MEETINGID = "NO MEETING";
     public static final String TEST = "test";
     public static final String chatGroupID = "GroupID";
+    public static final String  isAdmin = "isAdmin";
 }
 
