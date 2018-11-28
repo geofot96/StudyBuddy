@@ -12,6 +12,7 @@ import android.widget.FrameLayout;
 import ch.epfl.sweng.studdybuddy.Fragments.ChatListsFragment;
 import ch.epfl.sweng.studdybuddy.Fragments.FeedFragment;
 import ch.epfl.sweng.studdybuddy.Fragments.ProfileFragment;
+import ch.epfl.sweng.studdybuddy.Fragments.SettingsFragment;
 import ch.epfl.sweng.studdybuddy.R;
 
 public class NavigationActivity extends AppCompatActivity
@@ -21,6 +22,8 @@ public class NavigationActivity extends AppCompatActivity
     private ChatListsFragment chatFragment;
     private FeedFragment feedFragment;
     private ProfileFragment profileFragment;
+    private SettingsFragment settingsFragment;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -31,6 +34,7 @@ public class NavigationActivity extends AppCompatActivity
         chatFragment = new ChatListsFragment();
         feedFragment = new FeedFragment();
         profileFragment = new ProfileFragment();
+        settingsFragment = new SettingsFragment();
         setFragment(feedFragment);
         mMainNav.setOnNavigationItemSelectedListener(getListener());
     }
@@ -60,6 +64,9 @@ public class NavigationActivity extends AppCompatActivity
                         return true;
                     case R.id.navToProfile:
                         setFragment(profileFragment);
+                        return true;
+                    case R.id.navToSettings:
+                        setFragment(settingsFragment);
                         return true;
 
 
