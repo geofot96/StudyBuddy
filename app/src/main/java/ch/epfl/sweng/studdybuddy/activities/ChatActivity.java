@@ -31,6 +31,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
 import java.util.UUID;
@@ -46,6 +47,7 @@ public class ChatActivity extends AppCompatActivity{
     private StorageReference storageRef;
     Button addImage, upload;
     private Uri filePath;
+    String downloadUri;
     private ImageView imageView;
     private final int PICK_IMAGE_REQUEST = 71;
     FloatingActionButton fab;
@@ -64,6 +66,7 @@ public class ChatActivity extends AppCompatActivity{
                     Toast.LENGTH_LONG).show();
             finish();
         }
+        downloadUri="";
         displayChatMessages();
          fab = (FloatingActionButton)findViewById(R.id.fab);
         addImage=(Button)findViewById(R.id.gallery);
@@ -99,7 +102,7 @@ public class ChatActivity extends AppCompatActivity{
             public void onClick(View view) {
                 EditText input = (EditText)findViewById(R.id.input);
                 ref.select(Messages.FirebaseNode.CHAT).select(groupID).push(new ChatMessage(input.getText().toString(),
-                        FirebaseAuth.getInstance().getCurrentUser().getDisplayName()));
+                        FirebaseAuth.getInstance().getCurrentUser().getDisplayName(),downloadUri));
 
                 input.setText("");
             }
@@ -113,17 +116,17 @@ public class ChatActivity extends AppCompatActivity{
                 && data != null && data.getData() != null)
         {
             filePath = data.getData();
-            try {
-                imageView = (ImageView) findViewById(R.id.imgViewGall);
-                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filePath);
-                imageView.setImageBitmap(bitmap);
-
-
-            }
-            catch (IOException e)
-            {
-                e.printStackTrace();
-            }
+//            try {
+//                imageView = (ImageView) findViewById(R.id.imgViewGall);
+//                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filePath);
+//                imageView.setImageBitmap(bitmap);
+//
+//
+//            }
+//            catch (IOException e)
+//            {
+//                e.printStackTrace();
+//            }
         }
     }
     public FirebaseReference initRef(){
@@ -143,10 +146,12 @@ public class ChatActivity extends AppCompatActivity{
                     TextView messageText = (TextView) v.findViewById(R.id.message_text);
                     TextView messageUser = (TextView) v.findViewById(R.id.message_user);
                     TextView messageTime = (TextView) v.findViewById(R.id.message_time);
-
+                    ImageView image =(ImageView) v.findViewById(R.id.imgViewGall);
                     // Set their text
                     messageText.setText(model.getMessageText());
                     messageUser.setText(model.getMessageUser());
+                    if(model.getImageUri().length()>1)//TODO
+                    Picasso.get().load(model.getImageUri()).into(image);
 
                     // Format the date before showing it
                     messageTime.setText(DateFormat.format("dd-MM-yyyy (HH:mm:ss)",
@@ -180,9 +185,9 @@ public class ChatActivity extends AppCompatActivity{
                 @Override
                 public void onComplete(@NonNull Task<Uri> task) {
                     if (task.isSuccessful()) {
-                        Uri downloadUri = task.getResult();
+                        downloadUri = task.getResult().toString();
                         progressDialog.dismiss();
-                           Toast.makeText(ChatActivity.this, downloadUri.toString(), Toast.LENGTH_SHORT).show();
+                           Toast.makeText(ChatActivity.this, downloadUri, Toast.LENGTH_SHORT).show();
 
                     } else {
                         progressDialog.dismiss();
