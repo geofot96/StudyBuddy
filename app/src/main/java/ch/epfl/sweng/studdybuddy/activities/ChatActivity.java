@@ -11,8 +11,8 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.text.format.DateFormat;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -34,7 +34,7 @@ public class ChatActivity extends AppCompatActivity{
     String groupID;
     public FirebaseReference ref;
     private StorageReference storageRef;
-    Button addImage;
+    ImageButton addImage;
     private Uri filePath;
     private ImageView imageView;
     private final int PICK_IMAGE_REQUEST = 71;
@@ -56,7 +56,7 @@ public class ChatActivity extends AppCompatActivity{
         }
         displayChatMessages();
          fab = (FloatingActionButton)findViewById(R.id.fab);
-        addImage=(Button)findViewById(R.id.gallery);
+        addImage=(ImageButton)findViewById(R.id.gallery);
         addImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
