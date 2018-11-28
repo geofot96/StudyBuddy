@@ -18,4 +18,8 @@
         android:id="@+id/navToChat"
         android:icon="@drawable/round_chat_black_24dp"
         android:title="Chat" />
+    <item
+        android:id="@+id/navToSettings"
+        android:icon="@drawable/round_chat_black_24dp"
+        android:title="Settings" />
 </menu>
