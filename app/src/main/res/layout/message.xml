@@ -30,5 +30,14 @@
             android:id="@+id/message_text"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             android:textSize="18sp" />
+
+        <ImageView
+            android:id="@+id/imgViewGall"
+            android:layout_width="200dp"
+            android:layout_height="300dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="78dp"
+            android:layout_marginTop="120dp" />
     </RelativeLayout>
 </android.support.constraint.ConstraintLayout>

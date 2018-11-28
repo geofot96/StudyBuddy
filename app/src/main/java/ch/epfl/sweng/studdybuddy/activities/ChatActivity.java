@@ -1,13 +1,19 @@
 package ch.epfl.sweng.studdybuddy.activities;
 
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.text.format.DateFormat;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -15,6 +21,9 @@ import android.widget.Toast;
 import com.firebase.ui.database.FirebaseListAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.StorageReference;
+
+import java.io.IOException;
 
 import ch.epfl.sweng.studdybuddy.R;
 import ch.epfl.sweng.studdybuddy.firebase.FirebaseReference;
@@ -24,6 +33,12 @@ import ch.epfl.sweng.studdybuddy.util.Messages;
 public class ChatActivity extends AppCompatActivity{
     String groupID;
     public FirebaseReference ref;
+    private StorageReference storageRef;
+    Button addImage;
+    private Uri filePath;
+    private ImageView imageView;
+    private final int PICK_IMAGE_REQUEST = 71;
+    FloatingActionButton fab;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -40,7 +55,18 @@ public class ChatActivity extends AppCompatActivity{
             finish();
         }
         displayChatMessages();
-        FloatingActionButton fab = (FloatingActionButton)findViewById(R.id.fab);
+         fab = (FloatingActionButton)findViewById(R.id.fab);
+        addImage=(Button)findViewById(R.id.gallery);
+        addImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent galleryIntent=new Intent();
+                galleryIntent.setType("image/*");
+                galleryIntent.setAction(Intent.ACTION_GET_CONTENT);
+
+                startActivityForResult(Intent.createChooser(galleryIntent   ,"SELECT IMAGE"),PICK_IMAGE_REQUEST);
+            }
+        });
         this.ref = initRef();
         fab.setOnClickListener(getFabListener());
 
@@ -53,16 +79,34 @@ public class ChatActivity extends AppCompatActivity{
             @Override
             public void onClick(View view) {
                 EditText input = (EditText)findViewById(R.id.input);
-                if(input.getText().toString().trim().length() > 0) {
-                    ref.select(Messages.FirebaseNode.CHAT).select(groupID).push(new ChatMessage(input.getText().toString(),
-                            FirebaseAuth.getInstance().getCurrentUser().getDisplayName()));
+                ref.select(Messages.FirebaseNode.CHAT).select(groupID).push(new ChatMessage(input.getText().toString(),
+                        FirebaseAuth.getInstance().getCurrentUser().getDisplayName()));
 
-                    input.setText("");
-                }
+                input.setText("");
             }
         };
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK
+                && data != null && data.getData() != null)
+        {
+            filePath = data.getData();
+            try {
+                imageView = (ImageView) findViewById(R.id.imgViewGall);
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filePath);
+                imageView.setImageBitmap(bitmap);
+                fab.callOnClick();
+
+            }
+            catch (IOException e)
+            {
+                e.printStackTrace();
+            }
+        }
+    }
     public FirebaseReference initRef(){
         return new FirebaseReference();
     }
