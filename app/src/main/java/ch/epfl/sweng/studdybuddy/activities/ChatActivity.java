@@ -1,5 +1,6 @@
 package ch.epfl.sweng.studdybuddy.activities;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -19,11 +20,17 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseListAdapter;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.io.IOException;
+import java.util.UUID;
 
 import ch.epfl.sweng.studdybuddy.R;
 import ch.epfl.sweng.studdybuddy.firebase.FirebaseReference;
@@ -34,7 +41,7 @@ public class ChatActivity extends AppCompatActivity{
     String groupID;
     public FirebaseReference ref;
     private StorageReference storageRef;
-    Button addImage;
+    Button addImage, upload;
     private Uri filePath;
     private ImageView imageView;
     private final int PICK_IMAGE_REQUEST = 71;
@@ -67,7 +74,16 @@ public class ChatActivity extends AppCompatActivity{
                 startActivityForResult(Intent.createChooser(galleryIntent   ,"SELECT IMAGE"),PICK_IMAGE_REQUEST);
             }
         });
+        upload=(Button)findViewById(R.id.upload);
+        upload.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                uploadImage();
+                        }
+        });
         this.ref = initRef();
+        storageRef= FirebaseStorage.getInstance().getReference();
         fab.setOnClickListener(getFabListener());
 
     }
@@ -98,7 +114,7 @@ public class ChatActivity extends AppCompatActivity{
                 imageView = (ImageView) findViewById(R.id.imgViewGall);
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filePath);
                 imageView.setImageBitmap(bitmap);
-                fab.callOnClick();
+
 
             }
             catch (IOException e)
@@ -137,5 +153,39 @@ public class ChatActivity extends AppCompatActivity{
         };
 
         listOfMessages.setAdapter(adapter);
+    }
+    private void uploadImage() {
+
+        if(filePath != null)
+        {
+            final ProgressDialog progressDialog = new ProgressDialog(this);
+            progressDialog.setTitle("Uploading...");
+            progressDialog.show();
+
+            StorageReference ref = storageRef.child("images/"+ UUID.randomUUID().toString());
+            ref.putFile(filePath)
+                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            progressDialog.dismiss();
+                            Toast.makeText(ChatActivity.this, "Uploaded", Toast.LENGTH_SHORT).show();
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            progressDialog.dismiss();
+                            Toast.makeText(ChatActivity.this, "Failed "+e.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    })
+                    .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                            double progress = (100.0*taskSnapshot.getBytesTransferred()/taskSnapshot
+                                    .getTotalByteCount());
+                            progressDialog.setMessage("Uploaded "+(int)progress+"%");
+                        }
+                    });
+        }
     }
 }
