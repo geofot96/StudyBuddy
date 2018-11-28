@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:layout_editor_absoluteY="25dp">
 
     <Button
         android:id="@+id/btn_change_photo"
@@ -27,11 +28,86 @@
 
     <Button
         android:id="@+id/btn_sign_out"
-        android:layout_width="wrap_content"
+        android:layout_width="106dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:text="Sign out"
-        app:layout_constraintStart_toStartOf="@+id/btn_clear_cache"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btn_clear_cache" />
+
+    <Switch
+        android:id="@+id/switch_notifications"
+        android:layout_width="126dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="49dp"
+        android:layout_marginTop="74dp"
+        android:text="Notifications "
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_sign_out" />
+
+    <TextView
+        android:id="@+id/text_favorite_location"
+        android:layout_width="wrap_content"
+        android:layout_height="19dp"
+        android:layout_marginBottom="53dp"
+        android:layout_marginTop="53dp"
+        android:text="Favorite Location: "
+        app:layout_constraintBottom_toBottomOf="@+id/spinner_languages_settings"
+        app:layout_constraintStart_toStartOf="@+id/switch_notifications"
+        app:layout_constraintTop_toTopOf="@+id/switch_notifications" />
+
+    <TextView
+        android:id="@+id/settings_location_title"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginBottom="41dp"
+        android:layout_marginTop="38dp"
+        android:text="Click here"
+        app:layout_constraintBottom_toBottomOf="@+id/spinner_languages_settings"
+        app:layout_constraintStart_toStartOf="@+id/spinner_languages_settings"
+        app:layout_constraintTop_toBottomOf="@+id/switch_notifications" />
+
+    <TextView
+        android:id="@+id/text_favorite_language"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="82dp"
+        android:layout_marginStart="49dp"
+        android:layout_marginTop="29dp"
+        android:text="Favorite language: "
+        app:layout_constraintEnd_toStartOf="@+id/spinner_languages_settings"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_favorite_location" />
+
+    <Spinner
+        android:id="@+id/spinner_languages_settings"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="72dp"
+        android:layout_marginEnd="44dp"
+        android:layout_marginTop="74dp"
+        app:layout_constraintBottom_toTopOf="@+id/spinner_color_settings"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/text_favorite_language"
+        app:layout_constraintTop_toBottomOf="@+id/switch_notifications" />
+
+    <TextView
+        android:id="@+id/text_theme_color"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="140dp"
+        android:layout_marginEnd="118dp"
+        android:layout_marginStart="49dp"
+        android:text="Theme color:"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/spinner_color_settings"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Spinner
+        android:id="@+id/spinner_color_settings"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:layout_editor_absoluteX="250dp"
+        tools:layout_editor_absoluteY="499dp" />
 </android.support.constraint.ConstraintLayout>
