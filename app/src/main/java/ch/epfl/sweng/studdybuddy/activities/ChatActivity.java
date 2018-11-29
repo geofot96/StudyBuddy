@@ -194,6 +194,7 @@ public class ChatActivity extends AppCompatActivity{
                     if (task.isSuccessful()) {
                         downloadUri = task.getResult().toString();
                         progressDialog.dismiss();
+                        fab.performClick();
                            Toast.makeText(ChatActivity.this, downloadUri, Toast.LENGTH_SHORT).show();
 
                     } else {
