@@ -94,13 +94,16 @@ public class ChatActivity extends AppCompatActivity{
 
                 EditText input = (EditText)findViewById(R.id.input);
                 if(input.getText().toString().trim().length() > 0) {
-                    ref.select(Messages.FirebaseNode.CHAT).select(groupID).push(new ChatMessage(input.getText().toString(),
-                            FirebaseAuth.getInstance().getCurrentUser().getDisplayName(), downloadUri));
-
+                    pushToFirebase(input.getText().toString());
                     input.setText("");
                 }
             }
         };
+    }
+
+    private void pushToFirebase(String input) {
+        ref.select(Messages.FirebaseNode.CHAT).select(groupID).push(new ChatMessage(input,
+                FirebaseAuth.getInstance().getCurrentUser().getDisplayName(), downloadUri));
     }
 
     //Get the filepath of the selected image
@@ -112,17 +115,11 @@ public class ChatActivity extends AppCompatActivity{
         {
             filePath = data.getData();
             uploadImage();
-//            try {
-//                imageView = (ImageView) findViewById(R.id.imgViewGall);
-//                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filePath);
-//                imageView.setImageBitmap(bitmap);
-//
-//
-//            }
-//            catch (IOException e)
-//            {
-//                e.printStackTrace();
-//            }
+
+            pushToFirebase("");
+            filePath=null;
+            downloadUri="";
+
         }
     }
     public FirebaseReference initRef(){
@@ -137,23 +134,32 @@ public class ChatActivity extends AppCompatActivity{
                 FirebaseDatabase.getInstance().getReference().child(Messages.FirebaseNode.CHAT).child(groupID)) {
             @Override
             protected void populateView(View v, ChatMessage model, int position) {
+                TextView messageText = (TextView) v.findViewById(R.id.message_text);
                 if (!model.getMessageText().isEmpty()) {
-                    // Get references to the views of message.xml
-                    TextView messageText = (TextView) v.findViewById(R.id.message_text);
+
+                    messageText.setText(model.getMessageText());
+                    messageText.setVisibility(View.VISIBLE);
+                }else{
+                    messageText.setVisibility(View.INVISIBLE);
+                }
                     TextView messageUser = (TextView) v.findViewById(R.id.message_user);
                     TextView messageTime = (TextView) v.findViewById(R.id.message_time);
-                    ImageView image =(ImageView) v.findViewById(R.id.imgViewGall);
-                    // Set their text
-                    messageText.setText(model.getMessageText());
+                ImageView image = (ImageView) v.findViewById(R.id.imgViewGall);
+                if (!model.getImageUri().isEmpty()) {
                     messageUser.setText(model.getMessageUser());
-                    if(model.getImageUri().length()>1)//TODO
-                    Picasso.get().load(model.getImageUri()).into(image);
+                    if (model.getImageUri().length() > 1)//TODO
+                        Picasso.get().load(model.getImageUri()).into(image);
+                    image.setVisibility(View.VISIBLE);
+                }else{
+                    image.setVisibility(View.INVISIBLE);
+                }
+
 
                     // Format the date before showing it
                     messageTime.setText(DateFormat.format("dd-MM-yyyy (HH:mm:ss)",
                             model.getMessageTime()));
                 }
-            }
+
         };
 
         listOfMessages.setAdapter(adapter);
