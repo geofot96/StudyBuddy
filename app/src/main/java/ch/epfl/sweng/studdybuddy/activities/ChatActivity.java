@@ -45,10 +45,9 @@ public class ChatActivity extends AppCompatActivity{
     String groupID;
     public FirebaseReference ref;
     private StorageReference storageRef;
-    Button addImage, upload;
+    Button addImage;
     private Uri filePath;
     String downloadUri;
-    private ImageView imageView;
     private final int PICK_IMAGE_REQUEST = 71;
     FloatingActionButton fab;
 
@@ -80,14 +79,6 @@ public class ChatActivity extends AppCompatActivity{
                 startActivityForResult(Intent.createChooser(galleryIntent   ,"SELECT IMAGE"),PICK_IMAGE_REQUEST);
             }
         });
-        upload=(Button)findViewById(R.id.upload);
-        upload.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                uploadImage();
-                        }
-        });
         this.ref = initRef();
         storageRef= FirebaseStorage.getInstance().getReference();
         fab.setOnClickListener(getFabListener());
@@ -112,6 +103,7 @@ public class ChatActivity extends AppCompatActivity{
         };
     }
 
+    //Get the filepath of the selected image
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -119,6 +111,7 @@ public class ChatActivity extends AppCompatActivity{
                 && data != null && data.getData() != null)
         {
             filePath = data.getData();
+            uploadImage();
 //            try {
 //                imageView = (ImageView) findViewById(R.id.imgViewGall);
 //                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filePath);
