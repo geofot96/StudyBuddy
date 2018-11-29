@@ -34,6 +34,7 @@ import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.UUID;
 
@@ -46,11 +47,13 @@ public class ChatActivity extends AppCompatActivity{
     String groupID;
     public FirebaseReference ref;
     private StorageReference storageRef;
-    Button addImage;
+    private Button addImage, cameraButon;
+    private File file;
     private Uri filePath;
-    String downloadUri;
+    private String downloadUri;
     private final int PICK_IMAGE_REQUEST = 71;
-    FloatingActionButton fab;
+    private final int OPEN_CAMERA_REQUEST = 72;
+    private FloatingActionButton fab;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -78,6 +81,18 @@ public class ChatActivity extends AppCompatActivity{
                 galleryIntent.setAction(Intent.ACTION_GET_CONTENT);
 
                 startActivityForResult(Intent.createChooser(galleryIntent   ,"SELECT IMAGE"),PICK_IMAGE_REQUEST);
+            }
+        });
+        cameraButon=(Button)findViewById(R.id.camera);
+        cameraButon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                file = new File(ChatActivity.this.getExternalCacheDir(),
+                        String.valueOf(System.currentTimeMillis()) + ".jpg");
+
+                startActivityForResult(Intent.createChooser(cameraIntent   ,"TAKE PICTURE"),OPEN_CAMERA_REQUEST);
+
             }
         });
         this.ref = initRef();
@@ -113,10 +128,16 @@ public class ChatActivity extends AppCompatActivity{
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK
-                && data != null && data.getData() != null)
+        if( resultCode == RESULT_OK && data != null )
         {
-            filePath = data.getData();
+            if(requestCode == PICK_IMAGE_REQUEST && data.getData() != null){
+                filePath = data.getData();
+            }
+            if(requestCode == OPEN_CAMERA_REQUEST){
+                filePath=Uri.fromFile(file);
+
+            }
+
             uploadImage();
 
         }

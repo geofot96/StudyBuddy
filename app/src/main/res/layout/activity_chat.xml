@@ -7,6 +7,15 @@
     android:layout_height="match_parent">
 
 
+    <Button
+        android:id="@+id/camera"
+        android:layout_width="66dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="52dp"
+        android:text="Camera" />
+
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
         android:layout_width="wrap_content"
@@ -23,11 +32,11 @@
         android:focusable="true" />
 
     <android.support.design.widget.TextInputLayout
-        android:layout_width="246dp"
+        android:layout_width="187dp"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
-        android:layout_marginStart="66dp"
+        android:layout_marginStart="125dp"
         android:layout_toLeftOf="@id/fab">
 
         <EditText
