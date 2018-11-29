@@ -13,9 +13,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 
-import java.util.Arrays;
-import java.util.List;
-
 import ch.epfl.sweng.studdybuddy.R;
 import ch.epfl.sweng.studdybuddy.activities.group.GlobalBundle;
 import ch.epfl.sweng.studdybuddy.activities.group.MapsActivity;
@@ -23,6 +20,7 @@ import ch.epfl.sweng.studdybuddy.core.User;
 import ch.epfl.sweng.studdybuddy.firebase.FirebaseReference;
 import ch.epfl.sweng.studdybuddy.services.meeting.MeetingLocation;
 import ch.epfl.sweng.studdybuddy.tools.Consumer;
+import ch.epfl.sweng.studdybuddy.util.Language;
 import ch.epfl.sweng.studdybuddy.util.MapsHelper;
 import ch.epfl.sweng.studdybuddy.util.Messages;
 import ch.epfl.sweng.studdybuddy.util.StudyBuddy;
@@ -38,7 +36,7 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
     Spinner spinnerLang;
     String favoriteLanguage;
     User user;
-    String userId;
+    String uId;
     String gId;
     FirebaseReference ref;
     Button locationButton;
@@ -76,10 +74,11 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
             }
         });
         setUpLang();
-        userId = ((StudyBuddy) this.getActivity().getApplication()).getAuthendifiedUser().getUserID().getId();
-
+        user = ((StudyBuddy) this.getActivity().getApplication()).getAuthendifiedUser();
         ref = new FirebaseReference();
-        ref.select("users").select(userId).get(User.class, new Consumer<User>() {
+        uId = user.getUserID().getId();
+
+        ref.select("users").select(uId).get(User.class, new Consumer<User>() {
             @Override
             public void accept(User user) {
                 SettingsFragment.this.user = user;
@@ -96,8 +95,7 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
 
     void setUpLang() {
         //Language spinner
-        List<String> languagesList = Arrays.asList("\uD83C\uDDEC\uD83C\uDDE7","\uD83C\uDDEB\uD83C\uDDF7","\uD83C\uDDE9\uD83C\uDDEA","\uD83C\uDDEE\uD83C\uDDF9");
-        ArrayAdapter<String> dataAdapterLanguages = new ArrayAdapter<>(this.getContext(), android.R.layout.simple_spinner_item, languagesList);
+        ArrayAdapter<String> dataAdapterLanguages = new ArrayAdapter<>(this.getContext(), android.R.layout.simple_spinner_item, Language.languages);
         dataAdapterLanguages.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerLang.setAdapter(dataAdapterLanguages);
     }
@@ -106,7 +104,7 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
         switch(parent.getId()){
             case R.id.spinner_languages_settings:
                 user.setFavoriteLanguage(parent.getItemAtPosition(position).toString());
-                ref.select("users").select(SettingsFragment.this.userId).setVal(user);
+                ref.select("users").select(SettingsFragment.this.uId).setVal(user);
         }
     }
 
@@ -127,7 +125,7 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
                     data.getDouble(Messages.LONGITUDE, 0)
             );
             user.setFavoriteLocation(meetingLocation);
-            ref.select(Messages.FirebaseNode.USERS).select(userId).setVal(user);
+            ref.select(Messages.FirebaseNode.USERS).select(uId).setVal(user);
         }
     }
 }
