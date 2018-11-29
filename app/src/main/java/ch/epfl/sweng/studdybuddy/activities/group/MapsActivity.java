@@ -199,6 +199,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             mMarker = (new MarkerOptions().position(new LatLng(location.getLatitude(), location.getLongitude())).title(location.getTitle()));
             mMarker.draggable(true);
             marker = mMap.addMarker(mMarker);
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(marker.getPosition(), MapsHelper.DEFAULT_ZOOM));
+
         }else {
             ref.select(Messages.FirebaseNode.MEETINGS).select(gId).select(meetingID).get(Meeting.class, new Consumer<Meeting>() {
                 @Override
@@ -207,11 +209,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                     if (tmp != null) {
                         marker = mMap.addMarker(tmp);
+                        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(marker.getPosition(), MapsHelper.DEFAULT_ZOOM));
+
                     }
                 }
             });
         }
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(marker.getPosition(), MapsHelper.DEFAULT_ZOOM));
 
     }
 }

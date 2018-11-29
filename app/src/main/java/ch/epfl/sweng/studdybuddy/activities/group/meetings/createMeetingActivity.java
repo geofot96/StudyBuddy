@@ -9,7 +9,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -20,12 +19,17 @@ import ch.epfl.sweng.studdybuddy.activities.group.GlobalBundle;
 import ch.epfl.sweng.studdybuddy.activities.group.GroupActivity;
 import ch.epfl.sweng.studdybuddy.activities.group.MapsActivity;
 import ch.epfl.sweng.studdybuddy.core.ID;
+import ch.epfl.sweng.studdybuddy.core.User;
+import ch.epfl.sweng.studdybuddy.firebase.FirebaseReference;
 import ch.epfl.sweng.studdybuddy.firebase.MetaMeeting;
 import ch.epfl.sweng.studdybuddy.services.meeting.Meeting;
 import ch.epfl.sweng.studdybuddy.services.meeting.MeetingLocation;
 import ch.epfl.sweng.studdybuddy.tools.AdapterAdapter;
+import ch.epfl.sweng.studdybuddy.tools.Consumer;
 import ch.epfl.sweng.studdybuddy.util.ActivityHelper;
+import ch.epfl.sweng.studdybuddy.util.MapsHelper;
 import ch.epfl.sweng.studdybuddy.util.Messages;
+import ch.epfl.sweng.studdybuddy.util.StudyBuddy;
 
 
 public class createMeetingActivity extends AppCompatActivity {
@@ -41,12 +45,11 @@ public class createMeetingActivity extends AppCompatActivity {
 
     private Bundle origin;
     private MetaMeeting metaM;
+    private FirebaseReference ref;
     private Button saveBtn;
-
     private String groupID;
-
     private AdapterAdapter ButtonListener;
-
+    String uId;
     private final String TAG = "CREATE_MEETING_ACTIVITY";
 
     @Override
@@ -55,10 +58,12 @@ public class createMeetingActivity extends AppCompatActivity {
         setContentView(R.layout.activity_create_meeting);
         meeting = new Meeting();
         metaM = new MetaMeeting();
+        ref = new FirebaseReference();
         origin = GlobalBundle.getInstance().getSavedBundle();
         groupID = origin.getString(Messages.groupID);
         mDisplayDate = findViewById(R.id.datePicker);
         mDisplayDate.setOnClickListener(fromDate());
+        uId = ((StudyBuddy) this.getApplication()).getAuthendifiedUser().getUserID().getId();
 
         ButtonListener = new AdapterAdapter() {
             @Override
@@ -68,8 +73,8 @@ public class createMeetingActivity extends AppCompatActivity {
         };
 
         initDisplayTime();
-
         mDisplayLocation = findViewById(R.id.locationTitle);
+        initMeetingLocation();
         setClickOnLocation();
 
 
@@ -141,6 +146,16 @@ public class createMeetingActivity extends AppCompatActivity {
             saveBtn.setEnabled(false);
         }
 
+    }
+
+    private void initMeetingLocation(){
+        ref.select(Messages.FirebaseNode.USERS).select(uId).get(User.class, new Consumer<User>() {
+            @Override
+            public void accept(User user) {
+                meetingLocation = user.getFavoriteLocation() != null ? user.getFavoriteLocation() : MapsHelper.ROLEX_LOCATION;
+                mDisplayLocation.setText(meetingLocation.toString());
+            }
+        });
     }
 
 

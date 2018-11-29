@@ -13,8 +13,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 
-import com.google.firebase.auth.FirebaseAuth;
-
 import java.util.Arrays;
 import java.util.List;
 
@@ -27,6 +25,7 @@ import ch.epfl.sweng.studdybuddy.services.meeting.MeetingLocation;
 import ch.epfl.sweng.studdybuddy.tools.Consumer;
 import ch.epfl.sweng.studdybuddy.util.MapsHelper;
 import ch.epfl.sweng.studdybuddy.util.Messages;
+import ch.epfl.sweng.studdybuddy.util.StudyBuddy;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -77,7 +76,8 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
             }
         });
         setUpLang();
-        userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        userId = ((StudyBuddy) this.getActivity().getApplication()).getAuthendifiedUser().getUserID().getId();
+
         ref = new FirebaseReference();
         ref.select("users").select(userId).get(User.class, new Consumer<User>() {
             @Override
