@@ -31,6 +31,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
@@ -93,15 +94,17 @@ public class ChatActivity extends AppCompatActivity{
             public void onClick(View view) {
 
                 EditText input = (EditText)findViewById(R.id.input);
-                if(input.getText().toString().trim().length() > 0) {
-                    pushToFirebase(input.getText().toString());
+                if(input.getText().toString().trim().length() > 0||!downloadUri.isEmpty()) {
+                    pushToFirebase(input.getText().toString(),downloadUri);
                     input.setText("");
+                    filePath=null;
+                    downloadUri="";
                 }
             }
         };
     }
 
-    private void pushToFirebase(String input) {
+    private void pushToFirebase(String input,String downloadUri) {
         ref.select(Messages.FirebaseNode.CHAT).select(groupID).push(new ChatMessage(input,
                 FirebaseAuth.getInstance().getCurrentUser().getDisplayName(), downloadUri));
     }
@@ -115,10 +118,6 @@ public class ChatActivity extends AppCompatActivity{
         {
             filePath = data.getData();
             uploadImage();
-
-            pushToFirebase("");
-            filePath=null;
-            downloadUri="";
 
         }
     }
@@ -134,33 +133,39 @@ public class ChatActivity extends AppCompatActivity{
                 FirebaseDatabase.getInstance().getReference().child(Messages.FirebaseNode.CHAT).child(groupID)) {
             @Override
             protected void populateView(View v, ChatMessage model, int position) {
-                TextView messageText = (TextView) v.findViewById(R.id.message_text);
-                if (!model.getMessageText().isEmpty()) {
 
+                TextView messageUser = (TextView) v.findViewById(R.id.message_user);
+                messageUser.setText(model.getMessageUser());
+                TextView messageTime = (TextView) v.findViewById(R.id.message_time);
+                messageTime.setText(DateFormat.format("dd-MM-yyyy (HH:mm:ss)",
+                        model.getMessageTime()));
+
+
+                if (!model.getMessageText().isEmpty()) {
+                    TextView messageText = (TextView) v.findViewById(R.id.message_text);
                     messageText.setText(model.getMessageText());
-                    messageText.setVisibility(View.VISIBLE);
-                }else{
-                    messageText.setVisibility(View.INVISIBLE);
                 }
-                    TextView messageUser = (TextView) v.findViewById(R.id.message_user);
-                    TextView messageTime = (TextView) v.findViewById(R.id.message_time);
+
                 ImageView image = (ImageView) v.findViewById(R.id.imgViewGall);
                 if (!model.getImageUri().isEmpty()) {
-                    messageUser.setText(model.getMessageUser());
-                    if (model.getImageUri().length() > 1)//TODO
+
+
                         Picasso.get().load(model.getImageUri()).into(image);
-                    image.setVisibility(View.VISIBLE);
+                    Toast.makeText(ChatActivity.this, "Visible"+model.getImageUri(), Toast.LENGTH_SHORT).show();
+
                 }else{
-                    image.setVisibility(View.INVISIBLE);
+                    //image.setVisibility(View.INVISIBLE);
+                    //image.setMaxHeight(1);
+                    image.setImageResource(android.R.color.transparent);
+                    Toast.makeText(ChatActivity.this, "INVisible"+model.getImageUri(), Toast.LENGTH_SHORT).show();
+
                 }
 
 
-                    // Format the date before showing it
-                    messageTime.setText(DateFormat.format("dd-MM-yyyy (HH:mm:ss)",
-                            model.getMessageTime()));
                 }
 
         };
+
 
         listOfMessages.setAdapter(adapter);
     }
