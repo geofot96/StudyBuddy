@@ -65,4 +65,6 @@ public final class Meeting {
 
     public MeetingLocation getLocation(){return location;}
     public void setLocation(MeetingLocation meetingLocation){this.location = meetingLocation;}
+
+
 }
