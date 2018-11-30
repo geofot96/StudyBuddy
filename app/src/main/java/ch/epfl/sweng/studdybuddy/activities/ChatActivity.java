@@ -134,7 +134,8 @@ public class ChatActivity extends AppCompatActivity{
                 filePath = data.getData();
             }
             if(requestCode == OPEN_CAMERA_REQUEST){
-                filePath=Uri.fromFile(file);
+              //  filePath=Uri.fromFile(file);
+                filePath = data.getData();
 
             }
 
@@ -162,10 +163,10 @@ public class ChatActivity extends AppCompatActivity{
                         model.getMessageTime()));
 
 
-                if (!model.getMessageText().isEmpty()) {
+              //  if (!model.getMessageText().isEmpty()) {
                     TextView messageText = (TextView) v.findViewById(R.id.message_text);
                     messageText.setText(model.getMessageText());
-                }
+                //}
 
                 ImageView image = (ImageView) v.findViewById(R.id.imgViewGall);
                 if (!model.getImageUri().isEmpty()) {
