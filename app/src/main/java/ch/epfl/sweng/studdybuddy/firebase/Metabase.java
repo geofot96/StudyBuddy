@@ -8,6 +8,7 @@ import java.util.List;
 import ch.epfl.sweng.studdybuddy.core.User;
 import ch.epfl.sweng.studdybuddy.tools.AdapterAdapter;
 import ch.epfl.sweng.studdybuddy.tools.Consumer;
+import ch.epfl.sweng.studdybuddy.util.Messages;
 
 abstract public class Metabase {
     protected ReferenceWrapper db;
@@ -40,6 +41,10 @@ abstract public class Metabase {
                 notif();
             }
         });
+    }
+
+    public ValueEventListener getUserAndConsume(String uId, Consumer<User> consumer){
+        return db.select(Messages.FirebaseNode.USERS).select(uId).get(User.class, consumer);
     }
     public void addListenner(AdapterAdapter ad) {
         this.ads.add(ad);

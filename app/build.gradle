@@ -66,6 +66,7 @@ android {
         implementation 'com.firebaseui:firebase-ui:0.6.0'
         androidTestImplementation 'androidx.test.uiautomator:uiautomator:2.2.0'
 
+
     }
 
 tasks.withType(Test) {

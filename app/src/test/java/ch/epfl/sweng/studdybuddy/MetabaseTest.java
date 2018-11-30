@@ -11,10 +11,13 @@ import java.util.Arrays;
 import java.util.List;
 
 import ch.epfl.sweng.studdybuddy.core.Pair;
+import ch.epfl.sweng.studdybuddy.core.User;
 import ch.epfl.sweng.studdybuddy.firebase.FirebaseReference;
 import ch.epfl.sweng.studdybuddy.firebase.MetaGroup;
+import ch.epfl.sweng.studdybuddy.tools.Consumer;
 
 import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -46,5 +49,19 @@ public class MetabaseTest {
         assertTrue(fredeCourses.size() == 2);
         assertTrue(fredeCourses.contains("clp"));
         assertTrue(fredeCourses.contains("parcon"));
+    }
+
+    @Test
+    public void getUserAndConsumeTest(){
+        DataSnapshot ds = mock(DataSnapshot.class);
+        User user = new User("Tintin", "Milou");
+        when(testref.child(anyString())).thenReturn(testref);
+        when(ds.getValue()). thenReturn(user);
+        mb.getUserAndConsume("Bouba", new Consumer<User>() {
+            @Override
+            public void accept(User user) {
+                assertTrue(user.getName().equals("Tintin")) ;
+            }
+        }).onDataChange(ds);
     }
 }

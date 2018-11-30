@@ -18,6 +18,7 @@ import ch.epfl.sweng.studdybuddy.activities.group.GlobalBundle;
 import ch.epfl.sweng.studdybuddy.activities.group.MapsActivity;
 import ch.epfl.sweng.studdybuddy.core.User;
 import ch.epfl.sweng.studdybuddy.firebase.FirebaseReference;
+import ch.epfl.sweng.studdybuddy.firebase.ReferenceWrapper;
 import ch.epfl.sweng.studdybuddy.services.meeting.MeetingLocation;
 import ch.epfl.sweng.studdybuddy.tools.Consumer;
 import ch.epfl.sweng.studdybuddy.util.Language;
@@ -75,7 +76,7 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
         });
         setUpLang();
         user = ((StudyBuddy) this.getActivity().getApplication()).getAuthendifiedUser();
-        ref = new FirebaseReference();
+        ref = (FirebaseReference) getDB();
         uId = user.getUserID().getId();
 
         ref.select("users").select(uId).get(User.class, new Consumer<User>() {
@@ -93,18 +94,22 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
         return view;
     }
 
+    public ReferenceWrapper getDB(){
+        return new FirebaseReference();
+    }
     void setUpLang() {
         //Language spinner
         ArrayAdapter<String> dataAdapterLanguages = new ArrayAdapter<>(this.getContext(), android.R.layout.simple_spinner_item, Language.languages);
         dataAdapterLanguages.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerLang.setAdapter(dataAdapterLanguages);
     }
+
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         switch(parent.getId()){
             case R.id.spinner_languages_settings:
-                user.setFavoriteLanguage(parent.getItemAtPosition(position).toString());
-                ref.select("users").select(SettingsFragment.this.uId).setVal(user);
+                favoriteLanguage = (parent.getItemAtPosition(position).toString());
+                ref.select(Messages.FirebaseNode.USERS).select(SettingsFragment.this.uId).select("favoriteLanguage").setVal(favoriteLanguage);
         }
     }
 
