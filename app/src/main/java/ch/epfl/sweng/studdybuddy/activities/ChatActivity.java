@@ -1,14 +1,22 @@
 package ch.epfl.sweng.studdybuddy.activities;
 
+import android.Manifest;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.text.format.DateFormat;
 import android.view.View;
@@ -34,6 +42,7 @@ import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.util.UUID;
@@ -49,7 +58,7 @@ public class ChatActivity extends AppCompatActivity{
     private StorageReference storageRef;
     private Button addImage, cameraButon;
     private File file;
-    private Uri filePath;
+    private Uri filePath,captureUri;
     private String downloadUri;
     private final int PICK_IMAGE_REQUEST = 71;
     private final int OPEN_CAMERA_REQUEST = 72;
@@ -87,12 +96,18 @@ public class ChatActivity extends AppCompatActivity{
         cameraButon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                file = new File(ChatActivity.this.getExternalCacheDir(),
-                        String.valueOf(System.currentTimeMillis()) + ".jpg");
-
-                startActivityForResult(Intent.createChooser(cameraIntent   ,"TAKE PICTURE"),OPEN_CAMERA_REQUEST);
-
+//                //check if camera permission is granted and when it isn't ask for it
+//                if (ContextCompat.checkSelfPermission(ChatActivity.this, Manifest.permission.CAMERA)
+//                        != PackageManager.PERMISSION_GRANTED) {
+//                    ActivityCompat.requestPermissions(ChatActivity.this,
+//                            new String[]{Manifest.permission.CAMERA},
+//                            0);
+//                }
+                Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                if (takePictureIntent.resolveActivity(getPackageManager()) != null)
+                {
+                    startActivityForResult(takePictureIntent, OPEN_CAMERA_REQUEST);
+                }
             }
         });
         this.ref = initRef();
@@ -124,6 +139,19 @@ public class ChatActivity extends AppCompatActivity{
                 FirebaseAuth.getInstance().getCurrentUser().getDisplayName(), downloadUri));
     }
 
+    public Uri getImageUri(Context inContext, Bitmap inImage) {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
+        return Uri.parse(path);
+    }
+
+    public String getRealPathFromURI(Uri uri) {
+        Cursor cursor = getContentResolver().query(uri, null, null, null, null);
+        cursor.moveToFirst();
+        int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
+        return cursor.getString(idx);
+    }
     //Get the filepath of the selected image
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -133,9 +161,12 @@ public class ChatActivity extends AppCompatActivity{
             if(requestCode == PICK_IMAGE_REQUEST && data.getData() != null){
                 filePath = data.getData();
             }
-            if(requestCode == OPEN_CAMERA_REQUEST){
-              //  filePath=Uri.fromFile(file);
-                filePath = data.getData();
+            if(requestCode == OPEN_CAMERA_REQUEST) {
+                File file = new File(Environment.getExternalStorageDirectory(), "MyPhoto.jpg");
+
+                //Uri of camera image
+               filePath = FileProvider.getUriForFile(this, this.getApplicationContext().getPackageName() + ".provider", file);
+
 
             }
 
