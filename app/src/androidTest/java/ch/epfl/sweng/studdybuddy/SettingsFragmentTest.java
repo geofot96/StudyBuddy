@@ -44,7 +44,7 @@ public class SettingsFragmentTest {
     @Test
     public void defaultLocationLaunchesMapsActivity(){
         try {
-            Thread.sleep(500);
+            Thread.sleep(1000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -56,8 +56,8 @@ public class SettingsFragmentTest {
             e.printStackTrace();
         }
         intended(hasComponent(MapsActivity.class.getName()));
-
-
     }
+
+
 
 }
