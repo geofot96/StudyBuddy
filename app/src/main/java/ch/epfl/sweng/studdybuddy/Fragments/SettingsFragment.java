@@ -3,6 +3,7 @@ package ch.epfl.sweng.studdybuddy.Fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -13,9 +14,14 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+
 import ch.epfl.sweng.studdybuddy.R;
 import ch.epfl.sweng.studdybuddy.activities.group.GlobalBundle;
 import ch.epfl.sweng.studdybuddy.activities.group.MapsActivity;
+import ch.epfl.sweng.studdybuddy.auth.FirebaseAuthManager;
+import ch.epfl.sweng.studdybuddy.auth.GoogleSignInActivity;
 import ch.epfl.sweng.studdybuddy.core.User;
 import ch.epfl.sweng.studdybuddy.firebase.FirebaseReference;
 import ch.epfl.sweng.studdybuddy.firebase.MetaGroup;
@@ -43,6 +49,8 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
     FirebaseReference ref;
     Metabase mb;
     Button locationButton;
+    Button signout;
+    View view;
     public SettingsFragment()
     {
         // Required empty public constructor
@@ -60,50 +68,14 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
     {
 
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_settings, container, false);
+        view = inflater.inflate(R.layout.fragment_settings, container, false);
 
-        spinnerLang = view.findViewById(R.id.spinner_languages_settings);
-        spinnerLang.setOnItemSelectedListener(this);
-        locationButton = view.findViewById(R.id.defaultLocation);
-        locationButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(getActivity(), MapsActivity.class);
-                i.putExtra(Messages.groupID, Messages.settingsPlaceHolder);
-                i.putExtra(Messages.meetingID,Messages.settingsPlaceHolder);
-                i.putExtra(Messages.ADMIN,Messages.settingsPlaceHolder);
-                GlobalBundle.getInstance().putAll(i.getExtras());
-                startActivityForResult(i, 1);
-            }
-        });
         setUpLang();
         user = ((StudyBuddy) this.getActivity().getApplication()).getAuthendifiedUser();
         ref = (FirebaseReference) getDB();
         uId = user.getUserID().getId();
         mb = new MetaGroup();
-        mb.getUserAndConsume(uId, new Consumer<User>() {
-        @Override
-        public void accept(User user) {
-            SettingsFragment.this.user = user;
-            MeetingLocation favoriteLocation = user.getFavoriteLocation();
-            if(favoriteLocation == null){
-                favoriteLocation = MapsHelper.ROLEX_LOCATION;
-            }
-            locationButton.setText("Default Location: " + favoriteLocation.toString());
-        }
-    });
-       /* ref.select("users").select(uId).get(User.class, new Consumer<User>() {
-            @Override
-            public void accept(User user) {
-                SettingsFragment.this.user = user;
-                MeetingLocation favoriteLocation = user.getFavoriteLocation();
-                if(favoriteLocation == null){
-                    favoriteLocation = MapsHelper.ROLEX_LOCATION;
-                }
-                locationButton.setText("Default Location: " + favoriteLocation.toString());
-            }
-        });*/
-
+        setUpUI();
         return view;
     }
 
@@ -111,6 +83,8 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
         return new FirebaseReference();
     }
     void setUpLang() {
+        spinnerLang = view.findViewById(R.id.spinner_languages_settings);
+        spinnerLang.setOnItemSelectedListener(this);
         //Language spinner
         ArrayAdapter<String> dataAdapterLanguages = new ArrayAdapter<>(this.getContext(), android.R.layout.simple_spinner_item, Language.languages);
         dataAdapterLanguages.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -138,7 +112,56 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
             if(defaultLocation != null) {
                 ref.select(Messages.FirebaseNode.USERS).select(uId).select("favoriteLocation").setVal(defaultLocation);
             }
-        }
+    }
+
+    public void setUpUI(){
+        setUpLang();
+        setUpLocation();
+        setUpSignOut();
+    }
+
+    public void setUpLocation(){
+        locationButton = view.findViewById(R.id.defaultLocation);
+        locationButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getActivity(), MapsActivity.class);
+                i.putExtra(Messages.groupID, Messages.settingsPlaceHolder);
+                i.putExtra(Messages.meetingID,Messages.settingsPlaceHolder);
+                i.putExtra(Messages.ADMIN,Messages.settingsPlaceHolder);
+                GlobalBundle.getInstance().putAll(i.getExtras());
+                startActivityForResult(i, 1);
+            }
+        });
+
+        mb.getUserAndConsume(uId, new Consumer<User>() {
+            @Override
+            public void accept(User user) {
+                SettingsFragment.this.user = user;
+                MeetingLocation favoriteLocation = user.getFavoriteLocation();
+                if(favoriteLocation == null){
+                    favoriteLocation = MapsHelper.ROLEX_LOCATION;
+                }
+                locationButton.setText("Default Location: " + favoriteLocation.toString());
+            }
+        });
+    }
+
+    public void setUpSignOut(){
+        signout = view.findViewById(R.id.btn_sign_out);
+        signout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                (new FirebaseAuthManager(SettingsFragment.this.getActivity(), uId)).logout().addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        Intent intent = new Intent(SettingsFragment.this.getContext(), GoogleSignInActivity.class);
+                        startActivity(intent);
+                    }
+                });
+            }
+        });
+    }
 
 
 }

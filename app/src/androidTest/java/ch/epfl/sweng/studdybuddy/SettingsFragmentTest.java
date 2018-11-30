@@ -12,6 +12,7 @@ import org.junit.runner.RunWith;
 
 import ch.epfl.sweng.studdybuddy.activities.NavigationActivity;
 import ch.epfl.sweng.studdybuddy.activities.group.MapsActivity;
+import ch.epfl.sweng.studdybuddy.auth.GoogleSignInActivity;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
@@ -33,7 +34,7 @@ public class SettingsFragmentTest {
 
     @Before
     public void goToSettings(){
-        ViewInteraction bottomNavigationItemView4 = onView(
+        ViewInteraction settings = onView(
                 allOf(withId(R.id.navToSettings), withContentDescription("Settings"),
                         childAtPosition(
                                 childAtPosition(
@@ -41,7 +42,7 @@ public class SettingsFragmentTest {
                                         0),
                                 3),
                         isDisplayed()));
-        bottomNavigationItemView4.perform(click());
+        settings.perform(click());
     }
 
     @Test
@@ -61,7 +62,12 @@ public class SettingsFragmentTest {
         intended(hasComponent(MapsActivity.class.getName()));
     }
 
-
+    @Test
+    public void signoutWorks() throws InterruptedException {
+        onView(withId(R.id.btn_sign_out)).perform(click());
+        Thread.sleep(500);
+        intended(hasComponent(GoogleSignInActivity.class.getName()));
+    }
 
 
 
