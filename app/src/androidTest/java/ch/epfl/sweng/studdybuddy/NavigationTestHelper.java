@@ -19,7 +19,7 @@ public class NavigationTestHelper {
                                 childAtPosition(
                                         withId(R.id.bottom_navigation),
                                         0),
-                                3),
+                                position),
                         isDisplayed()));
         tab.perform(click());
     }
