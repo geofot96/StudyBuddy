@@ -42,7 +42,7 @@ public class SettingsFragmentTest {
     }
 
     @Test
-    public void test(){
+    public void defaultLocationLaunchesMapsActivity(){
         try {
             Thread.sleep(500);
         } catch (InterruptedException e) {

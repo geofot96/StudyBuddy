@@ -18,6 +18,8 @@ import ch.epfl.sweng.studdybuddy.activities.group.GlobalBundle;
 import ch.epfl.sweng.studdybuddy.activities.group.MapsActivity;
 import ch.epfl.sweng.studdybuddy.core.User;
 import ch.epfl.sweng.studdybuddy.firebase.FirebaseReference;
+import ch.epfl.sweng.studdybuddy.firebase.MetaGroup;
+import ch.epfl.sweng.studdybuddy.firebase.Metabase;
 import ch.epfl.sweng.studdybuddy.firebase.ReferenceWrapper;
 import ch.epfl.sweng.studdybuddy.services.meeting.MeetingLocation;
 import ch.epfl.sweng.studdybuddy.tools.Consumer;
@@ -40,6 +42,7 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
     String uId;
     String gId;
     FirebaseReference ref;
+    Metabase mb;
     Button locationButton;
     public SettingsFragment()
     {
@@ -78,8 +81,19 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
         user = ((StudyBuddy) this.getActivity().getApplication()).getAuthendifiedUser();
         ref = (FirebaseReference) getDB();
         uId = user.getUserID().getId();
-
-        ref.select("users").select(uId).get(User.class, new Consumer<User>() {
+        mb = new MetaGroup();
+        mb.getUserAndConsume(uId, new Consumer<User>() {
+        @Override
+        public void accept(User user) {
+            SettingsFragment.this.user = user;
+            MeetingLocation favoriteLocation = user.getFavoriteLocation();
+            if(favoriteLocation == null){
+                favoriteLocation = MapsHelper.ROLEX_LOCATION;
+            }
+            locationButton.setText("Default Location: " + favoriteLocation.toString());
+        }
+    });
+       /* ref.select("users").select(uId).get(User.class, new Consumer<User>() {
             @Override
             public void accept(User user) {
                 SettingsFragment.this.user = user;
@@ -89,7 +103,7 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
                 }
                 locationButton.setText("Default Location: " + favoriteLocation.toString());
             }
-        });
+        });*/
 
         return view;
     }
@@ -129,8 +143,7 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
                     data.getDouble(Messages.LATITUDE, 0),
                     data.getDouble(Messages.LONGITUDE, 0)
             );
-            user.setFavoriteLocation(meetingLocation);
-            ref.select(Messages.FirebaseNode.USERS).select(uId).setVal(user);
+            ref.select(Messages.FirebaseNode.USERS).select(uId).select("favoriteLocation").setVal(meetingLocation);
         }
     }
 }
