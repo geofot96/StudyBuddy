@@ -64,15 +64,9 @@ public class MeetingsActivity extends AppCompatActivity {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent d){
-        if(requestCode == 1 && resultCode == RESULT_OK){
-            Bundle data = GlobalBundle.getInstance().getSavedBundle();
-            MeetingLocation meetingLocation = new MeetingLocation(
-              data.getString(Messages.LOCATION_TITLE),
-                    data.getString(Messages.ADDRESS),
-                    data.getDouble(Messages.LATITUDE, 0),
-                    data.getDouble(Messages.LONGITUDE, 0)
-            );
-            metaM.pushLocation(meetingLocation, new ID<>(groupId), new ID<>(data.getString(Messages.meetingID)));
+        MeetingLocation meetingLocation = ActivityHelper.meetingLocationFromBundle(requestCode,resultCode);
+        if (meetingLocation != null) {
+            metaM.pushLocation(meetingLocation, new ID<>(groupId), new ID<>(GlobalBundle.getInstance().getSavedBundle().getString(Messages.meetingID)));
         }
     }
 

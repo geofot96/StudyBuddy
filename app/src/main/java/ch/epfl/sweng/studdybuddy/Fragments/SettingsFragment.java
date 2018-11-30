@@ -23,12 +23,11 @@ import ch.epfl.sweng.studdybuddy.firebase.Metabase;
 import ch.epfl.sweng.studdybuddy.firebase.ReferenceWrapper;
 import ch.epfl.sweng.studdybuddy.services.meeting.MeetingLocation;
 import ch.epfl.sweng.studdybuddy.tools.Consumer;
+import ch.epfl.sweng.studdybuddy.util.ActivityHelper;
 import ch.epfl.sweng.studdybuddy.util.Language;
 import ch.epfl.sweng.studdybuddy.util.MapsHelper;
 import ch.epfl.sweng.studdybuddy.util.Messages;
 import ch.epfl.sweng.studdybuddy.util.StudyBuddy;
-
-import static android.app.Activity.RESULT_OK;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -135,15 +134,11 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent d) {
         super.onActivityResult(requestCode, resultCode, d);
-        if(requestCode == 1 && resultCode == RESULT_OK){
-            Bundle data = GlobalBundle.getInstance().getSavedBundle();
-            MeetingLocation meetingLocation = new MeetingLocation(
-                    data.getString(Messages.LOCATION_TITLE),
-                    data.getString(Messages.ADDRESS),
-                    data.getDouble(Messages.LATITUDE, 0),
-                    data.getDouble(Messages.LONGITUDE, 0)
-            );
-            ref.select(Messages.FirebaseNode.USERS).select(uId).select("favoriteLocation").setVal(meetingLocation);
+            MeetingLocation defaultLocation = ActivityHelper.meetingLocationFromBundle(requestCode, resultCode);
+            if(defaultLocation != null) {
+                ref.select(Messages.FirebaseNode.USERS).select(uId).select("favoriteLocation").setVal(defaultLocation);
+            }
         }
-    }
+
+
 }

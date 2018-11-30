@@ -2,8 +2,8 @@ package ch.epfl.sweng.studdybuddy.util;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
-import android.os.Build;
-import android.support.annotation.RequiresApi;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
@@ -13,19 +13,21 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 
 import java.util.Calendar;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
+import ch.epfl.sweng.studdybuddy.activities.group.GlobalBundle;
 import ch.epfl.sweng.studdybuddy.core.Group;
 import ch.epfl.sweng.studdybuddy.core.ID;
 import ch.epfl.sweng.studdybuddy.firebase.MetaMeeting;
 import ch.epfl.sweng.studdybuddy.services.meeting.Meeting;
-import ch.epfl.sweng.studdybuddy.tools.Adapter;
+import ch.epfl.sweng.studdybuddy.services.meeting.MeetingLocation;
 import ch.epfl.sweng.studdybuddy.tools.AdapterAdapter;
 import ch.epfl.sweng.studdybuddy.tools.Consumer;
+
+import static android.app.Activity.RESULT_OK;
 
 public class ActivityHelper {
 
@@ -143,10 +145,24 @@ public class ActivityHelper {
         }
     }
 
-    /*
+    @Nullable
+    public static MeetingLocation meetingLocationFromBundle(int requestCode, int resultCode){
+        if(requestCode == 1 && resultCode == RESULT_OK){
+            Bundle data = GlobalBundle.getInstance().getSavedBundle();
+
+            return new MeetingLocation(
+                data.getString(Messages.LOCATION_TITLE),
+                data.getString(Messages.ADDRESS),
+                data.getDouble(Messages.LATITUDE, 0),
+                data.getDouble(Messages.LONGITUDE, 0));
+        }else{
+            return null;
+        }
+    }
+
     public static void adminMeeting(Button add, Group group, String userID) {
         Boolean admin = group.getAdminID().equals(userID);
         add.setVisibility(admin ? View.VISIBLE : View.GONE);
     }
-    */
+
 }

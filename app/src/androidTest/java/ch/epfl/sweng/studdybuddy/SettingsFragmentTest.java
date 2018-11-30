@@ -2,6 +2,7 @@ package ch.epfl.sweng.studdybuddy;
 
 import android.support.test.espresso.ViewInteraction;
 import android.support.test.espresso.intent.rule.IntentsTestRule;
+import android.support.test.rule.GrantPermissionRule;
 import android.support.test.runner.AndroidJUnit4;
 
 import org.junit.Before;
@@ -27,6 +28,8 @@ public class SettingsFragmentTest {
 
     @Rule
     public IntentsTestRule<NavigationActivity> mActivityTestRule = new IntentsTestRule <>(NavigationActivity.class);
+
+    @Rule public GrantPermissionRule mRuntimePermissionRule = GrantPermissionRule .grant(android.Manifest.permission.ACCESS_FINE_LOCATION);
 
     @Before
     public void goToSettings(){
@@ -57,6 +60,10 @@ public class SettingsFragmentTest {
         }
         intended(hasComponent(MapsActivity.class.getName()));
     }
+
+
+
+
 
 
 
