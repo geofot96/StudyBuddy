@@ -2,7 +2,6 @@ package ch.epfl.sweng.studdybuddy.activities;
 
 import android.Manifest;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -23,7 +22,6 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.firebase.ui.database.FirebaseListAdapter;
@@ -37,10 +35,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-
 import java.io.ByteArrayOutputStream;
 import java.util.UUID;
-
 import ch.epfl.sweng.studdybuddy.R;
 import ch.epfl.sweng.studdybuddy.firebase.FirebaseReference;
 import ch.epfl.sweng.studdybuddy.services.chat.ChatMessage;
@@ -81,12 +77,38 @@ public class ChatActivity extends AppCompatActivity
                     Toast.LENGTH_LONG).show();
             finish();
         }
+        initializations();
+    }
+
+    private void initializations()
+    {
         downloadUri = "";
         displayChatMessages();
         mProgress = new ProgressDialog(this);
         fab = (FloatingActionButton) findViewById(R.id.fab);
         addImage = (Button) findViewById(R.id.gallery);
-        addImage.setOnClickListener(new View.OnClickListener()
+        addImage.setOnClickListener(getGalleryImage());
+        cameraButon = (Button) findViewById(R.id.camera);
+        cameraButon.setOnClickListener(getCameraListener());
+        //check if camera permission is granted and when it isn't ask for it]
+        askForCameraPermission();
+        fab.setOnClickListener(getFabListener());
+    }
+
+    private void askForCameraPermission()
+    {
+        if(ContextCompat.checkSelfPermission(ChatActivity.this.getApplicationContext(),
+                Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(ChatActivity.this,
+                    new String[]{Manifest.permission.CAMERA},
+                    1);
+        }
+    }
+
+    @NonNull
+    private View.OnClickListener getGalleryImage()
+    {
+        return new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
@@ -97,27 +119,7 @@ public class ChatActivity extends AppCompatActivity
 
                 startActivityForResult(Intent.createChooser(galleryIntent, "SELECT IMAGE"), PICK_IMAGE_REQUEST);
             }
-        });
-        cameraButon = (Button) findViewById(R.id.camera);
-        cameraButon.setOnClickListener(getCameraListener());
-
-        //check if camera permission is granted and when it isn't ask for it]
-        if(ContextCompat.checkSelfPermission(ChatActivity.this.getApplicationContext(),
-                Manifest.permission.CAMERA)
-                == PackageManager.PERMISSION_GRANTED)
-        {
-        }
-        else
-        {
-            ActivityCompat.requestPermissions(ChatActivity.this,
-                    new String[]{Manifest.permission.CAMERA},
-                    1);
-
-        }
-
-
-
-        fab.setOnClickListener(getFabListener());
+        };
     }
 
     @NonNull
@@ -130,9 +132,7 @@ public class ChatActivity extends AppCompatActivity
             {
                 Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 startActivityForResult(intent, OPEN_CAMERA_REQUEST);
-
             }
-
         };
     }
 
@@ -150,20 +150,25 @@ public class ChatActivity extends AppCompatActivity
             }
             else if(requestCode == OPEN_CAMERA_REQUEST)
             {
-                mProgress.setMessage("Uploading");
-                mProgress.show();
-
-                //get the camera image
-                Bundle extras = data.getExtras();
-                Bitmap bitmap = (Bitmap) data.getExtras().get("data");
-                ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-                byte[] dataBAOS = baos.toByteArray();
-                ImageView image = (ImageView) ChatActivity.this.findViewById(R.id.imgViewGall);
-
-                uploadImage(dataBAOS);
+                openCamera(data);
             }
         }
+    }
+
+    private void openCamera(Intent data)
+    {
+        mProgress.setMessage("Uploading");
+        mProgress.show();
+
+        //get the camera image
+        Bundle extras = data.getExtras();
+        Bitmap bitmap = (Bitmap) data.getExtras().get("data");
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        byte[] dataBAOS = baos.toByteArray();
+        ImageView image = (ImageView) ChatActivity.this.findViewById(R.id.imgViewGall);
+
+        uploadImage(dataBAOS);
     }
 
     private void uploadImage(byte[] dataBAOS)
@@ -184,7 +189,13 @@ public class ChatActivity extends AppCompatActivity
                 Toast.makeText(getApplicationContext(), "Sending failed", Toast.LENGTH_SHORT).show();
                 mProgress.dismiss();
             }
-        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>()
+        }).addOnSuccessListener(getOnSuccessListener());
+    }
+
+    @NonNull
+    private OnSuccessListener<UploadTask.TaskSnapshot> getOnSuccessListener()
+    {
+        return new OnSuccessListener<UploadTask.TaskSnapshot>()
         {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot)
@@ -196,7 +207,7 @@ public class ChatActivity extends AppCompatActivity
                 Toast.makeText(ChatActivity.this, downloadUri, Toast.LENGTH_SHORT).show();
                 fab.performClick();
             }
-        });
+        };
     }
 
     private void uploadImage()
@@ -218,29 +229,31 @@ public class ChatActivity extends AppCompatActivity
                     // Continue with the task to get the download URL
                     return ref.getDownloadUrl();
                 }
-            }).addOnCompleteListener(new OnCompleteListener<Uri>()
-            {
-                @Override
-                public void onComplete(@NonNull Task<Uri> task)
-                {
-                    if(task.isSuccessful())
-                    {
-                        downloadUri = task.getResult().toString();
-                        mProgress.dismiss();
-                        fab.performClick();
-                        Toast.makeText(ChatActivity.this, downloadUri, Toast.LENGTH_SHORT).show();
-
-                    }
-                    else
-                    {
-                        mProgress.dismiss();
-                        Toast.makeText(ChatActivity.this, "Failed Uploading", Toast.LENGTH_SHORT).show();
-
-                    }
-                }
-            });
-
+            }).addOnCompleteListener(getOnCompleteListener());
         }
+    }
+
+    @NonNull
+    private OnCompleteListener<Uri> getOnCompleteListener()
+    {
+        return new OnCompleteListener<Uri>()
+        {
+            @Override
+            public void onComplete(@NonNull Task<Uri> task)
+            {
+                if(task.isSuccessful()) {
+                    downloadUri = task.getResult().toString();
+                    mProgress.dismiss();
+                    fab.performClick();
+                    Toast.makeText(ChatActivity.this, "Uploaded " + downloadUri, Toast.LENGTH_SHORT).show();
+
+                }
+                else {
+                    mProgress.dismiss();
+                    Toast.makeText(ChatActivity.this, "Failed Uploading", Toast.LENGTH_SHORT).show();
+                }
+            }
+        };
     }
 
     @NonNull
@@ -269,7 +282,6 @@ public class ChatActivity extends AppCompatActivity
                 FirebaseAuth.getInstance().getCurrentUser().getDisplayName(), downloadUri));
     }
 
-
     public FirebaseReference initRef()
     {
         return new FirebaseReference();
@@ -289,27 +301,18 @@ public class ChatActivity extends AppCompatActivity
                 TextView messageUser = (TextView) v.findViewById(R.id.message_user);
                 messageUser.setText(model.getMessageUser());
                 TextView messageTime = (TextView) v.findViewById(R.id.message_time);
-                messageTime.setText(DateFormat.format("dd-MM (HH:mm)",
-                        model.getMessageTime()));
-
-                //  if (!model.getMessageText().isEmpty()) { TODO add the check again probably
+                messageTime.setText(DateFormat.format("dd-MM (HH:mm)", model.getMessageTime()));
                 TextView messageText = (TextView) v.findViewById(R.id.message_text);
                 messageText.setText(model.getMessageText());
-                //}
-
                 ImageView image = (ImageView) v.findViewById(R.id.imgViewGall);
                 String modelUri = model.getImageUri();
-                if(modelUri != null && !modelUri.isEmpty())
-                {
+                if(modelUri != null && !modelUri.isEmpty()) {
                     //Put the image in the chat
                     Glide.with(ChatActivity.this).load(modelUri).apply(new RequestOptions().override(500, 700)).into(image);
                 }
-                else
-                {
+                else {
                     image.setImageResource(android.R.color.transparent);
                 }
-
-
             }
 
         };
