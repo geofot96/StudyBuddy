@@ -66,7 +66,8 @@ android {
         implementation 'com.firebaseui:firebase-ui:0.6.0'
         androidTestImplementation 'androidx.test.uiautomator:uiautomator:2.2.0'
         implementation 'com.google.firebase:firebase-storage:16.0.4'
-        implementation 'com.squareup.picasso:picasso:2.71828'
+        implementation 'com.github.bumptech.glide:glide:4.8.0'
+        annotationProcessor 'com.github.bumptech.glide:compiler:4.8.0'
 
     }
 

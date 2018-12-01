@@ -27,6 +27,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.firebase.ui.database.FirebaseListAdapter;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -39,8 +41,8 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-import com.squareup.picasso.MemoryPolicy;
-import com.squareup.picasso.Picasso;
+//import com.squareup.picasso.MemoryPolicy;
+//import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -78,6 +80,7 @@ public class ChatActivity extends AppCompatActivity
 
         Bundle extras = getIntent().getExtras();
 
+        //TODO ask for permissions
         if(extras != null)
         {
             groupID = extras.getString(Messages.groupID);
@@ -182,8 +185,10 @@ public class ChatActivity extends AppCompatActivity
                 Bundle extras = data.getExtras();
                 Bitmap bitmap = (Bitmap) data.getExtras().get("data");
                 ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos); //TODO check if PNG is necessary or if we can get away with jpeg
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos); //TODO check if PNG is necessary or if we can get away with jpeg
                 byte[] dataBAOS = baos.toByteArray();
+                ImageView image = (ImageView) ChatActivity.this.findViewById(R.id.imgViewGall);
+                //image.setImageBitmap(bitmap);
 
                 uploadImage(dataBAOS);
             }
@@ -200,7 +205,7 @@ public class ChatActivity extends AppCompatActivity
 
 //name of the image file (add time to have different files to avoid rewrite on the same file)
 
-        StorageReference imagesRef = storageRef.child("image" + String.valueOf(System.currentTimeMillis()) + ".png");
+        StorageReference imagesRef = storageRef.child("image" + String.valueOf(System.currentTimeMillis()) + ".jpg");
 
 //upload image
 
@@ -328,11 +333,14 @@ public class ChatActivity extends AppCompatActivity
                 //}
 
                 ImageView image = (ImageView) v.findViewById(R.id.imgViewGall);
+               // image.setScaleType(ImageView.ScaleType.FIT_XY);
                 String modelUri = model.getImageUri();
                 if(modelUri != null && !modelUri.isEmpty())
                 {
-                    Picasso.get().load(model.getImageUri()).into(image);
-                    Toast.makeText(ChatActivity.this, "Visible" + model.getImageUri(), Toast.LENGTH_LONG).show();
+                   //Picasso.get().load(model.getImageUri()).resize(1000, 800).into(image);
+                    Glide.with(ChatActivity.this).load(modelUri).apply(new RequestOptions().override(500, 700)).into(image);
+
+                   // Toast.makeText(ChatActivity.this, "Visible" + model.getImageUri(), Toast.LENGTH_LONG).show();
 
                 }
                 else

@@ -17,7 +17,7 @@ public class ChatMessageTest {
     private String userName = user.getName();
     private String message = "Hello! How are you?";
     public long time = new Date().getTime();
-    private ChatMessage testChatMessage = new ChatMessage(message, userName);
+    private ChatMessage testChatMessage = new ChatMessage(message, userName, "");
 
     private ChatMessage emptyChatMessage = new ChatMessage();
 

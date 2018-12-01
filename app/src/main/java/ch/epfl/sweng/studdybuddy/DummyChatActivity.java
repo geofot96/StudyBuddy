@@ -24,7 +24,7 @@ public class DummyChatActivity extends ChatActivity
             @Override
             public void onClick(View v)
             {
-             //TODO   ref.setVal(new ChatMessage("this is a test", "the_name_is_mr_potato"));
+                ref.setVal(new ChatMessage("this is a test", "the_name_is_mr_potato", ""));
             }
         };
     }
