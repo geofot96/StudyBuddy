@@ -60,7 +60,7 @@ public class ChatActivity extends AppCompatActivity
     private StorageReference storageRef;
     private Button addImage, cameraButon;
     private File file;
-    //private Uri filePath, captureUri;
+    private Uri filePath;
     private String downloadUri;
     private static final int PICK_IMAGE_REQUEST = 1;
     private static final int OPEN_CAMERA_REQUEST = 42;
@@ -150,7 +150,8 @@ public class ChatActivity extends AppCompatActivity
         {
             if(requestCode == PICK_IMAGE_REQUEST && data.getData() != null)
             {
-                //filePath = data.getData();
+                filePath = data.getData();
+                uploadImage();
             }
             else if(requestCode == OPEN_CAMERA_REQUEST)
             {
@@ -191,8 +192,7 @@ public class ChatActivity extends AppCompatActivity
         }
     }
 
-    private void uploadImage(byte[] dataBAOS)
-    {
+    private void uploadImage(byte[] dataBAOS) {
 
         /*************** UPLOADS THE PIC TO FIREBASE***************/
         //Firebase storage folder where you want to put the images
@@ -205,73 +205,70 @@ public class ChatActivity extends AppCompatActivity
 //upload image
 
         UploadTask uploadTask = imagesRef.putBytes(dataBAOS);
-        uploadTask.addOnFailureListener(new OnFailureListener()
-        {
+        uploadTask.addOnFailureListener(new OnFailureListener() {
             @Override
-            public void onFailure(@NonNull Exception exception)
-            {
+            public void onFailure(@NonNull Exception exception) {
                 Toast.makeText(getApplicationContext(), "Sending failed", Toast.LENGTH_SHORT).show();
                 mProgress.dismiss();
             }
-        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>()
-        {
+        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot)
-            {
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                 // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
                 Task<Uri> urlTask = taskSnapshot.getStorage().getDownloadUrl();
-                while (!urlTask.isSuccessful());
-                 downloadUri = urlTask.getResult().toString();
+                while (!urlTask.isSuccessful()) ;
+                downloadUri = urlTask.getResult().toString();
                 mProgress.dismiss();
                 Toast.makeText(ChatActivity.this, downloadUri, Toast.LENGTH_SHORT).show();
                 fab.performClick();
 
             }
         });
+    }
+    private void uploadImage() {
+        if(filePath != null)
+        {
+            final ProgressDialog progressDialog = new ProgressDialog(this);
+            progressDialog.setTitle("Uploading...");
+            progressDialog.show();
 
-//        if(filePath != null)
-//        {
-//            final ProgressDialog progressDialog = new ProgressDialog(this);
-//            progressDialog.setTitle("Uploading...");
-//            progressDialog.show();
-//
-//            StorageReference ref = storageRef.child("images/" + UUID.randomUUID().toString());
-//            ref.putFile(filePath).continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>()
-//            {
-//                @Override
-//                public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception
-//                {
-//                    if(!task.isSuccessful())
-//                    {
-//                        throw task.getException();
-//                    }
-//
-//                    // Continue with the task to get the download URL
-//                    return ref.getDownloadUrl();
-//                }
-//            }).addOnCompleteListener(new OnCompleteListener<Uri>()
-//            {
-//                @Override
-//                public void onComplete(@NonNull Task<Uri> task)
-//                {
-//                    if(task.isSuccessful())
-//                    {
-//                        downloadUri = task.getResult().toString();
-//                        progressDialog.dismiss();
-//                        fab.performClick();
-//                        Toast.makeText(ChatActivity.this, downloadUri, Toast.LENGTH_SHORT).show();
-//
-//                    }
-//                    else
-//                    {
-//                        progressDialog.dismiss();
-//                        Toast.makeText(ChatActivity.this, "Failed Uploading", Toast.LENGTH_SHORT).show();
-//
-//                    }
-//                }
-//            });
-//
-//        }
+            StorageReference ref = storageRef.child("images/" + UUID.randomUUID().toString());
+            ref.putFile(filePath).continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>()
+            {
+                @Override
+                public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception
+                {
+                    if(!task.isSuccessful())
+                    {
+                        throw task.getException();
+                    }
+
+                    // Continue with the task to get the download URL
+                    return ref.getDownloadUrl();
+                }
+            }).addOnCompleteListener(new OnCompleteListener<Uri>()
+            {
+                @Override
+                public void onComplete(@NonNull Task<Uri> task)
+                {
+                    if(task.isSuccessful())
+                    {
+                        downloadUri = task.getResult().toString();
+                        progressDialog.dismiss();
+                        fab.performClick();
+                        Toast.makeText(ChatActivity.this, downloadUri, Toast.LENGTH_SHORT).show();
+
+                    }
+                    else
+                    {
+                        progressDialog.dismiss();
+                        Toast.makeText(ChatActivity.this, "Failed Uploading", Toast.LENGTH_SHORT).show();
+
+                    }
+                }
+            });
+
+        }
     }
 
     @NonNull
