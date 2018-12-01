@@ -52,8 +52,9 @@ public class SettingsFragmentTest {
 
     @Test
     public void signoutWorks() throws InterruptedException {
+        Thread.sleep(1000);
         onView(withId(R.id.btn_sign_out)).perform(click());
-        Thread.sleep(500);
+        Thread.sleep(2000);
         intended(hasComponent(GoogleSignInActivity.class.getName()));
     }
 
