@@ -219,12 +219,13 @@ public class ChatActivity extends AppCompatActivity
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot)
             {
                 // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
-                downloadUri = uploadTask.getResult().toString();
-                fab.performClick();
-//handle success
-
-
+                Task<Uri> urlTask = taskSnapshot.getStorage().getDownloadUrl();
+                while (!urlTask.isSuccessful());
+                 downloadUri = urlTask.getResult().toString();
                 mProgress.dismiss();
+                Toast.makeText(ChatActivity.this, downloadUri, Toast.LENGTH_SHORT).show();
+                fab.performClick();
+
             }
         });
 
