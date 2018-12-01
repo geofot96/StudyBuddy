@@ -228,9 +228,8 @@ public class ChatActivity extends AppCompatActivity
     private void uploadImage() {
         if(filePath != null)
         {
-            final ProgressDialog progressDialog = new ProgressDialog(this);
-            progressDialog.setTitle("Uploading...");
-            progressDialog.show();
+            mProgress.setTitle("Uploading...");
+            mProgress.show();
 
             StorageReference ref = storageRef.child("images/" + UUID.randomUUID().toString());
             ref.putFile(filePath).continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>()
@@ -254,14 +253,14 @@ public class ChatActivity extends AppCompatActivity
                     if(task.isSuccessful())
                     {
                         downloadUri = task.getResult().toString();
-                        progressDialog.dismiss();
+                        mProgress.dismiss();
                         fab.performClick();
                         Toast.makeText(ChatActivity.this, downloadUri, Toast.LENGTH_SHORT).show();
 
                     }
                     else
                     {
-                        progressDialog.dismiss();
+                        mProgress.dismiss();
                         Toast.makeText(ChatActivity.this, "Failed Uploading", Toast.LENGTH_SHORT).show();
 
                     }
