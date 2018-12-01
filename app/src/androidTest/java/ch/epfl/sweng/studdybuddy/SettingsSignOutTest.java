@@ -7,12 +7,11 @@ import org.junit.Rule;
 import org.junit.Test;
 
 import ch.epfl.sweng.studdybuddy.activities.NavigationActivity;
-import ch.epfl.sweng.studdybuddy.auth.GoogleSignInActivity;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
-import static android.support.test.espresso.intent.Intents.intended;
-import static android.support.test.espresso.intent.matcher.IntentMatchers.hasComponent;
+import static android.support.test.espresso.assertion.ViewAssertions.matches;
+import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static ch.epfl.sweng.studdybuddy.NavigationTestHelper.navigate;
 
@@ -31,6 +30,6 @@ public class SettingsSignOutTest {
         Thread.sleep(1000);
         onView(withId(R.id.btn_sign_out)).perform(click());
         Thread.sleep(2000);
-        intended(hasComponent(GoogleSignInActivity.class.getName()));
+        onView(withId(R.id.googleBtn)).check(matches(isDisplayed()));
     }
 }
