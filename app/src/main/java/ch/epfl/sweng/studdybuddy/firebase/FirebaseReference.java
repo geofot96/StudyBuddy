@@ -34,7 +34,7 @@ public class FirebaseReference implements ReferenceWrapper {
         }
         else {
             FirebaseDatabase temp = FirebaseDatabase.getInstance();
-            temp.setPersistenceEnabled(true);
+            //temp.setPersistenceEnabled(true);
             persistenceEnabled = true;
             this.ref = temp.getReference();
         }

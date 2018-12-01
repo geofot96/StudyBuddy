@@ -8,6 +8,7 @@ import java.util.List;
 import ch.epfl.sweng.studdybuddy.core.User;
 import ch.epfl.sweng.studdybuddy.tools.AdapterAdapter;
 import ch.epfl.sweng.studdybuddy.tools.Consumer;
+import ch.epfl.sweng.studdybuddy.util.Messages;
 
 abstract public class Metabase {
     protected ReferenceWrapper db;
@@ -33,7 +34,7 @@ abstract public class Metabase {
             @Override
             public void accept(List<User> users) {
                 for(int i = 0; i < users.size(); ++i) {
-                    if(uIds.contains(users.get(i).getUserID().toString())) {
+                    if(users.get(i).getUserID() != null && uIds.contains(users.get(i).getUserID().toString())) {
                         groupUsers.add(users.get(i));
                     }
                 }
@@ -41,6 +42,7 @@ abstract public class Metabase {
             }
         });
     }
+
     public void addListenner(AdapterAdapter ad) {
         this.ads.add(ad);
     }
