@@ -319,7 +319,7 @@ public class ChatActivity extends AppCompatActivity
                 TextView messageUser = (TextView) v.findViewById(R.id.message_user);
                 messageUser.setText(model.getMessageUser());
                 TextView messageTime = (TextView) v.findViewById(R.id.message_time);
-                messageTime.setText(DateFormat.format("dd-MM-yyyy (HH:mm:ss)",
+                messageTime.setText(DateFormat.format("dd-MM (HH:mm)",
                         model.getMessageTime()));
 
                 //  if (!model.getMessageText().isEmpty()) { TODO add the check again probably
