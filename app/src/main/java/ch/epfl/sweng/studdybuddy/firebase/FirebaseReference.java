@@ -26,20 +26,9 @@ public class FirebaseReference implements ReferenceWrapper {
 
     public FirebaseReference() {
         //If I have already set persistence return a new reference”
-
-
-       /* if(this.persistenceEnabled){
-            ref = FirebaseDatabase.getInstance().getReference();
-        }
-        else {
-            persistenceEnabled = true;
-
-            FirebaseDatabase temp = FirebaseDatabase.getInstance();
-            temp.setPersistenceEnabled(true);
-            this.ref = temp.getReference();
-        }*/
-       this.ref =  FirebaseDatabase.getInstance().getReference();
+        this.ref = FirebaseDatabase.getInstance().getReference();
     }
+
 
     public FirebaseReference(DatabaseReference firebaseRef) {
         this.ref = firebaseRef;

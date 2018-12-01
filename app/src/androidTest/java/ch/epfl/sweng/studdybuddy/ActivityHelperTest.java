@@ -163,7 +163,7 @@ public class ActivityHelperTest {
     public void testAdminSeesAddButton() {
         adminMeeting(plus, withAdmin("a"), "a");
         verify(plus).setVisibility(View.VISIBLE);
-    }
+     }
 
     @Test
     public void testUserCantAdd() {
