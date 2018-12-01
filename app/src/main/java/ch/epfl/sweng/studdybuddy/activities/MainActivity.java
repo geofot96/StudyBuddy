@@ -53,14 +53,14 @@ public class MainActivity extends AppCompatActivity
     private void signOut()
     {
         getAuthManager().logout().addOnCompleteListener(this,
-                new OnCompleteListener<Void>()
+            new OnCompleteListener<Void>()
+            {
+                @Override
+                public void onComplete(@NonNull Task<Void> task)
                 {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task)
-                    {
-                        startActivity(new Intent(MainActivity.this, GoogleSignInActivity.class));
-                    }
-                });
+                    startActivity(new Intent(MainActivity.this, GoogleSignInActivity.class));
+                }
+            });
     }
 
     public AuthManager getAuthManager()

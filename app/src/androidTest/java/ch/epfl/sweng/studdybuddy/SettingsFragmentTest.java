@@ -1,7 +1,6 @@
 package ch.epfl.sweng.studdybuddy;
 
 import android.support.test.espresso.intent.rule.IntentsTestRule;
-import android.support.test.rule.GrantPermissionRule;
 import android.support.test.runner.AndroidJUnit4;
 
 import org.junit.Before;
@@ -25,37 +24,33 @@ public class SettingsFragmentTest {
     @Rule
     public IntentsTestRule<NavigationActivity> mActivityTestRule = new IntentsTestRule <>(NavigationActivity.class);
 
-    @Rule public GrantPermissionRule mRuntimePermissionRule = GrantPermissionRule .grant(android.Manifest.permission.ACCESS_FINE_LOCATION);
+   // @Rule public GrantPermissionRule mRuntimePermissionRule = GrantPermissionRule .grant(android.Manifest.permission.ACCESS_FINE_LOCATION);
 
     @Before
     public void goToSettings(){
+        MapsActivityTest.allowPermissionsIfNeeded(android.Manifest.permission.ACCESS_FINE_LOCATION);
         navigate("Settings", R.id.navToSettings,3);
     }
 
     @Test
     public void defaultLocationLaunchesMapsActivity(){
+
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+
         onView(withId(R.id.defaultLocation)).perform(click());
 
         try {
-            Thread.sleep(500);
+            Thread.sleep(1000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
         intended(hasComponent(MapsActivity.class.getName()));
     }
-/*
-    @Test
-    public void signoutWorks() throws InterruptedException {
-        Thread.sleep(1000);
-        onView(withId(R.id.btn_sign_out)).perform(click());
-        Thread.sleep(2000);
-        intended(hasComponent(GoogleSignInActivity.class.getName()));
-    }*/
+
 
 
 
