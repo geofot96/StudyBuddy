@@ -41,6 +41,10 @@ public final class Meeting {
         this.location = location;
     }
 
+    public Meeting(Long starting, Long ending){
+        this(starting, ending, new MeetingLocation(), UUID.randomUUID().toString());
+    }
+
     public long getEnding() {
         return ending;
     }

@@ -62,6 +62,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         gId = origin.getString(Messages.groupID);
         adminID = origin.getString(Messages.ADMIN);
         meetingID = origin.getString(Messages.meetingID);
+
+        if(gId == null || adminID == null || meetingID == null){
+            String TAG = "MAPS_ACTIVITY";
+            Log.d(TAG, "Information of the group is not fully recovered");
+            startActivity(new Intent(this, NavigationActivity.class));
+        }
+
         try{
             mapFragment.getMapAsync(this);
         }catch(NullPointerException e){
@@ -121,8 +128,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 android.Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
             mMap.setMyLocationEnabled(true);
-
-
         } else {
             ActivityCompat.requestPermissions(this,
                     new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},

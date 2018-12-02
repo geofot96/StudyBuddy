@@ -13,6 +13,7 @@ import android.widget.Filterable;
 import java.util.List;
 
 import ch.epfl.sweng.studdybuddy.R;
+import ch.epfl.sweng.studdybuddy.activities.CreateGroupActivity;
 import ch.epfl.sweng.studdybuddy.activities.group.GroupActivity;
 import ch.epfl.sweng.studdybuddy.activities.group.GroupInfoActivity;
 import ch.epfl.sweng.studdybuddy.core.Group;
@@ -120,12 +121,14 @@ public class GroupsRecyclerAdapter extends BasicRecyclerAdapter implements Filte
             public void onClick(View v) {
                 Pair pair =new Pair(getUserId(), group.getGroupID().toString());
                 fb.select(Messages.FirebaseNode.USERGROUP).select(Helper.hashCode(pair)).setVal(pair);
+                CreateGroupActivity.createUserInitialAvailabilities(getUserId(), group.getAdminID());
                 if(getJoinConsumer() != null)
                 {
                     Intent intent = new Intent(button.getContext(), GroupActivity.class);
                     intent.putExtra(Messages.groupID, group.getGroupID().getId());
                     intent.putExtra(Messages.userID, getUserId());
                     intent.putExtra(Messages.maxUser, group.getMaxNoUsers());
+                    intent.putExtra(Messages.ADMIN, group.getAdminID());
                     getJoinConsumer().accept(intent);
                 }
             }

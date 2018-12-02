@@ -21,25 +21,28 @@ import ch.epfl.sweng.studdybuddy.services.meeting.MeetingLocation;
 import ch.epfl.sweng.studdybuddy.services.meeting.MeetingRecyclerAdapter;
 import ch.epfl.sweng.studdybuddy.util.ActivityHelper;
 import ch.epfl.sweng.studdybuddy.util.Messages;
+import ch.epfl.sweng.studdybuddy.util.RequestCodes;
 
 public class MeetingsActivity extends AppCompatActivity {
 
     private String groupId;
-
+    private String adminId;
     private MetaMeeting metaM;
 
     private List<Meeting> meetingList;
 
     private RecyclerView.Adapter adapter;
 
+    private Bundle origin;
+
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_meetings);
-        Bundle origin = GlobalBundle.getInstance().getSavedBundle();
+        origin = GlobalBundle.getInstance().getSavedBundle();
 
         groupId = origin.getString(Messages.groupID);
-        String adminId = origin.getString(Messages.ADMIN);
+        adminId = origin.getString(Messages.ADMIN);
 
         if(groupId == null || adminId == null ){
             startActivity(new Intent(this, NavigationActivity.class));
@@ -64,15 +67,11 @@ public class MeetingsActivity extends AppCompatActivity {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent d){
-        if(requestCode == 1 && resultCode == RESULT_OK){
-            Bundle data = GlobalBundle.getInstance().getSavedBundle();
-            MeetingLocation meetingLocation = new MeetingLocation(
-              data.getString(Messages.LOCATION_TITLE),
-                    data.getString(Messages.ADDRESS),
-                    data.getDouble(Messages.LATITUDE, 0),
-                    data.getDouble(Messages.LONGITUDE, 0)
-            );
-            metaM.pushLocation(meetingLocation, new ID<>(groupId), new ID<>(data.getString(Messages.meetingID)));
+        if(requestCode == RequestCodes.CREATEMEETING.getRequestCode() && resultCode == RESULT_OK){
+            GlobalBundle data = GlobalBundle.getInstance();
+            origin.putAll(data.getSavedBundle());
+            Meeting meeting = data.getMeeting();
+            metaM.pushMeeting(meeting, new ID<>(groupId));
         }
     }
 

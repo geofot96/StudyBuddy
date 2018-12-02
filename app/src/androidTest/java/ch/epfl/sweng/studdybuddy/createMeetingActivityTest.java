@@ -176,4 +176,8 @@ public class createMeetingActivityTest {
         mActivityRule.finishActivity();
     }
 
+    @Test
+    public void startForResultTest(){
+
+    }
 }
