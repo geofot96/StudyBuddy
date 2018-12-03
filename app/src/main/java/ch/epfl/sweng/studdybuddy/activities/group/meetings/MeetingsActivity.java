@@ -32,6 +32,8 @@ public class MeetingsActivity extends AppCompatActivity {
 
     private RecyclerView.Adapter adapter;
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -41,7 +43,7 @@ public class MeetingsActivity extends AppCompatActivity {
         groupId = origin.getString(Messages.groupID);
         String adminId = origin.getString(Messages.ADMIN);
 
-        if(groupId == null || adminId == null ){
+        if(groupId == null || adminId == null ) {
             startActivity(new Intent(this, NavigationActivity.class));
             String TAG = "MEETINGS_ACTIVITY";
             Log.d(TAG, "Information of the group is not fully recovered");
