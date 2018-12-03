@@ -100,7 +100,7 @@ public class CreateGroupActivity extends AppCompatActivity implements AdapterVie
                 selectedLanguage = user.getFavoriteLanguage() != null ? user.getFavoriteLanguage() : Language.EN;
 
                 Log.i("dedies", user.getFavoriteLanguage());
-                spinnerLanguage.setSelection(Language.LangaugeToInt(user.getFavoriteLanguage()));
+                spinnerLanguage.setSelection(Language.LanguageToInt(user.getFavoriteLanguage()));
 
             }
         });

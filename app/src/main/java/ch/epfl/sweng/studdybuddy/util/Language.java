@@ -12,7 +12,7 @@ public class Language {
     public static final String IT = "\uD83C\uDDEE\uD83C\uDDF9";
     public static final List<String> languages = Arrays.asList(EN,FR, GER,IT);
 
-    public static int LangaugeToInt(String language){
+    public static int LanguageToInt(String language){
 
         switch(language)
         {
