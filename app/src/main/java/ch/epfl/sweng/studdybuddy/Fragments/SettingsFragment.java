@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,7 +51,9 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
     Metabase mb;
     Button locationButton;
     Button signout;
+    Button applyButton;
     View view;
+
     public SettingsFragment()
     {
         // Required empty public constructor
@@ -62,21 +65,28 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
 
     }
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState)
     {
-
-        // Inflate the layout for this fragment
+//         Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_settings, container, false);
-
-        setUpLang();
         user = ((StudyBuddy) this.getActivity().getApplication()).getAuthendifiedUser();
         ref = (FirebaseReference) getDB();
         uId = user.getUserID().getId();
         mb = new MetaGroup();
         setUpUI();
         return view;
+    }
+
+    public void onResume(){
+        super.onResume();
+    }
+
+    @Override
+    public void onPause(){
+        super.onPause();
     }
 
     public ReferenceWrapper getDB(){
@@ -88,7 +98,6 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
         spinnerLang.setOnItemSelectedListener(this);
         //Language spinner
         ArrayAdapter<String> dataAdapterLanguages = new ArrayAdapter<>(this.getContext(), android.R.layout.simple_spinner_item, Language.languages);
-        //ArrayAdapter<CharSequence> dataAdapterLanguages = ArrayAdapter.createFromResource(this.getContext(), R.array.languages, android.R.layout.simple_spinner_item);
         dataAdapterLanguages.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerLang.setAdapter(dataAdapterLanguages);
     }
@@ -98,8 +107,6 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
         switch(parent.getId()){
             case R.id.spinner_languages_settings:
                 favoriteLanguage = (parent.getItemAtPosition(position).toString());
-                ref.select(Messages.FirebaseNode.USERS).select(SettingsFragment.this.uId).select("favoriteLanguage").setVal(favoriteLanguage);
-
         }
     }
 
@@ -121,8 +128,20 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
         setUpLang();
         setUpLocation();
         setUpSignOut();
+        SetUpApply();
     }
 
+    public void SetUpApply(){
+        applyButton = view.findViewById(R.id.btn_settings_apply);
+        applyButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ref.select(Messages.FirebaseNode.USERS).select(SettingsFragment.this.uId).select("favoriteLanguage").setVal(favoriteLanguage);
+            }
+        });
+
+
+    }
     public void setUpLocation(){
         locationButton = view.findViewById(R.id.defaultLocation);
         locationButton.setOnClickListener(new View.OnClickListener() {
@@ -165,6 +184,4 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
             }
         });
     }
-
-
 }
