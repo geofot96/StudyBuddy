@@ -2,6 +2,7 @@ package ch.epfl.sweng.studdybuddy.activities.group;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -91,8 +92,12 @@ public class GroupActivity extends AppCompatActivity {
         metaM.getMeetingsOfGroup(new ID<>(gId), ActivityHelper.getConsumerForMeetings(meetingList, metaM, new ID<>(gId), adapter));
 
         meetingRV.setAdapter(adapter);
+        FloatingActionButton actionButton = findViewById(R.id.createGroup);
+
+        actionButton.setOnClickListener(new ClickListener(new Intent(this, createMeetingActivity.class)));
 
     }
+
 
 
     private void goToActivity(Intent intent){
