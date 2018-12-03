@@ -27,13 +27,14 @@ public class MeetingsActivity extends AppCompatActivity {
 
     private String groupId;
     private String adminId;
-    private MetaMeeting metaM;
+    private static MetaMeeting metaM = new MetaMeeting();
 
-    private List<Meeting> meetingList;
+    private static List<Meeting> meetingList = new ArrayList<>();
 
     private RecyclerView.Adapter adapter;
 
     private Bundle origin;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -53,10 +54,6 @@ public class MeetingsActivity extends AppCompatActivity {
         RecyclerView meetingRV = findViewById(R.id.meetingRV);
         meetingRV.setLayoutManager(new LinearLayoutManager(this));
 
-        meetingList = new ArrayList<>();
-
-        metaM = new MetaMeeting();
-
         adapter = new MeetingRecyclerAdapter(this, this, meetingList, new Pair(groupId, adminId));
 
         metaM.getMeetingsOfGroup(new ID<>(groupId), ActivityHelper.getConsumerForMeetings(meetingList, metaM, new ID<>(groupId), adapter));
@@ -75,12 +72,18 @@ public class MeetingsActivity extends AppCompatActivity {
         }
     }
 
-    public void setMetaM(MetaMeeting m){
-        this.metaM = m;
+    public static void setMetaM(MetaMeeting m){
+        metaM = m;
     }
 
-    public void setMeetingList(List<Meeting> meetingL){
+    public static void setMeetingList(List<Meeting> meetingL){
         meetingList.addAll(meetingL);
-        adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    protected void onDestroy(){
+        meetingList.clear();
+        metaM = new MetaMeeting();
+        super.onDestroy();
     }
 }

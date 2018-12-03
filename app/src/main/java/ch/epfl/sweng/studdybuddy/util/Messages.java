@@ -7,7 +7,7 @@ public class Messages {
     public static final String ADMIN = "ch.epfl.sweng.studybuddy.adminID";
 
     public static final String TEST = "test";
-
+    public static final String DEFAULT = "Default";
     //For Meeting data
     public static final String meetingID = "ch.epfl.sweng.studdybuddy.meetingID";
     public static final String M_SDATE = "ch.epfl.sweng.studybuddy.startingDate";
