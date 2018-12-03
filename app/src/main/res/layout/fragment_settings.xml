@@ -74,7 +74,7 @@
         </LinearLayout>
 -->
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:orientation="horizontal">
@@ -89,6 +89,7 @@
                 android:layout_marginTop="8dp"
                 android:layout_weight="1"
                 android:text="Favorite language: "
+                android:textSize="10sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/spinner_languages_settings"
                 app:layout_constraintStart_toStartOf="parent"

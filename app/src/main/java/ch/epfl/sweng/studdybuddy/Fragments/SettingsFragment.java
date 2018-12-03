@@ -82,11 +82,13 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
     public ReferenceWrapper getDB(){
         return new FirebaseReference();
     }
+
     void setUpLang() {
         spinnerLang = view.findViewById(R.id.spinner_languages_settings);
         spinnerLang.setOnItemSelectedListener(this);
         //Language spinner
         ArrayAdapter<String> dataAdapterLanguages = new ArrayAdapter<>(this.getContext(), android.R.layout.simple_spinner_item, Language.languages);
+        //ArrayAdapter<CharSequence> dataAdapterLanguages = ArrayAdapter.createFromResource(this.getContext(), R.array.languages, android.R.layout.simple_spinner_item);
         dataAdapterLanguages.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerLang.setAdapter(dataAdapterLanguages);
     }
@@ -97,6 +99,7 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
             case R.id.spinner_languages_settings:
                 favoriteLanguage = (parent.getItemAtPosition(position).toString());
                 ref.select(Messages.FirebaseNode.USERS).select(SettingsFragment.this.uId).select("favoriteLanguage").setVal(favoriteLanguage);
+
         }
     }
 
