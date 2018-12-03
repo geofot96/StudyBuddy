@@ -45,9 +45,9 @@ public class MeetingsActivity extends AppCompatActivity {
         adminId = origin.getString(Messages.ADMIN);
 
         if(groupId == null || adminId == null ){
-            startActivity(new Intent(this, NavigationActivity.class));
             String TAG = "MEETINGS_ACTIVITY";
             Log.d(TAG, "Information of the group is not fully recovered");
+            startActivity(new Intent(this, NavigationActivity.class));
         }
 
         RecyclerView meetingRV = findViewById(R.id.meetingRV);
