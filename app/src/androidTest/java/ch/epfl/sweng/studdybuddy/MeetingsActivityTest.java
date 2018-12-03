@@ -1,9 +1,7 @@
 package ch.epfl.sweng.studdybuddy;
 
-import android.content.ComponentName;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.test.espresso.intent.rule.IntentsTestRule;
 import android.support.test.rule.ActivityTestRule;
 
 import org.junit.Before;
@@ -18,20 +16,16 @@ import java.util.List;
 
 import ch.epfl.sweng.studdybuddy.activities.group.GlobalBundle;
 import ch.epfl.sweng.studdybuddy.activities.group.meetings.MeetingsActivity;
-import ch.epfl.sweng.studdybuddy.activities.group.meetings.createMeetingActivity;
+import ch.epfl.sweng.studdybuddy.core.Group;
+import ch.epfl.sweng.studdybuddy.core.ID;
 import ch.epfl.sweng.studdybuddy.firebase.MetaMeeting;
 import ch.epfl.sweng.studdybuddy.services.meeting.Meeting;
 import ch.epfl.sweng.studdybuddy.services.meeting.MeetingLocation;
-import ch.epfl.sweng.studdybuddy.util.DateTimeHelper;
 import ch.epfl.sweng.studdybuddy.util.Messages;
 
 import static android.app.Activity.RESULT_OK;
-import static android.support.test.InstrumentationRegistry.getTargetContext;
 import static android.support.test.espresso.Espresso.onView;
-import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
-import static android.support.test.espresso.intent.Intents.intended;
-import static android.support.test.espresso.intent.matcher.IntentMatchers.hasComponent;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
@@ -50,7 +44,7 @@ public class MeetingsActivityTest {
     List<Meeting> meeList;
 
     @Rule
-    public IntentsTestRule<MeetingsActivity> mActivityRule = new IntentsTestRule<>(MeetingsActivity.class, false, false);
+    public ActivityTestRule<MeetingsActivity> mActivityRule = new ActivityTestRule<>(MeetingsActivity.class);
 
     @BeforeClass
     public static void setup(){
@@ -69,10 +63,11 @@ public class MeetingsActivityTest {
 
     @Test
     public void oneCardViewInFeedback() throws Throwable {
-        MeetingsActivity activity = mActivityRule.launchActivity(new Intent());
+        MeetingsActivity activity = mActivityRule.getActivity();
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
+                activity.setMetaM(mM);
                 activity.setMeetingList(meeList);
             }
         });
@@ -83,61 +78,23 @@ public class MeetingsActivityTest {
         onView(allOf(withId(R.id.meetingDate))).check(
                 matches(withText(
                         RealMonth+"/"+c.get(Calendar.DAY_OF_MONTH)+" From: "
-                        + hour+":"+minute+" To: "+hour+":"+minute
+                                + hour+":"+minute/10+minute%10+" To: "+hour+":"+minute/10+minute%10
                 )));
         onView(allOf(withId(R.id.meetingLocation))).check(
                 matches(withText("test: test"))
         );
-        mActivityRule.finishActivity();
     }
 
-   @Test
+    @Test
     public void testOnActivityResult() throws Throwable {
-        MeetingsActivity activity = mActivityRule.launchActivity(new Intent());
+        MeetingsActivity activity = mActivityRule.getActivity();
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 activity.setMetaM(mM);
-                activity.onActivityResult(1, RESULT_OK, new Intent());
+                activity.onActivityResult(2, RESULT_OK, new Intent());
             }
         });
-        verify(mM, times(1)).pushLocation(any(), any(), any());
-        mActivityRule.finishActivity();
-    }
-
-    @Test
-    public void leadsToCreateMeetingActivity() throws Throwable {
-        MeetingsActivity activity = mActivityRule.launchActivity(new Intent());
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                activity.setMeetingList(meeList);
-            }
-        });
-        onView(allOf(withId(R.id.cardViewMeeting))).perform(click());
-        intended(hasComponent(new ComponentName(getTargetContext(), createMeetingActivity.class)));
-        mActivityRule.finishActivity();
-    }
-
-    @Test
-    public void leadsToMapsActivity() throws Throwable{
-        Bundle b = new Bundle();
-        b.putString(Messages.ADMIN, "...");
-        GlobalBundle.getInstance().putAll(b);
-        MeetingsActivity activity = mActivityRule.launchActivity(new Intent());
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                activity.setMeetingList(meeList);
-            }
-        });
-        onView(allOf(withId(R.id.cardViewMeeting))).perform(click());
-        intended(hasComponent(new ComponentName(getTargetContext(), createMeetingActivity.class)));
-        onView(withId(R.id.datePicker)).check(matches(withText(DateTimeHelper.printLongDate(date.getTime()))));
-        onView(withId(R.id.timePicker)).check(matches(withText(DateTimeHelper.printTime(date.getTime()))));
-        onView(withId(R.id.timePicker2)).check(matches(withText(DateTimeHelper.printTime(date.getTime()))));
-        b.putString(Messages.ADMIN, Messages.TEST);
-        GlobalBundle.getInstance().putAll(b);
-        mActivityRule.finishActivity();
+        verify(mM, times(1)).pushMeeting(any(), (ID<Group>) any());
     }
 }
