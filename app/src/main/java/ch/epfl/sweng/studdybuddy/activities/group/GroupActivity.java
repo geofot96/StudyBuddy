@@ -3,6 +3,7 @@ package ch.epfl.sweng.studdybuddy.activities.group;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
@@ -17,10 +18,16 @@ import ch.epfl.sweng.studdybuddy.activities.NavigationActivity;
 import ch.epfl.sweng.studdybuddy.activities.group.meetings.MeetingsActivity;
 import ch.epfl.sweng.studdybuddy.activities.group.meetings.createMeetingActivity;
 import ch.epfl.sweng.studdybuddy.core.Group;
+import ch.epfl.sweng.studdybuddy.core.ID;
+import ch.epfl.sweng.studdybuddy.core.Pair;
 import ch.epfl.sweng.studdybuddy.core.User;
 import ch.epfl.sweng.studdybuddy.firebase.MetaGroupAdmin;
+import ch.epfl.sweng.studdybuddy.firebase.MetaMeeting;
+import ch.epfl.sweng.studdybuddy.services.meeting.Meeting;
+import ch.epfl.sweng.studdybuddy.services.meeting.MeetingRecyclerAdapter;
 import ch.epfl.sweng.studdybuddy.tools.ParticipantAdapter;
 import ch.epfl.sweng.studdybuddy.tools.RecyclerAdapterAdapter;
+import ch.epfl.sweng.studdybuddy.util.ActivityHelper;
 import ch.epfl.sweng.studdybuddy.util.Messages;
 import ch.epfl.sweng.studdybuddy.util.StudyBuddy;
 
@@ -33,6 +40,11 @@ public class GroupActivity extends AppCompatActivity {
     Button button;
     List<Group> group = new ArrayList<>();
     List<String> gIds = new ArrayList<>();
+    private MetaMeeting metaM;
+
+    private List<Meeting> meetingList;
+
+    private RecyclerView.Adapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -58,6 +70,27 @@ public class GroupActivity extends AppCompatActivity {
         mb.getGroupsfromIds(gIds, group);
         mb.getGroupUsers(gId, participants);
         setUI();
+        gId = origin.getString(Messages.groupID);
+        String adminId = origin.getString(Messages.ADMIN);
+
+        if(gId == null || adminId == null ) {
+            startActivity(new Intent(this, NavigationActivity.class));
+            String TAG = "MEETINGS_ACTIVITY";
+            Log.d(TAG, "Information of the group is not fully recovered");
+        }
+
+        RecyclerView meetingRV = findViewById(R.id.meetingRV);
+        meetingRV.setLayoutManager(new LinearLayoutManager(this));
+
+        meetingList = new ArrayList<>();
+
+        metaM = new MetaMeeting();
+
+        adapter = new MeetingRecyclerAdapter(this, this, meetingList, new Pair(gId, adminId));
+
+        metaM.getMeetingsOfGroup(new ID<>(gId), ActivityHelper.getConsumerForMeetings(meetingList, metaM, new ID<>(gId), adapter));
+
+        meetingRV.setAdapter(adapter);
 
     }
 
