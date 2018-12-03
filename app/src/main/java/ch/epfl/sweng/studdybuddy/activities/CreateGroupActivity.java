@@ -3,6 +3,7 @@ package ch.epfl.sweng.studdybuddy.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -97,6 +98,10 @@ public class CreateGroupActivity extends AppCompatActivity implements AdapterVie
             @Override
             public void accept(User user) {
                 selectedLanguage = user.getFavoriteLanguage() != null ? user.getFavoriteLanguage() : Language.EN;
+
+                Log.i("dedies", user.getFavoriteLanguage());
+                spinnerLanguage.setSelection(Language.LangaugeToInt(user.getFavoriteLanguage()));
+
             }
         });
         ArrayAdapter<String> dataAdapterLanguages = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, Language.languages);
