@@ -46,10 +46,10 @@ public class ConnectedCalendarActivityTest{
         assertTrue(rightColors);
     }
 
-    @Test
-    public void addAvailabilityInTimeSlot(){
-       assertEquals(-16711936, setAvailability(2));
-    }
+    //@Test
+   // public void addAvailabilityInTimeSlot(){
+    //   assertEquals(-16711936, setAvailability(2));
+    //}
 
     @Test
     public void removeAvailabilityInTimeSlot(){

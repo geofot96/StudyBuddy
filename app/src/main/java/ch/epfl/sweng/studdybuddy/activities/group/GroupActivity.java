@@ -45,13 +45,16 @@ import ch.epfl.sweng.studdybuddy.services.meeting.Meeting;
 import ch.epfl.sweng.studdybuddy.services.meeting.MeetingLocation;
 import ch.epfl.sweng.studdybuddy.services.meeting.MeetingRecyclerAdapter;
 import ch.epfl.sweng.studdybuddy.tools.Consumer;
+import ch.epfl.sweng.studdybuddy.tools.Notifiable;
 import ch.epfl.sweng.studdybuddy.tools.ParticipantAdapter;
 import ch.epfl.sweng.studdybuddy.tools.RecyclerAdapterAdapter;
 import ch.epfl.sweng.studdybuddy.util.ActivityHelper;
 import ch.epfl.sweng.studdybuddy.util.Messages;
 import ch.epfl.sweng.studdybuddy.util.StudyBuddy;
 
-public class GroupActivity extends AppCompatActivity {
+import static ch.epfl.sweng.studdybuddy.tools.AvailabilitiesHelper.calendarEventListener;
+
+public class GroupActivity extends AppCompatActivity implements Notifiable {
     private boolean wrongInput = false;
     List<User> participants  = new ArrayList<>();
     MetaGroupAdmin mb  = new MetaGroupAdmin();
@@ -151,6 +154,11 @@ public class GroupActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    @Override
+    public void getNotified() {
+        update();
+    }
+
     private class ClickListener implements View.OnClickListener {
         private Intent intent;
 
@@ -202,7 +210,7 @@ public class GroupActivity extends AppCompatActivity {
         calendar = new ConnectedCalendar(new ID<>(pair.getKey()), new HashMap<>());
 
         database = FirebaseDatabase.getInstance().getReference("availabilities").child(pair.getKey());
-        database.addChildEventListener(new GroupActivity.AvailabilitiesChildEventListener());
+        database.addChildEventListener(calendarEventListener(calendar, this));
 
         readData(database.child(pair.getValue()), new GroupActivity.AvailabilitiesOnDataGetListener());
     }
@@ -255,7 +263,7 @@ public class GroupActivity extends AppCompatActivity {
             if (i % CalendarWidth != 0) {//Hours shouldn't be clickable
                 cardView = (CardView) calendarGrid.getChildAt(i);
                 int index = (i / CalendarWidth) * (CalendarWidth - 1) + (i % CalendarWidth) - 1;
-                cardView.setCardBackgroundColor(gradient((float) av.get(index)));
+                cardView.setCardBackgroundColor(gradient((float) av.get(index), NmaxUsers));
             }
         }
     }
@@ -269,7 +277,7 @@ public class GroupActivity extends AppCompatActivity {
      * @param nAvailableUser the number of available users in this time slot
      * @return the right color according to the ration of available users
      */
-    private int gradient(float nAvailableUser){
+    private int gradient(float nAvailableUser, float NmaxUsers){
         float[] hsv = new float[3];
         Color.colorToHSV(Color.WHITE, hsv);
         float s = hsv[1];
@@ -298,48 +306,6 @@ public class GroupActivity extends AppCompatActivity {
                 listener.onFailure();
             }
         });
-    }
-
-    /**
-     * this ChildEventListener will set after any changes in the users availabilities
-     * the calendar to keep the activity updated with firebase
-     */
-    private class AvailabilitiesChildEventListener implements ChildEventListener {
-
-        @Override
-        public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-            String targetID = dataSnapshot.getKey();
-            FirebaseReference fb = new FirebaseReference(database.child(targetID));
-            fb.getAll(Boolean.class, new Consumer<List<Boolean>>() {
-                @Override
-                public void accept(List<Boolean> booleans) {
-                    calendar.modify(targetID, booleans);
-                    update();
-                }
-            });
-        }
-
-        @Override
-        public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-        }
-
-        @Override
-        public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-            String targetID = dataSnapshot.getKey();
-            calendar.removeUser(targetID);
-            update();
-        }
-
-        @Override
-        public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-        }
-
-        @Override
-        public void onCancelled(@NonNull DatabaseError databaseError) {
-
-        }
     }
 
     /**
