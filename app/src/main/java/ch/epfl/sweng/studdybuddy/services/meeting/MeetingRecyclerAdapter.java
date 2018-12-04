@@ -39,14 +39,13 @@ public class MeetingRecyclerAdapter extends RecyclerView.Adapter<MeetingRecycler
     private String adminID;
     private String userID;
 
-    public MeetingRecyclerAdapter(Context packageContext, Activity act, List<Meeting> meetingList, Pair group_adminIDs) {
+    public MeetingRecyclerAdapter(Context packageContext, Activity act, List<Meeting> meetingList, Bundle origin) {
         this.meetingList = meetingList;
-        this.groupID = group_adminIDs.getKey();
+        this.groupID = origin.getString(Messages.groupID);
         this.context = packageContext;
         this.activity = act;
-        this.adminID = group_adminIDs.getValue();
-        StudyBuddy s = (StudyBuddy) act.getApplication();
-        userID = s.getAuthendifiedUser().getUserID().getId();
+        this.adminID = origin.getString(Messages.ADMIN);
+        userID = origin.getString(Messages.userID);
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder{

@@ -56,7 +56,7 @@ public class GroupActivityTest {
         bundle.putInt(Messages.maxUser, 1);
         bundle.putString(Messages.userID, Messages.TEST);
         bundle.putString(Messages.groupID, Messages.TEST);
-        bundle.putString(Messages.ADMIN, Messages.DEFAULT);
+        bundle.putString(Messages.ADMIN, Messages.TEST);
         GlobalBundle.getInstance().putAll(bundle);
     }
 

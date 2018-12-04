@@ -34,7 +34,7 @@ public class MeetingsActivityNonAdminTest {
     public static void setup(){
         MeetingsActivityTest.setup();
         Bundle bundle = new Bundle();
-        bundle.putString(Messages.ADMIN, Messages.TEST);
+        bundle.putString(Messages.ADMIN, Messages.DEFAULT);
         GlobalBundle.getInstance().putAll(bundle);
     }
 
