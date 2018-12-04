@@ -9,11 +9,14 @@ public class ChatMessage {
     private long messageTime;
 
     public ChatMessage(String messageText, String messageUser) {
+        // Initialize to current time
+        this(messageText, messageUser, new Date().getTime());
+    }
+
+    public ChatMessage(String messageText, String messageUser, long messageTime){
         this.messageText = messageText;
         this.messageUser = messageUser;
-
-        // Initialize to current time
-        messageTime = new Date().getTime();
+        this.messageTime = messageTime;
     }
 
     public ChatMessage(){
