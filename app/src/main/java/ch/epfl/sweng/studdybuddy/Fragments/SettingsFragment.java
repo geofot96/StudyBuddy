@@ -96,6 +96,17 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
     void setUpLang() {
         spinnerLang = view.findViewById(R.id.spinner_languages_settings);
         spinnerLang.setOnItemSelectedListener(this);
+
+        FirebaseReference ref = new FirebaseReference();
+
+        ref.select(Messages.FirebaseNode.USERS).select(uId).get(User.class, new Consumer<User>() {
+            @Override
+            public void accept(User user) {
+                String selectedLanguage = user.getFavoriteLanguage() != null ? user.getFavoriteLanguage() : Language.EN;
+                spinnerLang.setSelection(Language.LanguageToInt(selectedLanguage));
+            }
+        });
+
         //Language spinner
         ArrayAdapter<String> dataAdapterLanguages = new ArrayAdapter<>(this.getContext(), android.R.layout.simple_spinner_item, Language.languages);
         dataAdapterLanguages.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
