@@ -119,14 +119,7 @@ public class GroupsRecyclerAdapter extends BasicRecyclerAdapter implements Filte
             public void onClick(View v) {
                 Pair pair =new Pair(getUserId(), group.getGroupID().toString());
                 fb.select(Messages.FirebaseNode.USERGROUP).select(Helper.hashCode(pair)).setVal(pair);
-                if(getJoinConsumer() != null)
-                {
-                    Intent intent = new Intent(button.getContext(), GroupActivity.class);
-                    intent.putExtra(Messages.groupID, group.getGroupID().getId());
-                    intent.putExtra(Messages.userID, getUserId());
-                    intent.putExtra(Messages.maxUser, group.getMaxNoUsers());
-                    getJoinConsumer().accept(intent);
-                }
+                gotoGroups(button, group);
             }
         };
     }
@@ -142,19 +135,23 @@ public class GroupsRecyclerAdapter extends BasicRecyclerAdapter implements Filte
         };
     }
 
+    private void gotoGroups(Button button, Group group) {
+        if(getJoinConsumer() != null )
+        {
+            Intent intent = new Intent(button.getContext(), GroupActivity.class);
+            intent.putExtra(Messages.groupID, group.getGroupID().getId());
+            intent.putExtra(Messages.maxUser, group.getMaxNoUsers());
+            intent.putExtra(Messages.userID, getUserId());
+            intent.putExtra(Messages.ADMIN, group.getAdminID());
+            getJoinConsumer().accept(intent);
+        }
+    }
+
     private View.OnClickListener moreInfoListenerIfInTheGroup(Button button, Group group){
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(getJoinConsumer() != null )
-                {
-                    Intent intent = new Intent(button.getContext(), GroupActivity.class);
-                    intent.putExtra(Messages.groupID, group.getGroupID().getId());
-                    intent.putExtra(Messages.maxUser, group.getMaxNoUsers());
-                    intent.putExtra(Messages.userID, getUserId());
-                    intent.putExtra(Messages.ADMIN, group.getAdminID());
-                    getJoinConsumer().accept(intent);
-                }
+                gotoGroups(button, group);
             }
         };
     }
