@@ -14,9 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ch.epfl.sweng.studdybuddy.R;
-import ch.epfl.sweng.studdybuddy.activities.GroupsActivity;
 import ch.epfl.sweng.studdybuddy.activities.NavigationActivity;
-import ch.epfl.sweng.studdybuddy.activities.group.meetings.MeetingsActivity;
 import ch.epfl.sweng.studdybuddy.activities.group.meetings.createMeetingActivity;
 import ch.epfl.sweng.studdybuddy.core.Group;
 import ch.epfl.sweng.studdybuddy.core.ID;
@@ -109,6 +107,15 @@ public class GroupActivity extends AppCompatActivity {
             );
             metaM.pushLocation(meetingLocation, new ID<>(gId), new ID<>(data.getString(Messages.meetingID)));
         }
+    }
+
+    public void setMetaM(MetaMeeting m){
+        this.metaM = m;
+    }
+
+    public void setMeetingList(List<Meeting> meetingL){
+        meetingList.addAll(meetingL);
+        adapter.notifyDataSetChanged();
     }
 
 

@@ -14,7 +14,6 @@ import java.util.List;
 
 import ch.epfl.sweng.studdybuddy.R;
 import ch.epfl.sweng.studdybuddy.activities.group.GroupActivity;
-import ch.epfl.sweng.studdybuddy.activities.group.GroupInfoActivity;
 import ch.epfl.sweng.studdybuddy.core.Group;
 import ch.epfl.sweng.studdybuddy.core.Pair;
 import ch.epfl.sweng.studdybuddy.util.DateTimeHelper;
@@ -138,9 +137,6 @@ public class GroupsRecyclerAdapter extends BasicRecyclerAdapter implements Filte
             public void onClick(View v) {
                 if(getJoinConsumer() != null )
                 {
-                    Intent intent = new Intent(button.getContext(), GroupInfoActivity.class);
-                    intent.putExtra(Messages.groupID, gId);
-                    getJoinConsumer().accept(intent);
                 }
             }
         };

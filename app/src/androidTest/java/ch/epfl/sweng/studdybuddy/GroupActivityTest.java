@@ -1,30 +1,19 @@
 package ch.epfl.sweng.studdybuddy;
 
-import android.content.ComponentName;
 import android.content.Intent;
 import android.os.Bundle;
-import android.provider.Settings;
-import android.support.annotation.Nullable;
 import android.support.test.espresso.intent.rule.IntentsTestRule;
 
 import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 
-import ch.epfl.sweng.studdybuddy.Fragments.FeedFragment;
-import ch.epfl.sweng.studdybuddy.activities.CreateGroupActivity;
-import ch.epfl.sweng.studdybuddy.activities.GroupsActivity;
-import ch.epfl.sweng.studdybuddy.activities.NavigationActivity;
 import ch.epfl.sweng.studdybuddy.activities.group.ConnectedCalendarActivity;
 import ch.epfl.sweng.studdybuddy.activities.group.GlobalBundle;
 import ch.epfl.sweng.studdybuddy.activities.group.GroupActivity;
-import ch.epfl.sweng.studdybuddy.activities.group.GroupInfoActivity;
-import ch.epfl.sweng.studdybuddy.activities.group.meetings.MeetingsActivity;
 import ch.epfl.sweng.studdybuddy.activities.group.meetings.createMeetingActivity;
-import ch.epfl.sweng.studdybuddy.core.Group;
 import ch.epfl.sweng.studdybuddy.util.Messages;
 
-import static android.support.test.InstrumentationRegistry.getTargetContext;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
@@ -67,12 +56,6 @@ public class GroupActivityTest {
         mManualRule.finishActivity();
     }
 
-    @Test
-    public void leadsToParticipants(){
-        mManualRule.launchActivity(new Intent());
-        testIntent(R.id.participantsBtn, GroupInfoActivity.class.getName());
-        mManualRule.finishActivity();
-    }
 
     @Test
     public void NoAdminCantLeadToCreateMeeting(){
@@ -87,14 +70,6 @@ public class GroupActivityTest {
         testIntent(R.id.createMeeting, createMeetingActivity.class.getName());
         mManualRule.finishActivity();
     }
-
-    @Test
-    public void leadsToMeetingsActivity(){
-        mManualRule.launchActivity(new Intent());
-        testIntent(R.id.groupMeetingsBtn, MeetingsActivity.class.getName());
-        mManualRule.finishActivity();
-    }
-
     @Test
     public void leadsToNavigationActivity(){
         GroupActivity mActivity = mWrongInputInBundle.launchActivity(new Intent());
