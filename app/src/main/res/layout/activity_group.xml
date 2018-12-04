@@ -6,25 +6,9 @@
     android:layout_height="match_parent"
     tools:layout_editor_absoluteY="25dp">
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/createGroup"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:layout_marginEnd="16dp"
-        android:clickable="true"
-        android:focusable="true"
-        android:layout_margin="@dimen/fab_margin"
-        app:srcCompat="@android:drawable/ic_input_add"
-        android:tint="@android:color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        />
-
-
     <ScrollView
         android:id="@+id/scrollView2"
-        android:layout_width="match_parent"
+        android:layout_width="fill_parent"
         android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -36,10 +20,11 @@
             android:layout_width="fill_parent"
             android:layout_height="fill_parent" >
             <TableLayout
-                android:layout_width="match_parent"
+                android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
                 android:stretchColumns="1" >
-                <TableRow>
+                <TableRow
+                    android:layout_width="fill_parent">
                     <TextView
                         android:id="@+id/participantsTextview"
                         android:layout_width="match_parent"
@@ -59,10 +44,12 @@
                 </TableRow>
                 <TableRow
                     android:layout_marginTop="16dp"
+                    android:layout_width="fill_parent"
+                    android:gravity="center_horizontal"
                     >
                     <android.support.v7.widget.RecyclerView
                     android:id="@+id/participantsRecyclerVIew"
-                    android:layout_width="match_parent"
+                    android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="0dp"/>
@@ -100,10 +87,13 @@
 
 
                 </TableRow>
-                <TableRow>
+                <TableRow
+                    android:gravity="center_horizontal"
+                    android:layout_width="fill_parent"
+                    >
                     <android.support.v7.widget.RecyclerView
                         android:id="@+id/meetingRV"
-                        android:layout_width="match_parent"
+                        android:layout_width="fill_parent"
                         android:layout_height="match_parent"
                         tools:layout_editor_absoluteX="8dp"
                         tools:layout_editor_absoluteY="8dp" />
@@ -117,6 +107,20 @@
 
     </ScrollView>
 
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/createGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:layout_marginEnd="16dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:layout_margin="@dimen/fab_margin"
+        app:srcCompat="@android:drawable/ic_input_add"
+        android:tint="@android:color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        />
 
 
 </android.support.constraint.ConstraintLayout>
