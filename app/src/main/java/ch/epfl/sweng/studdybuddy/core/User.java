@@ -1,11 +1,19 @@
 package ch.epfl.sweng.studdybuddy.core;
 
+import android.arch.persistence.room.ColumnInfo;
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.PrimaryKey;
+import android.support.annotation.NonNull;
+
 import ch.epfl.sweng.studdybuddy.services.meeting.MeetingLocation;
 import ch.epfl.sweng.studdybuddy.util.MapsHelper;
-
+@Entity
 final public class User
 {
     private String name;
+
+    @PrimaryKey
+    @NonNull
     private ID<User> userID;
     private MeetingLocation favoriteLocation;
     private String favoriteLanguage;
