@@ -6,6 +6,7 @@ import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -76,8 +77,8 @@ public class createMeetingActivity extends AppCompatActivity {
         mDisplayLocation = findViewById(R.id.locationTitle);
         initMeetingLocation();
         setClickOnLocation();
-
-
+        meetingLocation = MapsHelper.ROLEX_LOCATION;
+        mDisplayLocation.setText(meetingLocation.getTitle() + ": " + meetingLocation.getAddress());
         initSaveBtn();
     }
 
@@ -113,6 +114,7 @@ public class createMeetingActivity extends AppCompatActivity {
                 meeting.setStarting(startingDate.getTime());
                 meeting.setEnding(endingDate.getTime());
                 meeting.setLocation(meetingLocation);
+                Log.i("DEBUG", "pushing");
                 metaM.pushMeeting(meeting, new ID<>(groupID));
                 Intent intent = new Intent(createMeetingActivity.this, GroupActivity.class);
                 GlobalBundle.getInstance().putAll(origin);
@@ -140,12 +142,7 @@ public class createMeetingActivity extends AppCompatActivity {
     private void updateButton(){
         boolean correctTimeSlot = endingDate.after(startingDate);
         boolean isTooLate = startingDate.before(new Date());
-        if(correctTimeSlot && !isTooLate && meetingLocation != null){
-            saveBtn.setEnabled(true);
-        }else{
-            saveBtn.setEnabled(false);
-        }
-
+        saveBtn.setEnabled(correctTimeSlot && !isTooLate && meetingLocation != null);
     }
 
     private void initMeetingLocation(){

@@ -12,7 +12,9 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import ch.epfl.sweng.studdybuddy.core.Pair;
 import ch.epfl.sweng.studdybuddy.tools.Consumer;
+import ch.epfl.sweng.studdybuddy.util.Helper;
 
 public class FirebaseReference implements ReferenceWrapper {
     //pass it
@@ -26,7 +28,19 @@ public class FirebaseReference implements ReferenceWrapper {
 
     public FirebaseReference() {
         //If I have already set persistence return a new reference”
-        this.ref = FirebaseDatabase.getInstance().getReference();
+
+
+
+        //if(this.persistenceEnabled){
+            ref = FirebaseDatabase.getInstance().getReference();
+        /*}
+        else {
+            FirebaseDatabase temp = FirebaseDatabase.getInstance();
+            temp.setPersistenceEnabled(true);
+            persistenceEnabled = true;
+            this.ref = temp.getReference();
+        }*/
+
     }
 
 
@@ -121,5 +135,6 @@ public class FirebaseReference implements ReferenceWrapper {
         ref.addValueEventListener(res);
         return res;
     }
+
 
 }

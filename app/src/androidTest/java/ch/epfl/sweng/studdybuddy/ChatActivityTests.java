@@ -3,6 +3,11 @@ package ch.epfl.sweng.studdybuddy;
 import android.content.Intent;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
+import android.widget.EditText;
+
+
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -14,6 +19,7 @@ import org.junit.runner.RunWith;
 import java.util.ArrayList;
 import java.util.List;
 
+import ch.epfl.sweng.studdybuddy.activities.ChatActivity;
 import ch.epfl.sweng.studdybuddy.firebase.FirebaseReference;
 import ch.epfl.sweng.studdybuddy.services.chat.ChatMessage;
 import ch.epfl.sweng.studdybuddy.tools.Consumer;
@@ -22,7 +28,10 @@ import ch.epfl.sweng.studdybuddy.util.Messages;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
-import static org.junit.Assert.assertEquals;
+
+import static org.junit.Assert.*;
+import static org.mockito.Mockito.mock;
+
 
 @RunWith(AndroidJUnit4.class)
 
@@ -69,6 +78,14 @@ public class ChatActivityTests
         catch(Exception e){}
         assertEquals(1, list.size());
         DummyChatActivityIntentRule.finishActivity();
+    }
+
+    @Test
+    public void testFabListener() {
+        EditText et = mock(EditText.class);
+        FirebaseReference fr = mock(FirebaseReference.class);
+        FirebaseAuth auth = mock(FirebaseAuth.class);
+        ChatActivity.fabListener(et, fr, auth, "uno");
     }
     
 }

@@ -46,19 +46,24 @@ public class ChatActivity extends AppCompatActivity{
 
     }
 
-    @NonNull
-    protected View.OnClickListener getFabListener()
-    {
+    public static View.OnClickListener fabListener(EditText input, FirebaseReference ref, FirebaseAuth auth, String groupID) {
         return new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                EditText input = (EditText)findViewById(R.id.input);
-                ref.select(Messages.FirebaseNode.CHAT).select(groupID).push(new ChatMessage(input.getText().toString(),
-                        FirebaseAuth.getInstance().getCurrentUser().getDisplayName()));
+                if(input.getText().toString().trim().length() > 0) {
+                    ref.select(Messages.FirebaseNode.CHAT).select(groupID).push(new ChatMessage(input.getText().toString(),
+                            auth.getCurrentUser().getDisplayName()));
 
-                input.setText("");
+                    input.setText("");
+                }
             }
         };
+    }
+
+    @NonNull
+    protected View.OnClickListener getFabListener()
+    {
+        return fabListener((EditText)findViewById(R.id.input), ref, FirebaseAuth.getInstance(), groupID);
     }
 
     public FirebaseReference initRef(){

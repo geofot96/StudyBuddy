@@ -63,7 +63,6 @@
         <activity android:name=".auth.DummyGoogleSignInActivity" />
         <activity android:name=".auth.DummyMainActivity" />
         <activity android:name=".activities.MainActivity" />
-        <activity android:name=".activities.group.GroupInfoActivity" />
         <activity android:name=".activities.group.ConnectedCalendarActivity" />
         <activity
             android:name=".activities.group.GroupActivity"
@@ -90,14 +89,6 @@
             android:label="@string/title_activity_maps"/>
 
         <activity android:name=".activities.group.meetings.createMeetingActivity"
-            android:parentActivityName=".activities.group.GroupActivity">
-
-            <!-- The meta-data tag is required if you support API level 15 and lower -->
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activities.group.GroupActivity" />
-        </activity>
-        <activity android:name=".activities.group.meetings.MeetingsActivity"
             android:parentActivityName=".activities.group.GroupActivity">
 
             <!-- The meta-data tag is required if you support API level 15 and lower -->
