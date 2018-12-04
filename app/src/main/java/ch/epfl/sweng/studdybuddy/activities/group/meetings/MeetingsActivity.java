@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import ch.epfl.sweng.studdybuddy.R;
@@ -54,7 +55,7 @@ public class MeetingsActivity extends AppCompatActivity {
         RecyclerView meetingRV = findViewById(R.id.meetingRV);
         meetingRV.setLayoutManager(new LinearLayoutManager(this));
 
-        adapter = new MeetingRecyclerAdapter(this, this, meetingList, new Pair(groupId, adminId));
+        adapter = new MeetingRecyclerAdapter(this, this, meetingList, origin);
 
         metaM.getMeetingsOfGroup(new ID<>(groupId), ActivityHelper.getConsumerForMeetings(meetingList, metaM, new ID<>(groupId), adapter));
 
