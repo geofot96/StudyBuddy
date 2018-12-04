@@ -5,6 +5,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.LinkedList;
 import java.util.List;
 
+import ch.epfl.sweng.studdybuddy.core.ID;
 import ch.epfl.sweng.studdybuddy.core.User;
 import ch.epfl.sweng.studdybuddy.tools.AdapterAdapter;
 import ch.epfl.sweng.studdybuddy.tools.Consumer;
@@ -33,7 +34,9 @@ abstract public class Metabase {
             @Override
             public void accept(List<User> users) {
                 for(int i = 0; i < users.size(); ++i) {
-                    if(uIds.contains(users.get(i).getUserID().toString())) {
+                    User u = users.get(i);
+                    ID<User> id = u.getUserID();
+                    if(u != null && id != null && uIds.contains(users.get(i).getUserID().toString())) {
                         groupUsers.add(users.get(i));
                     }
                 }
