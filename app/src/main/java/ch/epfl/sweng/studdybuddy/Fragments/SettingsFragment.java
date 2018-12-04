@@ -22,7 +22,6 @@ import com.google.android.gms.tasks.Task;
 import ch.epfl.sweng.studdybuddy.R;
 import ch.epfl.sweng.studdybuddy.activities.group.GlobalBundle;
 import ch.epfl.sweng.studdybuddy.activities.group.MapsActivity;
-import ch.epfl.sweng.studdybuddy.activities.group.meetings.createMeetingActivity;
 import ch.epfl.sweng.studdybuddy.auth.FirebaseAuthManager;
 import ch.epfl.sweng.studdybuddy.auth.GoogleSignInActivity;
 import ch.epfl.sweng.studdybuddy.core.User;
@@ -129,7 +128,8 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
 
             if(defaultLocation != null) {
                 favoriteLocation = defaultLocation;
-                textDisplayLocation.setText("Default Location: " + favoriteLocation.toString());
+                Log.i("TEST", favoriteLocation.toString());
+                textDisplayLocation.setText("Default Location: " + defaultLocation.toString());
             }
     }
 
