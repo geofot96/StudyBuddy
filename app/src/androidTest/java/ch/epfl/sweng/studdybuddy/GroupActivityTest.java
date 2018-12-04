@@ -66,6 +66,7 @@ public class GroupActivityTest {
         GroupActivity.resultActivity(0, Activity.RESULT_OK, res);
         GroupActivity.resultActivity(1, Activity.RESULT_OK, res);
         GroupActivity.resultActivity(1, Activity.RESULT_CANCELED, res);
+
     }
 
     /*@Test

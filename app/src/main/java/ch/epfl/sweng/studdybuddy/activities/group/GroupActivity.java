@@ -150,11 +150,11 @@ public class GroupActivity extends AppCompatActivity implements Notifiable, Resu
         mb.getGroupsfromIds(gIds, group);
         mb.getGroupUsers(gId, participants);
         adminId = origin.getString(Messages.ADMIN);
-        if(gId == null || adminId == null ) {
+        /*if(gId == null || adminId == null ) {
             goTo(NavigationActivity.class, this);
             String TAG = "MEETINGS_ACTIVITY";
             Log.d(TAG, "Information of the group is not fully recovered");
-        }
+        }*/
         NmaxUsers = (float) origin.getInt(Messages.maxUser, -1);
     }
 

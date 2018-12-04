@@ -4,8 +4,10 @@ import android.app.Notification;
 import android.content.Intent;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
+import android.widget.EditText;
 
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 
 import org.junit.Before;
@@ -27,6 +29,7 @@ import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.mock;
 
 @RunWith(AndroidJUnit4.class)
 
@@ -74,6 +77,14 @@ public class ChatActivityTests
         catch(Exception e){}
         assertEquals(1, list.size());
         DummyChatActivityIntentRule.finishActivity();
+    }
+
+    @Test
+    public void testFabListener() {
+        EditText et = mock(EditText.class);
+        FirebaseReference fr = mock(FirebaseReference.class);
+        FirebaseAuth auth = mock(FirebaseAuth.class);
+        ChatActivity.fabListener(et, fr, auth, "uno");
     }
     
 }
