@@ -194,29 +194,4 @@ public class ConnectedCalendarActivity extends AppCompatActivity
         }
     }
 
-    /**
-     * this listener will wait for the data contained in firebase so that
-     * we can initializing <tt>userAvailabilities</tt> with the newly retrieved
-     * list of booleans
-     */
-    private class AvailabilitiesOnDataGetListener implements OnGetDataListener{
-        @Override
-        public void onSuccess(DataSnapshot dataSnapshot) {
-            List<Boolean> list = new ArrayList<>();
-            for(DataSnapshot ds: dataSnapshot.getChildren()){
-                list.add(ds.getValue(Boolean.class));
-            }
-            userAvailabilities = new ConnectedAvailability(pair.getValue(), pair.getKey(), new ConcreteAvailability(list), new FirebaseReference());
-        }
-
-        @Override
-        public void onStart() {
-            Log.d("ON START", "retrieve availabilities of the user");
-        }
-
-        @Override
-        public void onFailure() {
-            Log.d("ON FAILURE", "didn't retrieve availabailities of the user");
-        }
-    }
 }
