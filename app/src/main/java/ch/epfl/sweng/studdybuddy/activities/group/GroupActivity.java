@@ -57,6 +57,7 @@ import static ch.epfl.sweng.studdybuddy.services.calendar.Color.updateColor;
 import static ch.epfl.sweng.studdybuddy.tools.AvailabilitiesHelper.calendarEventListener;
 import static ch.epfl.sweng.studdybuddy.tools.AvailabilitiesHelper.calendarGetDataListener;
 import static ch.epfl.sweng.studdybuddy.tools.AvailabilitiesHelper.readData;
+import static ch.epfl.sweng.studdybuddy.tools.AvailabilitiesHelper.setOnToggleBehavior;
 
 public class GroupActivity extends AppCompatActivity implements Notifiable {
     private boolean wrongInput = false;
@@ -89,7 +90,6 @@ public class GroupActivity extends AppCompatActivity implements Notifiable {
         FloatingActionButton actionButton = findViewById(R.id.createGroup);
         actionButton.setOnClickListener(goTo(createMeetingActivity.class, this));
         setupAvails();
-        setOnToggleBehavior(calendarGrid);
     }
 
     @Override
@@ -108,13 +108,20 @@ public class GroupActivity extends AppCompatActivity implements Notifiable {
 
     public void setupAvails() {
         calendarGrid = findViewById(R.id.calendarGrid);
-        Button button = findViewById(R.id.confirmSlots);
+        Button button = findViewById(R.id.editAvail);
         pair.setKey(gId);
         pair.setValue(uId);
         if(pair.getKey() == null || pair.getValue() == null){
             throw new NullPointerException("the intent didn't content expected data");
         }
         connect();
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(GroupActivity.this, ConnectedCalendarActivity.class));
+                //goTo(ConnectedCalendarActivity.class, GroupActivity.this);
+            }
+        });
     }
 
     public void setupUserGroupAdmin() {
@@ -176,13 +183,9 @@ public class GroupActivity extends AppCompatActivity implements Notifiable {
     public void setupMeetings() {
         RecyclerView meetingRV = findViewById(R.id.meetingRV);
         meetingRV.setLayoutManager(new LinearLayoutManager(this));
-
         meetingList = new ArrayList<>();
-
         adapter = new MeetingRecyclerAdapter(this, this, meetingList, new Pair(gId, adminId));
-
         metaM.getMeetingsOfGroup(new ID<>(gId), ActivityHelper.getConsumerForMeetings(meetingList, metaM, new ID<>(gId), adapter));
-
         meetingRV.setAdapter(adapter);
     }
 
@@ -203,39 +206,12 @@ public class GroupActivity extends AppCompatActivity implements Notifiable {
             @Override
             public void accept(List<Boolean> booleans) {
                 userAvailabilities = new ConnectedAvailability(pair.getValue(), pair.getKey(), new ConcreteAvailability(booleans), new FirebaseReference());
+
+                setOnToggleBehavior(calendarGrid, userAvailabilities, CalendarWidth);
             }
         };
     }
-    /**
-     * Set the behavior of every cell of the calendar so that
-     * clicking on any cell will modify our availabilities in the
-     * appropriate time slot
-     * @param calendarGrid the View of the calendar
-     */
-    public void setOnToggleBehavior(GridLayout calendarGrid){
-        for(int i = 0; i < calendarGrid.getChildCount(); i++)
-        {
-            CardView cardView = (CardView) calendarGrid.getChildAt(i);
-            int column = i%CalendarWidth;
-            if(column!=0) {//Hours shouldn't be clickable
-                int row = i/CalendarWidth;
-                cardView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        userAvailabilities.modifyAvailability(row, column-1);
-                    }
-                });
-            }
-        }
-    }
 
-    /**
-     * clicking on the confirm button leads us to GroupActivity
-     */
-    public void confirmSlots() {
-        Intent newIntent = new Intent(this, GroupActivity.class);
-        startActivity(newIntent);
-    }
 
     /**
      * change the color of every cell of the calendar when a change has been added to
