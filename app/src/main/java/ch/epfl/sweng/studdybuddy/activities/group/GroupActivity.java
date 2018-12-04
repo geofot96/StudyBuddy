@@ -57,8 +57,6 @@ import static ch.epfl.sweng.studdybuddy.services.calendar.Color.updateColor;
 import static ch.epfl.sweng.studdybuddy.tools.AvailabilitiesHelper.calendarEventListener;
 import static ch.epfl.sweng.studdybuddy.tools.AvailabilitiesHelper.calendarGetDataListener;
 import static ch.epfl.sweng.studdybuddy.tools.AvailabilitiesHelper.readData;
-import static ch.epfl.sweng.studdybuddy.tools.AvailabilitiesHelper.setOnToggleBehavior;
-
 public class GroupActivity extends AppCompatActivity implements Notifiable {
     private boolean wrongInput = false;
     List<User> participants  = new ArrayList<>();
@@ -119,7 +117,6 @@ public class GroupActivity extends AppCompatActivity implements Notifiable {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(GroupActivity.this, ConnectedCalendarActivity.class));
-                //goTo(ConnectedCalendarActivity.class, GroupActivity.this);
             }
         });
     }
@@ -206,8 +203,7 @@ public class GroupActivity extends AppCompatActivity implements Notifiable {
             @Override
             public void accept(List<Boolean> booleans) {
                 userAvailabilities = new ConnectedAvailability(pair.getValue(), pair.getKey(), new ConcreteAvailability(booleans), new FirebaseReference());
-
-                setOnToggleBehavior(calendarGrid, userAvailabilities, CalendarWidth);
+                update();
             }
         };
     }

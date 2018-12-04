@@ -41,7 +41,6 @@ import static ch.epfl.sweng.studdybuddy.services.calendar.Color.updateColor;
 import static ch.epfl.sweng.studdybuddy.tools.AvailabilitiesHelper.calendarEventListener;
 import static ch.epfl.sweng.studdybuddy.tools.AvailabilitiesHelper.calendarGetDataListener;
 import static ch.epfl.sweng.studdybuddy.tools.AvailabilitiesHelper.readData;
-import static ch.epfl.sweng.studdybuddy.tools.AvailabilitiesHelper.setOnToggleBehavior;
 
 /**
  * On this activity we're able as a user of the group to see
@@ -72,7 +71,7 @@ public class ConnectedCalendarActivity extends AppCompatActivity implements Noti
         Bundle origin = globalBundle.getSavedBundle();
 
         NmaxUsers = (float) origin.getInt(Messages.maxUser, -1);
-
+        if(NmaxUsers < 0 ) throw new IllegalStateException();
         pair.setKey(origin.getString(Messages.groupID));
         pair.setValue(origin.getString(Messages.userID));
         if(pair.getKey() == null || pair.getValue() == null){
@@ -101,9 +100,32 @@ public class ConnectedCalendarActivity extends AppCompatActivity implements Noti
             public void accept(List<Boolean> booleans) {
                 userAvailabilities = new ConnectedAvailability(pair.getValue(), pair.getKey(), new ConcreteAvailability(booleans), new FirebaseReference());
 
-                setOnToggleBehavior(calendarGrid, userAvailabilities, CalendarWidth);
+                setOnToggleBehavior();
             }
         }));
+    }
+    /**
+     * Set the behavior of every cell of the calendar so that
+     * clicking on any cell will modify our availabilities in the
+     * appropriate time slot
+     * @param calendarGrid the View of the calendar
+     */
+    public void setOnToggleBehavior(){
+        for(int i = 0; i < calendarGrid.getChildCount(); i++)
+        {
+            CardView cardView = (CardView) calendarGrid.getChildAt(i);
+            int column = i%CalendarWidth;
+            if(column!=0) {//Hours shouldn't be clickable
+                int row = i/CalendarWidth;
+                cardView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        userAvailabilities.modifyAvailability(row, column-1);
+                        update();
+                    }
+                });
+            }
+        }
     }
     /**
      * clicking on the confirm button leads us to GroupActivity
