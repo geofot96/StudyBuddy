@@ -41,7 +41,7 @@ public class SettingsFragmentTest {
             e.printStackTrace();
         }
 
-        onView(withId(R.id.defaultLocation)).perform(click());
+        onView(withId(R.id.text_location_set_up)).perform(click());
 
         try {
             Thread.sleep(1000);

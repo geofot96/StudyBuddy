@@ -14,6 +14,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -21,6 +22,7 @@ import com.google.android.gms.tasks.Task;
 import ch.epfl.sweng.studdybuddy.R;
 import ch.epfl.sweng.studdybuddy.activities.group.GlobalBundle;
 import ch.epfl.sweng.studdybuddy.activities.group.MapsActivity;
+import ch.epfl.sweng.studdybuddy.activities.group.meetings.createMeetingActivity;
 import ch.epfl.sweng.studdybuddy.auth.FirebaseAuthManager;
 import ch.epfl.sweng.studdybuddy.auth.GoogleSignInActivity;
 import ch.epfl.sweng.studdybuddy.core.User;
@@ -53,6 +55,7 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
     Button signout;
     Button applyButton;
     View view;
+    private TextView textDisplayLocation;
 
     public SettingsFragment()
     {
@@ -76,6 +79,8 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
         ref = (FirebaseReference) getDB();
         uId = user.getUserID().getId();
         mb = new MetaGroup();
+
+        textDisplayLocation = view.findViewById(R.id.text_location_set_up);
         setUpUI();
         return view;
     }
@@ -153,9 +158,12 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
 
 
     }
+
+
     public void setUpLocation(){
-        locationButton = view.findViewById(R.id.defaultLocation);
-        locationButton.setOnClickListener(new View.OnClickListener() {
+//        locationButton = view.findViewById(R.id.defaultLocation);
+//        locationButton.setOnClickListener(new View.OnClickListener() {
+        textDisplayLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(getActivity(), MapsActivity.class);
@@ -175,11 +183,10 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
                 if(favoriteLocation == null){
                     favoriteLocation = MapsHelper.ROLEX_LOCATION;
                 }
-                locationButton.setText("Default Location: " + favoriteLocation.toString());
+                textDisplayLocation.setText("Default Location: " + favoriteLocation.toString());
             }
         });
     }
-
     public void setUpSignOut(){
         signout = view.findViewById(R.id.btn_sign_out);
         signout.setOnClickListener(new View.OnClickListener() {
@@ -194,5 +201,7 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
                 });
             }
         });
+
+
     }
 }
