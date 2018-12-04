@@ -51,7 +51,7 @@ public class GroupActivityTest {
     @Test
     public void AdminCanLeadToCreateMeeting(){
         mManualRule.launchActivity(new Intent());
-        testIntent(R.id.m, createMeetingActivity.class.getName());
+        testIntent(R.id.createMeeting, createMeetingActivity.class.getName());
         mManualRule.finishActivity();
     }
     /*@Test

@@ -85,7 +85,7 @@ public class GroupActivity extends AppCompatActivity implements Notifiable {
         setupUserGroupAdmin();
         setUI();
         setupMeetings();
-        FloatingActionButton actionButton = findViewById(R.id.createGroup);
+        FloatingActionButton actionButton = findViewById(R.id.createMeeting);
         actionButton.setOnClickListener(goTo(createMeetingActivity.class, this));
         setupAvails();
     }
