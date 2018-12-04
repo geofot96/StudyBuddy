@@ -63,10 +63,10 @@ public class GlobalBundleTest {
     public void getMeeting(){
         GlobalBundle.getInstance().putMeeting(m);
         Meeting toCheck = GlobalBundle.getInstance().getMeeting();
-        assertEquals((long) 0, toCheck.getStarting());
-        assertEquals((long) 0, toCheck.getEnding());
         assertTrue(toCheck.getLocation().getLatitude() == 0);
         assertTrue(toCheck.getLocation().getLongitude() == 0);
+        assertEquals((long) 0, toCheck.getStarting());
+        assertEquals((long) 0, toCheck.getEnding());
         assertEquals(Messages.TEST, toCheck.getId().getId());
         assertEquals(Messages.TEST, toCheck.getLocation().getTitle());
         assertEquals(Messages.TEST, toCheck.getLocation().getAddress());

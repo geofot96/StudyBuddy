@@ -96,12 +96,7 @@ public class MeetingRecyclerAdapter extends RecyclerView.Adapter<MeetingRecycler
                 int requestCode = RequestCodes.MAPS.getRequestCode();
                 if(adminID.equals(userID)){
                     intent = new Intent(context, createMeetingActivity.class);
-                    bundle.putLong(Messages.M_SDATE, meeting.getStarting());
-                    bundle.putLong(Messages.M_EDATE, meeting.getEnding());
-                    bundle.putString(Messages.LOCATION_TITLE, meeting.getLocation().getTitle());
-                    bundle.putString(Messages.ADDRESS, meeting.getLocation().getAddress());
-                    bundle.putDouble(Messages.LATITUDE, meeting.getLocation().getLatitude());
-                    bundle.putDouble(Messages.LONGITUDE, meeting.getLocation().getLongitude());
+                    GlobalBundle.getInstance().putMeeting(meeting);
                     requestCode = RequestCodes.CREATEMEETING.getRequestCode();
                 }
                 GlobalBundle.getInstance().putAll(bundle);

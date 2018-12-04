@@ -69,7 +69,6 @@ public class createMeetingActivity extends AppCompatActivity {
 
         if(groupID == null || adminID == null || userID == null){
             startActivity(new Intent(this, NavigationActivity.class));
-            String TAG = "CREATE_MEETING_ACTIVITY";
             Log.d(TAG, "Information of the group is not fully recovered");
         }
 
@@ -77,12 +76,7 @@ public class createMeetingActivity extends AppCompatActivity {
         mDisplayStartTime = findViewById(R.id.timePicker);
         mDisplayEndTime = findViewById(R.id.timePicker2);
 
-        ButtonListener = new AdapterAdapter() {
-            @Override
-            public void update() {
-                updateButton();
-            }
-        };
+        ButtonListener = getAdapter();
 
         initDisplays();
 
@@ -92,6 +86,15 @@ public class createMeetingActivity extends AppCompatActivity {
         initSaveBtn();
 
         meeting = onStartForResult();
+    }
+
+    private AdapterAdapter getAdapter() {
+        return new AdapterAdapter() {
+            @Override
+            public void update() {
+                updateButton();
+            }
+        };
     }
 
     @SuppressLint("SetTextI18n")
@@ -179,20 +182,24 @@ public class createMeetingActivity extends AppCompatActivity {
             saveBtn.setEnabled(true);
         }else{
             saveBtn.setEnabled(false);
-            String msg = "The location was not chosen";
-            String msg1 = "The meeting is wrongly scheduled: ";
-
-            if(!correctTimeSlot){
-                msg = msg1 + "the time slot is incorrect";
-            }
-
-            if(isTooLate){
-                msg = msg1 + "the meeting starts in the past";
-            }
-
-            Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_LONG).show();
+            setCorrectToastMessage(correctTimeSlot, isTooLate);
         }
 
+    }
+
+    private void setCorrectToastMessage(boolean correctTimeSlot, boolean isTooLate) {
+        String msg = "The location was not chosen";
+        String msg1 = "The meeting is wrongly scheduled: ";
+
+        if(!correctTimeSlot){
+            msg = msg1 + "the time slot is incorrect";
+        }
+
+        if(isTooLate){
+            msg = msg1 + "the meeting starts in the past";
+        }
+
+        Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_LONG).show();
     }
 
 
