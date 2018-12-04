@@ -1,5 +1,6 @@
 package ch.epfl.sweng.studdybuddy.activities.group;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -86,8 +87,9 @@ public class GroupActivity extends AppCompatActivity implements Notifiable {
         setUI();
         setupMeetings();
         FloatingActionButton actionButton = findViewById(R.id.createGroup);
-        actionButton.setOnClickListener(new ClickListener(new Intent(this, createMeetingActivity.class)));
+        actionButton.setOnClickListener(goTo(createMeetingActivity.class, this));
         setupAvails();
+        setOnToggleBehavior(calendarGrid);
     }
 
     @Override
@@ -113,16 +115,6 @@ public class GroupActivity extends AppCompatActivity implements Notifiable {
             throw new NullPointerException("the intent didn't content expected data");
         }
         connect();
-
-        setOnToggleBehavior(calendarGrid);
-
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v)
-            {
-                confirmSlots();
-            }
-        });
     }
 
     public void setupUserGroupAdmin() {
@@ -136,21 +128,12 @@ public class GroupActivity extends AppCompatActivity implements Notifiable {
         mb.getGroupUsers(gId, participants);
         adminId = origin.getString(Messages.ADMIN);
         if(gId == null || adminId == null ) {
-            startActivity(new Intent(this, NavigationActivity.class));
+            goTo(NavigationActivity.class, this);
             String TAG = "MEETINGS_ACTIVITY";
             Log.d(TAG, "Information of the group is not fully recovered");
         }
         NmaxUsers = (float) origin.getInt(Messages.maxUser, -1);
     }
-    public void setMetaM(MetaMeeting m){
-        this.metaM = m;
-    }
-
-    public void setMeetingList(List<Meeting> meetingL){
-        meetingList.addAll(meetingL);
-        adapter.notifyDataSetChanged();
-    }
-
 
     private void goToActivity(Intent intent){
         startActivity(intent);
@@ -161,16 +144,14 @@ public class GroupActivity extends AppCompatActivity implements Notifiable {
         update();
     }
 
-    private class ClickListener implements View.OnClickListener {
-        private Intent intent;
 
-        public ClickListener(Intent intent){
-            this.intent = intent;
-        }
-        @Override
-        public void onClick(View v) {
-            goToActivity(intent);
-        }
+    public View.OnClickListener goTo(Class<?> to, Activity from) {
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(from, to));
+            }
+        };
     }
 
     public void setUI(){
@@ -214,12 +195,16 @@ public class GroupActivity extends AppCompatActivity implements Notifiable {
         database = FirebaseDatabase.getInstance().getReference("availabilities").child(pair.getKey());
         database.addChildEventListener(calendarEventListener(calendar, this));
 
-        readData(database.child(pair.getValue()), calendarGetDataListener(new Consumer<List<Boolean>>() {
+        readData(database.child(pair.getValue()), calendarGetDataListener(callbackCalendar()));
+    }
+
+    public Consumer<List<Boolean>> callbackCalendar() {
+        return new Consumer<List<Boolean>>() {
             @Override
             public void accept(List<Boolean> booleans) {
                 userAvailabilities = new ConnectedAvailability(pair.getValue(), pair.getKey(), new ConcreteAvailability(booleans), new FirebaseReference());
             }
-        }));
+        };
     }
     /**
      * Set the behavior of every cell of the calendar so that
@@ -293,7 +278,4 @@ public class GroupActivity extends AppCompatActivity implements Notifiable {
         hsv[1] = s +  coef * (hsv[1] - s);
         return Color.HSVToColor(hsv);
     }
-
-
-
 }

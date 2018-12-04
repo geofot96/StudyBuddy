@@ -34,7 +34,12 @@ import ch.epfl.sweng.studdybuddy.services.calendar.ConcreteAvailability;
 import ch.epfl.sweng.studdybuddy.services.calendar.ConnectedAvailability;
 import ch.epfl.sweng.studdybuddy.services.calendar.ConnectedCalendar;
 import ch.epfl.sweng.studdybuddy.tools.Consumer;
+import ch.epfl.sweng.studdybuddy.tools.Notifiable;
 import ch.epfl.sweng.studdybuddy.util.Messages;
+
+import static ch.epfl.sweng.studdybuddy.tools.AvailabilitiesHelper.calendarEventListener;
+import static ch.epfl.sweng.studdybuddy.tools.AvailabilitiesHelper.calendarGetDataListener;
+import static ch.epfl.sweng.studdybuddy.tools.AvailabilitiesHelper.readData;
 
 /**
  * On this activity we're able as a user of the group to see
@@ -42,7 +47,7 @@ import ch.epfl.sweng.studdybuddy.util.Messages;
  * availabilities dynamically. Touching a cell of the calendar will
  * modify our availability
  */
-public class ConnectedCalendarActivity extends AppCompatActivity
+public class ConnectedCalendarActivity extends AppCompatActivity implements Notifiable
 {
     GridLayout calendarGrid;
     private static final int CalendarWidth = 8;
@@ -89,9 +94,14 @@ public class ConnectedCalendarActivity extends AppCompatActivity
         calendar = new ConnectedCalendar(new ID<>(pair.getKey()), new HashMap<>());
 
         database = FirebaseDatabase.getInstance().getReference("availabilities").child(pair.getKey());
-        database.addChildEventListener(new AvailabilitiesChildEventListener());
+        database.addChildEventListener(calendarEventListener(calendar, this));
 
-        readData(database.child(pair.getValue()), new AvailabilitiesOnDataGetListener());
+        readData(database.child(pair.getValue()), calendarGetDataListener(new Consumer<List<Boolean>>() {
+            @Override
+            public void accept(List<Boolean> booleans) {
+                userAvailabilities = new ConnectedAvailability(pair.getValue(), pair.getKey(), new ConcreteAvailability(booleans), new FirebaseReference());
+            }
+        }));
     }
     /**
      * Set the behavior of every cell of the calendar so that
@@ -166,92 +176,8 @@ public class ConnectedCalendarActivity extends AppCompatActivity
         return Color.HSVToColor(hsv);
     }
 
-    /**
-     * reading only once data in the database synchronously
-     *
-     * @param db the node of the database where we want to retrieve some data
-     * @param listener from {@link OnGetDataListener}
-     */
-    public void readData(DatabaseReference db, final OnGetDataListener listener){
-        listener.onStart();
-        db.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                listener.onSuccess(dataSnapshot);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                listener.onFailure();
-            }
-        });
-    }
-
-    /**
-     * this ChildEventListener will set after any changes in the users availabilities
-     * the calendar to keep the activity updated with firebase
-     */
-    private class AvailabilitiesChildEventListener implements ChildEventListener{
-
-        @Override
-        public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-            String targetID = dataSnapshot.getKey();
-            FirebaseReference fb = new FirebaseReference(database.child(targetID));
-            fb.getAll(Boolean.class, new Consumer<List<Boolean>>() {
-                @Override
-                public void accept(List<Boolean> booleans) {
-                    calendar.modify(targetID, booleans);
-                    update();
-                }
-            });
-        }
-
-        @Override
-        public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-        }
-
-        @Override
-        public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-            String targetID = dataSnapshot.getKey();
-            calendar.removeUser(targetID);
-            update();
-        }
-
-        @Override
-        public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-        }
-
-        @Override
-        public void onCancelled(@NonNull DatabaseError databaseError) {
-
-        }
-    }
-
-    /**
-     * this listener will wait for the data contained in firebase so that
-     * we can initializing <tt>userAvailabilities</tt> with the newly retrieved
-     * list of booleans
-     */
-    private class AvailabilitiesOnDataGetListener implements OnGetDataListener{
-        @Override
-        public void onSuccess(DataSnapshot dataSnapshot) {
-            List<Boolean> list = new ArrayList<>();
-            for(DataSnapshot ds: dataSnapshot.getChildren()){
-                list.add(ds.getValue(Boolean.class));
-            }
-            userAvailabilities = new ConnectedAvailability(pair.getValue(), pair.getKey(), new ConcreteAvailability(list), new FirebaseReference());
-        }
-
-        @Override
-        public void onStart() {
-            Log.d("ON START", "retrieve availabilities of the user");
-        }
-
-        @Override
-        public void onFailure() {
-            Log.d("ON FAILURE", "didn't retrieve availabailities of the user");
-        }
+    @Override
+    public void getNotified() {
+        update();
     }
 }
