@@ -53,6 +53,7 @@ import ch.epfl.sweng.studdybuddy.util.ActivityHelper;
 import ch.epfl.sweng.studdybuddy.util.Messages;
 import ch.epfl.sweng.studdybuddy.util.StudyBuddy;
 
+import static ch.epfl.sweng.studdybuddy.services.calendar.Color.updateColor;
 import static ch.epfl.sweng.studdybuddy.tools.AvailabilitiesHelper.calendarEventListener;
 import static ch.epfl.sweng.studdybuddy.tools.AvailabilitiesHelper.calendarGetDataListener;
 import static ch.epfl.sweng.studdybuddy.tools.AvailabilitiesHelper.readData;
@@ -69,10 +70,9 @@ public class GroupActivity extends AppCompatActivity implements Notifiable {
     private MetaMeeting metaM = new MetaMeeting();
     String adminId;
     private List<Meeting> meetingList;
-
+    private static final int CalendarWidth = 8;
     private RecyclerView.Adapter adapter;
     GridLayout calendarGrid;
-    private static final int CalendarWidth = 8;
     private float NmaxUsers;
     private Availability userAvailabilities;
     private ConnectedCalendar calendar;
@@ -244,38 +244,9 @@ public class GroupActivity extends AppCompatActivity implements Notifiable {
     public void update() {
         List<Integer> groupAvailabilities = calendar.getComputedAvailabilities();
         if(groupAvailabilities.size() == 77) {
-            updateColor(groupAvailabilities);
+            updateColor(calendarGrid, groupAvailabilities, NmaxUsers, CalendarWidth);
         }
     }
 
-    public void updateColor(List<Integer> av){
-        int size = calendarGrid.getColumnCount() * calendarGrid.getRowCount();
-        for (int i = 0; i < size; i++) {
-            CardView cardView;
-            if (i % CalendarWidth != 0) {//Hours shouldn't be clickable
-                cardView = (CardView) calendarGrid.getChildAt(i);
-                int index = (i / CalendarWidth) * (CalendarWidth - 1) + (i % CalendarWidth) - 1;
-                cardView.setCardBackgroundColor(gradient((float) av.get(index)));
-            }
-        }
-    }
 
-    /**
-     * return the color picked in a dynamically set color gradient
-     * according to the ratio of available users in the targeted time slot
-     * the returned color is <tt>Color.WHITE</tt> when no one is available
-     * and <tt>Color.GREEN</tt> when every one is available
-     *
-     * @param nAvailableUser the number of available users in this time slot
-     * @return the right color according to the ration of available users
-     */
-    private int gradient(float nAvailableUser){
-        float[] hsv = new float[3];
-        Color.colorToHSV(Color.WHITE, hsv);
-        float s = hsv[1];
-        Color.colorToHSV(Color.GREEN, hsv);
-        float coef = nAvailableUser/NmaxUsers;
-        hsv[1] = s +  coef * (hsv[1] - s);
-        return Color.HSVToColor(hsv);
-    }
 }
