@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,7 +21,6 @@ import com.google.android.gms.tasks.Task;
 import ch.epfl.sweng.studdybuddy.R;
 import ch.epfl.sweng.studdybuddy.activities.group.GlobalBundle;
 import ch.epfl.sweng.studdybuddy.activities.group.MapsActivity;
-import ch.epfl.sweng.studdybuddy.activities.group.meetings.createMeetingActivity;
 import ch.epfl.sweng.studdybuddy.auth.FirebaseAuthManager;
 import ch.epfl.sweng.studdybuddy.auth.GoogleSignInActivity;
 import ch.epfl.sweng.studdybuddy.core.User;
@@ -31,6 +29,8 @@ import ch.epfl.sweng.studdybuddy.firebase.MetaGroup;
 import ch.epfl.sweng.studdybuddy.firebase.Metabase;
 import ch.epfl.sweng.studdybuddy.firebase.ReferenceWrapper;
 import ch.epfl.sweng.studdybuddy.services.meeting.MeetingLocation;
+import ch.epfl.sweng.studdybuddy.sql.DAOs.UserDAO;
+import ch.epfl.sweng.studdybuddy.sql.SqlDB;
 import ch.epfl.sweng.studdybuddy.tools.Consumer;
 import ch.epfl.sweng.studdybuddy.util.ActivityHelper;
 import ch.epfl.sweng.studdybuddy.util.Language;
@@ -56,7 +56,8 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
     Button applyButton;
     View view;
     MeetingLocation favoriteLocation = MapsHelper.ROLEX_LOCATION;
-
+    SqlDB sql;
+    StudyBuddy app;
     private TextView textDisplayLocation;
 
     public SettingsFragment()
@@ -76,13 +77,16 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
     {
 //         Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_settings, container, false);
-        user = ((StudyBuddy) this.getActivity().getApplication()).getAuthendifiedUser();
+        app = ((StudyBuddy) getActivity().getApplication());
+        user = app.getAuthendifiedUser();
         ref = (FirebaseReference) getDB();
         uId = user.getUserID().getId();
         mb = new MetaGroup();
 
         textDisplayLocation = view.findViewById(R.id.text_location_set_up);
         setUpUI();
+
+
         return view;
     }
 
@@ -155,6 +159,16 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
            public void onClick(View v) {
                ref.select(Messages.FirebaseNode.USERS).select(SettingsFragment.this.uId).select("favoriteLanguage").setVal(favoriteLanguage);
                ref.select(Messages.FirebaseNode.USERS).select(uId).select("favoriteLocation").setVal(favoriteLocation);
+               user.setFavoriteLanguage(favoriteLanguage);
+               user.setFavoriteLocation(favoriteLocation);
+               app.setAuthendifiedUser(user);
+               new Thread(new Runnable() {
+                   @Override
+                   public void run() {
+                       UserDAO userdao = sql.userDAO();
+                       userdao.insert(user);
+                   }
+               }).start();
            }
 
         });

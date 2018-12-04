@@ -1,5 +1,6 @@
 package ch.epfl.sweng.studdybuddy.auth;
 
+import android.arch.persistence.room.Room;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -13,6 +14,8 @@ import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.List;
+
 import ch.epfl.sweng.studdybuddy.R;
 import ch.epfl.sweng.studdybuddy.activities.CourseSelectActivity;
 import ch.epfl.sweng.studdybuddy.activities.NavigationActivity;
@@ -21,6 +24,7 @@ import ch.epfl.sweng.studdybuddy.core.ID;
 import ch.epfl.sweng.studdybuddy.core.User;
 import ch.epfl.sweng.studdybuddy.firebase.FirebaseReference;
 import ch.epfl.sweng.studdybuddy.firebase.ReferenceWrapper;
+import ch.epfl.sweng.studdybuddy.sql.SqlDB;
 import ch.epfl.sweng.studdybuddy.tools.Consumer;
 import ch.epfl.sweng.studdybuddy.util.StudyBuddy;
 
@@ -104,18 +108,39 @@ public class GoogleSignInActivity extends AppCompatActivity {
 
     private ValueEventListener fetchUserAndStart(ReferenceWrapper fb, Account acct, Class destination) {
         final ID<User> userID = new ID<>(acct.getId());
+        StudyBuddy app = ((StudyBuddy) GoogleSignInActivity.this.getApplication());
+
+        SqlDB sql = Room.inMemoryDatabaseBuilder(this, SqlDB.class).build();
+        //DATA RACE !!!!
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                List<User> users = sql.userDAO().get(new ID<User>(acct.getId()));
+                if(users.size() == 1){
+                    app.setAuthendifiedUser(users.get(0));
+                    Log.i(TAG, String.format("Found user with id %s in the local database", userID.getId()));
+                }
+            }
+        }).start();
         return fb.select("users").select(userID.getId()).get(User.class, new Consumer<User>() {
             @Override
             public void accept(User user) {
-                StudyBuddy app = ((StudyBuddy) GoogleSignInActivity.this.getApplication());
                 if(user == null) { //create a new user and put in db
                     app.setAuthendifiedUser(new User(acct.getDisplayName(), userID));
                     app.disableTravis();
                     fb.select("users").select(userID.getId()).setVal(app.getAuthendifiedUser());
+
                 }
                 else {
                     app.setAuthendifiedUser(user);
                 }
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Log.i(TAG, String.format("Updated user with id %s in the local database", userID.getId()));
+                        sql.userDAO().insert(app.getAuthendifiedUser());
+                    }
+                }).start();
                 startActivity(new Intent(GoogleSignInActivity.this, destination));
             }
         });

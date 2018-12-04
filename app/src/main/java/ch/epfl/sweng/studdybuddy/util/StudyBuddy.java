@@ -16,7 +16,7 @@ public class StudyBuddy extends Application {
         }
     }
 
-    public void setAuthendifiedUser(User authendifiedUser) {
+    public synchronized void setAuthendifiedUser(User authendifiedUser) {
         this.authendifiedUser = authendifiedUser;
     }
 
