@@ -72,7 +72,7 @@ public class createMeetingActivity extends AppCompatActivity {
         initDisplayTime();
 
         mDisplayLocation = findViewById(R.id.locationTitle);
-        //setClickOnLocation();
+        setClickOnLocation();
         meetingLocation = MapsHelper.ROLEX_LOCATION;
         mDisplayLocation.setText(meetingLocation.getTitle() + ": " + meetingLocation.getAddress());
         initSaveBtn();
@@ -130,7 +130,7 @@ public class createMeetingActivity extends AppCompatActivity {
                     data.getString(Messages.ADDRESS),
                     data.getDouble(Messages.LATITUDE, 0),
                     data.getDouble(Messages.LONGITUDE, 0));
-            //mDisplayLocation.setText(meetingLocation.getTitle() + ": " + meetingLocation.getAddress());
+            mDisplayLocation.setText(meetingLocation.getTitle() + ": " + meetingLocation.getAddress());
             updateButton();
         }
     }
