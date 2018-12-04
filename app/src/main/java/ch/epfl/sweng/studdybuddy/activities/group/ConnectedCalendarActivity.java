@@ -75,7 +75,10 @@ public class ConnectedCalendarActivity extends AppCompatActivity implements Noti
         Button button = findViewById(R.id.confirmSlots);
 
         retrieveData();
-        connect();
+
+        database = FirebaseDatabase.getInstance().getReference("availabilities").child(pair.getKey());
+        database.addChildEventListener(calendarEventListener(calendar, this, database));
+        readData(database.child(pair.getValue()), calendarGetDataListener(callbackCalendar()));
 
         setOnToggleBehavior(calendarGrid);
 
@@ -99,16 +102,12 @@ public class ConnectedCalendarActivity extends AppCompatActivity implements Noti
         if(pair.getKey() == null || pair.getValue() == null){
             throw new NullPointerException("the intent didn't content expected data");
         }
+        calendar  = new ConnectedCalendar(new ID<>(pair.getKey()), new HashMap<>());
 
     }
 
     public void connect() {
-        calendar = new ConnectedCalendar(new ID<>(pair.getKey()), new HashMap<>());
 
-        database = FirebaseDatabase.getInstance().getReference("availabilities").child(pair.getKey());
-        database.addChildEventListener(calendarEventListener(calendar, this, database));
-
-        readData(database.child(pair.getValue()), calendarGetDataListener(callbackCalendar()));
     }
     public Consumer<List<Boolean>> callbackCalendar() {
         return new Consumer<List<Boolean>>() {

@@ -112,7 +112,12 @@ public class GroupActivity extends AppCompatActivity implements Notifiable {
         if(pair.getKey() == null || pair.getValue() == null){
             throw new NullPointerException("the intent didn't content expected data");
         }
-        connect();
+        calendar = new ConnectedCalendar(new ID<>(pair.getKey()), new HashMap<>());
+
+        database = FirebaseDatabase.getInstance().getReference("availabilities").child(pair.getKey());
+        database.addChildEventListener(calendarEventListener(calendar, this, database));
+
+        readData(database.child(pair.getValue()), calendarGetDataListener(callbackCalendar()));
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -188,14 +193,6 @@ public class GroupActivity extends AppCompatActivity implements Notifiable {
 
     public boolean getInfoWrongInput(){
         return wrongInput;
-    }
-    public void connect() {
-        calendar = new ConnectedCalendar(new ID<>(pair.getKey()), new HashMap<>());
-
-        database = FirebaseDatabase.getInstance().getReference("availabilities").child(pair.getKey());
-        database.addChildEventListener(calendarEventListener(calendar, this, database));
-
-        readData(database.child(pair.getValue()), calendarGetDataListener(callbackCalendar()));
     }
 
     public Consumer<List<Boolean>> callbackCalendar() {
