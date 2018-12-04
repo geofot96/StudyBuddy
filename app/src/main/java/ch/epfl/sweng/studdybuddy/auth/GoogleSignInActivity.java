@@ -1,6 +1,5 @@
 package ch.epfl.sweng.studdybuddy.auth;
 
-import android.arch.persistence.room.Room;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -35,6 +34,8 @@ public class GoogleSignInActivity extends AppCompatActivity {
 
     private AuthManager mAuth = null;
 
+    private StudyBuddy app;
+    private SqlDB sql;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +43,8 @@ public class GoogleSignInActivity extends AppCompatActivity {
         setContentView(R.layout.activity_google_sign_in);
 
         SignInButton mGoogleBtn = findViewById(R.id.googleBtn);
+        sql = SqlDB.getInstance(this);
+        app =  ((StudyBuddy) GoogleSignInActivity.this.getApplication());
         mGoogleBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -64,7 +67,21 @@ public class GoogleSignInActivity extends AppCompatActivity {
             String personName = acct.getDisplayName();
             //appears only when the user is connected
             Toast.makeText(this, "Welcome " + personName, Toast.LENGTH_SHORT).show();
-            fetchUserAndStart(acct, NavigationActivity.class);
+            //DATA RACE !!!!
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    List<User> users = sql.userDAO().getAll();
+                    if(users.size() > 0){
+                        app.setAuthendifiedUser(users.get(0));
+                        Log.i(TAG, String.format("Found user with id %s and language %s in the local database.", users.get(0).getUserID().getId(), users.get(0).getFavoriteLanguage()));
+                        startActivity(new Intent(GoogleSignInActivity.this, CourseSelectActivity.class));
+
+                    }else {
+                        fetchUserAndStart(acct, NavigationActivity.class);
+                    }
+                }
+            }).start();
 
         } else {
             //appears only when the user isn't connected to the app
@@ -90,6 +107,8 @@ public class GoogleSignInActivity extends AppCompatActivity {
                             if (onTest()) {
                                 startActivity(new Intent(GoogleSignInActivity.this, CourseSelectActivity.class));
                             } else {
+
+
                                 fetchUserAndStart(mAuth.getCurrentUser(), CourseSelectActivity.class);
                             }
                         }
@@ -110,18 +129,6 @@ public class GoogleSignInActivity extends AppCompatActivity {
         final ID<User> userID = new ID<>(acct.getId());
         StudyBuddy app = ((StudyBuddy) GoogleSignInActivity.this.getApplication());
 
-        SqlDB sql = Room.inMemoryDatabaseBuilder(this, SqlDB.class).build();
-        //DATA RACE !!!!
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                List<User> users = sql.userDAO().get(new ID<User>(acct.getId()));
-                if(users.size() == 1){
-                    app.setAuthendifiedUser(users.get(0));
-                    Log.i(TAG, String.format("Found user with id %s in the local database", userID.getId()));
-                }
-            }
-        }).start();
         return fb.select("users").select(userID.getId()).get(User.class, new Consumer<User>() {
             @Override
             public void accept(User user) {

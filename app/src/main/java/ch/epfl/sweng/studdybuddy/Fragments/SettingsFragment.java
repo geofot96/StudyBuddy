@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -79,10 +80,11 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
         view = inflater.inflate(R.layout.fragment_settings, container, false);
         app = ((StudyBuddy) getActivity().getApplication());
         user = app.getAuthendifiedUser();
+        Log.i("D", "language is " + user.getFavoriteLanguage());
         ref = (FirebaseReference) getDB();
         uId = user.getUserID().getId();
         mb = new MetaGroup();
-
+        sql = SqlDB.getInstance(this.getActivity());
         textDisplayLocation = view.findViewById(R.id.text_location_set_up);
         setUpUI();
 
@@ -108,12 +110,13 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
         spinnerLang.setOnItemSelectedListener(this);
 
         FirebaseReference ref = new FirebaseReference();
-
+        String selectedLanguage = user.getFavoriteLanguage() != null ? user.getFavoriteLanguage() : Language.EN;
+        spinnerLang.setSelection(Language.LanguageToInt(selectedLanguage));
         ref.select(Messages.FirebaseNode.USERS).select(uId).get(User.class, new Consumer<User>() {
             @Override
             public void accept(User user) {
                 String selectedLanguage = user.getFavoriteLanguage() != null ? user.getFavoriteLanguage() : Language.EN;
-                spinnerLang.setSelection(Language.LanguageToInt(selectedLanguage));
+             //   spinnerLang.setSelection(Language.LanguageToInt(selectedLanguage));
             }
         });
 
