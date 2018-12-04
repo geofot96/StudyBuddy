@@ -145,11 +145,11 @@ public class GroupActivity extends AppCompatActivity implements Notifiable {
     }
 
 
-    public View.OnClickListener goTo(Class<?> to, Activity from) {
+    public static View.OnClickListener goTo(Class<?> to, Activity from) {
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(from, to));
+                from.startActivity(new Intent(from, to));
             }
         };
     }

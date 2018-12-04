@@ -70,12 +70,12 @@ public class GroupActivityTest {
         testIntent(R.id.createMeeting, createMeetingActivity.class.getName());
         mManualRule.finishActivity();
     }*/
-    @Test
+    /*@Test
     public void leadsToNavigationActivity(){
         GroupActivity mActivity = mWrongInputInBundle.launchActivity(new Intent());
         assertTrue(mActivity.getInfoWrongInput());
         mWrongInputInBundle.finishActivity();
-    }
+    }*/
 
     private void testIntent(int id, String name) {
         try {
