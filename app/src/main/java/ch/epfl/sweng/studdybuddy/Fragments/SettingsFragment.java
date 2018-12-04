@@ -80,21 +80,12 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
         ref = (FirebaseReference) getDB();
         uId = user.getUserID().getId();
         mb = new MetaGroup();
-
+        Log.i("DEBUG", "im in oncreateViewResult");
         textDisplayLocation = view.findViewById(R.id.text_location_set_up);
         setUpUI();
         return view;
     }
-
-    public void onResume(){
-        super.onResume();
-    }
-
-    @Override
-    public void onPause(){
-        super.onPause();
-    }
-
+    
     public ReferenceWrapper getDB(){
         return new FirebaseReference();
     }
@@ -136,6 +127,7 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
     public void onActivityResult(int requestCode, int resultCode, Intent d) {
         super.onActivityResult(requestCode, resultCode, d);
             MeetingLocation defaultLocation = ActivityHelper.meetingLocationFromBundle(requestCode, resultCode);
+            Log.i("DEBUG", "im in onActivityResult");
             if(defaultLocation != null) {
                 favoriteLocation = defaultLocation;
             }
@@ -166,6 +158,7 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
         textDisplayLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.i("DEBUG", "im in setupFIRST");
                 Intent i = new Intent(getActivity(), MapsActivity.class);
                 i.putExtra(Messages.groupID, Messages.settingsPlaceHolder);
                 i.putExtra(Messages.meetingID,Messages.settingsPlaceHolder);
@@ -178,11 +171,9 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
         mb.getUserAndConsume(uId, new Consumer<User>() {
             @Override
             public void accept(User user) {
+                Log.i("DEBUG", "im in setupSECOND");
                 SettingsFragment.this.user = user;
-                MeetingLocation favoriteLocation = user.getFavoriteLocation();
-                if(favoriteLocation == null){
-                    favoriteLocation = MapsHelper.ROLEX_LOCATION;
-                }
+                favoriteLocation = user.getFavoriteLocation();
                 textDisplayLocation.setText("Default Location: " + favoriteLocation.toString());
             }
         });
