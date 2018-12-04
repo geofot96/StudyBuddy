@@ -98,10 +98,7 @@ public class CreateGroupActivity extends AppCompatActivity implements AdapterVie
             @Override
             public void accept(User user) {
                 selectedLanguage = user.getFavoriteLanguage() != null ? user.getFavoriteLanguage() : Language.EN;
-
-                Log.i("dedies", user.getFavoriteLanguage());
                 spinnerLanguage.setSelection(Language.LanguageToInt(user.getFavoriteLanguage()));
-
             }
         });
         ArrayAdapter<String> dataAdapterLanguages = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, Language.languages);
