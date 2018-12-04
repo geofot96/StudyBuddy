@@ -53,10 +53,12 @@ public class ChatActivity extends AppCompatActivity{
             @Override
             public void onClick(View view) {
                 EditText input = (EditText)findViewById(R.id.input);
-                ref.select(Messages.FirebaseNode.CHAT).select(groupID).push(new ChatMessage(input.getText().toString(),
-                        FirebaseAuth.getInstance().getCurrentUser().getDisplayName()));
+                if(input.getText().toString().trim().length() > 0) {
+                    ref.select(Messages.FirebaseNode.CHAT).select(groupID).push(new ChatMessage(input.getText().toString(),
+                            FirebaseAuth.getInstance().getCurrentUser().getDisplayName()));
 
-                input.setText("");
+                    input.setText("");
+                }
             }
         };
     }
