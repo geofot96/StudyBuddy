@@ -2,6 +2,8 @@ package ch.epfl.sweng.studdybuddy;
 
 import org.junit.Test;
 
+import java.util.Arrays;
+
 import ch.epfl.sweng.studdybuddy.util.Language;
 
 import static junit.framework.TestCase.assertEquals;
@@ -38,4 +40,11 @@ public class LanguageTest {
     public void DefaultToZero(){
         assertEquals(0, Language.LanguageToInt("asdasd"));
     }
+    @Test
+    public void ListOfLanguages(){
+        Language language = new Language();
+        assertEquals(Arrays.asList("\uD83C\uDDEC\uD83C\uDDE7","\uD83C\uDDEB\uD83C\uDDF7",
+                "\uD83C\uDDE9\uD83C\uDDEA","\uD83C\uDDEE\uD83C\uDDF9"), language.languages);
+    }
+
 }
