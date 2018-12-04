@@ -61,7 +61,7 @@ public class GroupActivity extends AppCompatActivity {
     List<Group> group = new ArrayList<>();
     List<String> gIds = new ArrayList<>();
     private MetaMeeting metaM = new MetaMeeting();
-
+    String adminId;
     private List<Meeting> meetingList;
 
     private RecyclerView.Adapter adapter;
@@ -77,70 +77,12 @@ public class GroupActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group);
-        GlobalBundle globalBundle = GlobalBundle.getInstance();
-        globalBundle.putAll(getIntent().getExtras());
-        Bundle origin = globalBundle.getSavedBundle();
-        String groupID = origin.getString(Messages.groupID);
-        String userID = origin.getString(Messages.userID);
-        String adminID = origin.getString(Messages.ADMIN);
-        int maxNumUsers = origin.getInt(Messages.maxUser, -1);
-
-        if(groupID == null || userID == null || adminID == null || maxNumUsers == -1){
-            String TAG = "GROUP_ACTIVITY";
-            Log.d(TAG, "Information of the group is not fully recovered");
-            wrongInput = true;
-            startActivity(new Intent(this, NavigationActivity.class));
-        }
-        uId = ((StudyBuddy) GroupActivity.this.getApplication()).getAuthendifiedUser().getUserID().getId();
-        gId = origin.getString(Messages.groupID);
-        gIds.add(gId);
-        mb.getGroupsfromIds(gIds, group);
-        mb.getGroupUsers(gId, participants);
+        setupUserGroupAdmin();
         setUI();
-        gId = origin.getString(Messages.groupID);
-        String adminId = origin.getString(Messages.ADMIN);
-
-        if(gId == null || adminId == null ) {
-            startActivity(new Intent(this, NavigationActivity.class));
-            String TAG = "MEETINGS_ACTIVITY";
-            Log.d(TAG, "Information of the group is not fully recovered");
-        }
-
-        RecyclerView meetingRV = findViewById(R.id.meetingRV);
-        meetingRV.setLayoutManager(new LinearLayoutManager(this));
-
-        meetingList = new ArrayList<>();
-
-        adapter = new MeetingRecyclerAdapter(this, this, meetingList, new Pair(gId, adminId));
-
-        metaM.getMeetingsOfGroup(new ID<>(gId), ActivityHelper.getConsumerForMeetings(meetingList, metaM, new ID<>(gId), adapter));
-
-        meetingRV.setAdapter(adapter);
+        setupMeetings();
         FloatingActionButton actionButton = findViewById(R.id.createGroup);
-
         actionButton.setOnClickListener(new ClickListener(new Intent(this, createMeetingActivity.class)));
-        calendarGrid = findViewById(R.id.calendarGrid);
-        Button button = findViewById(R.id.confirmSlots);
-
-        NmaxUsers = (float) origin.getInt(Messages.maxUser, -1);
-
-        pair.setKey(origin.getString(Messages.groupID));
-        pair.setValue(origin.getString(Messages.userID));
-        if(pair.getKey() == null || pair.getValue() == null){
-            throw new NullPointerException("the intent didn't content expected data");
-        }
-
-        connect();
-
-        setOnToggleBehavior(calendarGrid);
-
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v)
-            {
-                confirmSlots();
-            }
-        });
+        setupAvails();
     }
 
     @Override
@@ -157,6 +99,44 @@ public class GroupActivity extends AppCompatActivity {
         }
     }
 
+    public void setupAvails() {
+        calendarGrid = findViewById(R.id.calendarGrid);
+        Button button = findViewById(R.id.confirmSlots);
+        pair.setKey(gId);
+        pair.setValue(uId);
+        if(pair.getKey() == null || pair.getValue() == null){
+            throw new NullPointerException("the intent didn't content expected data");
+        }
+        connect();
+
+        setOnToggleBehavior(calendarGrid);
+
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v)
+            {
+                confirmSlots();
+            }
+        });
+    }
+
+    public void setupUserGroupAdmin() {
+        GlobalBundle globalBundle = GlobalBundle.getInstance();
+        globalBundle.putAll(getIntent().getExtras());
+        Bundle origin = globalBundle.getSavedBundle();
+        uId = ((StudyBuddy) GroupActivity.this.getApplication()).getAuthendifiedUser().getUserID().getId();
+        gId = origin.getString(Messages.groupID);
+        gIds.add(gId);
+        mb.getGroupsfromIds(gIds, group);
+        mb.getGroupUsers(gId, participants);
+        adminId = origin.getString(Messages.ADMIN);
+        if(gId == null || adminId == null ) {
+            startActivity(new Intent(this, NavigationActivity.class));
+            String TAG = "MEETINGS_ACTIVITY";
+            Log.d(TAG, "Information of the group is not fully recovered");
+        }
+        NmaxUsers = (float) origin.getInt(Messages.maxUser, -1);
+    }
     public void setMetaM(MetaMeeting m){
         this.metaM = m;
     }
@@ -200,6 +180,19 @@ public class GroupActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    public void setupMeetings() {
+        RecyclerView meetingRV = findViewById(R.id.meetingRV);
+        meetingRV.setLayoutManager(new LinearLayoutManager(this));
+
+        meetingList = new ArrayList<>();
+
+        adapter = new MeetingRecyclerAdapter(this, this, meetingList, new Pair(gId, adminId));
+
+        metaM.getMeetingsOfGroup(new ID<>(gId), ActivityHelper.getConsumerForMeetings(meetingList, metaM, new ID<>(gId), adapter));
+
+        meetingRV.setAdapter(adapter);
     }
 
     public boolean getInfoWrongInput(){
