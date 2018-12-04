@@ -55,6 +55,8 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
     Button signout;
     Button applyButton;
     View view;
+    MeetingLocation favoriteLocation = MapsHelper.ROLEX_LOCATION;
+
     private TextView textDisplayLocation;
 
     public SettingsFragment()
@@ -65,7 +67,6 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
 
@@ -136,7 +137,7 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
         super.onActivityResult(requestCode, resultCode, d);
             MeetingLocation defaultLocation = ActivityHelper.meetingLocationFromBundle(requestCode, resultCode);
             if(defaultLocation != null) {
-                ref.select(Messages.FirebaseNode.USERS).select(uId).select("favoriteLocation").setVal(defaultLocation);
+                favoriteLocation = defaultLocation;
             }
     }
 
@@ -150,19 +151,18 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
     public void SetUpApply(){
         applyButton = view.findViewById(R.id.btn_settings_apply);
         applyButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ref.select(Messages.FirebaseNode.USERS).select(SettingsFragment.this.uId).select("favoriteLanguage").setVal(favoriteLanguage);
-            }
+           @Override
+           public void onClick(View v) {
+               ref.select(Messages.FirebaseNode.USERS).select(SettingsFragment.this.uId).select("favoriteLanguage").setVal(favoriteLanguage);
+               ref.select(Messages.FirebaseNode.USERS).select(uId).select("favoriteLocation").setVal(favoriteLocation);
+           }
+
         });
 
 
     }
 
-
     public void setUpLocation(){
-//        locationButton = view.findViewById(R.id.defaultLocation);
-//        locationButton.setOnClickListener(new View.OnClickListener() {
         textDisplayLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
