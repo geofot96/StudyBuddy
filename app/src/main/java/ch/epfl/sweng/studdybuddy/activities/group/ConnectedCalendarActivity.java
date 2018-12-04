@@ -30,6 +30,7 @@ import ch.epfl.sweng.studdybuddy.core.Pair;
 import ch.epfl.sweng.studdybuddy.firebase.FirebaseReference;
 import ch.epfl.sweng.studdybuddy.firebase.OnGetDataListener;
 import ch.epfl.sweng.studdybuddy.services.calendar.Availability;
+import ch.epfl.sweng.studdybuddy.services.calendar.Calendar;
 import ch.epfl.sweng.studdybuddy.services.calendar.ConcreteAvailability;
 import ch.epfl.sweng.studdybuddy.services.calendar.ConnectedAvailability;
 import ch.epfl.sweng.studdybuddy.services.calendar.ConnectedCalendar;
@@ -54,7 +55,7 @@ import static ch.epfl.sweng.studdybuddy.tools.AvailabilitiesHelper.readData;
  * availabilities dynamically. Touching a cell of the calendar will
  * modify our availability
  */
-public class ConnectedCalendarActivity extends AppCompatActivity
+public class ConnectedCalendarActivity extends AppCompatActivity implements Notifiable
 {
     GridLayout calendarGrid;
     private static final int CalendarWidth = 8;
@@ -105,7 +106,7 @@ public class ConnectedCalendarActivity extends AppCompatActivity
         calendar = new ConnectedCalendar(new ID<>(pair.getKey()), new HashMap<>());
 
         database = FirebaseDatabase.getInstance().getReference("availabilities").child(pair.getKey());
-        database.addChildEventListener(new AvailabilitiesChildEventListener());
+        database.addChildEventListener(calendarEventListener(calendar, this, database));
 
         readData(database.child(pair.getValue()), calendarGetDataListener(callbackCalendar()));
     }
@@ -152,46 +153,8 @@ public class ConnectedCalendarActivity extends AppCompatActivity
         }
     }
 
-    /**
-     * this ChildEventListener will set after any changes in the users availabilities
-     * the calendar to keep the activity updated with firebase
-     */
-    private class AvailabilitiesChildEventListener implements ChildEventListener{
-
-        @Override
-        public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-            String targetID = dataSnapshot.getKey();
-            FirebaseReference fb = new FirebaseReference(database.child(targetID));
-            fb.getAll(Boolean.class, new Consumer<List<Boolean>>() {
-                @Override
-                public void accept(List<Boolean> booleans) {
-                    calendar.modify(targetID, booleans);
-                    update();
-                }
-            });
-        }
-
-        @Override
-        public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-        }
-
-        @Override
-        public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-            String targetID = dataSnapshot.getKey();
-            calendar.removeUser(targetID);
-            update();
-        }
-
-        @Override
-        public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-        }
-
-        @Override
-        public void onCancelled(@NonNull DatabaseError databaseError) {
-
-        }
+    public void getNotified() {
+        update();
     }
 
 }

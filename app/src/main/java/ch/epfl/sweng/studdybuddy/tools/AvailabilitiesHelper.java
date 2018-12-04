@@ -29,14 +29,13 @@ public class AvailabilitiesHelper {
      * this ChildEventListener will set after any changes in the users availabilities
      * the calendar to keep the activity updated with firebase
      */
-    public static ChildEventListener calendarEventListener(ConnectedCalendar calendar, Notifiable callback) {
+    public static ChildEventListener calendarEventListener(ConnectedCalendar calendar, Notifiable callback, DatabaseReference database) {
         return  new ChildEventListener() {
-
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 String targetID = dataSnapshot.getKey();
-                FirebaseReference fb = new FirebaseReference();
-                fb.select(targetID).getAll(Boolean.class, new Consumer<List<Boolean>>() {
+                FirebaseReference fb = new FirebaseReference(database.child(targetID));
+                fb.getAll(Boolean.class, new Consumer<List<Boolean>>() {
                     @Override
                     public void accept(List<Boolean> booleans) {
                         calendar.modify(targetID, booleans);
