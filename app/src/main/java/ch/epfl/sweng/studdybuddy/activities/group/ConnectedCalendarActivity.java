@@ -73,17 +73,7 @@ public class ConnectedCalendarActivity extends AppCompatActivity
         calendarGrid = findViewById(R.id.calendarGrid);
         Button button = findViewById(R.id.confirmSlots);
 
-        GlobalBundle globalBundle = GlobalBundle.getInstance();
-        Bundle origin = globalBundle.getSavedBundle();
-
-        NmaxUsers = (float) origin.getInt(Messages.maxUser, -1);
-
-        pair.setKey(origin.getString(Messages.groupID));
-        pair.setValue(origin.getString(Messages.userID));
-        if(pair.getKey() == null || pair.getValue() == null){
-            throw new NullPointerException("the intent didn't content expected data");
-        }
-
+        retrieveData();
         connect();
 
         setOnToggleBehavior(calendarGrid);
@@ -95,6 +85,20 @@ public class ConnectedCalendarActivity extends AppCompatActivity
                 startActivity(new Intent(ConnectedCalendarActivity.this, GroupActivity.class));
             }
         });
+    }
+
+    void retrieveData() {
+        GlobalBundle globalBundle = GlobalBundle.getInstance();
+        Bundle origin = globalBundle.getSavedBundle();
+
+        NmaxUsers = (float) origin.getInt(Messages.maxUser, -1);
+
+        pair.setKey(origin.getString(Messages.groupID));
+        pair.setValue(origin.getString(Messages.userID));
+        if(pair.getKey() == null || pair.getValue() == null){
+            throw new NullPointerException("the intent didn't content expected data");
+        }
+
     }
 
     public void connect() {
