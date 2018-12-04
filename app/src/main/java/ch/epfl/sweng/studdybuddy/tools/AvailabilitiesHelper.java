@@ -34,8 +34,7 @@ public class AvailabilitiesHelper {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 String targetID = dataSnapshot.getKey();
-                FirebaseReference fb = new FirebaseReference(database.child(targetID));
-                fb.getAll(Boolean.class, new Consumer<List<Boolean>>() {
+                new FirebaseReference(database.child(targetID)).getAll(Boolean.class, new Consumer<List<Boolean>>() {
                     @Override
                     public void accept(List<Boolean> booleans) {
                         calendar.modify(targetID, booleans);
@@ -43,14 +42,11 @@ public class AvailabilitiesHelper {
                     }
                 });
             }
-
             @Override
             public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {}
-
             @Override
             public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-                String targetID = dataSnapshot.getKey();
-                calendar.removeUser(targetID);
+                calendar.removeUser(dataSnapshot.getKey());
                 callback.getNotified();
             }
             @Override
