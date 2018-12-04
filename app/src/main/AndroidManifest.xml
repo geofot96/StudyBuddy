@@ -29,31 +29,15 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activities.GroupsActivity"
-            android:parentActivityName=".activities.MainActivity">
-
-            <!-- The meta-data tag is required if you support API level 15 and lower -->
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activities.MainActivity" />
-        </activity>
-        <activity
-            android:name=".activities.CreateGroupActivity"
-            android:parentActivityName=".activities.GroupsActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activities.GroupsActivity" />
-        </activity>
-        <activity
             android:name=".activities.CourseSelectActivity"
-            android:parentActivityName=".activities.MainActivity">
+            android:parentActivityName=".activities.NavigationActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activities.CourseSelectActivity" />
         </activity>
         <activity
             android:name=".activities.ChatActivity"
-            android:parentActivityName=".activities.MainActivity">
+            android:parentActivityName=".activities.NavigationActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activities.NavigationActivity" />
@@ -61,8 +45,6 @@
         <activity android:name=".activities.ProfileTab" />
 
         <activity android:name=".auth.DummyGoogleSignInActivity" />
-        <activity android:name=".auth.DummyMainActivity" />
-        <activity android:name=".activities.MainActivity" />
         <activity android:name=".activities.group.ConnectedCalendarActivity" />
         <activity
             android:name=".activities.group.GroupActivity"
