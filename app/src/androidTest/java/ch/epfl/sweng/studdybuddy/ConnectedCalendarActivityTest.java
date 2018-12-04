@@ -39,17 +39,17 @@ public class ConnectedCalendarActivityTest{
         calendar = mActivityRule.getActivity().findViewById(R.id.calendarGrid);
     }
 
-    /*@Test
+    @Test
     public void seeAvailabilitiyInFirstTimeSlot(){
         CardView cardView = (CardView) calendar.getChildAt(1);
         boolean rightColors = (cardView.getCardBackgroundColor().getDefaultColor() == -16711936) && checkAreWhite(2);
         assertTrue(rightColors);
-    }*/
+    }
 
-    //@Test
-   // public void addAvailabilityInTimeSlot(){
-    //   assertEquals(-16711936, setAvailability(2));
-    //}
+    @Test
+    public void addAvailabilityInTimeSlot(){
+       assertEquals(-16711936, setAvailability(2));
+    }
 
     @Test
     public void removeAvailabilityInTimeSlot(){

@@ -48,7 +48,12 @@ public class GroupActivityTest {
         bundle.putString(Messages.ADMIN, Messages.TEST);
         GlobalBundle.getInstance().putAll(bundle);
     }
-
+    @Test
+    public void AdminCanLeadToCreateMeeting(){
+        mManualRule.launchActivity(new Intent());
+        testIntent(R.id.m, createMeetingActivity.class.getName());
+        mManualRule.finishActivity();
+    }
     /*@Test
     public void leadsToCalendar(){
         mManualRule.launchActivity(new Intent());
@@ -64,12 +69,7 @@ public class GroupActivityTest {
         mNotAdmin.finishActivity();
     }
 
-    @Test
-    public void AdminCanLeadToCreateMeeting(){
-        mManualRule.launchActivity(new Intent());
-        testIntent(R.id.createMeeting, createMeetingActivity.class.getName());
-        mManualRule.finishActivity();
-    }*/
+    */
     /*@Test
     public void leadsToNavigationActivity(){
         GroupActivity mActivity = mWrongInputInBundle.launchActivity(new Intent());
