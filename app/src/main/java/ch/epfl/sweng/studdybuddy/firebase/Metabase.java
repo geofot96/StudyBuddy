@@ -33,7 +33,7 @@ abstract public class Metabase {
             @Override
             public void accept(List<User> users) {
                 for(int i = 0; i < users.size(); ++i) {
-                    if(uIds.contains(users.get(i).getUserID().toString())) {
+                    if(users.get(i).getUserID() != null && uIds.contains(users.get(i).getUserID().toString())) {
                         groupUsers.add(users.get(i));
                     }
                 }

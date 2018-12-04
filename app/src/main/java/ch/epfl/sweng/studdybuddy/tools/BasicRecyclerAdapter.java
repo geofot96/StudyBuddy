@@ -112,6 +112,30 @@ public abstract class BasicRecyclerAdapter extends RecyclerView.Adapter<BasicRec
     public static class MyViewHolder extends RecyclerView.ViewHolder
     {
 
+        public TextView getGroupCourseTextView() {
+            return groupCourseTextView;
+        }
+
+        public View getItemView() {
+            return itemView;
+        }
+
+        public TextView getGroupParticipantInfoTextView() {
+            return groupParticipantInfoTextView;
+        }
+
+        public TextView getGroupLanguageTextView() {
+            return groupLanguageTextView;
+        }
+
+        public Button getMessageButton() {
+            return messageButton;
+        }
+
+        public TextView getGroupCreationDateTextView() {
+            return groupCreationDateTextView;
+        }
+
         public TextView groupCourseTextView;
         public TextView groupParticipantInfoTextView;
         public TextView groupLanguageTextView;
@@ -128,6 +152,9 @@ public abstract class BasicRecyclerAdapter extends RecyclerView.Adapter<BasicRec
             messageButton = (Button) itemView.findViewById(R.id.message_button);
             groupCreationDateTextView = (TextView) itemView.findViewById(R.id.creation_date);
             admin = (TextView) itemView.findViewById(R.id.admin);
+        }
+        public TextView getAdmin() {
+            return admin;
         }
     }
 
