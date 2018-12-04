@@ -20,12 +20,12 @@ import ch.epfl.sweng.studdybuddy.util.Messages;
 
 public class ChatRecyclerAdapter extends BasicRecyclerAdapter
 {
-    public ChatRecyclerAdapter(List<Group> groupList, String userId)
-    {
+
+    public ChatRecyclerAdapter(MetaGroup mg, FirebaseReference fr, List<Group> groupList, String userId) {
         setGroupList(groupList);
         setFilterList(groupList);
-        setMb(new MetaGroup());
-        fb = new FirebaseReference();
+        setMb(mg);
+        fb = fr;
         setUserId(userId);
         setuGroups(new ArrayList<>());
         setSizes(new HashMap<>());
@@ -33,7 +33,11 @@ public class ChatRecyclerAdapter extends BasicRecyclerAdapter
         getMb().addListenner(new RecyclerAdapterAdapter(this));
         getMb().getUserGroups(userId, getuGroupIds(), getuGroups());
         getMb().getAllGroupSizes(getSizes());
+    }
+    public ChatRecyclerAdapter(List<Group> groupList, String userId)
+    {
 
+        this(new MetaGroup(), new FirebaseReference(), groupList, userId);
     }
 
     @NonNull
@@ -51,11 +55,10 @@ public class ChatRecyclerAdapter extends BasicRecyclerAdapter
     public void onBindViewHolder(@NonNull BasicRecyclerAdapter.MyViewHolder holder, int position)
     {
         Group group = getGroupList().get(position);
-        holder.groupCourseTextView.setText(group.getCourse().getCourseName());
-        holder.groupLanguageTextView.setText(group.getLang());
-
-        setParticipantNumber(holder.groupParticipantInfoTextView, group);
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
+        holder.getGroupCourseTextView().setText(group.getCourse().getCourseName());
+        holder.getGroupLanguageTextView().setText(group.getLang());
+        setParticipantNumber(holder.getGroupParticipantInfoTextView(), group);
+        holder.getItemView().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent i=new Intent(holder.itemView.getContext(), ChatActivity.class);
@@ -66,11 +69,11 @@ public class ChatRecyclerAdapter extends BasicRecyclerAdapter
         });
         if(getUserId().equals(group.getAdminID()))
         {
-            holder.admin.setText("\uD83D\uDC51");
+            holder.getAdmin().setText("\uD83D\uDC51");
         }
         else
         {
-            holder.admin.setText("");
+            holder.getAdmin().setText("");
         }
 
     }
