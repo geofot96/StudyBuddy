@@ -123,9 +123,9 @@ public class GroupActivity extends AppCompatActivity implements Notifiable, Resu
         Button button = findViewById(R.id.editAvail);
         pair.setKey(gId);
         pair.setValue(uId);
-        if(pair.getKey() == null || pair.getValue() == null){
+        /*if(pair.getKey() == null || pair.getValue() == null){
             throw new NullPointerException("the intent didn't content expected data");
-        }
+        }*/
         calendar = new ConnectedCalendar(new ID<>(pair.getKey()), new HashMap<>());
 
         database = FirebaseDatabase.getInstance().getReference("availabilities").child(pair.getKey());
