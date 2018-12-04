@@ -35,6 +35,7 @@ import ch.epfl.sweng.studdybuddy.core.ID;
 import ch.epfl.sweng.studdybuddy.core.Pair;
 import ch.epfl.sweng.studdybuddy.core.User;
 import ch.epfl.sweng.studdybuddy.firebase.FirebaseReference;
+import ch.epfl.sweng.studdybuddy.firebase.MetaGroup;
 import ch.epfl.sweng.studdybuddy.firebase.MetaGroupAdmin;
 import ch.epfl.sweng.studdybuddy.firebase.MetaMeeting;
 import ch.epfl.sweng.studdybuddy.firebase.OnGetDataListener;
@@ -49,6 +50,7 @@ import ch.epfl.sweng.studdybuddy.tools.Consumer;
 import ch.epfl.sweng.studdybuddy.tools.Notifiable;
 import ch.epfl.sweng.studdybuddy.tools.ParticipantAdapter;
 import ch.epfl.sweng.studdybuddy.tools.RecyclerAdapterAdapter;
+import ch.epfl.sweng.studdybuddy.tools.Resultable;
 import ch.epfl.sweng.studdybuddy.util.ActivityHelper;
 import ch.epfl.sweng.studdybuddy.util.Messages;
 import ch.epfl.sweng.studdybuddy.util.StudyBuddy;
@@ -57,7 +59,7 @@ import static ch.epfl.sweng.studdybuddy.services.calendar.Color.updateColor;
 import static ch.epfl.sweng.studdybuddy.tools.AvailabilitiesHelper.calendarEventListener;
 import static ch.epfl.sweng.studdybuddy.tools.AvailabilitiesHelper.calendarGetDataListener;
 import static ch.epfl.sweng.studdybuddy.tools.AvailabilitiesHelper.readData;
-public class GroupActivity extends AppCompatActivity implements Notifiable {
+public class GroupActivity extends AppCompatActivity implements Notifiable, Resultable {
     private boolean wrongInput = false;
     List<User> participants  = new ArrayList<>();
     MetaGroupAdmin mb  = new MetaGroupAdmin();
@@ -92,15 +94,27 @@ public class GroupActivity extends AppCompatActivity implements Notifiable {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent d){
-        if(requestCode == 1 && resultCode == RESULT_OK){
-            Bundle data = GlobalBundle.getInstance().getSavedBundle();
-            MeetingLocation meetingLocation = new MeetingLocation(
-                    data.getString(Messages.LOCATION_TITLE),
-                    data.getString(Messages.ADDRESS),
-                    data.getDouble(Messages.LATITUDE, 0),
-                    data.getDouble(Messages.LONGITUDE, 0)
-            );
-            metaM.pushLocation(meetingLocation, new ID<>(gId), new ID<>(data.getString(Messages.meetingID)));
+        resultActivity(requestCode, resultCode, this);
+    }
+
+    public void onResult() {
+        GroupActivity.onResult(GlobalBundle.getInstance().getSavedBundle(), metaM, gId);
+    }
+
+    public static void onResult(Bundle data, MetaMeeting metaM, String gId) {
+        MeetingLocation meetingLocation = new MeetingLocation(
+                data.getString(Messages.LOCATION_TITLE),
+                data.getString(Messages.ADDRESS),
+                data.getDouble(Messages.LATITUDE, 0),
+                data.getDouble(Messages.LONGITUDE, 0)
+        );
+        metaM.pushLocation(meetingLocation, new ID<>(gId), new ID<>(data.getString(Messages.meetingID)));
+    }
+
+    public static void resultActivity(int requestCode, int resultCode, Resultable res) {
+
+        if(requestCode == 1 && resultCode == RESULT_OK) {
+            res.onResult();
         }
     }
 

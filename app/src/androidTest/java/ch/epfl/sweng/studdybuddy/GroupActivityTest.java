@@ -1,5 +1,6 @@
 package ch.epfl.sweng.studdybuddy;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.test.espresso.intent.rule.IntentsTestRule;
@@ -12,6 +13,9 @@ import ch.epfl.sweng.studdybuddy.activities.group.ConnectedCalendarActivity;
 import ch.epfl.sweng.studdybuddy.activities.group.GlobalBundle;
 import ch.epfl.sweng.studdybuddy.activities.group.GroupActivity;
 import ch.epfl.sweng.studdybuddy.activities.group.meetings.createMeetingActivity;
+import ch.epfl.sweng.studdybuddy.core.Group;
+import ch.epfl.sweng.studdybuddy.firebase.MetaMeeting;
+import ch.epfl.sweng.studdybuddy.tools.Resultable;
 import ch.epfl.sweng.studdybuddy.util.Messages;
 
 import static android.support.test.espresso.Espresso.onView;
@@ -24,6 +28,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static org.hamcrest.CoreMatchers.not;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.mock;
 
 public class GroupActivityTest {
   @Test
@@ -53,6 +58,20 @@ public class GroupActivityTest {
         mManualRule.launchActivity(new Intent());
         testIntent(R.id.createMeeting, createMeetingActivity.class.getName());
         mManualRule.finishActivity();
+    }
+
+    @Test
+    public void resultActivity() {
+        Resultable res = mock(Resultable.class);
+        GroupActivity.resultActivity(0, Activity.RESULT_OK, res);
+        GroupActivity.resultActivity(1, Activity.RESULT_OK, res);
+        GroupActivity.resultActivity(1, Activity.RESULT_CANCELED, res);
+    }
+    @Test
+    public void onResult() {
+        Bundle data  = mock(Bundle.class);
+        MetaMeeting mm = mock(MetaMeeting.class);
+        GroupActivity.onResult(data, mm, "");
     }
     /*@Test
     public void leadsToCalendar(){
