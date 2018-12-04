@@ -48,7 +48,13 @@ import static ch.epfl.sweng.studdybuddy.tools.AvailabilitiesHelper.readData;
  * availabilities dynamically. Touching a cell of the calendar will
  * modify our availability
  */
-public class ConnectedCalendarActivity extends AppCompatActivity implements Notifiable
+/**
+ * On this activity we're able as a user of the group to see
+ * all availabilities of each user of the group and update our own
+ * availabilities dynamically. Touching a cell of the calendar will
+ * modify our availability
+ */
+public class ConnectedCalendarActivity extends AppCompatActivity
 {
     GridLayout calendarGrid;
     private static final int CalendarWidth = 8;
@@ -71,7 +77,7 @@ public class ConnectedCalendarActivity extends AppCompatActivity implements Noti
         Bundle origin = globalBundle.getSavedBundle();
 
         NmaxUsers = (float) origin.getInt(Messages.maxUser, -1);
-        if(NmaxUsers < 0 ) throw new IllegalStateException();
+
         pair.setKey(origin.getString(Messages.groupID));
         pair.setValue(origin.getString(Messages.userID));
         if(pair.getKey() == null || pair.getValue() == null){
@@ -80,11 +86,13 @@ public class ConnectedCalendarActivity extends AppCompatActivity implements Noti
 
         connect();
 
+        setOnToggleBehavior(calendarGrid);
+
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v)
             {
-                confirmSlots();
+                startActivity(new Intent(ConnectedCalendarActivity.this, GroupActivity.class));
             }
         });
     }
@@ -93,16 +101,9 @@ public class ConnectedCalendarActivity extends AppCompatActivity implements Noti
         calendar = new ConnectedCalendar(new ID<>(pair.getKey()), new HashMap<>());
 
         database = FirebaseDatabase.getInstance().getReference("availabilities").child(pair.getKey());
-        database.addChildEventListener(calendarEventListener(calendar, this));
+        database.addChildEventListener(new AvailabilitiesChildEventListener());
 
-        readData(database.child(pair.getValue()), calendarGetDataListener(new Consumer<List<Boolean>>() {
-            @Override
-            public void accept(List<Boolean> booleans) {
-                userAvailabilities = new ConnectedAvailability(pair.getValue(), pair.getKey(), new ConcreteAvailability(booleans), new FirebaseReference());
-
-                setOnToggleBehavior();
-            }
-        }));
+        readData(database.child(pair.getValue()), new AvailabilitiesOnDataGetListener());
     }
     /**
      * Set the behavior of every cell of the calendar so that
@@ -110,7 +111,7 @@ public class ConnectedCalendarActivity extends AppCompatActivity implements Noti
      * appropriate time slot
      * @param calendarGrid the View of the calendar
      */
-    public void setOnToggleBehavior(){
+    public void setOnToggleBehavior(GridLayout calendarGrid){
         for(int i = 0; i < calendarGrid.getChildCount(); i++)
         {
             CardView cardView = (CardView) calendarGrid.getChildAt(i);
@@ -121,18 +122,10 @@ public class ConnectedCalendarActivity extends AppCompatActivity implements Noti
                     @Override
                     public void onClick(View v) {
                         userAvailabilities.modifyAvailability(row, column-1);
-                        update();
                     }
                 });
             }
         }
-    }
-    /**
-     * clicking on the confirm button leads us to GroupActivity
-     */
-    public void confirmSlots() {
-        Intent newIntent = new Intent(this, GroupActivity.class);
-        startActivity(newIntent);
     }
 
     /**
@@ -146,8 +139,92 @@ public class ConnectedCalendarActivity extends AppCompatActivity implements Noti
         }
     }
 
-    @Override
-    public void getNotified() {
-        update();
+    /**
+     * reading only once data in the database synchronously
+     *
+     * @param db the node of the database where we want to retrieve some data
+     * @param listener from {@link OnGetDataListener}
+     */
+    public void readData(DatabaseReference db, final OnGetDataListener listener){
+        listener.onStart();
+        db.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                listener.onSuccess(dataSnapshot);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                listener.onFailure();
+            }
+        });
+    }
+
+    /**
+     * this ChildEventListener will set after any changes in the users availabilities
+     * the calendar to keep the activity updated with firebase
+     */
+    private class AvailabilitiesChildEventListener implements ChildEventListener{
+
+        @Override
+        public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+            String targetID = dataSnapshot.getKey();
+            FirebaseReference fb = new FirebaseReference(database.child(targetID));
+            fb.getAll(Boolean.class, new Consumer<List<Boolean>>() {
+                @Override
+                public void accept(List<Boolean> booleans) {
+                    calendar.modify(targetID, booleans);
+                    update();
+                }
+            });
+        }
+
+        @Override
+        public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+        }
+
+        @Override
+        public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+            String targetID = dataSnapshot.getKey();
+            calendar.removeUser(targetID);
+            update();
+        }
+
+        @Override
+        public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+        }
+
+        @Override
+        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+        }
+    }
+
+    /**
+     * this listener will wait for the data contained in firebase so that
+     * we can initializing <tt>userAvailabilities</tt> with the newly retrieved
+     * list of booleans
+     */
+    private class AvailabilitiesOnDataGetListener implements OnGetDataListener{
+        @Override
+        public void onSuccess(DataSnapshot dataSnapshot) {
+            List<Boolean> list = new ArrayList<>();
+            for(DataSnapshot ds: dataSnapshot.getChildren()){
+                list.add(ds.getValue(Boolean.class));
+            }
+            userAvailabilities = new ConnectedAvailability(pair.getValue(), pair.getKey(), new ConcreteAvailability(list), new FirebaseReference());
+        }
+
+        @Override
+        public void onStart() {
+            Log.d("ON START", "retrieve availabilities of the user");
+        }
+
+        @Override
+        public void onFailure() {
+            Log.d("ON FAILURE", "didn't retrieve availabailities of the user");
+        }
     }
 }
