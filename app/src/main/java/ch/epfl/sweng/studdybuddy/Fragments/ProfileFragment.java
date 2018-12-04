@@ -1,7 +1,9 @@
 package ch.epfl.sweng.studdybuddy.Fragments;
 
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -10,12 +12,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import ch.epfl.sweng.studdybuddy.R;
+import ch.epfl.sweng.studdybuddy.activities.NavigationActivity;
+import ch.epfl.sweng.studdybuddy.auth.AuthManager;
+import ch.epfl.sweng.studdybuddy.auth.FirebaseAuthManager;
+import ch.epfl.sweng.studdybuddy.auth.GoogleSignInActivity;
 import ch.epfl.sweng.studdybuddy.core.Group;
 import ch.epfl.sweng.studdybuddy.core.User;
 import ch.epfl.sweng.studdybuddy.firebase.FirebaseReference;
@@ -40,6 +48,7 @@ public class ProfileFragment extends Fragment
     private User user;
     private String userID;
     private MetaGroup metabase;
+    private AuthManager mAuth = null;
 
     public ProfileFragment()
     {
@@ -92,5 +101,40 @@ public class ProfileFragment extends Fragment
     public ReferenceWrapper getDB(){
         return new FirebaseReference();
     }
+    public AuthManager getAuthManager()
+    {
+        if(mAuth == null)
+        {
+            //mAuth = new FirebaseAuthManager(NavigationActivity.this, getString(R.string.default_web_client_id));
+        }
+        return mAuth;
+    }
+
+
+    private void signOut(){
+        /*getAuthManager().logout().addOnCompleteListener(this,
+                new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        startActivity(new Intent(ProfileFragment.this, GoogleSignInActivity.class));
+                    }
+                });*/
+    }
+
+    /*
+    *
+    @Override
+    protected void onStart()
+    {
+        super.onStart();
+        Account currentUser = getAuthManager().getCurrentUser();
+        if(currentUser == null)
+        {
+            signOut();
+        }
+    }
+
+    * */
+
 
 }

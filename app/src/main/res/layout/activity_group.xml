@@ -69,7 +69,8 @@
                 </TableRow>
                 <TableRow
                     android:layout_marginTop="16dp"
-                    android:layout_width="match_parent">
+                    android:layout_width="match_parent"
+                    android:gravity="center_horizontal">
 
 
                     <Button
@@ -79,7 +80,6 @@
                         android:background="@color/errorColor"
                         android:text="Leave Group"
                         android:textColor="@color/buttonTextColor"
-                        android:layout_centerHorizontal="true"
                         />
                 </TableRow>
                 <TableRow>
