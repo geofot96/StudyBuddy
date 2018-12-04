@@ -53,6 +53,8 @@ import ch.epfl.sweng.studdybuddy.util.Messages;
 import ch.epfl.sweng.studdybuddy.util.StudyBuddy;
 
 import static ch.epfl.sweng.studdybuddy.tools.AvailabilitiesHelper.calendarEventListener;
+import static ch.epfl.sweng.studdybuddy.tools.AvailabilitiesHelper.calendarGetDataListener;
+import static ch.epfl.sweng.studdybuddy.tools.AvailabilitiesHelper.readData;
 
 public class GroupActivity extends AppCompatActivity implements Notifiable {
     private boolean wrongInput = false;
@@ -212,7 +214,12 @@ public class GroupActivity extends AppCompatActivity implements Notifiable {
         database = FirebaseDatabase.getInstance().getReference("availabilities").child(pair.getKey());
         database.addChildEventListener(calendarEventListener(calendar, this));
 
-        readData(database.child(pair.getValue()), new GroupActivity.AvailabilitiesOnDataGetListener());
+        readData(database.child(pair.getValue()), calendarGetDataListener(new Consumer<List<Boolean>>() {
+            @Override
+            public void accept(List<Boolean> booleans) {
+                userAvailabilities = new ConnectedAvailability(pair.getValue(), pair.getKey(), new ConcreteAvailability(booleans), new FirebaseReference());
+            }
+        }));
     }
     /**
      * Set the behavior of every cell of the calendar so that
@@ -263,7 +270,7 @@ public class GroupActivity extends AppCompatActivity implements Notifiable {
             if (i % CalendarWidth != 0) {//Hours shouldn't be clickable
                 cardView = (CardView) calendarGrid.getChildAt(i);
                 int index = (i / CalendarWidth) * (CalendarWidth - 1) + (i % CalendarWidth) - 1;
-                cardView.setCardBackgroundColor(gradient((float) av.get(index), NmaxUsers));
+                cardView.setCardBackgroundColor(gradient((float) av.get(index)));
             }
         }
     }
@@ -277,7 +284,7 @@ public class GroupActivity extends AppCompatActivity implements Notifiable {
      * @param nAvailableUser the number of available users in this time slot
      * @return the right color according to the ration of available users
      */
-    private int gradient(float nAvailableUser, float NmaxUsers){
+    private int gradient(float nAvailableUser){
         float[] hsv = new float[3];
         Color.colorToHSV(Color.WHITE, hsv);
         float s = hsv[1];
@@ -287,50 +294,6 @@ public class GroupActivity extends AppCompatActivity implements Notifiable {
         return Color.HSVToColor(hsv);
     }
 
-    /**
-     * reading only once data in the database synchronously
-     *
-     * @param db the node of the database where we want to retrieve some data
-     * @param listener from {@link OnGetDataListener}
-     */
-    public void readData(DatabaseReference db, final OnGetDataListener listener){
-        listener.onStart();
-        db.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                listener.onSuccess(dataSnapshot);
-            }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                listener.onFailure();
-            }
-        });
-    }
 
-    /**
-     * this listener will wait for the data contained in firebase so that
-     * we can initializing <tt>userAvailabilities</tt> with the newly retrieved
-     * list of booleans
-     */
-    private class AvailabilitiesOnDataGetListener implements OnGetDataListener{
-        @Override
-        public void onSuccess(DataSnapshot dataSnapshot) {
-            List<Boolean> list = new ArrayList<>();
-            for(DataSnapshot ds: dataSnapshot.getChildren()){
-                list.add(ds.getValue(Boolean.class));
-            }
-            userAvailabilities = new ConnectedAvailability(pair.getValue(), pair.getKey(), new ConcreteAvailability(list), new FirebaseReference());
-        }
-
-        @Override
-        public void onStart() {
-            Log.d("ON START", "retrieve availabilities of the user");
-        }
-
-        @Override
-        public void onFailure() {
-            Log.d("ON FAILURE", "didn't retrieve availabailities of the user");
-        }
-    }
 }

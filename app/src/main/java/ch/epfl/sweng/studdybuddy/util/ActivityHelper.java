@@ -46,35 +46,7 @@ public class ActivityHelper {
             }
         };
     }
-  /*  public static Consumer<List<Meeting>> meetingConsumer(TextView title, Button time, Button date, Button plus) {
-        return new Consumer<List<Meeting>>() {
-            @Override
-            public void accept(List<Meeting> meetings) {
-                if(meetings.size() == 0) {
-                    title.setVisibility(View.GONE);
-                    time.setVisibility(View.GONE);
-                    date.setVisibility(View.GONE);
-                }
-                else {
-                    date.setText(meetings.get(0).date());
-                    time.setText(meetings.get(meetings.size()-1).time());
-                    title.setVisibility(View.VISIBLE);
-                    time.setVisibility(View.VISIBLE);
-                    date.setVisibility(View.VISIBLE);
-                    plus.setVisibility(View.GONE);
-                }
-            }
-        };
-    }*/
- /*   public static Consumer<List<Meeting>> singleMeeting(Meeting dest) {
-        return new Consumer<List<Meeting>>() {
-            @Override
-            public void accept(List<Meeting> meetings) {
-                if(!meetings.isEmpty()) dest.copy(meetings.get(0));
-            }
-        };
-    }
- */   public static android.app.DatePickerDialog.OnDateSetListener listenDate(TextView mDisplayDate, Date startingDate, Date endingDate, AdapterAdapter adapter) {
+   public static android.app.DatePickerDialog.OnDateSetListener listenDate(TextView mDisplayDate, Date startingDate, Date endingDate, AdapterAdapter adapter) {
         return new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
