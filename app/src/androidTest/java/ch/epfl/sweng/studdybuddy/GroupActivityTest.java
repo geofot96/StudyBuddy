@@ -67,12 +67,7 @@ public class GroupActivityTest {
         GroupActivity.resultActivity(1, Activity.RESULT_OK, res);
         GroupActivity.resultActivity(1, Activity.RESULT_CANCELED, res);
     }
-    @Test
-    public void onResult() {
-        Bundle data  = mock(Bundle.class);
-        MetaMeeting mm = mock(MetaMeeting.class);
-        GroupActivity.onResult(data, mm, "");
-    }
+
     /*@Test
     public void leadsToCalendar(){
         mManualRule.launchActivity(new Intent());
