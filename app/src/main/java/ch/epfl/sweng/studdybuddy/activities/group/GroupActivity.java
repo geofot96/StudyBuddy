@@ -25,6 +25,7 @@ import ch.epfl.sweng.studdybuddy.core.User;
 import ch.epfl.sweng.studdybuddy.firebase.MetaGroupAdmin;
 import ch.epfl.sweng.studdybuddy.firebase.MetaMeeting;
 import ch.epfl.sweng.studdybuddy.services.meeting.Meeting;
+import ch.epfl.sweng.studdybuddy.services.meeting.MeetingLocation;
 import ch.epfl.sweng.studdybuddy.services.meeting.MeetingRecyclerAdapter;
 import ch.epfl.sweng.studdybuddy.tools.ParticipantAdapter;
 import ch.epfl.sweng.studdybuddy.tools.RecyclerAdapterAdapter;
@@ -41,7 +42,7 @@ public class GroupActivity extends AppCompatActivity {
     Button button;
     List<Group> group = new ArrayList<>();
     List<String> gIds = new ArrayList<>();
-    private MetaMeeting metaM;
+    private MetaMeeting metaM = new MetaMeeting();
 
     private List<Meeting> meetingList;
 
@@ -85,8 +86,6 @@ public class GroupActivity extends AppCompatActivity {
 
         meetingList = new ArrayList<>();
 
-        metaM = new MetaMeeting();
-
         adapter = new MeetingRecyclerAdapter(this, this, meetingList, new Pair(gId, adminId));
 
         metaM.getMeetingsOfGroup(new ID<>(gId), ActivityHelper.getConsumerForMeetings(meetingList, metaM, new ID<>(gId), adapter));
@@ -98,6 +97,19 @@ public class GroupActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent d){
+        if(requestCode == 1 && resultCode == RESULT_OK){
+            Bundle data = GlobalBundle.getInstance().getSavedBundle();
+            MeetingLocation meetingLocation = new MeetingLocation(
+                    data.getString(Messages.LOCATION_TITLE),
+                    data.getString(Messages.ADDRESS),
+                    data.getDouble(Messages.LATITUDE, 0),
+                    data.getDouble(Messages.LONGITUDE, 0)
+            );
+            metaM.pushLocation(meetingLocation, new ID<>(gId), new ID<>(data.getString(Messages.meetingID)));
+        }
+    }
 
 
     private void goToActivity(Intent intent){

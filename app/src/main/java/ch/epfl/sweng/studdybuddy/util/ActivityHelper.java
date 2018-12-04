@@ -5,6 +5,7 @@ import android.app.TimePickerDialog;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -125,6 +126,7 @@ public class ActivityHelper {
             @Override
             public void accept(List<Meeting> meetings) {
                 meetingList.clear();
+                Log.i("DEBUG", Integer.toString(meetings.size()));
                 for (Meeting m : meetings) {
                     checkMeeting(m, metaM, groupId, meetingList);
                 }

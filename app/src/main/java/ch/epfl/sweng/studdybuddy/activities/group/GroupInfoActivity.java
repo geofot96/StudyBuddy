@@ -42,7 +42,7 @@ public class GroupInfoActivity extends AppCompatActivity{
         setUI();
     }
 
-    public void setUI(){
+    public void setUI() {
         ParticipantAdapter participantAdapter = new ParticipantAdapter(participants);
         mb.addListenner(new RecyclerAdapterAdapter(participantAdapter));
         RecyclerView participantsRv = (RecyclerView) findViewById(R.id.participantsRecyclerVIew);

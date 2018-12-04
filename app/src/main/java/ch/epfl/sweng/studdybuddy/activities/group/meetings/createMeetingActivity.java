@@ -6,6 +6,7 @@ import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -25,6 +26,7 @@ import ch.epfl.sweng.studdybuddy.services.meeting.Meeting;
 import ch.epfl.sweng.studdybuddy.services.meeting.MeetingLocation;
 import ch.epfl.sweng.studdybuddy.tools.AdapterAdapter;
 import ch.epfl.sweng.studdybuddy.util.ActivityHelper;
+import ch.epfl.sweng.studdybuddy.util.MapsHelper;
 import ch.epfl.sweng.studdybuddy.util.Messages;
 
 
@@ -70,9 +72,9 @@ public class createMeetingActivity extends AppCompatActivity {
         initDisplayTime();
 
         mDisplayLocation = findViewById(R.id.locationTitle);
-        setClickOnLocation();
-
-
+        //setClickOnLocation();
+        meetingLocation = MapsHelper.ROLEX_LOCATION;
+        mDisplayLocation.setText(meetingLocation.getTitle() + ": " + meetingLocation.getAddress());
         initSaveBtn();
     }
 
@@ -108,6 +110,7 @@ public class createMeetingActivity extends AppCompatActivity {
                 meeting.setStarting(startingDate.getTime());
                 meeting.setEnding(endingDate.getTime());
                 meeting.setLocation(meetingLocation);
+                Log.i("DEBUG", "pushing");
                 metaM.pushMeeting(meeting, new ID<>(groupID));
                 Intent intent = new Intent(createMeetingActivity.this, GroupActivity.class);
                 GlobalBundle.getInstance().putAll(origin);
@@ -127,7 +130,7 @@ public class createMeetingActivity extends AppCompatActivity {
                     data.getString(Messages.ADDRESS),
                     data.getDouble(Messages.LATITUDE, 0),
                     data.getDouble(Messages.LONGITUDE, 0));
-            mDisplayLocation.setText(meetingLocation.getTitle() + ": " + meetingLocation.getAddress());
+            //mDisplayLocation.setText(meetingLocation.getTitle() + ": " + meetingLocation.getAddress());
             updateButton();
         }
     }
@@ -135,12 +138,7 @@ public class createMeetingActivity extends AppCompatActivity {
     private void updateButton(){
         boolean correctTimeSlot = endingDate.after(startingDate);
         boolean isTooLate = startingDate.before(new Date());
-        if(correctTimeSlot && !isTooLate && meetingLocation != null){
-            saveBtn.setEnabled(true);
-        }else{
-            saveBtn.setEnabled(false);
-        }
-
+        saveBtn.setEnabled(correctTimeSlot && !isTooLate && meetingLocation != null);
     }
 
 

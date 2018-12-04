@@ -5,11 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".activities.ProfileTab">
-
     <LinearLayout
         android:id="@+id/linearLayout3"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_marginBottom="16dp"
         android:layout_marginTop="16dp"
         android:orientation="vertical"
@@ -18,7 +17,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
-
         <TextView
             android:id="@+id/profile_tab_name"
             android:layout_width="match_parent"
@@ -26,7 +24,6 @@
             android:text="Profile"
             android:textAlignment="center"
             android:textSize="28sp" />
-
         <TextView
             android:id="@+id/profile_name_text"
             android:layout_width="match_parent"
@@ -34,33 +31,79 @@
             android:text="Student Name"
             android:textAlignment="center"
             android:textSize="22sp" />
-
-        <TextView
-            android:id="@+id/courses_field_title"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="My Courses"
-            android:textAlignment="center"
-            android:textSize="22sp" />
+            android:layout_height="match_parent">
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TableLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TableRow>
+                        <TextView
+                            android:id="@+id/courses_field_title"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="My Courses"
+                            android:textAlignment="center"
+                            android:textSize="22sp" />
+                    </TableRow>
+                    <TableRow>
+                        <android.support.v7.widget.RecyclerView
+                            android:id="@+id/courses_list"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+                    </TableRow>
+                    <TableRow>
+                        <TextView
+                            android:id="@+id/groups_field_title"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="My Groups"
+                            android:textAlignment="center"
+                            android:textSize="22sp" />
+                    </TableRow>
+                    <TableRow>
+                        <android.support.v7.widget.RecyclerView
+                            android:id="@+id/groups_list"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+                    </TableRow>
+                    <TableRow>
+                        <Button
+                            android:id="@+id/signout_btn"
+                            android:layout_width="160dp"
+                            android:layout_height="wrap_content"
+                            android:background="@color/errorColor"
+                            android:text="Sign Out"
+                            android:textColor="@color/buttonTextColor"
+                            android:layout_centerHorizontal="true"
+                            />
+                    </TableRow>
+                </TableLayout>
+            </ScrollView>
+        </RelativeLayout>
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/courses_list"
-            android:layout_width="match_parent"
-            android:layout_height="194dp" />
-
-        <TextView
-            android:id="@+id/groups_field_title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="My Groups"
-            android:textAlignment="center"
-            android:textSize="22sp" />
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/groups_list"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
 
     </LinearLayout>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 </android.support.constraint.ConstraintLayout>
