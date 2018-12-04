@@ -103,7 +103,16 @@ public class ConnectedCalendarActivity extends AppCompatActivity
         database = FirebaseDatabase.getInstance().getReference("availabilities").child(pair.getKey());
         database.addChildEventListener(new AvailabilitiesChildEventListener());
 
-        readData(database.child(pair.getValue()), new AvailabilitiesOnDataGetListener());
+        readData(database.child(pair.getValue()), calendarGetDataListener(callbackCalendar()));
+    }
+    public Consumer<List<Boolean>> callbackCalendar() {
+        return new Consumer<List<Boolean>>() {
+            @Override
+            public void accept(List<Boolean> booleans) {
+                userAvailabilities = new ConnectedAvailability(pair.getValue(), pair.getKey(), new ConcreteAvailability(booleans), new FirebaseReference());
+                update();
+            }
+        };
     }
     /**
      * Set the behavior of every cell of the calendar so that
@@ -137,27 +146,6 @@ public class ConnectedCalendarActivity extends AppCompatActivity
         if(groupAvailabilities.size() == 77) {
             updateColor(calendarGrid, groupAvailabilities, NmaxUsers, CalendarWidth);
         }
-    }
-
-    /**
-     * reading only once data in the database synchronously
-     *
-     * @param db the node of the database where we want to retrieve some data
-     * @param listener from {@link OnGetDataListener}
-     */
-    public void readData(DatabaseReference db, final OnGetDataListener listener){
-        listener.onStart();
-        db.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                listener.onSuccess(dataSnapshot);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                listener.onFailure();
-            }
-        });
     }
 
     /**
