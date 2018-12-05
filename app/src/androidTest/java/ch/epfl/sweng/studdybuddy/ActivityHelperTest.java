@@ -1,7 +1,6 @@
 package ch.epfl.sweng.studdybuddy;
 
-import android.app.Activity;
-import android.content.Context;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
@@ -18,20 +17,18 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import ch.epfl.sweng.studdybuddy.activities.group.GlobalBundle;
 import ch.epfl.sweng.studdybuddy.core.Group;
 import ch.epfl.sweng.studdybuddy.core.ID;
-import ch.epfl.sweng.studdybuddy.core.Pair;
-import ch.epfl.sweng.studdybuddy.core.User;
 import ch.epfl.sweng.studdybuddy.firebase.MetaMeeting;
 import ch.epfl.sweng.studdybuddy.services.meeting.Meeting;
-import ch.epfl.sweng.studdybuddy.services.meeting.MeetingRecyclerAdapter;
 import ch.epfl.sweng.studdybuddy.tools.AdapterAdapter;
 import ch.epfl.sweng.studdybuddy.tools.Consumer;
-import ch.epfl.sweng.studdybuddy.tools.ParticipantAdapter;
 import ch.epfl.sweng.studdybuddy.util.ActivityHelper;
+import ch.epfl.sweng.studdybuddy.util.MapsHelper;
 import ch.epfl.sweng.studdybuddy.util.Messages;
-import ch.epfl.sweng.studdybuddy.util.StudyBuddy;
 
+import static android.app.Activity.RESULT_OK;
 import static ch.epfl.sweng.studdybuddy.util.ActivityHelper.getConsumerForMeetings;
 import static ch.epfl.sweng.studdybuddy.util.ActivityHelper.listenDate;
 import static ch.epfl.sweng.studdybuddy.util.ActivityHelper.listenTime;
@@ -42,7 +39,6 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 //import static ch.epfl.sweng.studdybuddy.util.ActivityHelper.listenDate;
 //import static ch.epfl.sweng.studdybuddy.util.ActivityHelper.listenTime;
@@ -167,7 +163,7 @@ public class ActivityHelperTest {
     public void testAdminSeesAddButton() {
         adminMeeting(plus, withAdmin("a"), "a");
         verify(plus).setVisibility(View.VISIBLE);
-    }
+     }
 
     @Test
     public void testUserCantAdd() {
@@ -175,4 +171,20 @@ public class ActivityHelperTest {
         verify(plus).setVisibility(View.GONE);
     }
 */
+   @Test
+    public void meetingLocationFromBundleNullTest(){
+       assertTrue(ActivityHelper.meetingLocationFromBundle(0,0) == null);
+   }
+
+   @Test
+    public void meetingLocationFromBundleTest() {
+       Bundle bundle = GlobalBundle.getInstance().getSavedBundle();
+       bundle.putString(Messages.LOCATION_TITLE, MapsHelper.ROLEX_LOCATION.getTitle());
+       bundle.putString(Messages.ADDRESS, MapsHelper.ROLEX_LOCATION.getAddress());
+       bundle.putDouble(Messages.LATITUDE, MapsHelper.ROLEX_LOCATION.getLatitude());
+       bundle.putDouble(Messages.LONGITUDE, MapsHelper.ROLEX_LOCATION.getLongitude());
+       GlobalBundle.getInstance().putAll(bundle);
+       assertTrue(ActivityHelper.meetingLocationFromBundle(1,RESULT_OK).equals(MapsHelper.ROLEX_LOCATION));
+
+   }
 }

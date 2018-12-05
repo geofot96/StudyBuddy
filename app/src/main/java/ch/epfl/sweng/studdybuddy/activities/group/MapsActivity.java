@@ -25,6 +25,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import ch.epfl.sweng.studdybuddy.R;
 import ch.epfl.sweng.studdybuddy.activities.NavigationActivity;
+import ch.epfl.sweng.studdybuddy.core.User;
 import ch.epfl.sweng.studdybuddy.firebase.FirebaseReference;
 import ch.epfl.sweng.studdybuddy.services.meeting.Meeting;
 import ch.epfl.sweng.studdybuddy.services.meeting.MeetingLocation;
@@ -43,6 +44,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private Bundle origin;
 
     private PlaceAutocompleteFragment autocompleteFragment;
+    private User user;
     private String uId;
     private String gId;
     private String adminID;
@@ -57,7 +59,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .findFragmentById(R.id.map);
         autocompleteFragment = (PlaceAutocompleteFragment)
                 getFragmentManager().findFragmentById(R.id.place_autocomplete);
-        uId = ((StudyBuddy) MapsActivity.this.getApplication()).getAuthendifiedUser().getUserID().getId();
+        user = ((StudyBuddy) MapsActivity.this.getApplication()).getAuthendifiedUser();
+        uId = user.getUserID().getId();
         origin = GlobalBundle.getInstance().getSavedBundle();
         gId = origin.getString(Messages.groupID);
         adminID = origin.getString(Messages.ADMIN);
@@ -168,7 +171,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         button.setOnClickListener((confirmationListener()));
         FirebaseReference ref = new FirebaseReference();
         initialization(ref);
-        if(adminID.equals(uId)){
+        if(adminID.equals(uId) || gId.equals(Messages.settingsPlaceHolder)){
             button.setVisibility(View.VISIBLE);
             button.setEnabled(true);
         }
@@ -188,16 +191,30 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
 
     private void initialization(FirebaseReference ref){
-        ref.select(Messages.FirebaseNode.MEETINGS).select(gId).select(meetingID).get(Meeting.class, new Consumer<Meeting>() {
-            @Override
-            public void accept(Meeting meeting) {
-                MarkerOptions tmp = MapsHelper.setInitialPosition(meeting);
-
-                if(tmp != null){
-                    marker =  mMap.addMarker(tmp);
-                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(marker.getPosition(), MapsHelper.DEFAULT_ZOOM));
-                }
+        if(gId.equals(Messages.settingsPlaceHolder)){
+            MeetingLocation location = user.getFavoriteLocation();
+            if(location == null){
+                location = MapsHelper.ROLEX_LOCATION;
             }
-        });
+            mMarker = (new MarkerOptions().position(new LatLng(location.getLatitude(), location.getLongitude())).title(location.getTitle()));
+            mMarker.draggable(true);
+            marker = mMap.addMarker(mMarker);
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(marker.getPosition(), MapsHelper.DEFAULT_ZOOM));
+
+        }else {
+            ref.select(Messages.FirebaseNode.MEETINGS).select(gId).select(meetingID).get(Meeting.class, new Consumer<Meeting>() {
+                @Override
+                public void accept(Meeting meeting) {
+                    MarkerOptions tmp = MapsHelper.setInitialPosition(meeting);
+
+                    if (tmp != null) {
+                        marker = mMap.addMarker(tmp);
+                        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(marker.getPosition(), MapsHelper.DEFAULT_ZOOM));
+
+                    }
+                }
+            });
+        }
+
     }
 }

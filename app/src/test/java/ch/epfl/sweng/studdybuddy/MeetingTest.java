@@ -6,6 +6,7 @@ import java.util.Date;
 
 import ch.epfl.sweng.studdybuddy.core.ID;
 import ch.epfl.sweng.studdybuddy.services.meeting.Meeting;
+import ch.epfl.sweng.studdybuddy.services.meeting.MeetingLocation;
 
 import static junit.framework.TestCase.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -30,5 +31,12 @@ public class MeetingTest {
     public void setGetStarting() {
         meeting.setStarting(date.getTime());
         assertTrue(date.getTime() == meeting.getStarting());
+    }
+
+    @Test
+    public void setGetLocationTest(){
+        MeetingLocation location = new MeetingLocation("Guinée", "Conakry",0,0);
+        meeting.setLocation(location );
+        assertTrue(location.equals(meeting.getLocation()));
     }
 }
