@@ -26,6 +26,7 @@ public class FirebaseAuthManager implements AuthManager {
                 .requestIdToken(clientID)
                 .requestEmail()
                 .build();
+
         this.client = GoogleSignIn.getClient(currentActivity, gso);
     }
 

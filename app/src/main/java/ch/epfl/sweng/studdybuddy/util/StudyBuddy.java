@@ -7,7 +7,7 @@ import ch.epfl.sweng.studdybuddy.core.User;
 
 public class StudyBuddy extends Application {
     public User authendifiedUser;
-
+    private boolean onTravis = true;
     public User getAuthendifiedUser() {
         if(authendifiedUser == null) {
             return new User("Default", new ID<>("Default"));
@@ -18,6 +18,14 @@ public class StudyBuddy extends Application {
 
     public void setAuthendifiedUser(User authendifiedUser) {
         this.authendifiedUser = authendifiedUser;
+    }
+
+    public void disableTravis(){
+        onTravis =false;
+    }
+
+    public boolean isOnTravis(){
+        return onTravis;
     }
 
 }

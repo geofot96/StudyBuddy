@@ -110,6 +110,7 @@ public class GoogleSignInActivity extends AppCompatActivity {
                 StudyBuddy app = ((StudyBuddy) GoogleSignInActivity.this.getApplication());
                 if(user == null) { //create a new user and put in db
                     app.setAuthendifiedUser(new User(acct.getDisplayName(), userID));
+                    app.disableTravis();
                     fb.select("users").select(userID.getId()).setVal(app.getAuthendifiedUser());
                 }
                 else {

@@ -70,4 +70,5 @@ public class MeetingLocation implements Serializable{
         this.address = address;
     }
 
+
 }

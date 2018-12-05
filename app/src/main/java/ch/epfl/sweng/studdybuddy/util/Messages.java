@@ -20,6 +20,7 @@ public class Messages {
 
 
     public static final String chatGroupID = "GroupID";
+    public static final String settingsPlaceHolder ="Settings";
 
     public static final String NO_MEETINGID = "NO MEETING";
 
@@ -31,5 +32,7 @@ public class Messages {
         public static final String GROUPS = "groups";
         public static final String USERCOURSE = "userCourse";
         public static final String CHAT = "chat";
+        public static final String USERS = "users";
+
     }
 }

@@ -1,7 +1,6 @@
 package ch.epfl.sweng.studdybuddy.firebase;
 
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
@@ -31,6 +30,7 @@ public class FirebaseReference implements ReferenceWrapper {
         //If I have already set persistence return a new reference”
 
 
+
         //if(this.persistenceEnabled){
             ref = FirebaseDatabase.getInstance().getReference();
         /*}
@@ -40,7 +40,9 @@ public class FirebaseReference implements ReferenceWrapper {
             persistenceEnabled = true;
             this.ref = temp.getReference();
         }*/
+
     }
+
 
     public FirebaseReference(DatabaseReference firebaseRef) {
         this.ref = firebaseRef;
@@ -103,7 +105,7 @@ public class FirebaseReference implements ReferenceWrapper {
                         callback.accept(dataSnapshot.getValue(type));
                     }
                     catch (Exception e) {
-                        Log.e("FATAL ERROR", e.getMessage());
+                       // Log.e("FATAL ERROR", e.getMessage());
                     }
                 }
 

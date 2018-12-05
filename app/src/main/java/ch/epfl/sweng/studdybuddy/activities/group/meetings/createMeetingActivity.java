@@ -11,7 +11,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -23,14 +22,21 @@ import ch.epfl.sweng.studdybuddy.activities.group.GlobalBundle;
 import ch.epfl.sweng.studdybuddy.activities.group.GroupActivity;
 import ch.epfl.sweng.studdybuddy.activities.group.MapsActivity;
 import ch.epfl.sweng.studdybuddy.core.ID;
+import ch.epfl.sweng.studdybuddy.core.User;
+import ch.epfl.sweng.studdybuddy.firebase.FirebaseReference;
 import ch.epfl.sweng.studdybuddy.firebase.MetaMeeting;
 import ch.epfl.sweng.studdybuddy.services.meeting.Meeting;
 import ch.epfl.sweng.studdybuddy.services.meeting.MeetingLocation;
 import ch.epfl.sweng.studdybuddy.tools.AdapterAdapter;
+import ch.epfl.sweng.studdybuddy.tools.Consumer;
 import ch.epfl.sweng.studdybuddy.util.ActivityHelper;
 import ch.epfl.sweng.studdybuddy.util.DateTimeHelper;
 import ch.epfl.sweng.studdybuddy.util.Messages;
+
 import ch.epfl.sweng.studdybuddy.util.RequestCodes;
+
+import ch.epfl.sweng.studdybuddy.util.StudyBuddy;
+
 
 
 public class createMeetingActivity extends AppCompatActivity {
@@ -48,13 +54,15 @@ public class createMeetingActivity extends AppCompatActivity {
 
     private Bundle origin;
     private MetaMeeting metaM;
+    private FirebaseReference ref;
     private Button saveBtn;
-
     private String groupID;
+
     private String adminID;
     private String userID;
-    private AdapterAdapter ButtonListener;
 
+    private AdapterAdapter ButtonListener;
+    String uId;
     private final String TAG = "CREATE_MEETING_ACTIVITY";
 
     @Override
@@ -62,6 +70,7 @@ public class createMeetingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_meeting);
         metaM = new MetaMeeting();
+        ref = new FirebaseReference();
         origin = GlobalBundle.getInstance().getSavedBundle();
         groupID = origin.getString(Messages.groupID);
         adminID = origin.getString(Messages.ADMIN);
@@ -73,6 +82,7 @@ public class createMeetingActivity extends AppCompatActivity {
         }
 
         mDisplayDate = findViewById(R.id.datePicker);
+
         mDisplayStartTime = findViewById(R.id.timePicker);
         mDisplayEndTime = findViewById(R.id.timePicker2);
 
@@ -88,6 +98,7 @@ public class createMeetingActivity extends AppCompatActivity {
         meeting = onStartForResult();
     }
 
+
     private AdapterAdapter getAdapter() {
         return new AdapterAdapter() {
             @Override
@@ -96,6 +107,7 @@ public class createMeetingActivity extends AppCompatActivity {
             }
         };
     }
+
 
     @SuppressLint("SetTextI18n")
     private Meeting onStartForResult(){
@@ -111,6 +123,7 @@ public class createMeetingActivity extends AppCompatActivity {
             return new Meeting(origin.getLong(Messages.M_SDATE), origin.getLong(Messages.M_EDATE), meetingLocation, origin.getString(Messages.meetingID));
         }
         return new Meeting();
+
     }
 
     private void initDisplayLocation() {
@@ -200,6 +213,16 @@ public class createMeetingActivity extends AppCompatActivity {
         }
 
         Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_LONG).show();
+    }
+
+    private void initMeetingLocation(){
+        ref.select(Messages.FirebaseNode.USERS).select(uId).get(User.class, new Consumer<User>() {
+            @Override
+            public void accept(User user) {
+                meetingLocation = user.getFavoriteLocation() != null ? user.getFavoriteLocation() : MapsHelper.ROLEX_LOCATION;
+                mDisplayLocation.setText(meetingLocation.toString());
+            }
+        });
     }
 
 
