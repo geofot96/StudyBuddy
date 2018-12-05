@@ -12,6 +12,10 @@ public class DateTimeHelper {
         return String.format("%s From: %s To: %s", setStringDate("%d/%d", startingDate), setStringTime(startingDate), setStringTime(endingDate));
     }
 
+    public static String printTime(long time){
+        return setStringTime(time);
+    }
+
     private static String setStringDate(String format, long date){
         Calendar c = Calendar.getInstance();
         c.setTime(new Date(date));

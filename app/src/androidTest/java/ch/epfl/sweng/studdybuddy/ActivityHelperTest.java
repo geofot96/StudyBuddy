@@ -97,7 +97,7 @@ public class ActivityHelperTest {
     @Test
     public void testListenTime() {
         listenTime(title, date, adapter).onTimeSet(time, 0, 0);
-        verify(title, times(1)).setText("0 : 00 AM");
+        verify(title, times(1)).setText("0:00");
         verify(adapter, times(1)).update();
     }
 

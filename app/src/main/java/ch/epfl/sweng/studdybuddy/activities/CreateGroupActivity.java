@@ -149,7 +149,7 @@ public class CreateGroupActivity extends AppCompatActivity implements AdapterVie
         }
     };
 
-    private void createUserInitialAvailabilities(String user, String group){
+    public static void createUserInitialAvailabilities(String user, String group){
         Availability a = new ConnectedAvailability(user, group);
     }
 }
