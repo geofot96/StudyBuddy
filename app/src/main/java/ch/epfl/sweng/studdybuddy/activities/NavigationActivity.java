@@ -14,7 +14,6 @@ import ch.epfl.sweng.studdybuddy.Fragments.FeedFragment;
 import ch.epfl.sweng.studdybuddy.Fragments.ProfileFragment;
 import ch.epfl.sweng.studdybuddy.Fragments.SettingsFragment;
 import ch.epfl.sweng.studdybuddy.R;
-import ch.epfl.sweng.studdybuddy.sql.SqlDB;
 
 public class NavigationActivity extends AppCompatActivity
 {
@@ -25,7 +24,6 @@ public class NavigationActivity extends AppCompatActivity
     private ProfileFragment profileFragment;
     private SettingsFragment settingsFragment;
     private static final String DATABASE_NAME = "StudyBuddy";
-    private SqlDB sql;
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
