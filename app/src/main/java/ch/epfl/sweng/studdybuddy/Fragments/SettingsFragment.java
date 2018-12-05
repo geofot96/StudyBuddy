@@ -101,22 +101,28 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
         spinnerLang.setOnItemSelectedListener(this);
 
         FirebaseReference ref = new FirebaseReference();
-        String selectedLanguage = user.getFavoriteLanguage() != null ? user.getFavoriteLanguage() : Language.EN;
-        spinnerLang.setSelection(Language.LanguageToInt(selectedLanguage));
-        ref.select(Messages.FirebaseNode.USERS).select(uId).get(User.class, new Consumer<User>() {
-            @Override
-            public void accept(User user) {
-                String selectedLanguage = user.getFavoriteLanguage() != null ? user.getFavoriteLanguage() : Language.EN;
-             //   spinnerLang.setSelection(Language.LanguageToInt(selectedLanguage));
-            }
-        });
+
 
         //Language spinner
         ArrayAdapter<String> dataAdapterLanguages = new ArrayAdapter<>(this.getContext(), android.R.layout.simple_spinner_item, Language.languages);
         dataAdapterLanguages.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerLang.setAdapter(dataAdapterLanguages);
+        //select from local db first
+
+        updateLanguage(user);
+        ref.select(Messages.FirebaseNode.USERS).select(uId).get(User.class, new Consumer<User>() {
+            @Override
+            public void accept(User user) {
+                updateLanguage(user);
+            }
+        });
     }
 
+
+    private void updateLanguage(User user){
+        String selectedLanguage = user.getFavoriteLanguage() != null ? user.getFavoriteLanguage() : Language.EN;
+        spinnerLang.setSelection(Language.LanguageToInt(selectedLanguage));
+    }
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         switch(parent.getId()){
@@ -185,6 +191,9 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
                 startActivityForResult(i, 1);
             }
         });
+
+        favoriteLocation = user.getFavoriteLocation() != null ? user.getFavoriteLocation() : favoriteLocation;
+        textDisplayLocation.setText("Default Location: " + favoriteLocation.toString());
 
         mb.getUserAndConsume(uId, new Consumer<User>() {
             @Override
