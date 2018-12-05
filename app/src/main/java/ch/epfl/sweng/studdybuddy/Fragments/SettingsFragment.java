@@ -92,15 +92,6 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
         return view;
     }
 
-    public void onResume(){
-        super.onResume();
-    }
-
-    @Override
-    public void onPause(){
-        super.onPause();
-    }
-
     public ReferenceWrapper getDB(){
         return new FirebaseReference();
     }
@@ -142,9 +133,12 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent d) {
         super.onActivityResult(requestCode, resultCode, d);
-            MeetingLocation defaultLocation = ActivityHelper.meetingLocationFromBundle(requestCode, resultCode);
+        MeetingLocation defaultLocation = ActivityHelper.meetingLocationFromBundle(requestCode, resultCode);
+
             if(defaultLocation != null) {
                 favoriteLocation = defaultLocation;
+                Log.i("TEST", favoriteLocation.toString());
+                textDisplayLocation.setText("Default Location: " + defaultLocation.toString());
             }
     }
 
@@ -196,10 +190,7 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
             @Override
             public void accept(User user) {
                 SettingsFragment.this.user = user;
-                MeetingLocation favoriteLocation = user.getFavoriteLocation();
-                if(favoriteLocation == null){
-                    favoriteLocation = MapsHelper.ROLEX_LOCATION;
-                }
+                favoriteLocation = user.getFavoriteLocation();
                 textDisplayLocation.setText("Default Location: " + favoriteLocation.toString());
             }
         });
