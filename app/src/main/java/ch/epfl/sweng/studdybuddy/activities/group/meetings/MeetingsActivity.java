@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import ch.epfl.sweng.studdybuddy.R;
@@ -21,40 +22,40 @@ import ch.epfl.sweng.studdybuddy.services.meeting.MeetingLocation;
 import ch.epfl.sweng.studdybuddy.services.meeting.MeetingRecyclerAdapter;
 import ch.epfl.sweng.studdybuddy.util.ActivityHelper;
 import ch.epfl.sweng.studdybuddy.util.Messages;
+import ch.epfl.sweng.studdybuddy.util.RequestCodes;
 
 public class MeetingsActivity extends AppCompatActivity {
 
     private String groupId;
+    private String adminId;
+    private static MetaMeeting metaM = new MetaMeeting();
 
-    private MetaMeeting metaM;
-
-    private List<Meeting> meetingList;
+    private static List<Meeting> meetingList = new ArrayList<>();
 
     private RecyclerView.Adapter adapter;
+
+    private Bundle origin;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_meetings);
-        Bundle origin = GlobalBundle.getInstance().getSavedBundle();
+        origin = GlobalBundle.getInstance().getSavedBundle();
 
         groupId = origin.getString(Messages.groupID);
-        String adminId = origin.getString(Messages.ADMIN);
+        adminId = origin.getString(Messages.ADMIN);
 
         if(groupId == null || adminId == null ){
-            startActivity(new Intent(this, NavigationActivity.class));
             String TAG = "MEETINGS_ACTIVITY";
             Log.d(TAG, "Information of the group is not fully recovered");
+            startActivity(new Intent(this, NavigationActivity.class));
         }
 
         RecyclerView meetingRV = findViewById(R.id.meetingRV);
         meetingRV.setLayoutManager(new LinearLayoutManager(this));
 
-        meetingList = new ArrayList<>();
-
-        metaM = new MetaMeeting();
-
-        adapter = new MeetingRecyclerAdapter(this, this, meetingList, new Pair(groupId, adminId));
+        adapter = new MeetingRecyclerAdapter(this, this, meetingList, origin);
 
         metaM.getMeetingsOfGroup(new ID<>(groupId), ActivityHelper.getConsumerForMeetings(meetingList, metaM, new ID<>(groupId), adapter));
 
@@ -64,18 +65,26 @@ public class MeetingsActivity extends AppCompatActivity {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent d){
-        MeetingLocation meetingLocation = ActivityHelper.meetingLocationFromBundle(requestCode,resultCode);
-        if (meetingLocation != null) {
-            metaM.pushLocation(meetingLocation, new ID<>(groupId), new ID<>(GlobalBundle.getInstance().getSavedBundle().getString(Messages.meetingID)));
+        if(requestCode == RequestCodes.CREATEMEETING.getRequestCode() && resultCode == RESULT_OK){
+            GlobalBundle data = GlobalBundle.getInstance();
+            origin.putAll(data.getSavedBundle());
+            Meeting meeting = data.getMeeting();
+            metaM.pushMeeting(meeting, new ID<>(groupId));
         }
     }
 
-    public void setMetaM(MetaMeeting m){
-        this.metaM = m;
+    public static void setMetaM(MetaMeeting m){
+        metaM = m;
     }
 
-    public void setMeetingList(List<Meeting> meetingL){
+    public static void setMeetingList(List<Meeting> meetingL){
         meetingList.addAll(meetingL);
-        adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    protected void onDestroy(){
+        meetingList.clear();
+        metaM = new MetaMeeting();
+        super.onDestroy();
     }
 }

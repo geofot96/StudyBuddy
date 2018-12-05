@@ -24,6 +24,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import ch.epfl.sweng.studdybuddy.R;
+import ch.epfl.sweng.studdybuddy.activities.NavigationActivity;
 import ch.epfl.sweng.studdybuddy.activities.group.GroupActivity;
 import ch.epfl.sweng.studdybuddy.core.ID;
 import ch.epfl.sweng.studdybuddy.core.Pair;
@@ -66,7 +67,7 @@ public class ConnectedCalendarActivity extends AppCompatActivity implements Noti
     private Pair pair = new Pair();
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) throws NullPointerException{
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_calendar);
@@ -99,8 +100,11 @@ public class ConnectedCalendarActivity extends AppCompatActivity implements Noti
 
         pair.setKey(origin.getString(Messages.groupID));
         pair.setValue(origin.getString(Messages.userID));
+
         if(pair.getKey() == null || pair.getValue() == null){
-            throw new NullPointerException("the intent didn't content expected data");
+            String TAG = "CALENDAR_ACTIVITY";
+            Log.d(TAG, "Information of the group is not fully recovered");
+            startActivity(new Intent(this, NavigationActivity.class));
         }
         calendar  = new ConnectedCalendar(new ID<>(pair.getKey()), new HashMap<>());
 

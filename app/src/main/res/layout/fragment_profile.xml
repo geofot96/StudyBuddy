@@ -60,15 +60,6 @@
                     android:id="@+id/groups_list"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
-                <Button
-                    android:id="@+id/signout_btn"
-                    android:layout_width="160dp"
-                    android:layout_height="wrap_content"
-                    android:background="@color/errorColor"
-                    android:text="Sign Out"
-                    android:textColor="@color/buttonTextColor"
-                    android:layout_gravity="center"
-                    />
             </LinearLayout>
         </ScrollView>
     </LinearLayout>

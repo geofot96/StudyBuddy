@@ -117,10 +117,15 @@ public class createMeetingActivityTest {
     }
 
     @Test
-    public void noLocation(){
+    public void noLocation() throws Throwable {
         createMeetingActivity mActivity = mActivityRule.launchActivity(intent);
-        mActivity.setStartingDate(alwaysBefore);
-        mActivity.setEndingDate(alwaysAfter);
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                mActivity.setStartingDate(alwaysBefore);
+                mActivity.setEndingDate(alwaysAfter);
+            }
+        });
         onView(withId(R.id.setMeeting)).check(matches(not(isEnabled())));
         mActivityRule.finishActivity();
     }
@@ -175,4 +180,8 @@ public class createMeetingActivityTest {
         mActivityRule.finishActivity();
     }
 
+    @Test
+    public void startForResultTest(){
+
+    }
 }

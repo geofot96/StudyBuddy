@@ -10,6 +10,7 @@ import ch.epfl.sweng.studdybuddy.core.User;
 import ch.epfl.sweng.studdybuddy.services.chat.ChatMessage;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 
 public class ChatMessageTest {
 
@@ -17,7 +18,7 @@ public class ChatMessageTest {
     private String userName = user.getName();
     private String message = "Hello! How are you?";
     public long time = new Date().getTime();
-    private ChatMessage testChatMessage = new ChatMessage(message, userName);
+    private ChatMessage testChatMessage = new ChatMessage(message, userName, time);
 
     private ChatMessage emptyChatMessage = new ChatMessage();
 
@@ -50,8 +51,14 @@ public class ChatMessageTest {
 
     @Test
     public void setMessageTime(){
-        long time = new Date().getTime();
-        emptyChatMessage.setMessageTime(time);
-        assertEquals(time, emptyChatMessage.getMessageTime());
+        emptyChatMessage.setMessageTime(time+1);
+        assertEquals(time+1, emptyChatMessage.getMessageTime());
+    }
+
+    @Test
+    public void differentTimes() throws InterruptedException {
+        Thread.sleep(100);
+        ChatMessage laterMessage = new ChatMessage(message, userName);
+        assertNotEquals(time, laterMessage.getMessageTime());
     }
 }

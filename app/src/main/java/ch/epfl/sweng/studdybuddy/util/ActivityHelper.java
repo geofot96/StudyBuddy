@@ -76,19 +76,13 @@ public class ActivityHelper {
         return new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                String amPm;
-                if(hourOfDay >= 12){
-                    amPm = " PM";
-                } else{
-                    amPm = " AM";
-                }
-                mDisplayTime.setText(hourOfDay%12 + " : " + minute/10 + minute%10 + amPm);
                 Calendar c = Calendar.getInstance();
                 c.setTime(dateToSet);
                 c.set(Calendar.HOUR_OF_DAY, hourOfDay);
                 c.set(Calendar.MINUTE, minute);
-                Date tmp = c.getTime();
-                dateToSet.setTime(tmp.getTime());
+                long tmp = c.getTime().getTime();
+                dateToSet.setTime(tmp);
+                mDisplayTime.setText(DateTimeHelper.printTime(tmp));
                 adapter.update();
             }
         };
