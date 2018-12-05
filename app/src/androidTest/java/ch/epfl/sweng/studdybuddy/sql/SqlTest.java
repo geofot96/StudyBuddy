@@ -34,6 +34,7 @@ public class SqlTest {
 
     @Test
     public void writeAndReadUser() throws Exception {
+        mUserDao.clear();
         User user = new User("a", new ID<User>("1"));
         mUserDao.insert(user);
         assertTrue(mUserDao.getAll().size() == 1);
