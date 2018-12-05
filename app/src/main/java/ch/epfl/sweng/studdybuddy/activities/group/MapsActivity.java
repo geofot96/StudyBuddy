@@ -109,7 +109,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     origin.putString(Messages.meetingID, meetingID);
                     origin.putDouble(Messages.LONGITUDE, confirmedPlace.getLongitude());
                     GlobalBundle.getInstance().putAll(origin);
-                    /*resultIntent.putExtras(origin);*/
+                    resultIntent.putExtras(origin);
                     setResult(RESULT_OK, resultIntent);
                     finish();
                 }

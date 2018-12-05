@@ -26,6 +26,7 @@ import ch.epfl.sweng.studdybuddy.auth.FirebaseAuthManager;
 import ch.epfl.sweng.studdybuddy.core.Pair;
 import ch.epfl.sweng.studdybuddy.core.User;
 import ch.epfl.sweng.studdybuddy.firebase.FirebaseReference;
+import ch.epfl.sweng.studdybuddy.firebase.MetaGroupAdmin;
 import ch.epfl.sweng.studdybuddy.firebase.ReferenceWrapper;
 import ch.epfl.sweng.studdybuddy.tools.AdapterConsumer;
 import ch.epfl.sweng.studdybuddy.tools.ArrayAdapterAdapter;
@@ -81,14 +82,7 @@ public class CourseSelectActivity extends AppCompatActivity
             public void onClick(View v)
             {
                 User currentUser = ((StudyBuddy) CourseSelectActivity.this.getApplication()).getAuthendifiedUser();
-                AuthManager auth = new FirebaseAuthManager(CourseSelectActivity.this, getString(R.string.default_web_client_id));
-                for(String course : courseSelection){
-                    Pair pair = new Pair(currentUser.getUserID().toString(), course);
-                    firebase.select("userCourse").select(Helper.hashCode(pair).toString()).setVal(pair);
-                }
-                //currentUser.setCoursesPreset(courseSelection);
-                //Launches null pointer exception because the user is not fully initialized
-                //currentUser.setCoursesPreset(courseSelection);
+                new MetaGroupAdmin().putAllCourses(courseSelection, currentUser.getUserID().getId());
                 startActivity(toMain);
             }
         });
@@ -115,7 +109,7 @@ public class CourseSelectActivity extends AppCompatActivity
        selectedCourses.setLayoutManager(new LinearLayoutManager(this));
 
        selectedCourses.setAdapter(new CourseAdapter(courseSelection));
-       ItemTouchHelper mIth = new ItemTouchHelper(
+       /*ItemTouchHelper mIth = new ItemTouchHelper(
                new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP | ItemTouchHelper.DOWN,
                        ItemTouchHelper.RIGHT)
                {
@@ -135,7 +129,7 @@ public class CourseSelectActivity extends AppCompatActivity
                            doneButton.setEnabled(false);
                    }
                });
-       mIth.attachToRecyclerView(selectedCourses);
+       mIth.attachToRecyclerView(selectedCourses);*/
    }
 
    private void setUpDb(ArrayAdapter<String> adapter) {

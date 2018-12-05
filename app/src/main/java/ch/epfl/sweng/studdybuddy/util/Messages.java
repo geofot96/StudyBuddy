@@ -28,7 +28,7 @@ public class Messages {
         public static final String AVAILABILITIES = "availabilities";
         public static final String MEETINGS = "meetings";
         public static final String USERGROUP = "userGroup";
-        public static final String GROUPS = "YannGroups";
+        public static final String GROUPS = "groups";
         public static final String USERCOURSE = "userCourse";
         public static final String CHAT = "chat";
     }
