@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -31,6 +32,7 @@ import ch.epfl.sweng.studdybuddy.tools.AdapterAdapter;
 import ch.epfl.sweng.studdybuddy.tools.Consumer;
 import ch.epfl.sweng.studdybuddy.util.ActivityHelper;
 import ch.epfl.sweng.studdybuddy.util.DateTimeHelper;
+import ch.epfl.sweng.studdybuddy.util.MapsHelper;
 import ch.epfl.sweng.studdybuddy.util.Messages;
 
 import ch.epfl.sweng.studdybuddy.util.RequestCodes;
