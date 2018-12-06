@@ -8,8 +8,12 @@ import java.util.List;
 
 import ch.epfl.sweng.studdybuddy.core.User;
 import ch.epfl.sweng.studdybuddy.firebase.MetaGroupAdmin;
+import ch.epfl.sweng.studdybuddy.tools.Intentable;
 
-public class CourseSelectController {
+public final class CourseSelectController {
+    private CourseSelectController() {
+        throw new IllegalStateException();
+    }
     public static View.OnClickListener updateCoursesOnDone(User currentUser, List<String> courseSelection, MetaGroupAdmin mga, Intentable mother) {
         return new View.OnClickListener() {
             @Override
@@ -20,15 +24,5 @@ public class CourseSelectController {
         };
     }
 
-    public static class Intentable {
-        AppCompatActivity activity;
-        Intent intent;
-        public Intentable(AppCompatActivity activity, Intent intent) {
-            this.activity = activity;
-            this.intent = intent;
-        }
-        public void launch() {
-            activity.startActivity(intent);
-        }
-    }
+
 }

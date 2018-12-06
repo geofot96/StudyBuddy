@@ -33,10 +33,12 @@ import ch.epfl.sweng.studdybuddy.tools.AdapterConsumer;
 import ch.epfl.sweng.studdybuddy.tools.ArrayAdapterAdapter;
 import ch.epfl.sweng.studdybuddy.tools.CourseAdapter;
 import ch.epfl.sweng.studdybuddy.tools.Holder;
+import ch.epfl.sweng.studdybuddy.tools.Intentable;
 import ch.epfl.sweng.studdybuddy.util.Helper;
 import ch.epfl.sweng.studdybuddy.util.StudyBuddy;
 
 import static ch.epfl.sweng.studdybuddy.controllers.CourseSelectController.updateCoursesOnDone;
+import static ch.epfl.sweng.studdybuddy.util.ActivityHelper.onClickLaunch;
 import static ch.epfl.sweng.studdybuddy.util.ActivityHelper.showDropdown;
 
 
@@ -65,15 +67,10 @@ public class CourseSelectActivity extends AppCompatActivity
     private void setUpButtons() {
         final Intent toMain = new Intent(this, NavigationActivity.class);
         Button skipButton = findViewById(R.id.skipButton);
-        skipButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v)  {
-                startActivity(toMain);
-            }
-        });
+        skipButton.setOnClickListener(onClickLaunch(new Intentable(this ,toMain)));
         doneButton = findViewById(R.id.doneButton);
         doneButton.setEnabled(false);
-        CourseSelectController.Intentable i = new CourseSelectController.Intentable(this, toMain);
+        Intentable i = new Intentable(this, toMain);
         User currentUser = ((StudyBuddy) CourseSelectActivity.this.getApplication()).getAuthendifiedUser();
         doneButton.setOnClickListener(updateCoursesOnDone(currentUser, courseSelection, new MetaGroupAdmin(), i));
     }
@@ -94,10 +91,7 @@ public class CourseSelectActivity extends AppCompatActivity
    }
 
    private void setUpSelectedCourses() {
-
        final RecyclerView selectedCourses = (RecyclerView) findViewById(R.id.coursesSet);
-       selectedCourses.setLayoutManager(new LinearLayoutManager(this));
-
        selectedCourses.setAdapter(new CourseAdapter(courseSelection));
        /*ItemTouchHelper mIth = new ItemTouchHelper(
                new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP | ItemTouchHelper.DOWN,
