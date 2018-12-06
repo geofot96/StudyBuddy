@@ -23,6 +23,7 @@ import java.util.List;
 import ch.epfl.sweng.studdybuddy.R;
 import ch.epfl.sweng.studdybuddy.auth.AuthManager;
 import ch.epfl.sweng.studdybuddy.auth.FirebaseAuthManager;
+import ch.epfl.sweng.studdybuddy.controllers.CourseSelectController;
 import ch.epfl.sweng.studdybuddy.core.Pair;
 import ch.epfl.sweng.studdybuddy.core.User;
 import ch.epfl.sweng.studdybuddy.firebase.FirebaseReference;
@@ -35,13 +36,14 @@ import ch.epfl.sweng.studdybuddy.tools.Holder;
 import ch.epfl.sweng.studdybuddy.util.Helper;
 import ch.epfl.sweng.studdybuddy.util.StudyBuddy;
 
+import static ch.epfl.sweng.studdybuddy.controllers.CourseSelectController.updateCoursesOnDone;
 import static ch.epfl.sweng.studdybuddy.util.ActivityHelper.showDropdown;
 
 
 public class CourseSelectActivity extends AppCompatActivity
 {
 
-    static List<String> coursesDB;
+    static List<String> coursesDB = new ArrayList<>();
     //List of selected courses
     public static final List<String> courseSelection = new ArrayList<>();
 
@@ -55,15 +57,9 @@ public class CourseSelectActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_course_select);
-
-        Intent other = getIntent();
-        coursesDB = new ArrayList<>();
-        coursesDB.add("Untitled");
-
         setUpDb(setUpAutoComplete());
         setUpButtons();
         setUpSelectedCourses();
-
     }
 
     private void setUpButtons() {
@@ -77,15 +73,9 @@ public class CourseSelectActivity extends AppCompatActivity
         });
         doneButton = findViewById(R.id.doneButton);
         doneButton.setEnabled(false);
-        doneButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v)
-            {
-                User currentUser = ((StudyBuddy) CourseSelectActivity.this.getApplication()).getAuthendifiedUser();
-                new MetaGroupAdmin().putAllCourses(courseSelection, currentUser.getUserID().getId());
-                startActivity(toMain);
-            }
-        });
+        CourseSelectController.Intentable i = new CourseSelectController.Intentable(this, toMain);
+        User currentUser = ((StudyBuddy) CourseSelectActivity.this.getApplication()).getAuthendifiedUser();
+        doneButton.setOnClickListener(updateCoursesOnDone(currentUser, courseSelection, new MetaGroupAdmin(), i));
     }
 
     private ArrayAdapter<String> setUpAutoComplete(){
@@ -146,11 +136,6 @@ public class CourseSelectActivity extends AppCompatActivity
         //reset search text
         autocomplete.setText("");
         doneButton.setEnabled(true);
-    }
-
-    private void removeCourse(String course)
-    {
-        courseSelection.remove(course);
     }
 
 }
