@@ -7,16 +7,14 @@ import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 
-import ch.epfl.sweng.studdybuddy.core.Course;
-import ch.epfl.sweng.studdybuddy.core.Group;
 import ch.epfl.sweng.studdybuddy.core.ID;
 import ch.epfl.sweng.studdybuddy.core.User;
-import ch.epfl.sweng.studdybuddy.services.calendar.Calendar;
-import ch.epfl.sweng.studdybuddy.services.meeting.Meeting;
 import ch.epfl.sweng.studdybuddy.services.meeting.MeetingLocation;
 
 public class Converter {
-
+    public Converter(){}
+    //Commented the converters that are not used for the moment but could be in the future
+/*
     @TypeConverter
     public static  ID<Course> CourseIDfromString(String  id){
         Type type = new TypeToken<ID<Course>>() {
@@ -27,7 +25,7 @@ public class Converter {
     public static  String StringfromCourseID(ID<Course> id){
         return new Gson().toJson(id);
     }
-
+*/
     @TypeConverter
     public static  ID<User> UserIDfromString(String  id){
         Type type = new TypeToken<ID<User>>() {
@@ -38,7 +36,7 @@ public class Converter {
     public static  String StringFromUserID(ID<User> id){
         return new Gson().toJson(id);
     }
-    
+    /*
     @TypeConverter
     public static  ID<Group> GroupIDfromString(String  id){
         Type type = new TypeToken<ID<Group>>() {
@@ -84,7 +82,7 @@ public class Converter {
     public static  String fromID(ID<MeetingLocation> id){
         return new Gson().toJson(id);
     }
-
+*/
     @TypeConverter
     public static MeetingLocation LocationfromString(String location){
         Type type = new TypeToken<MeetingLocation>(){}.getType();

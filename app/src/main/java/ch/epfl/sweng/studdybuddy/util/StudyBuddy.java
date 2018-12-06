@@ -10,7 +10,8 @@ public class StudyBuddy extends Application {
     private boolean onTravis = true;
     public User getAuthendifiedUser() {
         if(authendifiedUser == null) {
-            return new User("Default", new ID<>("Default"));
+            authendifiedUser =  new User("Default", new ID<>("Default"));
+            return authendifiedUser;
         }else {
             return authendifiedUser;
         }

@@ -69,6 +69,7 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        super.onCreate(savedInstanceState);
     }
 
 
@@ -209,13 +210,20 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
         signout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                (new FirebaseAuthManager(SettingsFragment.this.getActivity(), uId)).logout().addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        Intent intent = new Intent(SettingsFragment.this.getContext(), GoogleSignInActivity.class);
-                        startActivity(intent);
-                    }
-                });
+                Intent intent = new Intent(SettingsFragment.this.getContext(), GoogleSignInActivity.class);
+                //If it's a travis test, don't logout from GoogleAuth
+                if(uId.equals("Default")){
+                    startActivity(intent);
+                }else {
+                    (new FirebaseAuthManager(SettingsFragment.this.getActivity(), uId)).logout().addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            startActivity(intent);
+                        }
+                    });
+                }
+                getActivity().finish();
+
             }
         });
 

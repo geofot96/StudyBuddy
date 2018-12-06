@@ -76,7 +76,7 @@ public class GoogleSignInActivity extends AppCompatActivity {
                         app.setAuthendifiedUser(users.get(0));
                         Log.i(TAG, String.format("Found user with id %s and language %s in the local database.", users.get(0).getUserID().getId(), users.get(0).getFavoriteLanguage()));
                         startActivity(new Intent(GoogleSignInActivity.this, CourseSelectActivity.class));
-
+                        finish();
                     }else {
                         fetchUserAndStart(acct, NavigationActivity.class);
                     }
@@ -141,6 +141,7 @@ public class GoogleSignInActivity extends AppCompatActivity {
                 else {
                     app.setAuthendifiedUser(user);
                 }
+                //Maybe dont need to create another thread
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
@@ -149,6 +150,7 @@ public class GoogleSignInActivity extends AppCompatActivity {
                     }
                 }).start();
                 startActivity(new Intent(GoogleSignInActivity.this, destination));
+                finish();
             }
         });
     }

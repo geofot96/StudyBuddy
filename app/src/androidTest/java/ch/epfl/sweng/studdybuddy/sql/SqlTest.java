@@ -34,11 +34,13 @@ public class SqlTest {
 
     @Test
     public void writeAndReadUser() throws Exception {
+        new Converter();
         mUserDao.clear();
         User user = new User("a", new ID<User>("1"));
         mUserDao.insert(user);
         assertTrue(mUserDao.getAll().size() == 1);
         mUserDao.delete(new ID<>("1"));
         assertTrue(mUserDao.getAll().size() ==0);
+        mUserDao.clear();
     }
 }

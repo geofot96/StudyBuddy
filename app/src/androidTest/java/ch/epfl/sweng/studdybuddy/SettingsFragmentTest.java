@@ -3,6 +3,7 @@ package ch.epfl.sweng.studdybuddy;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.test.espresso.intent.rule.IntentsTestRule;
+import android.support.test.rule.GrantPermissionRule;
 import android.support.test.runner.AndroidJUnit4;
 
 import org.junit.Before;
@@ -22,12 +23,12 @@ import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.intent.Intents.intended;
 import static android.support.test.espresso.intent.matcher.IntentMatchers.hasComponent;
-import static android.support.test.espresso.matcher.ViewMatchers.isClickable;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static android.support.test.internal.runner.junit4.statement.UiThreadStatement.runOnUiThread;
 import static ch.epfl.sweng.studdybuddy.NavigationTestHelper.navigate;
+import static java.lang.Thread.sleep;
 
 @RunWith(AndroidJUnit4.class)
 public class SettingsFragmentTest {
@@ -35,20 +36,24 @@ public class SettingsFragmentTest {
     @Rule
     public IntentsTestRule<NavigationActivity> mActivityTestRule = new IntentsTestRule<>(NavigationActivity.class);
 
-    // @Rule public GrantPermissionRule mRuntimePermissionRule = GrantPermissionRule .grant(android.Manifest.permission.ACCESS_FINE_LOCATION);
+    @Rule
+    public GrantPermissionRule mRuntimePermissionRule = GrantPermissionRule .grant(android.Manifest.permission.ACCESS_FINE_LOCATION);
+
+    public static SettingsFragment fragment;
 
 
     @Before
     public void goToSettings() {
         MapsActivityTest.allowPermissionsIfNeeded(android.Manifest.permission.ACCESS_FINE_LOCATION);
         navigate("Settings", R.id.navToSettings, 3);
+        fragment =  (SettingsFragment) mActivityTestRule.getActivity().getSupportFragmentManager().findFragmentByTag("mainFragment");
     }
 
     @Test
     public void defaultLocationLaunchesMapsActivity() {
 
         try {
-            Thread.sleep(1000);
+            sleep(1000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -56,14 +61,14 @@ public class SettingsFragmentTest {
         onView(withId(R.id.text_location_set_up)).perform(click());
 
         try {
-            Thread.sleep(1000);
+            sleep(1000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
         intended(hasComponent(MapsActivity.class.getName()));
     }
 
-    @Test
+   /* @Test
     public void EveryThingIsDisplayed() {
         onView(withId(R.id.text_favorite_language)).check(matches(isDisplayed()));
         onView(withId(R.id.text_favorite_location)).check(matches(isDisplayed()));
@@ -72,17 +77,17 @@ public class SettingsFragmentTest {
         onView(withId(R.id.btn_sign_out)).check(matches(isClickable()));
         onView(withId(R.id.text_location_set_up)).check(matches(isClickable()));
     }
-
+*/
+    @Test
     public void onResultTest() throws Throwable {
-        SettingsFragment fragment =  (SettingsFragment) mActivityTestRule.getActivity().getSupportFragmentManager().findFragmentByTag("mainFragment");
 
-        Bundle bundle = GlobalBundle.getInstance().getSavedBundle();
+        Bundle bundle =  GlobalBundle.getInstance().getSavedBundle();
         bundle.putString(Messages.LOCATION_TITLE, "");
         bundle.putString(Messages.ADDRESS, "");
         bundle.putDouble(Messages.LATITUDE, 0);
         bundle.putDouble(Messages.LONGITUDE, 0);
         GlobalBundle.getInstance().putAll(bundle);
-        Thread.sleep(3000);
+        sleep(3000);
 
         runOnUiThread(new Runnable() {
             @Override
@@ -92,15 +97,18 @@ public class SettingsFragmentTest {
             }
         });
         onView(withId(R.id.text_location_set_up)).check(matches(withText("Default Location: : ")));
-
-        fragment.getActivity().finish();
-
-
     }
 
+    @Test
+    public void signoutButtonTest(){
+        onView(withId(R.id.btn_sign_out)).perform(click());
+        onView(withId(R.id.googleBtn)).check(matches(isDisplayed()));
+    }
 
-
-
-
-
+    @Test
+    public void applyButton() throws InterruptedException {
+        Thread.sleep(1000);
+        onView(withId(R.id.btn_settings_apply)).perform(click());
+        onView(withId(R.id.btn_settings_apply)).check(matches(isDisplayed()));
+    }
 }
