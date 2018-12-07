@@ -10,6 +10,9 @@ import ch.epfl.sweng.studdybuddy.firebase.MetaGroupAdmin;
 import ch.epfl.sweng.studdybuddy.tools.Consumer;
 import ch.epfl.sweng.studdybuddy.tools.Intentable;
 import ch.epfl.sweng.studdybuddy.tools.Notifiable;
+import ch.epfl.sweng.studdybuddy.tools.Resultable;
+
+import static android.app.Activity.RESULT_OK;
 
 public final class GroupController {
     private GroupController() {
@@ -36,4 +39,9 @@ public final class GroupController {
         };
     }
 
+    public static void processResult(int requestCode, int resultCode, Resultable res) {
+        if(requestCode == 1 && resultCode == RESULT_OK) {
+            res.onResult();
+        }
+    }
 }

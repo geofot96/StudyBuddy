@@ -1,13 +1,11 @@
 package ch.epfl.sweng.studdybuddy.activities.group;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.View;
 import android.widget.Button;
 import android.widget.GridLayout;
 
@@ -25,12 +23,8 @@ import ch.epfl.sweng.studdybuddy.core.Group;
 import ch.epfl.sweng.studdybuddy.core.ID;
 import ch.epfl.sweng.studdybuddy.core.Pair;
 import ch.epfl.sweng.studdybuddy.core.User;
-import ch.epfl.sweng.studdybuddy.firebase.FirebaseReference;
 import ch.epfl.sweng.studdybuddy.firebase.MetaGroupAdmin;
 import ch.epfl.sweng.studdybuddy.firebase.MetaMeeting;
-import ch.epfl.sweng.studdybuddy.services.calendar.Availability;
-import ch.epfl.sweng.studdybuddy.services.calendar.ConcreteAvailability;
-import ch.epfl.sweng.studdybuddy.services.calendar.ConnectedAvailability;
 import ch.epfl.sweng.studdybuddy.services.calendar.ConnectedCalendar;
 import ch.epfl.sweng.studdybuddy.services.meeting.Meeting;
 import ch.epfl.sweng.studdybuddy.services.meeting.MeetingLocation;
@@ -47,6 +41,7 @@ import ch.epfl.sweng.studdybuddy.util.StudyBuddy;
 
 import static ch.epfl.sweng.studdybuddy.controllers.GroupController.callbackCalendar;
 import static ch.epfl.sweng.studdybuddy.controllers.GroupController.leaveOnClick;
+import static ch.epfl.sweng.studdybuddy.controllers.GroupController.processResult;
 import static ch.epfl.sweng.studdybuddy.services.calendar.Color.updateColor;
 import static ch.epfl.sweng.studdybuddy.tools.AvailabilitiesHelper.calendarEventListener;
 import static ch.epfl.sweng.studdybuddy.tools.AvailabilitiesHelper.calendarGetDataListener;
@@ -84,7 +79,7 @@ public class GroupActivity extends AppCompatActivity implements Notifiable, Resu
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent d){
-        resultActivity(requestCode, resultCode, this);
+        processResult(requestCode, resultCode, this);
     }
 
     public void onResult() {
@@ -99,13 +94,6 @@ public class GroupActivity extends AppCompatActivity implements Notifiable, Resu
                 data.getDouble(Messages.LONGITUDE, 0)
         );
         metaM.pushLocation(meetingLocation, new ID<>(gId), new ID<>(data.getString(Messages.meetingID)));
-    }
-
-    public static void resultActivity(int requestCode, int resultCode, Resultable res) {
-
-        if(requestCode == 1 && resultCode == RESULT_OK) {
-            res.onResult();
-        }
     }
 
     public void setupAvails() {
