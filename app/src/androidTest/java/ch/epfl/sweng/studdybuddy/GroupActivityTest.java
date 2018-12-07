@@ -55,14 +55,6 @@ public class GroupActivityTest {
         mManualRule.finishActivity();
     }
 
-    @Test
-    public void resultActivity() {
-        Resultable res = mock(Resultable.class);
-        GroupActivity.processResult(0, Activity.RESULT_OK, res);
-        GroupActivity.processResult(1, Activity.RESULT_OK, res);
-        GroupActivity.processResult(1, Activity.RESULT_CANCELED, res);
-
-    }
 
     /*@Test
     public void leadsToCalendar(){
