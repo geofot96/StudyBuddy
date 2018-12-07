@@ -22,12 +22,13 @@ import java.util.List;
 
 import ch.epfl.sweng.studdybuddy.core.User;
 import ch.epfl.sweng.studdybuddy.firebase.MetaGroupAdmin;
+import ch.epfl.sweng.studdybuddy.tools.AdapterAdapter;
 import ch.epfl.sweng.studdybuddy.tools.Consumer;
 import ch.epfl.sweng.studdybuddy.tools.Holder;
 import ch.epfl.sweng.studdybuddy.tools.Intentable;
+import ch.epfl.sweng.studdybuddy.tools.RecyclerAdapterAdapter;
 
 import static ch.epfl.sweng.studdybuddy.controllers.CourseSelectController.deleteCourseOnSwipe;
-import static ch.epfl.sweng.studdybuddy.controllers.CourseSelectController.deleteCourseOnSwipeCB;
 import static ch.epfl.sweng.studdybuddy.controllers.CourseSelectController.onClickAddCourse;
 import static ch.epfl.sweng.studdybuddy.controllers.CourseSelectController.onSwiped_;
 import static ch.epfl.sweng.studdybuddy.controllers.CourseSelectController.resetSelectViews;
@@ -44,7 +45,7 @@ import static org.mockito.Mockito.when;
 public class CourseSelectControllerTest {
     List<String> cSelect = new ArrayList<>();
     Button b = mock(Button.class);
-    RecyclerView.Adapter ad = mock(RecyclerView.Adapter.class, Mockito.RETURNS_DEFAULTS);
+    RecyclerView.Adapter ad = mock(RecyclerView.Adapter.class);
     AdapterView<ArrayAdapter> parent = mock(AdapterView.class);
     ArrayAdapter a = mock(ArrayAdapter.class);
     Consumer<String> cs = mock(Consumer.class);
@@ -66,13 +67,14 @@ public class CourseSelectControllerTest {
     }
     @Test
     public void testDeleteCourseOnSwipe() {
-        ItemTouchHelper.SimpleCallback ith = deleteCourseOnSwipeCB(cSelect, b, ad);
+        AdapterAdapter adad = mock(AdapterAdapter.class);
+        ItemTouchHelper ith = deleteCourseOnSwipe(cSelect, b, adad);
         RecyclerView.ViewHolder vh = mock(RecyclerView.ViewHolder.class, RETURNS_DEEP_STUBS);
         Holder cc = mock(Holder.class, RETURNS_DEEP_STUBS);
         when(cc.get()).thenReturn("c");
-        /*onSwiped_(cSelect, b, ad, cc);
-        verify(ad, times(1)).notifyDataSetChanged();
-        verify(b, times(1)).setEnabled(false);*/
+        onSwiped_(cSelect, b, adad, cc);
+        verify(adad, times(1)).update();
+        verify(b, times(1)).setEnabled(false);
     }
 
     @Test

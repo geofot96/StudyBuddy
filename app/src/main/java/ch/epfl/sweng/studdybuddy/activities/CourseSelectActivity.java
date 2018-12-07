@@ -33,6 +33,7 @@ import ch.epfl.sweng.studdybuddy.firebase.MetaGroup;
 import ch.epfl.sweng.studdybuddy.firebase.MetaGroupAdmin;
 import ch.epfl.sweng.studdybuddy.firebase.ReferenceWrapper;
 import ch.epfl.sweng.studdybuddy.tools.Adapter;
+import ch.epfl.sweng.studdybuddy.tools.AdapterAdapter;
 import ch.epfl.sweng.studdybuddy.tools.AdapterConsumer;
 import ch.epfl.sweng.studdybuddy.tools.ArrayAdapterAdapter;
 import ch.epfl.sweng.studdybuddy.tools.CourseAdapter;
@@ -97,9 +98,10 @@ public class CourseSelectActivity extends AppCompatActivity {
        selectedCourses.setLayoutManager(new LinearLayoutManager(getBaseContext()));
        selectedCourses.setAdapter(courseAdapter);
        MetaGroup mg = new MetaGroup();
-       mg.addListenner(new RecyclerAdapterAdapter(courseAdapter));
+       AdapterAdapter adapterC = new RecyclerAdapterAdapter(courseAdapter);
+       mg.addListenner(adapterC);
        mg.getUserCourses(uId, courseSelection);
-       ItemTouchHelper swipeCourse = deleteCourseOnSwipe(courseSelection, doneButton, courseAdapter);
+       ItemTouchHelper swipeCourse = deleteCourseOnSwipe(courseSelection, doneButton, adapterC);
        swipeCourse.attachToRecyclerView(selectedCourses);
    }
 

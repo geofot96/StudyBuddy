@@ -15,6 +15,7 @@ import java.util.List;
 
 import ch.epfl.sweng.studdybuddy.core.User;
 import ch.epfl.sweng.studdybuddy.firebase.MetaGroupAdmin;
+import ch.epfl.sweng.studdybuddy.tools.AdapterAdapter;
 import ch.epfl.sweng.studdybuddy.tools.Consumer;
 import ch.epfl.sweng.studdybuddy.tools.Holder;
 import ch.epfl.sweng.studdybuddy.tools.Intentable;
@@ -33,7 +34,7 @@ public final class CourseSelectController {
         };
     }
 
-    public static ItemTouchHelper deleteCourseOnSwipe(List<String> courseSelection, Button doneButton, RecyclerView.Adapter adapter) {
+    public static ItemTouchHelper deleteCourseOnSwipe(List<String> courseSelection, Button doneButton, AdapterAdapter adapter) {
         return new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP | ItemTouchHelper.DOWN, ItemTouchHelper.RIGHT) {
             @Override
             public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder viewHolder1)
@@ -51,9 +52,9 @@ public final class CourseSelectController {
         });
     }
 
-    public static void onSwiped_(List<String> courseSelection, Button doneButton, RecyclerView.Adapter adapter, Holder cc) {
+    public static void onSwiped_(List<String> courseSelection, Button doneButton, AdapterAdapter adapter, Holder cc) {
         courseSelection.remove(courseSelection.indexOf(cc.get()));
-        adapter.notifyDataSetChanged();
+        adapter.update();
         doneButton.setEnabled(courseSelection.size() == 0 ? false : true);
     }
 
