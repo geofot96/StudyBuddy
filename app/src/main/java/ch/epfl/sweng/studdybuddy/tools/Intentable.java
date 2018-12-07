@@ -11,8 +11,8 @@ public class Intentable {
         this.ctx = ctx;
         this.intent = intent;
     }
-    public Intentable(Context ctx, AppCompatActivity activity) {
-        this(ctx, new Intent(ctx, activity.getClass()));
+    public Intentable(Context ctx, Class activity) {
+        this(ctx, new Intent(ctx, activity));
     }
     public void launch() {
         ctx.startActivity(intent);

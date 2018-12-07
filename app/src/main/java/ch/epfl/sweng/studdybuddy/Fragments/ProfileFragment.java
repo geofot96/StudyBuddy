@@ -37,6 +37,8 @@ import ch.epfl.sweng.studdybuddy.tools.Intentable;
 import ch.epfl.sweng.studdybuddy.tools.RecyclerAdapterAdapter;
 import ch.epfl.sweng.studdybuddy.util.StudyBuddy;
 
+import static ch.epfl.sweng.studdybuddy.util.ActivityHelper.onClickLaunch;
+
 /**
  * A simple {@link Fragment} subclass.
  */
@@ -45,7 +47,6 @@ public class ProfileFragment extends Fragment
 
     private final List<String> userCourses =  new ArrayList<>();
     private  final List<Group> userGroups = new ArrayList<>();
-    protected ReferenceWrapper firebase;
     private GroupsRecyclerAdapter ad;
     private CourseAdapter adCourse;
     private User user;
@@ -65,8 +66,7 @@ public class ProfileFragment extends Fragment
     {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_profile, container, false);
-
-        firebase = new FirebaseReference();
+        setupUser();
         setUI(v);
         setCoursesUp();
         setGroupsUp();
@@ -103,7 +103,7 @@ public class ProfileFragment extends Fragment
         recyclerView_groups.setAdapter(ad);
         //Intentable toCourseEdit = new Intentable(v.getContext(), new Intent(v.getContext(), CourseSelectActivity.class));
         Button editCourses = v.findViewById(R.id.editCourses);
-        //editCourses.setOnClickListener();
+        editCourses.setOnClickListener(onClickLaunch(new Intentable(v.getContext(), CourseSelectActivity.class)));
     }
 
     public ReferenceWrapper getDB(){
