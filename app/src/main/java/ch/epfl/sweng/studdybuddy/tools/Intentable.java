@@ -1,16 +1,20 @@
 package ch.epfl.sweng.studdybuddy.tools;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 
 public class Intentable {
-    AppCompatActivity activity;
+    Context ctx;
     Intent intent;
-    public Intentable(AppCompatActivity activity, Intent intent) {
-        this.activity = activity;
+    public Intentable(Context ctx, Intent intent) {
+        this.ctx = ctx;
         this.intent = intent;
     }
+    public Intentable(Context ctx, AppCompatActivity activity) {
+        this(ctx, new Intent(ctx, activity.getClass()));
+    }
     public void launch() {
-        activity.startActivity(intent);
+        ctx.startActivity(intent);
     }
 }

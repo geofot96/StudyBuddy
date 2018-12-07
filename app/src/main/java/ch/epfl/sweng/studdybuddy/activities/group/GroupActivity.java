@@ -140,13 +140,7 @@ public class GroupActivity extends AppCompatActivity implements Notifiable, Resu
         meetingRV.setLayoutManager(new LinearLayoutManager(this));
         FloatingActionButton actionButton = findViewById(R.id.createMeeting);
         Intentable toCreation = new Intentable(this, new Intent(this, createMeetingActivity.class));
-        //actionButton.setOnClickListener(onClickLaunch(toCreation));
-        actionButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getBaseContext().startActivity(new Intent(GroupActivity.this.getBaseContext(), createMeetingActivity.class));
-            }
-        });
+        actionButton.setOnClickListener(onClickLaunch(toCreation));
     }
 
     public void setupMeetings() {
