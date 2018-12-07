@@ -2,9 +2,14 @@ package ch.epfl.sweng.studdybuddy.controllers;
 
 import android.view.View;
 
+import java.util.List;
+
 import ch.epfl.sweng.studdybuddy.core.Group;
+import ch.epfl.sweng.studdybuddy.core.Pair;
 import ch.epfl.sweng.studdybuddy.firebase.MetaGroupAdmin;
+import ch.epfl.sweng.studdybuddy.tools.Consumer;
 import ch.epfl.sweng.studdybuddy.tools.Intentable;
+import ch.epfl.sweng.studdybuddy.tools.Notifiable;
 
 public final class GroupController {
     private GroupController() {
@@ -21,4 +26,14 @@ public final class GroupController {
             }
         };
     }
+
+    public static Consumer<List<Boolean>> callbackCalendar(Pair pair, Notifiable ctx) {
+        return new Consumer<List<Boolean>>() {
+            @Override
+            public void accept(List<Boolean> booleans) {
+                ctx.getNotified();
+            }
+        };
+    }
+
 }

@@ -33,4 +33,6 @@ public interface Availability{
      * the list of availabilities
      */
     void modifyAvailability(int row, int column) throws ArrayIndexOutOfBoundsException;
+
+
 }

@@ -45,6 +45,7 @@ import ch.epfl.sweng.studdybuddy.util.ActivityHelper;
 import ch.epfl.sweng.studdybuddy.util.Messages;
 import ch.epfl.sweng.studdybuddy.util.StudyBuddy;
 
+import static ch.epfl.sweng.studdybuddy.controllers.GroupController.callbackCalendar;
 import static ch.epfl.sweng.studdybuddy.controllers.GroupController.leaveOnClick;
 import static ch.epfl.sweng.studdybuddy.services.calendar.Color.updateColor;
 import static ch.epfl.sweng.studdybuddy.tools.AvailabilitiesHelper.calendarEventListener;
@@ -67,7 +68,6 @@ public class GroupActivity extends AppCompatActivity implements Notifiable, Resu
     private RecyclerView.Adapter adapter;
     GridLayout calendarGrid;
     private float NmaxUsers;
-    private Availability userAvailabilities;
     private ConnectedCalendar calendar;
     private DatabaseReference database;
     private Pair pair = new Pair();
@@ -76,7 +76,6 @@ public class GroupActivity extends AppCompatActivity implements Notifiable, Resu
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_group);
         setupUserGroupAdmin();
         setUI();
         setupMeetings();
@@ -122,7 +121,7 @@ public class GroupActivity extends AppCompatActivity implements Notifiable, Resu
         database = FirebaseDatabase.getInstance().getReference("availabilities").child(pair.getKey());
         database.addChildEventListener(calendarEventListener(calendar, this, database));
 
-        readData(database.child(pair.getValue()), calendarGetDataListener(callbackCalendar()));
+        readData(database.child(pair.getValue()), calendarGetDataListener(callbackCalendar(pair, this)));
         Intentable toCalendar = new Intentable(this, new Intent(this, ConnectedCalendarActivity.class));
         abutton.setOnClickListener(onClickLaunch(toCalendar));
     }
@@ -150,26 +149,13 @@ public class GroupActivity extends AppCompatActivity implements Notifiable, Resu
         NmaxUsers = (float) origin.getInt(Messages.maxUser, -1);
     }
 
-    private void goToActivity(Intent intent){
-        startActivity(intent);
-    }
-
     @Override
     public void getNotified() {
         update();
     }
 
-
-    public static View.OnClickListener goTo(Class<?> to, Activity from) {
-        return new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                from.startActivity(new Intent(from, to));
-            }
-        };
-    }
-
     public void setUI(){
+        setContentView(R.layout.activity_group);
         ParticipantAdapter participantAdapter = new ParticipantAdapter(participants);
         mb.addListenner(new RecyclerAdapterAdapter(participantAdapter));
         RecyclerView participantsRv = (RecyclerView) findViewById(R.id.participantsRecyclerVIew);
@@ -194,16 +180,6 @@ public class GroupActivity extends AppCompatActivity implements Notifiable, Resu
 
     public boolean getInfoWrongInput(){
         return wrongInput;
-    }
-
-    public Consumer<List<Boolean>> callbackCalendar() {
-        return new Consumer<List<Boolean>>() {
-            @Override
-            public void accept(List<Boolean> booleans) {
-                userAvailabilities = new ConnectedAvailability(pair.getValue(), pair.getKey(), new ConcreteAvailability(booleans), new FirebaseReference());
-                update();
-            }
-        };
     }
 
 
