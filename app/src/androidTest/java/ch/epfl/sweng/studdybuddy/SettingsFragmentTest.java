@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.test.espresso.intent.rule.IntentsTestRule;
 import android.support.test.rule.GrantPermissionRule;
 import android.support.test.runner.AndroidJUnit4;
+import android.widget.Button;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -106,9 +107,18 @@ public class SettingsFragmentTest {
     }
 
     @Test
-    public void applyButton() throws InterruptedException {
+    public void applyButton() throws Throwable {
         Thread.sleep(1000);
-        onView(withId(R.id.btn_settings_apply)).perform(click());
+     //   onView(withId(R.id.btn_settings_apply)).perform(click());
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Button apply = mActivityTestRule.getActivity().findViewById(R.id.btn_settings_apply);
+
+                apply.performClick();
+
+            }
+        });
         onView(withId(R.id.btn_settings_apply)).check(matches(isDisplayed()));
     }
 }
