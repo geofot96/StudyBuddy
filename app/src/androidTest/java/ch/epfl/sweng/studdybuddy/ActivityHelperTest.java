@@ -144,7 +144,7 @@ public class ActivityHelperTest {
         return c.getTime();
     }
 
-   /* @Test
+/*    @Test
     public void testNoMeetingConsumer() {
         meetingConsumer(title, timeB, date, plus).accept(new ArrayList<>());
         verify(timeB).setVisibility(View.GONE);

@@ -21,7 +21,7 @@ import ch.epfl.sweng.studdybuddy.tools.Intentable;
 
 public final class CourseSelectController {
     private CourseSelectController() {
-        throw new IllegalStateException();
+
     }
     public static View.OnClickListener updateCoursesOnDone(User currentUser, List<String> courseSelection, MetaGroupAdmin mga, Intentable mother) {
         return new View.OnClickListener() {
@@ -34,11 +34,7 @@ public final class CourseSelectController {
     }
 
     public static ItemTouchHelper deleteCourseOnSwipe(List<String> courseSelection, Button doneButton, RecyclerView.Adapter adapter) {
-        return new ItemTouchHelper(deleteCourseOnSwipeCB(courseSelection, doneButton, adapter));
-    }
-
-    public static ItemTouchHelper.SimpleCallback deleteCourseOnSwipeCB(List<String> courseSelection, Button doneButton, RecyclerView.Adapter adapter) {
-        return new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP | ItemTouchHelper.DOWN, ItemTouchHelper.RIGHT) {
+        return new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP | ItemTouchHelper.DOWN, ItemTouchHelper.RIGHT) {
             @Override
             public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder viewHolder1)
             {
@@ -52,8 +48,9 @@ public final class CourseSelectController {
 
             }
 
-        };
+        });
     }
+
     public static void onSwiped_(List<String> courseSelection, Button doneButton, RecyclerView.Adapter adapter, Holder cc) {
         courseSelection.remove(courseSelection.indexOf(cc.get()));
         adapter.notifyDataSetChanged();

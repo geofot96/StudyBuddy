@@ -16,7 +16,7 @@ import static android.app.Activity.RESULT_OK;
 
 public final class GroupController {
     private GroupController() {
-        throw new IllegalStateException();
+
     }
 
     public static View.OnClickListener leaveOnClick(MetaGroupAdmin mga, String uId, Group group, Intentable destination) {
