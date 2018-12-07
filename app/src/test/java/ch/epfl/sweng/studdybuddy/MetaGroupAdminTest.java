@@ -99,4 +99,14 @@ public class MetaGroupAdminTest {
         mg.putAllCourses(courses, "a");
         verify(testref, times(3)).child("userCourse");
     }
+
+    @Test
+    public void onGroupGetNull() {
+
+    }
+
+    @Test
+    public void onGroupGet() {
+
+    }
 }

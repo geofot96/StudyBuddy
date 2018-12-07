@@ -36,6 +36,7 @@ import ch.epfl.sweng.studdybuddy.services.meeting.Meeting;
 import ch.epfl.sweng.studdybuddy.services.meeting.MeetingLocation;
 import ch.epfl.sweng.studdybuddy.services.meeting.MeetingRecyclerAdapter;
 import ch.epfl.sweng.studdybuddy.tools.Consumer;
+import ch.epfl.sweng.studdybuddy.tools.Intentable;
 import ch.epfl.sweng.studdybuddy.tools.Notifiable;
 import ch.epfl.sweng.studdybuddy.tools.ParticipantAdapter;
 import ch.epfl.sweng.studdybuddy.tools.RecyclerAdapterAdapter;
@@ -44,10 +45,13 @@ import ch.epfl.sweng.studdybuddy.util.ActivityHelper;
 import ch.epfl.sweng.studdybuddy.util.Messages;
 import ch.epfl.sweng.studdybuddy.util.StudyBuddy;
 
+import static ch.epfl.sweng.studdybuddy.controllers.GroupController.leaveOnClick;
 import static ch.epfl.sweng.studdybuddy.services.calendar.Color.updateColor;
 import static ch.epfl.sweng.studdybuddy.tools.AvailabilitiesHelper.calendarEventListener;
 import static ch.epfl.sweng.studdybuddy.tools.AvailabilitiesHelper.calendarGetDataListener;
 import static ch.epfl.sweng.studdybuddy.tools.AvailabilitiesHelper.readData;
+import static ch.epfl.sweng.studdybuddy.util.ActivityHelper.onClickLaunch;
+
 public class GroupActivity extends AppCompatActivity implements Notifiable, Resultable {
     private boolean wrongInput = false;
     List<User> participants  = new ArrayList<>();
@@ -56,7 +60,6 @@ public class GroupActivity extends AppCompatActivity implements Notifiable, Resu
     private String gId;
     Button button;
     List<Group> group = new ArrayList<>();
-    List<String> gIds = new ArrayList<>();
     private MetaMeeting metaM = new MetaMeeting();
     String adminId;
     private List<Meeting> meetingList;
@@ -68,6 +71,7 @@ public class GroupActivity extends AppCompatActivity implements Notifiable, Resu
     private ConnectedCalendar calendar;
     private DatabaseReference database;
     private Pair pair = new Pair();
+    RecyclerView meetingRV;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -76,8 +80,6 @@ public class GroupActivity extends AppCompatActivity implements Notifiable, Resu
         setupUserGroupAdmin();
         setUI();
         setupMeetings();
-        FloatingActionButton actionButton = findViewById(R.id.createMeeting);
-        actionButton.setOnClickListener(goTo(createMeetingActivity.class, this));
         setupAvails();
     }
 
@@ -109,7 +111,7 @@ public class GroupActivity extends AppCompatActivity implements Notifiable, Resu
 
     public void setupAvails() {
         calendarGrid = findViewById(R.id.calendarGrid);
-        Button button = findViewById(R.id.editAvail);
+        Button abutton = findViewById(R.id.editAvail);
         pair.setKey(gId);
         pair.setValue(uId);
         /*if(pair.getKey() == null || pair.getValue() == null){
@@ -121,12 +123,8 @@ public class GroupActivity extends AppCompatActivity implements Notifiable, Resu
         database.addChildEventListener(calendarEventListener(calendar, this, database));
 
         readData(database.child(pair.getValue()), calendarGetDataListener(callbackCalendar()));
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(GroupActivity.this, ConnectedCalendarActivity.class));
-            }
-        });
+        Intentable toCalendar = new Intentable(this, new Intent(this, ConnectedCalendarActivity.class));
+        abutton.setOnClickListener(onClickLaunch(toCalendar));
     }
 
     public void setupUserGroupAdmin() {
@@ -135,8 +133,13 @@ public class GroupActivity extends AppCompatActivity implements Notifiable, Resu
         Bundle origin = globalBundle.getSavedBundle();
         uId = ((StudyBuddy) GroupActivity.this.getApplication()).getAuthendifiedUser().getUserID().getId();
         gId = origin.getString(Messages.groupID);
-        gIds.add(gId);
-        mb.getGroupsfromIds(gIds, group);
+        mb.onGroupGet(gId, new Consumer<Group>() {
+            @Override
+            public void accept(Group group) {
+                Intentable toNavig = new Intentable(GroupActivity.this, new Intent(GroupActivity.this, NavigationActivity.class));
+                button.setOnClickListener(leaveOnClick(mb, uId, group, toNavig));
+            }
+        });
         mb.getGroupUsers(gId, participants);
         adminId = origin.getString(Messages.ADMIN);
         /*if(gId == null || adminId == null ) {
@@ -172,22 +175,14 @@ public class GroupActivity extends AppCompatActivity implements Notifiable, Resu
         RecyclerView participantsRv = (RecyclerView) findViewById(R.id.participantsRecyclerVIew);
         participantAdapter.initRecyclerView(this, participantsRv);
         button = findViewById(R.id.quitGroup);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (uId != null && gId != null) {
-                    mb.clearListeners();
-                    mb.removeUserFromGroup(uId, group.get(0));
-                    Intent transition = new Intent(GroupActivity.this, NavigationActivity.class);
-                    startActivity(transition);
-                }
-            }
-        });
+        meetingRV = findViewById(R.id.meetingRV);
+        meetingRV.setLayoutManager(new LinearLayoutManager(this));
+        FloatingActionButton actionButton = findViewById(R.id.createMeeting);
+        Intentable toCreation = new Intentable(this, new Intent(this, createMeetingActivity.class));
+        actionButton.setOnClickListener(onClickLaunch(toCreation));
     }
 
     public void setupMeetings() {
-        RecyclerView meetingRV = findViewById(R.id.meetingRV);
-        meetingRV.setLayoutManager(new LinearLayoutManager(this));
         meetingList = new ArrayList<>();
         Bundle bundle = GlobalBundle.getInstance().getSavedBundle();
         bundle.putString(Messages.groupID, gId);

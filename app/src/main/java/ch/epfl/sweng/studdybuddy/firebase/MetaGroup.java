@@ -137,4 +137,14 @@ public class MetaGroup extends Metabase{
         db.select(Messages.FirebaseNode.USERGROUP).select(Helper.hashCode(pair)).setVal(pair);
     }
 
+    public ValueEventListener onGroupGet(String gid, Consumer<Group> callback) {
+        return db.select(Messages.FirebaseNode.GROUPS).select(gid).get(Group.class, new Consumer<Group>() {
+            @Override
+            public void accept(Group group) {
+                if(group != null) {
+                    callback.accept(group);
+                }
+            }
+        });
+    }
 }

@@ -31,7 +31,10 @@ import ch.epfl.sweng.studdybuddy.tools.Intentable;
 
 import static android.app.Activity.RESULT_OK;
 
-public class ActivityHelper {
+public final class ActivityHelper {
+    private ActivityHelper() {
+        throw new IllegalStateException();
+    }
 
     public static final Comparator<Meeting> comparator = new Comparator<Meeting>() {
         @Override

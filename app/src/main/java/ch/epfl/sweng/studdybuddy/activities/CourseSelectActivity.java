@@ -124,12 +124,14 @@ public class CourseSelectActivity extends AppCompatActivity
     private void addCourse(String course)
     {
         courseSelection.add(course);
-        //Dismiss KB
-        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(autocomplete.getWindowToken(), 0);
+        dismissKB();
         //reset search text
         autocomplete.setText("");
         doneButton.setEnabled(true);
     }
 
+    private void dismissKB() {
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(autocomplete.getWindowToken(), 0);
+    }
 }
