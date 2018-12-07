@@ -1,5 +1,7 @@
 package ch.epfl.sweng.studdybuddy.controllers;
 
+import android.content.ClipData;
+import android.os.health.SystemHealthManager;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
@@ -32,8 +34,11 @@ public final class CourseSelectController {
     }
 
     public static ItemTouchHelper deleteCourseOnSwipe(List<String> courseSelection, Button doneButton, RecyclerView.Adapter adapter) {
-        return new ItemTouchHelper(
-            new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP | ItemTouchHelper.DOWN, ItemTouchHelper.RIGHT) {
+        return new ItemTouchHelper(deleteCourseOnSwipeCB(courseSelection, doneButton, adapter));
+    }
+
+    public static ItemTouchHelper.SimpleCallback deleteCourseOnSwipeCB(List<String> courseSelection, Button doneButton, RecyclerView.Adapter adapter) {
+        return new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP | ItemTouchHelper.DOWN, ItemTouchHelper.RIGHT) {
             @Override
             public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder viewHolder1)
             {
@@ -43,13 +48,16 @@ public final class CourseSelectController {
             @Override
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int i)
             {
-                Holder cc = (Holder) viewHolder;
-                courseSelection.remove(courseSelection.indexOf(cc.get()));
-                adapter.notifyDataSetChanged();
-                if(courseSelection.size() == 0)
-                    doneButton.setEnabled(false);
+                onSwiped_(courseSelection, doneButton, adapter ,(Holder)viewHolder);
+
             }
-        });
+
+        };
+    }
+    public static void onSwiped_(List<String> courseSelection, Button doneButton, RecyclerView.Adapter adapter, Holder cc) {
+        courseSelection.remove(courseSelection.indexOf(cc.get()));
+        adapter.notifyDataSetChanged();
+        doneButton.setEnabled(courseSelection.size() == 0 ? false : true);
     }
 
     public static AdapterView.OnItemClickListener onClickAddCourse(List<String> courseSelection, Consumer<String> callback) {
