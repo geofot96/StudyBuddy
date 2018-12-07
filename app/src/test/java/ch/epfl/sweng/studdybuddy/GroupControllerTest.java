@@ -1,5 +1,7 @@
 package ch.epfl.sweng.studdybuddy;
 
+import android.view.View;
+
 import org.junit.Test;
 
 import ch.epfl.sweng.studdybuddy.core.Group;
@@ -24,7 +26,7 @@ public class GroupControllerTest {
         String uId = "123";
         Group group = blankGroupWId("123");
         Intentable destination = mock(Intentable.class);
-        leaveOnClick(mga, uId, group, destination);
+        leaveOnClick(mga, uId, group, destination).onClick(mock(View.class));
         verify(mga, times(1)).clearListeners();
         verify(mga, times(1)).removeUserFromGroup(uId, group);
         verify(destination, times(1)).launch();
