@@ -1,5 +1,6 @@
 package ch.epfl.sweng.studdybuddy.activities;
 
+import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -41,6 +42,9 @@ import ch.epfl.sweng.studdybuddy.tools.RecyclerAdapterAdapter;
 import ch.epfl.sweng.studdybuddy.util.Helper;
 import ch.epfl.sweng.studdybuddy.util.StudyBuddy;
 
+import static ch.epfl.sweng.studdybuddy.controllers.CourseSelectController.deleteCourseOnSwipe;
+import static ch.epfl.sweng.studdybuddy.controllers.CourseSelectController.onClickAddCourse;
+import static ch.epfl.sweng.studdybuddy.controllers.CourseSelectController.resetSelectViews;
 import static ch.epfl.sweng.studdybuddy.controllers.CourseSelectController.updateCoursesOnDone;
 import static ch.epfl.sweng.studdybuddy.util.ActivityHelper.onClickLaunch;
 import static ch.epfl.sweng.studdybuddy.util.ActivityHelper.showDropdown;
@@ -82,13 +86,8 @@ public class CourseSelectActivity extends AppCompatActivity {
         autocomplete = (AutoCompleteTextView) findViewById(R.id.courseComplete);
         autocomplete.setAdapter(adapter);
         autocomplete.setOnClickListener(showDropdown(autocomplete));
-        autocomplete.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String textInput = parent.getAdapter().getItem(position).toString();
-                if(!courseSelection.contains(textInput)) { addCourse(textInput); }
-            }
-        });
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        autocomplete.setOnItemClickListener(onClickAddCourse(courseSelection, resetSelectViews(doneButton, autocomplete, imm)));
         return adapter;
    }
 
@@ -97,28 +96,15 @@ public class CourseSelectActivity extends AppCompatActivity {
        RecyclerView.Adapter courseAdapter = new CourseAdapter(courseSelection);
        selectedCourses.setLayoutManager(new LinearLayoutManager(getBaseContext()));
        selectedCourses.setAdapter(courseAdapter);
-       Log.i("User ID", uId);
        MetaGroup mg = new MetaGroup();
        mg.addListenner(new RecyclerAdapterAdapter(courseAdapter));
        mg.getUserCourses(uId, courseSelection);
+       ItemTouchHelper swipeCourse = deleteCourseOnSwipe(courseSelection, doneButton, courseAdapter);
+       swipeCourse.attachToRecyclerView(selectedCourses);
    }
 
    private void setUpDb(ArrayAdapter<String> adapter) {
        firebase = new FirebaseReference(FirebaseDatabase.getInstance().getReference());
        firebase.select("courses").getAll(String.class, AdapterConsumer.adapterConsumer(String.class, coursesDB, new ArrayAdapterAdapter(adapter)));
    }
-
-    private void addCourse(String course)
-    {
-        courseSelection.add(course);
-        dismissKB();
-        //reset search text
-        autocomplete.setText("");
-        doneButton.setEnabled(true);
-    }
-
-    private void dismissKB() {
-        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(autocomplete.getWindowToken(), 0);
-    }
 }
