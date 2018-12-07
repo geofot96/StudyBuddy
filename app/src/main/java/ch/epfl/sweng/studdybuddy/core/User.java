@@ -14,6 +14,7 @@ final public class User
 
     @PrimaryKey
     @NonNull
+    @ColumnInfo(name = "userID")
     private ID<User> userID;
     private MeetingLocation favoriteLocation;
     private String favoriteLanguage;
@@ -37,10 +38,23 @@ final public class User
         this.favoriteLanguage = "\uD83C\uDDEC\uD83C\uDDE7"; //GB emoji
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return  name.equals(user.name) &&
+                userID.equals(user.userID) &&
+                favoriteLocation.equals(user.favoriteLocation) &&
+                favoriteLanguage.equals(user.favoriteLanguage);
+    }
+
     public User(String name, String uId) {
         this.name = name;
         this.userID = new ID<>(uId);
         this.favoriteLocation = MapsHelper.ROLEX_LOCATION;
+
         this.favoriteLanguage = "\uD83C\uDDEC\uD83C\uDDE7"; //GB emoji
     }
 
@@ -72,4 +86,5 @@ final public class User
     public void setFavoriteLanguage(String favoriteLanguage) {
         this.favoriteLanguage = favoriteLanguage;
     }
+
 }

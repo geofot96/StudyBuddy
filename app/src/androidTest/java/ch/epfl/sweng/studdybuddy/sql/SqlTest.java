@@ -36,9 +36,12 @@ public class SqlTest {
     public void writeAndReadUser() throws Exception {
         new Converter();
         mUserDao.clear();
-        User user = new User("a", new ID<User>("1"));
+        ID<User> userID = new ID<User>("1");
+        User user = new User("a", userID);
         mUserDao.insert(user);
         assertTrue(mUserDao.getAll().size() == 1);
+        User u = mUserDao.get(userID).get(0);
+        assertTrue(u.equals(user));
         mUserDao.delete(new ID<>("1"));
         assertTrue(mUserDao.getAll().size() ==0);
         mUserDao.clear();

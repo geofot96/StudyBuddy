@@ -67,11 +67,10 @@ public class GoogleSignInActivity extends AppCompatActivity {
             String personName = acct.getDisplayName();
             //appears only when the user is connected
             Toast.makeText(this, "Welcome " + personName, Toast.LENGTH_SHORT).show();
-            //DATA RACE !!!!
             new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    List<User> users = sql.userDAO().getAll();
+                    List<User> users = sql.userDAO().get(new ID<>(acct.getId()));
                     if(users.size() > 0){
                         app.setAuthendifiedUser(users.get(0));
                         Log.i(TAG, String.format("Found user with id %s and language %s in the local database.", users.get(0).getUserID().getId(), users.get(0).getFavoriteLanguage()));
