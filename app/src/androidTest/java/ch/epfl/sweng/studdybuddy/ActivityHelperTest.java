@@ -132,14 +132,6 @@ public class ActivityHelperTest {
     }
 
     @Test
-    public void testOnClickLaunch() {
-        View v = mock(View.class);
-        Intentable i = mock(Intentable.class, RETURNS_DEEP_STUBS);
-        //onClickLaunch(i).onClick(v);
-        //verify(i, times(1)).launch();
-    }
-
-    @Test
     public void testGetConsumerForMeetingsWithDeletion(){
         checkerGetConsumerForMeetings(-1, 1, 0);
     }
