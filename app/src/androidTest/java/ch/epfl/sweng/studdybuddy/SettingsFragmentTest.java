@@ -101,8 +101,9 @@ public class SettingsFragmentTest {
     }
 
     @Test
-    public void signoutButtonTest(){
+    public void signoutButtonTest() throws InterruptedException {
         onView(withId(R.id.btn_sign_out)).perform(click());
+        Thread.sleep(1000);
         onView(withId(R.id.googleBtn)).check(matches(isDisplayed()));
     }
 
