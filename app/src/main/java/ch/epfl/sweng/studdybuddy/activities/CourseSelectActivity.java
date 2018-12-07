@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
@@ -27,13 +28,16 @@ import ch.epfl.sweng.studdybuddy.controllers.CourseSelectController;
 import ch.epfl.sweng.studdybuddy.core.Pair;
 import ch.epfl.sweng.studdybuddy.core.User;
 import ch.epfl.sweng.studdybuddy.firebase.FirebaseReference;
+import ch.epfl.sweng.studdybuddy.firebase.MetaGroup;
 import ch.epfl.sweng.studdybuddy.firebase.MetaGroupAdmin;
 import ch.epfl.sweng.studdybuddy.firebase.ReferenceWrapper;
+import ch.epfl.sweng.studdybuddy.tools.Adapter;
 import ch.epfl.sweng.studdybuddy.tools.AdapterConsumer;
 import ch.epfl.sweng.studdybuddy.tools.ArrayAdapterAdapter;
 import ch.epfl.sweng.studdybuddy.tools.CourseAdapter;
 import ch.epfl.sweng.studdybuddy.tools.Holder;
 import ch.epfl.sweng.studdybuddy.tools.Intentable;
+import ch.epfl.sweng.studdybuddy.tools.RecyclerAdapterAdapter;
 import ch.epfl.sweng.studdybuddy.util.Helper;
 import ch.epfl.sweng.studdybuddy.util.StudyBuddy;
 
@@ -54,6 +58,7 @@ public class CourseSelectActivity extends AppCompatActivity
     static ReferenceWrapper firebase;
     public static ArrayAdapter<String> adapter;
     static Button doneButton;
+    String uId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +77,7 @@ public class CourseSelectActivity extends AppCompatActivity
         doneButton.setEnabled(false);
         Intentable i = new Intentable(this, toMain);
         User currentUser = ((StudyBuddy) CourseSelectActivity.this.getApplication()).getAuthendifiedUser();
+        uId = currentUser.getUserID().getId();
         doneButton.setOnClickListener(updateCoursesOnDone(currentUser, courseSelection, new MetaGroupAdmin(), i));
     }
 
@@ -92,27 +98,11 @@ public class CourseSelectActivity extends AppCompatActivity
 
    private void setUpSelectedCourses() {
        final RecyclerView selectedCourses = (RecyclerView) findViewById(R.id.coursesSet);
+       Adapter courseAdapter = new CourseAdapter(courseSelection);
        selectedCourses.setAdapter(new CourseAdapter(courseSelection));
-       /*ItemTouchHelper mIth = new ItemTouchHelper(
-               new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP | ItemTouchHelper.DOWN,
-                       ItemTouchHelper.RIGHT)
-               {
-                   @Override
-                   public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder viewHolder1)
-                   {
-                       return false;
-                   }
-
-                   @Override
-                   public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int i)
-                   {
-                       Holder cc = (Holder) viewHolder;
-                       courseSelection.remove(courseSelection.indexOf(cc.get()));
-                       selectedCourses.getAdapter().notifyDataSetChanged();
-                       if(courseSelection.size() == 0)
-                           doneButton.setEnabled(false);
-                   }
-               });
+       //Log.i("User ID", uId);
+       //new MetaGroup(new RecyclerAdapterAdapter(courseAdapter)).getUserCourses(uId, courseSelection);
+       /*ItemTouchHelper mIth =
        mIth.attachToRecyclerView(selectedCourses);*/
    }
 
