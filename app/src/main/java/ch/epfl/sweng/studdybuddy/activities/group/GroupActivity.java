@@ -6,6 +6,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 import android.widget.Button;
 import android.widget.GridLayout;
 
@@ -75,6 +76,7 @@ public class GroupActivity extends AppCompatActivity implements Notifiable, Resu
         setUI();
         setupMeetings();
         setupAvails();
+
     }
 
     @Override
@@ -138,7 +140,13 @@ public class GroupActivity extends AppCompatActivity implements Notifiable, Resu
         meetingRV.setLayoutManager(new LinearLayoutManager(this));
         FloatingActionButton actionButton = findViewById(R.id.createMeeting);
         Intentable toCreation = new Intentable(this, new Intent(this, createMeetingActivity.class));
-        actionButton.setOnClickListener(onClickLaunch(toCreation));
+        //actionButton.setOnClickListener(onClickLaunch(toCreation));
+        actionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getBaseContext().startActivity(new Intent(GroupActivity.this.getBaseContext(), createMeetingActivity.class));
+            }
+        });
     }
 
     public void setupMeetings() {
