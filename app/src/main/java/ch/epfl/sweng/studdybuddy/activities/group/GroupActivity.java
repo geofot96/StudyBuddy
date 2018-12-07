@@ -97,18 +97,12 @@ public class GroupActivity extends AppCompatActivity implements Notifiable, Resu
     }
 
     public void setupAvails() {
-        calendarGrid = findViewById(R.id.calendarGrid);
         Button abutton = findViewById(R.id.editAvail);
         pair.setKey(gId);
         pair.setValue(uId);
-        /*if(pair.getKey() == null || pair.getValue() == null){
-            throw new NullPointerException("the intent didn't content expected data");
-        }*/
         calendar = new ConnectedCalendar(new ID<>(pair.getKey()), new HashMap<>());
-
         database = FirebaseDatabase.getInstance().getReference("availabilities").child(pair.getKey());
         database.addChildEventListener(calendarEventListener(calendar, this, database));
-
         readData(database.child(pair.getValue()), calendarGetDataListener(callbackCalendar(pair, this)));
         Intentable toCalendar = new Intentable(this, new Intent(this, ConnectedCalendarActivity.class));
         abutton.setOnClickListener(onClickLaunch(toCalendar));
@@ -129,11 +123,6 @@ public class GroupActivity extends AppCompatActivity implements Notifiable, Resu
         });
         mb.getGroupUsers(gId, participants);
         adminId = origin.getString(Messages.ADMIN);
-        /*if(gId == null || adminId == null ) {
-            goTo(NavigationActivity.class, this);
-            String TAG = "MEETINGS_ACTIVITY";
-            Log.d(TAG, "Information of the group is not fully recovered");
-        }*/
         NmaxUsers = (float) origin.getInt(Messages.maxUser, -1);
     }
 
@@ -150,6 +139,7 @@ public class GroupActivity extends AppCompatActivity implements Notifiable, Resu
         participantAdapter.initRecyclerView(this, participantsRv);
         button = findViewById(R.id.quitGroup);
         meetingRV = findViewById(R.id.meetingRV);
+        calendarGrid = findViewById(R.id.calendarGrid);
         meetingRV.setLayoutManager(new LinearLayoutManager(this));
         FloatingActionButton actionButton = findViewById(R.id.createMeeting);
         Intentable toCreation = new Intentable(this, new Intent(this, createMeetingActivity.class));
