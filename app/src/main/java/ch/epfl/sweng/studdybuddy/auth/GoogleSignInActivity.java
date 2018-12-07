@@ -22,7 +22,10 @@ import ch.epfl.sweng.studdybuddy.core.User;
 import ch.epfl.sweng.studdybuddy.firebase.FirebaseReference;
 import ch.epfl.sweng.studdybuddy.firebase.ReferenceWrapper;
 import ch.epfl.sweng.studdybuddy.tools.Consumer;
+import ch.epfl.sweng.studdybuddy.tools.Intentable;
 import ch.epfl.sweng.studdybuddy.util.StudyBuddy;
+
+import static ch.epfl.sweng.studdybuddy.controllers.GoogleSigninController.fetchUserCallback;
 
 public class GoogleSignInActivity extends AppCompatActivity {
 
@@ -99,28 +102,9 @@ public class GoogleSignInActivity extends AppCompatActivity {
     }
 
     private ValueEventListener fetchUserAndStart(Account acct, Class destination) {
-        return fetchUserAndStart(new FirebaseReference(), acct, destination);
+        Intentable toCourseSelect = new Intentable(getBaseContext(), CourseSelectActivity.class);
+        return fetchUserCallback(new FirebaseReference(), acct, (StudyBuddy)GoogleSignInActivity.this.getApplication(), toCourseSelect);
     }
-
-    private ValueEventListener fetchUserAndStart(ReferenceWrapper fb, Account acct, Class destination) {
-        final ID<User> userID = new ID<>(acct.getId());
-        return fb.select("users").select(userID.getId()).get(User.class, new Consumer<User>() {
-            @Override
-            public void accept(User user) {
-                StudyBuddy app = ((StudyBuddy) GoogleSignInActivity.this.getApplication());
-                if(user == null) { //create a new user and put in db
-                    app.setAuthendifiedUser(new User(acct.getDisplayName(), userID));
-                    app.disableTravis();
-                    fb.select("users").select(userID.getId()).setVal(app.getAuthendifiedUser());
-                }
-                else {
-                    app.setAuthendifiedUser(user);
-                }
-                startActivity(new Intent(GoogleSignInActivity.this, destination));
-            }
-        });
-    }
-
 
     AuthManager getAuthManager(){
         if (mAuth == null){
