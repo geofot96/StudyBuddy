@@ -87,12 +87,7 @@ public class GroupActivity extends AppCompatActivity implements Notifiable, Resu
     }
 
     public static void onResult(Bundle data, MetaMeeting metaM, String gId) {
-        MeetingLocation meetingLocation = new MeetingLocation(
-                data.getString(Messages.LOCATION_TITLE),
-                data.getString(Messages.ADDRESS),
-                data.getDouble(Messages.LATITUDE, 0),
-                data.getDouble(Messages.LONGITUDE, 0)
-        );
+        MeetingLocation meetingLocation = new MeetingLocation(data);
         metaM.pushLocation(meetingLocation, new ID<>(gId), new ID<>(data.getString(Messages.meetingID)));
     }
 
