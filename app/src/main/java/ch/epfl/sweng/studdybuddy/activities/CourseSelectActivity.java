@@ -46,14 +46,9 @@ import static ch.epfl.sweng.studdybuddy.util.ActivityHelper.onClickLaunch;
 import static ch.epfl.sweng.studdybuddy.util.ActivityHelper.showDropdown;
 
 
-public class CourseSelectActivity extends AppCompatActivity
-{
-
+public class CourseSelectActivity extends AppCompatActivity {
     static List<String> coursesDB = new ArrayList<>();
-    //List of selected courses
-    public static final List<String> courseSelection = new ArrayList<>();
-
-
+    private final List<String> courseSelection = new ArrayList<>();
     static AutoCompleteTextView autocomplete;
     static ReferenceWrapper firebase;
     public static ArrayAdapter<String> adapter;
@@ -64,9 +59,10 @@ public class CourseSelectActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_course_select);
-        setUpDb(setUpAutoComplete());
         setUpButtons();
         setUpSelectedCourses();
+        setUpDb(setUpAutoComplete());
+        setUpButtons();
     }
 
     private void setUpButtons() {
@@ -98,12 +94,13 @@ public class CourseSelectActivity extends AppCompatActivity
 
    private void setUpSelectedCourses() {
        final RecyclerView selectedCourses = (RecyclerView) findViewById(R.id.coursesSet);
-       Adapter courseAdapter = new CourseAdapter(courseSelection);
-       selectedCourses.setAdapter(new CourseAdapter(courseSelection));
-       //Log.i("User ID", uId);
-       //new MetaGroup(new RecyclerAdapterAdapter(courseAdapter)).getUserCourses(uId, courseSelection);
-       /*ItemTouchHelper mIth =
-       mIth.attachToRecyclerView(selectedCourses);*/
+       RecyclerView.Adapter courseAdapter = new CourseAdapter(courseSelection);
+       selectedCourses.setLayoutManager(new LinearLayoutManager(getBaseContext()));
+       selectedCourses.setAdapter(courseAdapter);
+       Log.i("User ID", uId);
+       MetaGroup mg = new MetaGroup();
+       mg.addListenner(new RecyclerAdapterAdapter(courseAdapter));
+       mg.getUserCourses(uId, courseSelection);
    }
 
    private void setUpDb(ArrayAdapter<String> adapter) {
