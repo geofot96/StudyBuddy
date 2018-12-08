@@ -100,6 +100,12 @@ public class CourseSelectActivity extends AppCompatActivity {
        MetaGroup mg = new MetaGroup();
        AdapterAdapter adapterC = new RecyclerAdapterAdapter(courseAdapter);
        mg.addListenner(adapterC);
+       mg.addListenner(new AdapterAdapter() {
+           @Override
+           public void update() {
+               doneButton.setEnabled(courseSelection.size() > 0);
+           }
+       });
        mg.getUserCourses(uId, courseSelection);
        ItemTouchHelper swipeCourse = deleteCourseOnSwipe(courseSelection, doneButton, adapterC);
        swipeCourse.attachToRecyclerView(selectedCourses);
