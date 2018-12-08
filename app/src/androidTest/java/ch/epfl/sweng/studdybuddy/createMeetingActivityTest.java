@@ -31,7 +31,6 @@ import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.isEnabled;
 import static android.support.test.espresso.matcher.ViewMatchers.withClassName;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
-import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static android.support.test.internal.runner.junit4.statement.UiThreadStatement.runOnUiThread;
 import static ch.epfl.sweng.studdybuddy.ExampleInstrumentedTest.matchesDate;
 import static ch.epfl.sweng.studdybuddy.ExampleInstrumentedTest.matchesTime;
@@ -60,6 +59,7 @@ public class createMeetingActivityTest {
 */
     @BeforeClass
     public static void setUpBeforeClass(){
+        MeetingsActivityTest.setup();
     }
 
     @Before
