@@ -23,6 +23,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.firebase.ui.database.FirebaseListAdapter;
@@ -36,6 +37,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+
 import java.io.ByteArrayOutputStream;
 import java.util.UUID;
 
@@ -101,7 +103,8 @@ public class ChatActivity extends AppCompatActivity
     private void askForCameraPermission()
     {
         if(ContextCompat.checkSelfPermission(ChatActivity.this.getApplicationContext(),
-                Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED)
+        {
             ActivityCompat.requestPermissions(ChatActivity.this,
                     new String[]{Manifest.permission.CAMERA},
                     1);
@@ -160,6 +163,7 @@ public class ChatActivity extends AppCompatActivity
 
     /**
      * method to be mocked at DummyChatChatActivity
+     *
      * @param data
      * @return
      */
@@ -254,14 +258,16 @@ public class ChatActivity extends AppCompatActivity
             @Override
             public void onComplete(@NonNull Task<Uri> task)
             {
-                if(task.isSuccessful()) {
+                if(task.isSuccessful())
+                {
                     downloadUri = task.getResult().toString();
                     mProgress.dismiss();
                     fab.performClick();
                     Toast.makeText(ChatActivity.this, "Uploaded " + downloadUri, Toast.LENGTH_SHORT).show();
 
                 }
-                else {
+                else
+                {
                     mProgress.dismiss();
                     Toast.makeText(ChatActivity.this, "Failed Uploading" + task.getException().toString(), Toast.LENGTH_LONG).show();
                 }
@@ -319,14 +325,16 @@ public class ChatActivity extends AppCompatActivity
                 messageText.setText(model.getMessageText());
                 ImageView image = (ImageView) v.findViewById(R.id.imgViewGall);
                 String modelUri = model.getImageUri();
-                if(modelUri != null && !modelUri.isEmpty()) {
+                if(modelUri != null && !modelUri.isEmpty())
+                {
                     //Put the image in the chat
                     Glide.with(ChatActivity.this).
                             load(modelUri)
                             .apply(new RequestOptions().override(500, 700)).
-                            into(image); //TODO replace the long load thing with modelURI
+                            into(image);
                 }
-                else {
+                else
+                {
                     image.setImageResource(android.R.color.transparent);
                 }
             }
