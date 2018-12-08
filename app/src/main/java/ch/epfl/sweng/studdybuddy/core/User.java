@@ -1,11 +1,21 @@
 package ch.epfl.sweng.studdybuddy.core;
 
-import ch.epfl.sweng.studdybuddy.services.meeting.MeetingLocation;
-import ch.epfl.sweng.studdybuddy.util.MapsHelper;
+import android.arch.persistence.room.ColumnInfo;
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.PrimaryKey;
+import android.support.annotation.NonNull;
 
+import ch.epfl.sweng.studdybuddy.services.meeting.MeetingLocation;
+import ch.epfl.sweng.studdybuddy.util.Language;
+import ch.epfl.sweng.studdybuddy.util.MapsHelper;
+@Entity
 final public class User
 {
     private String name;
+
+    @PrimaryKey
+    @NonNull
+    @ColumnInfo(name = "userID")
     private ID<User> userID;
     private MeetingLocation favoriteLocation;
     private String favoriteLanguage;
@@ -26,14 +36,23 @@ final public class User
         this.name = name;
         this.userID = userId;
         this.favoriteLocation = MapsHelper.ROLEX_LOCATION;
-        this.favoriteLanguage = "\uD83C\uDDEC\uD83C\uDDE7"; //GB emoji
+        this.favoriteLanguage = Language.EN;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        User user = (User) o;
+        return  !(o == null || getClass() != o.getClass()) &&
+                userID.equals(user.userID) &&
+                favoriteLocation.equals(user.favoriteLocation) &&
+                favoriteLanguage.equals(user.favoriteLanguage);
     }
 
     public User(String name, String uId) {
         this.name = name;
         this.userID = new ID<>(uId);
         this.favoriteLocation = MapsHelper.ROLEX_LOCATION;
-        this.favoriteLanguage = "\uD83C\uDDEC\uD83C\uDDE7"; //GB emoji
+        this.favoriteLanguage = Language.EN;
     }
 
     public User() {}
@@ -64,4 +83,15 @@ final public class User
     public void setFavoriteLanguage(String favoriteLanguage) {
         this.favoriteLanguage = favoriteLanguage;
     }
+
+    public void setAs(User user){
+        if(user != null){
+            setFavoriteLocation(user.getFavoriteLocation());
+            setFavoriteLanguage(user.getFavoriteLanguage());
+            setName(user.getName());
+            setUserID(new ID<>(user.getUserID().getId()));
+
+        }
+    }
+
 }
