@@ -3,7 +3,6 @@ package ch.epfl.sweng.studdybuddy.Fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -16,14 +15,7 @@ import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-
 import ch.epfl.sweng.studdybuddy.R;
-import ch.epfl.sweng.studdybuddy.activities.group.GlobalBundle;
-import ch.epfl.sweng.studdybuddy.activities.group.MapsActivity;
-import ch.epfl.sweng.studdybuddy.auth.FirebaseAuthManager;
-import ch.epfl.sweng.studdybuddy.auth.GoogleSignInActivity;
 import ch.epfl.sweng.studdybuddy.core.User;
 import ch.epfl.sweng.studdybuddy.firebase.FirebaseReference;
 import ch.epfl.sweng.studdybuddy.firebase.MetaGroup;
@@ -170,18 +162,7 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
     }
 
     public void setUpLocation(){
-        textDisplayLocation.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(getActivity(), MapsActivity.class);
-                i.putExtra(Messages.groupID, Messages.settingsPlaceHolder);
-                i.putExtra(Messages.meetingID,Messages.settingsPlaceHolder);
-                i.putExtra(Messages.ADMIN,Messages.settingsPlaceHolder);
-                GlobalBundle.getInstance().putAll(i.getExtras());
-                startActivityForResult(i, 1);
-            }
-        });
-
+        textDisplayLocation.setOnClickListener(SettingsFragmentHelper.setUpLocationOnClickListener(this));
         favoriteLocation = user.getFavoriteLocation() != null ? user.getFavoriteLocation() : favoriteLocation;
         textDisplayLocation.setText("Default Location: " + favoriteLocation.toString());
 
@@ -196,25 +177,7 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
     }
     public void setUpSignOut(){
         signout = view.findViewById(R.id.btn_sign_out);
-        signout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(SettingsFragment.this.getContext(), GoogleSignInActivity.class);
-                //If it's a travis test, don't logout from GoogleAuth
-                if(uId.equals("Default")){
-                    startActivity(intent);
-                }else {
-                    (new FirebaseAuthManager(SettingsFragment.this.getActivity(), uId)).logout().addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            startActivity(intent);
-                        }
-                    });
-                }
-                getActivity().finish();
-
-            }
-        });
+        signout.setOnClickListener(SettingsFragmentHelper.signOutButtonOnClickLister(uId, this));
 
 
     }
