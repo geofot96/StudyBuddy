@@ -30,13 +30,13 @@ import ch.epfl.sweng.studdybuddy.firebase.MetaGroup;
 import ch.epfl.sweng.studdybuddy.firebase.Metabase;
 import ch.epfl.sweng.studdybuddy.firebase.ReferenceWrapper;
 import ch.epfl.sweng.studdybuddy.services.meeting.MeetingLocation;
-import ch.epfl.sweng.studdybuddy.sql.DAOs.UserDAO;
-import ch.epfl.sweng.studdybuddy.sql.SqlDB;
+import ch.epfl.sweng.studdybuddy.sql.SqlWrapper;
 import ch.epfl.sweng.studdybuddy.tools.Consumer;
 import ch.epfl.sweng.studdybuddy.util.ActivityHelper;
 import ch.epfl.sweng.studdybuddy.util.Language;
 import ch.epfl.sweng.studdybuddy.util.MapsHelper;
 import ch.epfl.sweng.studdybuddy.util.Messages;
+import ch.epfl.sweng.studdybuddy.util.SettingsFragmentHelper;
 import ch.epfl.sweng.studdybuddy.util.StudyBuddy;
 
 /**
@@ -57,7 +57,7 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
     Button applyButton;
     View view;
     MeetingLocation favoriteLocation = MapsHelper.ROLEX_LOCATION;
-    SqlDB sql;
+    SqlWrapper sql;
     StudyBuddy app;
     private TextView textDisplayLocation;
 
@@ -85,7 +85,7 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
         ref = (FirebaseReference) getDB();
         uId = user.getUserID().getId();
         mb = new MetaGroup();
-        sql = SqlDB.getInstance(this.getActivity());
+        sql = new SqlWrapper(this.getActivity());
         textDisplayLocation = view.findViewById(R.id.text_location_set_up);
         setUpUI();
 
@@ -111,16 +111,11 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
         //select from local db first
 
         updateLanguage(user);
-        ref.select(Messages.FirebaseNode.USERS).select(uId).get(User.class, new Consumer<User>() {
-            @Override
-            public void accept(User user) {
-                updateLanguage(user);
-            }
-        });
+        ref.select(Messages.FirebaseNode.USERS).select(uId).get(User.class, SettingsFragmentHelper.updateLanguage(this));
     }
 
 
-    private void updateLanguage(User user){
+    public void updateLanguage(User user){
         String selectedLanguage = user.getFavoriteLanguage() != null ? user.getFavoriteLanguage() : Language.EN;
         spinnerLang.setSelection(Language.LanguageToInt(selectedLanguage));
     }
@@ -166,13 +161,7 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
                user.setFavoriteLanguage(favoriteLanguage);
                user.setFavoriteLocation(favoriteLocation);
                app.setAuthendifiedUser(user);
-               new Thread(new Runnable() {
-                   @Override
-                   public void run() {
-                       UserDAO userdao = sql.userDAO();
-                       userdao.insert(user);
-                   }
-               }).start();
+               sql.insertUser(user);
            }
 
         });

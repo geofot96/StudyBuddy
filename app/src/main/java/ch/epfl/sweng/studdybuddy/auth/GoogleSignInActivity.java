@@ -13,6 +13,7 @@ import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import ch.epfl.sweng.studdybuddy.R;
@@ -23,7 +24,8 @@ import ch.epfl.sweng.studdybuddy.core.ID;
 import ch.epfl.sweng.studdybuddy.core.User;
 import ch.epfl.sweng.studdybuddy.firebase.FirebaseReference;
 import ch.epfl.sweng.studdybuddy.firebase.ReferenceWrapper;
-import ch.epfl.sweng.studdybuddy.sql.SqlDB;
+import ch.epfl.sweng.studdybuddy.sql.DAOs.SqlConsumers;
+import ch.epfl.sweng.studdybuddy.sql.SqlWrapper;
 import ch.epfl.sweng.studdybuddy.tools.Consumer;
 import ch.epfl.sweng.studdybuddy.util.StudyBuddy;
 
@@ -35,7 +37,7 @@ public class GoogleSignInActivity extends AppCompatActivity {
     private AuthManager mAuth = null;
 
     private StudyBuddy app;
-    private SqlDB sql;
+    private SqlWrapper sql;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +45,7 @@ public class GoogleSignInActivity extends AppCompatActivity {
         setContentView(R.layout.activity_google_sign_in);
 
         SignInButton mGoogleBtn = findViewById(R.id.googleBtn);
-        sql = SqlDB.getInstance(this);
+        sql = new SqlWrapper(this);
         app =  ((StudyBuddy) GoogleSignInActivity.this.getApplication());
         mGoogleBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -70,8 +72,9 @@ public class GoogleSignInActivity extends AppCompatActivity {
             new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    List<User> users = sql.userDAO().get(new ID<>(acct.getId()));
-                    if(users.size() > 0){
+                    List<User> users = new ArrayList<>();
+                    sql.getUser(acct.getId(), SqlConsumers.clearAndFill(users));
+                    if(users.size()> 0){
                         app.setAuthendifiedUser(users.get(0));
                         Log.i(TAG, String.format("Found user with id %s and language %s in the local database.", users.get(0).getUserID().getId(), users.get(0).getFavoriteLanguage()));
                         startActivity(new Intent(GoogleSignInActivity.this, CourseSelectActivity.class));
@@ -140,14 +143,7 @@ public class GoogleSignInActivity extends AppCompatActivity {
                 else {
                     app.setAuthendifiedUser(user);
                 }
-                //Maybe dont need to create another thread
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Log.i(TAG, String.format("Updated user with id %s in the local database", userID.getId()));
-                        sql.userDAO().insert(app.getAuthendifiedUser());
-                    }
-                }).start();
+                sql.insertUser(app.getAuthendifiedUser());
                 startActivity(new Intent(GoogleSignInActivity.this, destination));
                 finish();
             }

@@ -17,6 +17,7 @@ import ch.epfl.sweng.studdybuddy.activities.NavigationActivity;
 import ch.epfl.sweng.studdybuddy.activities.group.GlobalBundle;
 import ch.epfl.sweng.studdybuddy.activities.group.MapsActivity;
 import ch.epfl.sweng.studdybuddy.util.Messages;
+import ch.epfl.sweng.studdybuddy.util.SettingsFragmentHelper;
 
 import static android.app.Activity.RESULT_OK;
 import static android.support.test.espresso.Espresso.onView;
@@ -109,6 +110,7 @@ public class SettingsFragmentTest {
 
     @Test
     public void applyButton() throws Throwable {
+        new SettingsFragmentHelper();
         Thread.sleep(1000);
      //   onView(withId(R.id.btn_settings_apply)).perform(click());
         runOnUiThread(new Runnable() {

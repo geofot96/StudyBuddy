@@ -6,6 +6,7 @@ import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 
 import ch.epfl.sweng.studdybuddy.services.meeting.MeetingLocation;
+import ch.epfl.sweng.studdybuddy.util.Language;
 import ch.epfl.sweng.studdybuddy.util.MapsHelper;
 @Entity
 final public class User
@@ -35,7 +36,7 @@ final public class User
         this.name = name;
         this.userID = userId;
         this.favoriteLocation = MapsHelper.ROLEX_LOCATION;
-        this.favoriteLanguage = "\uD83C\uDDEC\uD83C\uDDE7"; //GB emoji
+        this.favoriteLanguage = Language.EN;
     }
 
     @Override
@@ -51,8 +52,7 @@ final public class User
         this.name = name;
         this.userID = new ID<>(uId);
         this.favoriteLocation = MapsHelper.ROLEX_LOCATION;
-
-        this.favoriteLanguage = "\uD83C\uDDEC\uD83C\uDDE7"; //GB emoji
+        this.favoriteLanguage = Language.EN;
     }
 
     public User() {}
@@ -82,6 +82,16 @@ final public class User
 
     public void setFavoriteLanguage(String favoriteLanguage) {
         this.favoriteLanguage = favoriteLanguage;
+    }
+
+    public void setAs(User user){
+        if(user != null){
+            setFavoriteLocation(user.getFavoriteLocation());
+            setFavoriteLanguage(user.getFavoriteLanguage());
+            setName(user.getName());
+            setUserID(new ID<>(user.getUserID().getId()));
+
+        }
     }
 
 }
