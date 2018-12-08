@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -20,6 +21,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ch.epfl.sweng.studdybuddy.R;
+import ch.epfl.sweng.studdybuddy.activities.AddFriendsActivity;
+import ch.epfl.sweng.studdybuddy.activities.CreateGroupActivity;
 import ch.epfl.sweng.studdybuddy.activities.NavigationActivity;
 import ch.epfl.sweng.studdybuddy.auth.AuthManager;
 import ch.epfl.sweng.studdybuddy.auth.FirebaseAuthManager;
@@ -49,6 +52,7 @@ public class ProfileFragment extends Fragment
     private String userID;
     private MetaGroup metabase;
     private AuthManager mAuth = null;
+    Button addFriends;
 
     public ProfileFragment()
     {
@@ -92,6 +96,9 @@ public class ProfileFragment extends Fragment
         RecyclerView recyclerView_courses = (RecyclerView) v.findViewById(R.id.courses_list);
         adCourse.initRecyclerView(v.getContext(), recyclerView_courses);
 
+        addFriends = v.findViewById(R.id.btn_add_friend);
+        addFriends.setOnClickListener(getOnClickListener());
+
         ad = new GroupsRecyclerAdapter(userGroups, userID);
         RecyclerView recyclerView_groups = (RecyclerView) v.findViewById(R.id.groups_list);
         recyclerView_groups.setLayoutManager(new LinearLayoutManager(v.getContext()));
@@ -119,6 +126,20 @@ public class ProfileFragment extends Fragment
                         startActivity(new Intent(ProfileFragment.this, GoogleSignInActivity.class));
                     }
                 });*/
+    }
+
+    @NonNull
+    private View.OnClickListener getOnClickListener()
+    {
+        return new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                Intent intent = new Intent(v.getContext(), AddFriendsActivity.class);
+                startActivity(intent);
+            }
+        };
     }
 
     /*
