@@ -22,7 +22,7 @@ import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertTrue;
 
 @RunWith(AndroidJUnit4.class)
-public class SqlTest {
+public class SqlWrapperTest {
     private SqlWrapper sql;
     List<User> users;
     @Rule
