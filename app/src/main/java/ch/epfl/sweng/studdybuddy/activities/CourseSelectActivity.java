@@ -46,6 +46,7 @@ import ch.epfl.sweng.studdybuddy.util.StudyBuddy;
 import static ch.epfl.sweng.studdybuddy.controllers.CourseSelectController.deleteCourseOnSwipe;
 import static ch.epfl.sweng.studdybuddy.controllers.CourseSelectController.onClickAddCourse;
 import static ch.epfl.sweng.studdybuddy.controllers.CourseSelectController.resetSelectViews;
+import static ch.epfl.sweng.studdybuddy.controllers.CourseSelectController.updateClickable;
 import static ch.epfl.sweng.studdybuddy.controllers.CourseSelectController.updateCoursesOnDone;
 import static ch.epfl.sweng.studdybuddy.util.ActivityHelper.onClickLaunch;
 import static ch.epfl.sweng.studdybuddy.util.ActivityHelper.showDropdown;
@@ -100,12 +101,7 @@ public class CourseSelectActivity extends AppCompatActivity {
        MetaGroup mg = new MetaGroup();
        AdapterAdapter adapterC = new RecyclerAdapterAdapter(courseAdapter);
        mg.addListenner(adapterC);
-       mg.addListenner(new AdapterAdapter() {
-           @Override
-           public void update() {
-               doneButton.setEnabled(courseSelection.size() > 0);
-           }
-       });
+       mg.addListenner(updateClickable(doneButton, courseSelection));
        mg.getUserCourses(uId, courseSelection);
        ItemTouchHelper swipeCourse = deleteCourseOnSwipe(courseSelection, doneButton, adapterC);
        swipeCourse.attachToRecyclerView(selectedCourses);

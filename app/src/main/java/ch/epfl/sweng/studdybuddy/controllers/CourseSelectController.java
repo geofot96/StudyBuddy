@@ -52,6 +52,16 @@ public final class CourseSelectController {
         });
     }
 
+    //Only updates from the database
+    public static AdapterAdapter updateClickable(Button doneButton, List<String> courseSelection) {
+        return new AdapterAdapter() {
+            @Override
+            public void update() {
+                doneButton.setEnabled(courseSelection.size() > 0);
+            }
+        };
+    }
+
     public static void onSwiped_(List<String> courseSelection, Button doneButton, AdapterAdapter adapter, Holder cc) {
         courseSelection.remove(courseSelection.indexOf(cc.get()));
         adapter.update();

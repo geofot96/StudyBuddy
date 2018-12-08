@@ -32,6 +32,7 @@ import static ch.epfl.sweng.studdybuddy.controllers.CourseSelectController.delet
 import static ch.epfl.sweng.studdybuddy.controllers.CourseSelectController.onClickAddCourse;
 import static ch.epfl.sweng.studdybuddy.controllers.CourseSelectController.onSwiped_;
 import static ch.epfl.sweng.studdybuddy.controllers.CourseSelectController.resetSelectViews;
+import static ch.epfl.sweng.studdybuddy.controllers.CourseSelectController.updateClickable;
 import static ch.epfl.sweng.studdybuddy.controllers.CourseSelectController.updateCoursesOnDone;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
@@ -49,6 +50,7 @@ public class CourseSelectControllerTest {
     AdapterView<ArrayAdapter> parent = mock(AdapterView.class);
     ArrayAdapter a = mock(ArrayAdapter.class);
     Consumer<String> cs = mock(Consumer.class);
+    Button doneButton = mock(Button.class);
     @Before
     public void setup() {
         cSelect.add("c");
@@ -99,5 +101,17 @@ public class CourseSelectControllerTest {
     public void testOnClickAddCourseFailure() {
         onClickAddCourse(new ArrayList<>(), cs).onItemClick(parent, mock(View.class), 0, (long)0);
         verify(cs, times(1)).accept("c");
+    }
+
+    @Test
+    public void testUpdateClickableEmpty() {
+        updateClickable(doneButton, new ArrayList<>()).update();
+        verify(doneButton, times(1)).setEnabled(false);
+    }
+
+    @Test
+    public void testUpdateClickable() {
+        updateClickable(doneButton, cSelect).update();
+        verify(doneButton, times(1)).setEnabled(true);
     }
 }
