@@ -80,7 +80,10 @@ public class SettingsFragmentTest {
         onView(withId(R.id.btn_sign_out)).check(matches(isClickable()));
         onView(withId(R.id.text_location_set_up)).check(matches(isClickable()));
     }
-
+    @Test
+    public void TriggerOnNothingSelectedDoesNothing(){
+        fragment.onNothingSelected(null);
+    }
     @Test
     public void onResultTest() throws Throwable {
 
