@@ -56,12 +56,29 @@
                     android:text="My Groups"
                     android:textAlignment="center"
                     android:textSize="22sp" />
+
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/groups_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" >
+
+                </android.support.v7.widget.RecyclerView>
+
+                <TextView
+                    android:id="@+id/friends_fild_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="My Friends"
+                    android:textAlignment="center"
+                    android:textSize="22sp" />
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/friends_list"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
             </LinearLayout>
         </ScrollView>
+
     </LinearLayout>
 
 
