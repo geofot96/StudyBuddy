@@ -108,25 +108,7 @@ public class ProfileFragment extends Fragment
     public ReferenceWrapper getDB(){
         return new FirebaseReference();
     }
-    public AuthManager getAuthManager()
-    {
-        if(mAuth == null)
-        {
-            //mAuth = new FirebaseAuthManager(NavigationActivity.this, getString(R.string.default_web_client_id));
-        }
-        return mAuth;
-    }
-
-
-    private void signOut(){
-        /*getAuthManager().logout().addOnCompleteListener(this,
-                new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        startActivity(new Intent(ProfileFragment.this, GoogleSignInActivity.class));
-                    }
-                });*/
-    }
+   
 
     @NonNull
     private View.OnClickListener getOnClickListener()
