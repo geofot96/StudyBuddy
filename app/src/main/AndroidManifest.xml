@@ -100,6 +100,13 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activities.group.GroupActivity" />
         </activity>
+        <activity
+            android:name=".activities.AddFriendsActivity"
+            android:parentActivityName=".activities.MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.AddFriendsActivity" />
+        </activity>
     </application>
 
 
