@@ -1,5 +1,10 @@
 package ch.epfl.sweng.studdybuddy;
 
+import android.content.Context;
+import android.content.Intent;
+
+import net.bytebuddy.matcher.CollectionOneToOneMatcher;
+
 import org.junit.Test;
 
 import ch.epfl.sweng.studdybuddy.core.Account;
@@ -24,7 +29,8 @@ public class GoogleSigninControllerTest {
     Account acct = mock(Account.class);
     StudyBuddy app = mock(StudyBuddy.class);
     Intentable courseSelect = mock(Intentable.class);
-    Consumer<User> callback = callbackUserFetch(rw, acct, app, courseSelect);
+    Context ctx = mock(Context.class);
+    Consumer<User> callback = callbackUserFetch(rw, acct, app, ctx);
     @Test
     public void testCallbackUserFetchNull() {
         callback.accept(null);
@@ -38,7 +44,7 @@ public class GoogleSigninControllerTest {
         //verify(rw, times(1)).setVal(d);
         verify(app, times(1)).disableTravis();
         verify(app, times(1)).setAuthendifiedUser(any(User.class));
-        verify(courseSelect, times(1)).launch();
+        verify(ctx, times(1)).startActivity(any(Intent.class));
     }
 
     @Test
@@ -46,6 +52,6 @@ public class GoogleSigninControllerTest {
         User u = new User("LBJ", "23");
         callback.accept(u);
         verify(app, times(1)).setAuthendifiedUser(u);
-        verify(courseSelect, times(1)).launch();
+        verify(ctx, times(1)).startActivity(any(Intent.class));
     }
 }
