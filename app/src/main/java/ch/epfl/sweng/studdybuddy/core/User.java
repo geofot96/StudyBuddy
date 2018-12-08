@@ -9,6 +9,7 @@ final public class User
     private ID<User> userID;
     private MeetingLocation favoriteLocation;
     private String favoriteLanguage;
+    private String tokenID = "";
     public ID<User> getUserID()
     {
         return userID;
@@ -64,4 +65,6 @@ final public class User
     public void setFavoriteLanguage(String favoriteLanguage) {
         this.favoriteLanguage = favoriteLanguage;
     }
+
+
 }

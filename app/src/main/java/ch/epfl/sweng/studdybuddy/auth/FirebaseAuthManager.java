@@ -12,8 +12,12 @@ import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import ch.epfl.sweng.studdybuddy.core.Account;
+import ch.epfl.sweng.studdybuddy.services.notifications.Token;
 
 public class FirebaseAuthManager implements AuthManager {
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
@@ -36,6 +40,8 @@ public class FirebaseAuthManager implements AuthManager {
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(ctx, ocl);
     }
+
+
 
     public void startLoginScreen(){
         int RC_SIGN_IN = 1;

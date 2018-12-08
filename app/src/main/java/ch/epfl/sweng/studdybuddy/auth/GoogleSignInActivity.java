@@ -10,8 +10,13 @@ import android.widget.Toast;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import ch.epfl.sweng.studdybuddy.R;
 import ch.epfl.sweng.studdybuddy.activities.CourseSelectActivity;
@@ -21,6 +26,7 @@ import ch.epfl.sweng.studdybuddy.core.ID;
 import ch.epfl.sweng.studdybuddy.core.User;
 import ch.epfl.sweng.studdybuddy.firebase.FirebaseReference;
 import ch.epfl.sweng.studdybuddy.firebase.ReferenceWrapper;
+import ch.epfl.sweng.studdybuddy.services.notifications.Token;
 import ch.epfl.sweng.studdybuddy.tools.Consumer;
 import ch.epfl.sweng.studdybuddy.util.StudyBuddy;
 
@@ -86,7 +92,12 @@ public class GoogleSignInActivity extends AppCompatActivity {
                             if (onTest()) {
                                 startActivity(new Intent(GoogleSignInActivity.this, CourseSelectActivity.class));
                             } else {
-                                fetchUserAndStart(mAuth.getCurrentUser(), CourseSelectActivity.class);
+                                updateToken(FirebaseInstanceId.getInstance().getToken()).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+                                        fetchUserAndStart(mAuth.getCurrentUser(), CourseSelectActivity.class);
+                                    }
+                                });
                             }
                         }
                     }
@@ -96,6 +107,12 @@ public class GoogleSignInActivity extends AppCompatActivity {
                 Log.w(TAG, "Google sign in failed.", e);
             }
         }
+    }
+
+    private Task<Void> updateToken(String token) {
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("tokens");
+        Token deviceToken = new Token(token);
+        return reference.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(deviceToken);
     }
 
     private ValueEventListener fetchUserAndStart(Account acct, Class destination) {

@@ -13,17 +13,31 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseListAdapter;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
 import ch.epfl.sweng.studdybuddy.R;
+import ch.epfl.sweng.studdybuddy.core.User;
 import ch.epfl.sweng.studdybuddy.firebase.FirebaseReference;
+import ch.epfl.sweng.studdybuddy.firebase.MetaGroup;
 import ch.epfl.sweng.studdybuddy.services.chat.ChatMessage;
 import ch.epfl.sweng.studdybuddy.util.Messages;
+
 
 public class ChatActivity extends AppCompatActivity{
     String groupID;
     public FirebaseReference ref;
+
+
+    private static DatabaseReference mNotificationsRef = FirebaseDatabase.getInstance().getReference("notifications");;
+    private static List<User> users = new ArrayList<>();
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -42,6 +56,10 @@ public class ChatActivity extends AppCompatActivity{
         displayChatMessages();
         FloatingActionButton fab = (FloatingActionButton)findViewById(R.id.fab);
         this.ref = initRef();
+
+        MetaGroup mGp = new MetaGroup();
+        mGp.getGroupUsers(groupID, users);
+
         fab.setOnClickListener(getFabListener());
 
     }
@@ -51,14 +69,35 @@ public class ChatActivity extends AppCompatActivity{
             @Override
             public void onClick(View view) {
                 if(input.getText().toString().trim().length() > 0) {
-                    ref.select(Messages.FirebaseNode.CHAT).select(groupID).push(new ChatMessage(input.getText().toString(),
-                            auth.getCurrentUser().getDisplayName()));
-
-                    input.setText("");
+                    sendMessage(input, ref, auth.getCurrentUser(), groupID);
                 }
             }
         };
     }
+
+    private static void sendMessage(EditText input, FirebaseReference ref, FirebaseUser auth, String groupID) {
+        String msg = input.getText().toString();
+        ref.select(Messages.FirebaseNode.CHAT).select(groupID)
+                .push(new ChatMessage(msg, auth.getDisplayName()))
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        //TODO exclude the sender for the notifications
+                        HashMap<String, String> notification = new HashMap<>();
+                        notification.put("FROM", auth.getUid());
+                        notification.put("GROUP", groupID);
+                        notification.put("TYPE", "message");
+                        for(User u: users) {
+                            if (!u.getUserID().getId().equals(auth.getUid())) {
+                                mNotificationsRef.child(u.getUserID().getId()).push().setValue(notification);
+                            }
+                        }
+                    }
+                });
+
+        input.setText("");
+    }
+
 
     @NonNull
     protected View.OnClickListener getFabListener()

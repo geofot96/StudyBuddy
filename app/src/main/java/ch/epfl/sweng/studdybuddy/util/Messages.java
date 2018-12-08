@@ -2,9 +2,12 @@ package ch.epfl.sweng.studdybuddy.util;
 
 public class Messages {
     public static final String groupID = "ch.epfl.sweng.studybuddy.groupId";
+    public static final String course = "ch.epfl.sweng.studybuddy.group_course";
+
     public static final String userID = "USERID";
     public static final String maxUser = "MAX_NUMBER_OF_USERS_IN_GROUP";
     public static final String ADMIN = "ch.epfl.sweng.studybuddy.adminID";
+
 
     public static final String TEST = "test";
     public static final String DEFAULT = "Default";
