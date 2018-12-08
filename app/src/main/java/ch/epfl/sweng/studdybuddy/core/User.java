@@ -40,9 +40,8 @@ final public class User
 
     @Override
     public boolean equals(Object o) {
-        if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return  name.equals(user.name) &&
+        return  !(o == null || getClass() != o.getClass()) &&
                 userID.equals(user.userID) &&
                 favoriteLocation.equals(user.favoriteLocation) &&
                 favoriteLanguage.equals(user.favoriteLanguage);
