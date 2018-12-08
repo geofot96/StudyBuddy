@@ -24,7 +24,6 @@
         <activity android:name=".auth.GoogleSignInActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -57,6 +56,10 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activities.NavigationActivity" />
+            <intent-filter>
+                <action android:name="ch.epfl.sweng.studdybuddy_TARGET_NOTIFICATION"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
         </activity>
         <activity android:name=".activities.ProfileTab" />
 
@@ -75,7 +78,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activities.NavigationActivity" />
         </activity>
-        <activity android:name=".activities.NavigationActivity" />
+        <activity android:name=".activities.NavigationActivity"/>
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -100,6 +103,13 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activities.group.GroupActivity" />
         </activity>
+        <service android:name=".services.notifications.MyFirebaseMessaging"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+            </intent-filter>
+        </service>
     </application>
 
 
