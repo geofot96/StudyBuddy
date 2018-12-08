@@ -17,26 +17,30 @@ public class SqlWrapper {
     }
 
 
-    public void  getAllUsers(Consumer<List<User>> consumer){
-        new Thread(new Runnable() {
+    public Thread  getAllUsers(Consumer<List<User>> consumer){
+        Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
                 consumer.accept(sql.userDAO().getAll());
             }
-        }).start();
+        });
+        t.start();
+        return t;
     }
 
-    public void insertUser(User user){
-        new Thread(new Runnable() {
+    public Thread insertUser(User user){
+        Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
                 sql.userDAO().insert(user);
             }
-        }).start();
+        });
+        t.start();
+        return t;
     }
 
-    public void getUser(String userID, Consumer<List<User>> consumer){
-        new Thread(new Runnable() {
+    public Thread getUser(String userID, Consumer<List<User>> consumer){
+        Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
                 List<User> user = sql.userDAO().get(new ID<>(userID));
@@ -44,25 +48,31 @@ public class SqlWrapper {
                     consumer.accept(user);
                 }
             }
-        }).start();
+        });
+        t.start();
+        return t;
     }
 
-    public void delete(String id){
-        new Thread((new Runnable() {
+    public Thread delete(String id){
+        Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
                 sql.userDAO().delete(new ID<>(id));
             }
-        })).start();
+        });
+        t.start();
+        return t;
     }
 
-    public void clearUsers(){
-        new Thread(new Runnable() {
+    public Thread clearUsers(){
+        Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
                 sql.userDAO().clear();
             }
-        }).start();
+        });
+        t.start();
+        return t;
     }
 
 }

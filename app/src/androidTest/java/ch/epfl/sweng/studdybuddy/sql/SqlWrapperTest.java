@@ -41,37 +41,26 @@ public class SqlWrapperTest {
     @Test
     public void writeAndReadUserTest() throws InterruptedException {
 
-        sql.clearUsers();
-        sleep(500);
-        sql.getAllUsers(assertSizeConsumer(0));
-        sleep(500);
-        sql.insertUser(users.get(0));
-        sql.insertUser(users.get(1));
-        sleep(500);
-        sql.getAllUsers(assertSizeConsumer(2));
-        sleep(500);
-        sql.getUser(users.get(0).getUserID().getId(), assertEqualsConsumer(users, 0));
-        sql.getUser(users.get(1).getUserID().getId(), assertEqualsConsumer(users, 1));
-        sleep(500);
-        sql.clearUsers();
-        sleep(500);
-        sql.getAllUsers(assertSizeConsumer(0));
-        sleep(500);
+        sql.clearUsers().join();
+        sql.getAllUsers(assertSizeConsumer(0)).join();
+        sql.insertUser(users.get(0)).join();
+        sql.insertUser(users.get(1)).join();
+        sql.getAllUsers(assertSizeConsumer(2)).join();
+        sql.getUser(users.get(0).getUserID().getId(), assertEqualsConsumer(users, 0)).join();
+        sql.getUser(users.get(1).getUserID().getId(), assertEqualsConsumer(users, 1)).join();
+        sql.clearUsers().join();
+        sql.getAllUsers(assertSizeConsumer(0)).join();
     }
 
 
     @Test
     public void deleteUserTest() throws InterruptedException {
 
-        sql.clearUsers();
-        sql.insertUser(users.get(0));
-        sleep(500);
-        sql.getAllUsers(assertSizeConsumer(1));
-        sleep(500);
-        sql.delete(users.get(0).getUserID().getId());
-        sleep(500);
-        sql.getAllUsers(assertSizeConsumer(0));
-        sleep(500);
+        sql.clearUsers().join();
+        sql.insertUser(users.get(0)).join();
+        sql.getAllUsers(assertSizeConsumer(1)).join();
+        sql.delete(users.get(0).getUserID().getId()).join();
+        sql.getAllUsers(assertSizeConsumer(0)).join();
     }
 
 
