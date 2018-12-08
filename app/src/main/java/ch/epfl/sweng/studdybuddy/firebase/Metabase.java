@@ -29,8 +29,6 @@ abstract public class Metabase {
         if(ad != null) {this.ads.add(ad);}
     }
 
-
-
     protected void notif() {
         if(ads != null) {
             for(AdapterAdapter ad : ads)
