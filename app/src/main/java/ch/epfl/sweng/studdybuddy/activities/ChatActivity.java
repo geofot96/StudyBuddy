@@ -2,6 +2,7 @@ package ch.epfl.sweng.studdybuddy.activities;
 
 import android.Manifest;
 import android.app.ProgressDialog;
+import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -37,6 +38,8 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import java.io.ByteArrayOutputStream;
 import java.util.UUID;
+
+import ch.epfl.sweng.studdybuddy.DummyChatActivity;
 import ch.epfl.sweng.studdybuddy.R;
 import ch.epfl.sweng.studdybuddy.firebase.FirebaseReference;
 import ch.epfl.sweng.studdybuddy.services.chat.ChatMessage;
@@ -50,7 +53,7 @@ public class ChatActivity extends AppCompatActivity
     private Button addImage, cameraButon;
     private Uri filePath;
     private String downloadUri;
-    private static final int PICK_IMAGE_REQUEST = 1;
+    protected static final int PICK_IMAGE_REQUEST = 1;
     private static final int OPEN_CAMERA_REQUEST = 42;
     private FloatingActionButton fab;
 
@@ -106,7 +109,7 @@ public class ChatActivity extends AppCompatActivity
     }
 
     @NonNull
-    private View.OnClickListener getGalleryImage()
+    protected View.OnClickListener getGalleryImage()
     {
         return new View.OnClickListener()
         {
@@ -143,9 +146,9 @@ public class ChatActivity extends AppCompatActivity
         super.onActivityResult(requestCode, resultCode, data);
         if(resultCode == RESULT_OK && data != null)
         {
-            if(requestCode == PICK_IMAGE_REQUEST && data.getData() != null)
+            if(requestCode == PICK_IMAGE_REQUEST)// && data.getData() != null)
             {
-                filePath = data.getData();
+                filePath = getFilePath(data);
                 uploadImage();
             }
             else if(requestCode == OPEN_CAMERA_REQUEST)
@@ -153,6 +156,16 @@ public class ChatActivity extends AppCompatActivity
                 openCamera(data);
             }
         }
+    }
+
+    /**
+     * method to be mocked at DummyChatChatActivity
+     * @param data
+     * @return
+     */
+    protected Uri getFilePath(Intent data)
+    {
+        return data.getData();
     }
 
     private void openCamera(Intent data)
@@ -250,7 +263,7 @@ public class ChatActivity extends AppCompatActivity
                 }
                 else {
                     mProgress.dismiss();
-                    Toast.makeText(ChatActivity.this, "Failed Uploading", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ChatActivity.this, "Failed Uploading" + task.getException().toString(), Toast.LENGTH_LONG).show();
                 }
             }
         };
@@ -308,7 +321,10 @@ public class ChatActivity extends AppCompatActivity
                 String modelUri = model.getImageUri();
                 if(modelUri != null && !modelUri.isEmpty()) {
                     //Put the image in the chat
-                    Glide.with(ChatActivity.this).load(modelUri).apply(new RequestOptions().override(500, 700)).into(image);
+                    Glide.with(ChatActivity.this).
+                            load(modelUri)
+                            .apply(new RequestOptions().override(500, 700)).
+                            into(image); //TODO replace the long load thing with modelURI
                 }
                 else {
                     image.setImageResource(android.R.color.transparent);

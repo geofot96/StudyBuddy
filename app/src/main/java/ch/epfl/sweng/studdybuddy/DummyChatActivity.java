@@ -1,5 +1,7 @@
 package ch.epfl.sweng.studdybuddy;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.view.View;
 
 import com.google.firebase.database.FirebaseDatabase;
@@ -28,4 +30,28 @@ public class DummyChatActivity extends ChatActivity
             }
         };
     }
+
+    @Override
+    protected Uri getFilePath(Intent data)
+    {
+        return Uri.parse("android.resource://ch.epfl.sweng.studdybuddy/" + R.drawable.george_logo);
+    }
+
+    @Override
+    protected View.OnClickListener getGalleryImage()
+    {
+        return new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                //Intent galleryIntent = new Intent();
+                //galleryIntent.setType("image/*");
+                //galleryIntent.setAction(Intent.ACTION_GET_CONTENT);
+                //startActivityForResult(Intent.createChooser(galleryIntent, "SELECT IMAGE"), PICK_IMAGE_REQUEST);
+                onActivityResult(PICK_IMAGE_REQUEST, RESULT_OK, new Intent());
+            }
+        };
+    }
 }
+//Uri.parse("android.resource://ch.epfl.sweng.studdybuddy/" + R.drawable.george_logo)

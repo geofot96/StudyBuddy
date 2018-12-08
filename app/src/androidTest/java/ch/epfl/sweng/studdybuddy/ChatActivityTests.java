@@ -49,7 +49,7 @@ public class ChatActivityTests
 
     }
     @Test
-    public void thisIsATest()
+    public void messageTest()
     {
         DummyChatActivityIntentRule.launchActivity(intent);
         onView(withId(R.id.fab)).perform(click());
@@ -75,5 +75,32 @@ public class ChatActivityTests
         assertEquals(1, list.size());
         DummyChatActivityIntentRule.finishActivity();
     }
-    
+
+    @Test
+    public void galleryTest()
+    {
+        DummyChatActivityIntentRule.launchActivity(intent);
+        onView(withId(R.id.gallery)).perform(click());
+
+//        List<ChatMessage> list = new ArrayList<>();
+//
+//        FirebaseReference reference = new FirebaseReference();
+//
+//        reference.select("test_chat").getAll(ChatMessage.class, new Consumer<List<ChatMessage>>()
+//        {
+//            @Override
+//            public void accept(List<ChatMessage> messages)
+//            {
+//                list.clear();
+//                list.addAll(messages);
+//            }
+//        });
+//        try
+//        {
+//            Thread.sleep(1000);
+//        }
+//        catch(Exception e){}
+//        assertEquals(1, list.size());
+        DummyChatActivityIntentRule.finishActivity();
+    }
 }
