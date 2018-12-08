@@ -16,6 +16,7 @@ import ch.epfl.sweng.studdybuddy.Fragments.SettingsFragment;
 import ch.epfl.sweng.studdybuddy.activities.NavigationActivity;
 import ch.epfl.sweng.studdybuddy.activities.group.GlobalBundle;
 import ch.epfl.sweng.studdybuddy.activities.group.MapsActivity;
+import ch.epfl.sweng.studdybuddy.auth.GoogleSignInActivity;
 import ch.epfl.sweng.studdybuddy.util.Messages;
 import ch.epfl.sweng.studdybuddy.util.SettingsFragmentHelper;
 
@@ -110,6 +111,7 @@ public class SettingsFragmentTest {
         onView(withId(R.id.btn_sign_out)).perform(click());
         Thread.sleep(1000);
         onView(withId(R.id.googleBtn)).check(matches(isDisplayed()));
+        intended(hasComponent(GoogleSignInActivity.class.getName()));
     }
 
     @Test
