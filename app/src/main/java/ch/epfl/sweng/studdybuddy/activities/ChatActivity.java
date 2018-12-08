@@ -28,6 +28,7 @@ import ch.epfl.sweng.studdybuddy.core.User;
 import ch.epfl.sweng.studdybuddy.firebase.FirebaseReference;
 import ch.epfl.sweng.studdybuddy.firebase.MetaGroup;
 import ch.epfl.sweng.studdybuddy.services.chat.ChatMessage;
+import ch.epfl.sweng.studdybuddy.services.notifications.MyFirebaseMessaging;
 import ch.epfl.sweng.studdybuddy.util.Messages;
 
 
@@ -64,6 +65,20 @@ public class ChatActivity extends AppCompatActivity{
 
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        //we avoid receiving notifications from people we are currently chatting with
+        MyFirebaseMessaging.setCurrentGroupID(groupID);
+    }
+
+    @Override
+    protected void onStop(){
+        super.onStop();
+        //once we don't see the chat box anymore, we tell to myFirebaseMessaging to send us
+        //the further notification from this chat box
+        MyFirebaseMessaging.setCurrentGroupID(MyFirebaseMessaging.NO_GROUP);
+    }
     public static View.OnClickListener fabListener(EditText input, FirebaseReference ref, FirebaseAuth auth, String groupID) {
         return new View.OnClickListener() {
             @Override

@@ -24,34 +24,48 @@ import static java.lang.Math.max;
 
 
 public class MyFirebaseMessaging extends FirebaseMessagingService {
+    public static final String NO_GROUP = "";
+    private static String currentGroupID = NO_GROUP;
+
+    public static void setCurrentGroupID(String currentGroupID) {
+        MyFirebaseMessaging.currentGroupID = currentGroupID;
+    }
+
+    private String title;
+    private String body;
+    private String click_action;
+    private String groupID;
+    private PendingIntent pendingIntent;
+    private Uri defaultSound;
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
 
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
-            sendOreoNotification(remoteMessage);
-        }else{
-            sendNotification(remoteMessage);
-        }
-
-    }
-
-    private void sendOreoNotification(RemoteMessage remoteMessage) {
         RemoteMessage.Notification notification = remoteMessage.getNotification();
-        String title = notification.getTitle();
-        String body = notification.getBody();
-        String click_action = notification.getClickAction();
-        String groupID = remoteMessage.getData().get("group_id");
+        title = notification.getTitle();
+        body = notification.getBody();
+        click_action = notification.getClickAction();
+        groupID = remoteMessage.getData().get("group_id");
 
         Intent intent = new Intent(click_action);
         Bundle bundle = new Bundle();
         bundle.putString(Messages.groupID, groupID);
         bundle.putString(Messages.course, title);
         intent.putExtras(bundle);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-        Uri defaultSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        defaultSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 
+        if(!groupID.equals(currentGroupID)) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                sendOreoNotification();
+            } else {
+                sendNotification();
+            }
+        }
+    }
+
+    private void sendOreoNotification() {
         OreoNotification oreoNotification = new OreoNotification(this);
         Notification.Builder builder = oreoNotification.getOreoNotification(title, body, pendingIntent, defaultSound, R.mipmap.ic_launcher);
 
@@ -59,21 +73,8 @@ public class MyFirebaseMessaging extends FirebaseMessagingService {
         oreoNotification.getNotificationManager().notify(mNotificationID, builder.build());
     }
 
-    private void sendNotification(RemoteMessage remoteMessage) {
-        RemoteMessage.Notification notification = remoteMessage.getNotification();
-        String title = notification.getTitle();
-        String body = notification.getBody();
-        String click_action = notification.getClickAction();
-        String groupID = remoteMessage.getData().get("group_id");
+    private void sendNotification() {
 
-        Intent intent = new Intent(click_action);
-        Bundle bundle = new Bundle();
-        bundle.putString(Messages.groupID, groupID);
-        bundle.putString(Messages.course, title);
-        intent.putExtras(bundle);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-
-        Uri defaultSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
                 .setSmallIcon(R.mipmap.ic_launcher)
                 .setContentTitle(title)
