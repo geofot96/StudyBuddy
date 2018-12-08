@@ -28,8 +28,7 @@ public final class CourseSelectController {
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mga.putAllCourses(courseSelection, currentUser.getUserID().getId());
-                mother.launch();
+                mga.updateUserCourses(currentUser.getUserID().getId(), courseSelection, mother);
             }
         };
     }
@@ -63,9 +62,12 @@ public final class CourseSelectController {
     }
 
     public static void onSwiped_(List<String> courseSelection, Button doneButton, AdapterAdapter adapter, Holder cc) {
-        courseSelection.remove(courseSelection.indexOf(cc.get()));
-        adapter.update();
-        doneButton.setEnabled(courseSelection.size() == 0 ? false : true);
+        int idx = courseSelection.indexOf(cc.get());
+        if(idx > -1 && idx < courseSelection.size()) {
+            courseSelection.remove(idx);
+            adapter.update();
+            doneButton.setEnabled(courseSelection.size() == 0 ? false : true);
+        }
     }
 
     public static AdapterView.OnItemClickListener onClickAddCourse(List<String> courseSelection, Consumer<String> callback) {

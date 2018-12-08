@@ -23,13 +23,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ch.epfl.sweng.studdybuddy.R;
-import ch.epfl.sweng.studdybuddy.auth.AuthManager;
-import ch.epfl.sweng.studdybuddy.auth.FirebaseAuthManager;
-import ch.epfl.sweng.studdybuddy.controllers.CourseSelectController;
-import ch.epfl.sweng.studdybuddy.core.Pair;
 import ch.epfl.sweng.studdybuddy.core.User;
 import ch.epfl.sweng.studdybuddy.firebase.FirebaseReference;
-import ch.epfl.sweng.studdybuddy.firebase.MetaGroup;
 import ch.epfl.sweng.studdybuddy.firebase.MetaGroupAdmin;
 import ch.epfl.sweng.studdybuddy.firebase.ReferenceWrapper;
 import ch.epfl.sweng.studdybuddy.tools.Adapter;
@@ -60,27 +55,27 @@ public class CourseSelectActivity extends AppCompatActivity {
     public static ArrayAdapter<String> adapter;
     static Button doneButton;
     String uId;
+    private MetaGroupAdmin mga;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        firebase  = new FirebaseReference();
+        mga = new MetaGroupAdmin(firebase);
         setContentView(R.layout.activity_course_select);
         setUpButtons();
         setUpSelectedCourses();
         setUpDb(setUpAutoComplete());
-        setUpButtons();
     }
 
     private void setUpButtons() {
-        final Intent toMain = new Intent(this, NavigationActivity.class);
+        Intentable i = new Intentable(this, new Intent(this, NavigationActivity.class));
         Button skipButton = findViewById(R.id.skipButton);
-        skipButton.setOnClickListener(onClickLaunch(new Intentable(this ,toMain)));
+        skipButton.setOnClickListener(onClickLaunch(i));
         doneButton = findViewById(R.id.doneButton);
-        doneButton.setEnabled(false);
-        Intentable i = new Intentable(this, toMain);
         User currentUser = ((StudyBuddy) CourseSelectActivity.this.getApplication()).getAuthendifiedUser();
         uId = currentUser.getUserID().getId();
-        doneButton.setOnClickListener(updateCoursesOnDone(currentUser, courseSelection, new MetaGroupAdmin(), i));
+        doneButton.setOnClickListener(updateCoursesOnDone(currentUser, courseSelection, mga, i));
     }
 
     private ArrayAdapter<String> setUpAutoComplete(){
@@ -91,24 +86,22 @@ public class CourseSelectActivity extends AppCompatActivity {
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         autocomplete.setOnItemClickListener(onClickAddCourse(courseSelection, resetSelectViews(doneButton, autocomplete, imm)));
         return adapter;
-   }
+    }
 
    private void setUpSelectedCourses() {
        final RecyclerView selectedCourses = (RecyclerView) findViewById(R.id.coursesSet);
        RecyclerView.Adapter courseAdapter = new CourseAdapter(courseSelection);
        selectedCourses.setLayoutManager(new LinearLayoutManager(getBaseContext()));
        selectedCourses.setAdapter(courseAdapter);
-       MetaGroup mg = new MetaGroup();
        AdapterAdapter adapterC = new RecyclerAdapterAdapter(courseAdapter);
-       mg.addListenner(adapterC);
-       mg.addListenner(updateClickable(doneButton, courseSelection));
-       mg.getUserCourses(uId, courseSelection);
+       mga.addListenner(adapterC);
+       mga.addListenner(updateClickable(doneButton, courseSelection));
+       mga.getUserCourses(uId, courseSelection);
        ItemTouchHelper swipeCourse = deleteCourseOnSwipe(courseSelection, doneButton, adapterC);
        swipeCourse.attachToRecyclerView(selectedCourses);
    }
 
    private void setUpDb(ArrayAdapter<String> adapter) {
-       firebase = new FirebaseReference(FirebaseDatabase.getInstance().getReference());
        firebase.select("courses").getAll(String.class, AdapterConsumer.adapterConsumer(String.class, coursesDB, new ArrayAdapterAdapter(adapter)));
    }
 }
