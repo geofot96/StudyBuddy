@@ -25,6 +25,7 @@ import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.intent.Intents.intended;
 import static android.support.test.espresso.intent.matcher.IntentMatchers.hasComponent;
+import static android.support.test.espresso.matcher.ViewMatchers.isClickable;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
@@ -70,7 +71,7 @@ public class SettingsFragmentTest {
         intended(hasComponent(MapsActivity.class.getName()));
     }
 
-   /* @Test
+   @Test
     public void EveryThingIsDisplayed() {
         onView(withId(R.id.text_favorite_language)).check(matches(isDisplayed()));
         onView(withId(R.id.text_favorite_location)).check(matches(isDisplayed()));
@@ -79,7 +80,7 @@ public class SettingsFragmentTest {
         onView(withId(R.id.btn_sign_out)).check(matches(isClickable()));
         onView(withId(R.id.text_location_set_up)).check(matches(isClickable()));
     }
-*/
+
     @Test
     public void onResultTest() throws Throwable {
 
