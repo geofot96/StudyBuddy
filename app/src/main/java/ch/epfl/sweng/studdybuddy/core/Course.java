@@ -1,13 +1,20 @@
 package ch.epfl.sweng.studdybuddy.core;
 
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.PrimaryKey;
+import android.support.annotation.NonNull;
+
 /**
  * Class representing courses
  */
-
+@Entity
 public class Course
 {
-    private String courseName;
+    @PrimaryKey
+    @NonNull
     private ID<Course> courseID; //mustn't be final because it will be reset when we read from the DB #kiru
+
+    private String courseName;
 
     public Course() {}
 

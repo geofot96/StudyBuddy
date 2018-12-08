@@ -22,7 +22,7 @@ public class NavigationActivity extends AppCompatActivity
     private FeedFragment feedFragment;
     private ProfileFragment profileFragment;
     private SettingsFragment settingsFragment;
-
+    private static final String DATABASE_NAME = "StudyBuddy";
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {

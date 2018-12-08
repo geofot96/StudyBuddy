@@ -122,8 +122,9 @@ public class ConnectedCalendarActivityTest{
             list.set(0, true);
             FirebaseReference fb = new FirebaseReference();
             Task<Void> task = fb.select(Messages.FirebaseNode.AVAILABILITIES).select(Messages.TEST).select(Messages.TEST).setVal(list);
-            while (!(task.isComplete())) ;
+            while(!task.isComplete());
             GroupActivityTest.setup();
+
         }
     }
 

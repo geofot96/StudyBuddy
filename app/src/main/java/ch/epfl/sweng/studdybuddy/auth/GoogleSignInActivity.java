@@ -2,6 +2,7 @@ package ch.epfl.sweng.studdybuddy.auth;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -13,6 +14,9 @@ import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import ch.epfl.sweng.studdybuddy.R;
 import ch.epfl.sweng.studdybuddy.activities.CourseSelectActivity;
 import ch.epfl.sweng.studdybuddy.activities.NavigationActivity;
@@ -21,11 +25,13 @@ import ch.epfl.sweng.studdybuddy.core.ID;
 import ch.epfl.sweng.studdybuddy.core.User;
 import ch.epfl.sweng.studdybuddy.firebase.FirebaseReference;
 import ch.epfl.sweng.studdybuddy.firebase.ReferenceWrapper;
+import ch.epfl.sweng.studdybuddy.sql.SqlWrapper;
 import ch.epfl.sweng.studdybuddy.tools.Consumer;
 import ch.epfl.sweng.studdybuddy.tools.Intentable;
 import ch.epfl.sweng.studdybuddy.util.StudyBuddy;
 
 import static ch.epfl.sweng.studdybuddy.controllers.GoogleSigninController.fetchUserCallback;
+import static ch.epfl.sweng.studdybuddy.sql.DAOs.SqlConsumers.clearAndFill;
 
 public class GoogleSignInActivity extends AppCompatActivity {
 
@@ -34,6 +40,8 @@ public class GoogleSignInActivity extends AppCompatActivity {
 
     private AuthManager mAuth = null;
 
+    private StudyBuddy app;
+    private SqlWrapper sql;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +49,8 @@ public class GoogleSignInActivity extends AppCompatActivity {
         setContentView(R.layout.activity_google_sign_in);
 
         SignInButton mGoogleBtn = findViewById(R.id.googleBtn);
+        sql = new SqlWrapper(this);
+        app =  ((StudyBuddy) GoogleSignInActivity.this.getApplication());
         mGoogleBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -63,8 +73,8 @@ public class GoogleSignInActivity extends AppCompatActivity {
             String personName = acct.getDisplayName();
             //appears only when the user is connected
             Toast.makeText(this, "Welcome " + personName, Toast.LENGTH_SHORT).show();
-            fetchUserAndStart(acct, NavigationActivity.class);
-
+            List<User> users = new ArrayList<>();
+            sql.getUser(acct.getId(), Consumer.sequenced(clearAndFill(users), fetchUserAndStartConsumer(acct)));
         } else {
             //appears only when the user isn't connected to the app
             Toast.makeText(this, "No User", Toast.LENGTH_SHORT).show();
@@ -89,6 +99,8 @@ public class GoogleSignInActivity extends AppCompatActivity {
                             if (onTest()) {
                                 startActivity(new Intent(GoogleSignInActivity.this, CourseSelectActivity.class));
                             } else {
+
+
                                 fetchUserAndStart(mAuth.getCurrentUser(), CourseSelectActivity.class);
                             }
                         }
@@ -119,5 +131,22 @@ public class GoogleSignInActivity extends AppCompatActivity {
 
     private Account getRightAccount(Task<GoogleSignInAccount> task) throws ApiException {
         return onTest() ? new Account() : Account.from(task.getResult(ApiException.class));
+    }
+
+    //to put in Controller
+    public  Consumer<List<User>> fetchUserAndStartConsumer(Account acct){
+        return new Consumer<List<User>>() {
+            @Override
+            public void accept(@Nullable List<User> users) {
+                if(users != null && users.size()> 0){
+                    app.setAuthendifiedUser(users.get(0));
+                    Log.i(TAG, String.format("Found user with id %s and language %s in the local database.", users.get(0).getUserID().getId(), users.get(0).getFavoriteLanguage()));
+                    startActivity(new Intent(GoogleSignInActivity.this, CourseSelectActivity.class));
+                    finish();
+                }else {
+                    fetchUserAndStart(acct, NavigationActivity.class);
+                }
+            }
+        };
     }
 }
