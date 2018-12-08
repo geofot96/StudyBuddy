@@ -64,8 +64,7 @@ public class CourseSelectControllerTest {
         MetaGroupAdmin mga = mock(MetaGroupAdmin.class, RETURNS_DEEP_STUBS);
         Intentable i = mock(Intentable.class, RETURNS_DEEP_STUBS);
         updateCoursesOnDone(u, cSelect, mga, i).onClick(mock(View.class, RETURNS_DEEP_STUBS));
-        verify(i, times(1)).launch();
-        verify(mga, times(1)).putAllCourses(cSelect, "id");
+        verify(mga, times(1)).updateUserCourses("id", cSelect, i);
     }
     @Test
     public void testDeleteCourseOnSwipe() {
