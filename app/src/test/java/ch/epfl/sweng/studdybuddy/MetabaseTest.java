@@ -2,6 +2,7 @@ package ch.epfl.sweng.studdybuddy;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -39,6 +40,7 @@ public class MetabaseTest {
         for(int i = 0; i < ucs.size(); ++i)
             when(ucs.get(i).getValue(Pair.class)).thenReturn(userCourse.get(i));
         when(userCourses.getChildren()).thenReturn(ucs);
+        when(testref.child(anyString())).thenReturn(testref);
     }
     @Test
     public void getUserCoursesInvalidUser() {
@@ -60,7 +62,6 @@ public class MetabaseTest {
     public void getUserAndConsumeTest(){
         DataSnapshot ds = mock(DataSnapshot.class);
         User user = new User("Tintin", "Milou");
-        when(testref.child(anyString())).thenReturn(testref);
         when(ds.getValue()). thenReturn(user);
         mb.getUserAndConsume("Bouba", new Consumer<User>() {
             @Override
@@ -72,11 +73,30 @@ public class MetabaseTest {
 
     @Test
     public void testBefriend() {
-        when(testref.child(anyString())).thenReturn(testref);
         Buddy b = new Buddy("alice", "bob");
         mb.befriend("alice", "bob");
         verify(testref, times(1)).child(Messages.FirebaseNode.BUDDIES);
         verify(testref, times(1)).child(b.hash());
         verify(testref, times(1)).setValue(any(Buddy.class));
+    }
+
+    @Test
+    public void testGetBuddies() {
+        List<Buddy> allBuddies = Arrays.asList(buddy("bob"), buddy("eve"), new Buddy("bob", "eve"));
+        List<User> buddies = new ArrayList<>();
+        DataSnapshot root = mock(DataSnapshot.class);
+        List<DataSnapshot> dsBuds = Arrays.asList(mock(DataSnapshot.class), mock(DataSnapshot.class), mock(DataSnapshot.class));
+        for(int i = 0; i < allBuddies.size(); ++i) {
+            when(dsBuds.get(i).getValue(Buddy.class)).thenReturn(allBuddies.get(i));
+        }
+        when(root.getChildren()).thenReturn(dsBuds);
+        mb.getBuddies("alice", buddies).onDataChange(root);
+        verify(testref, times(2)).addValueEventListener(any(ValueEventListener.class));
+        verify(testref, times(1)).child(Messages.FirebaseNode.BUDDIES);
+        verify(testref, times(1)).child("users");
+    }
+
+    private static Buddy buddy(String friend) {
+        return new Buddy("alice", friend);
     }
 }
