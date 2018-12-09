@@ -51,6 +51,6 @@ public final class Buddy {
     }
 
     public String hash() {
-        return Helper.hashCode(new Pair(alice, bob));
+        return Integer.toHexString(alice.hashCode() ^ bob.hashCode());
     }
 }
