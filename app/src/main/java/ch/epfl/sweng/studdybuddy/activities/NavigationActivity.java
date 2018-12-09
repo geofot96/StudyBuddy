@@ -17,7 +17,6 @@ import ch.epfl.sweng.studdybuddy.R;
 
 public class NavigationActivity extends AppCompatActivity
 {
-    //TODO move the signout button from the main activity somewhere else and transfer the logic there
 
     private ChatListsFragment chatFragment;
     private FeedFragment feedFragment;
@@ -38,13 +37,6 @@ public class NavigationActivity extends AppCompatActivity
         setFragment(feedFragment);
         mMainNav.setOnNavigationItemSelectedListener(getListener());
     }
-
-
-
-
-
-
-
 
     @NonNull
     private BottomNavigationView.OnNavigationItemSelectedListener getListener()

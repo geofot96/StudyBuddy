@@ -52,11 +52,4 @@ public class MetaGroupAdmin extends MetaGroup {
         }
         return null;
     }
-
-    public void putAllCourses(List<String> courseSelection, String userid) {
-        for(String course : courseSelection){
-            Pair pair = new Pair(userid, course);
-            db.select("userCourse").select(Helper.hashCode(pair).toString()).setVal(pair);
-        }
-    }
 }

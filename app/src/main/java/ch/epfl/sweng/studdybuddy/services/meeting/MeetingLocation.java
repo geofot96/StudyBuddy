@@ -1,8 +1,12 @@
 package ch.epfl.sweng.studdybuddy.services.meeting;
 
+import android.os.Bundle;
+
 import com.google.android.gms.maps.model.LatLng;
 
 import java.io.Serializable;
+
+import ch.epfl.sweng.studdybuddy.util.Messages;
 
 public class MeetingLocation implements Serializable{
 
@@ -13,6 +17,15 @@ public class MeetingLocation implements Serializable{
 
     public MeetingLocation(){
 
+    }
+
+    public MeetingLocation(Bundle data) {
+        this(
+                data.getString(Messages.LOCATION_TITLE),
+                data.getString(Messages.ADDRESS),
+                data.getDouble(Messages.LATITUDE, 0),
+                data.getDouble(Messages.LONGITUDE, 0)
+        );
     }
 
     @Override

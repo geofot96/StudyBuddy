@@ -27,10 +27,14 @@ import ch.epfl.sweng.studdybuddy.services.meeting.Meeting;
 import ch.epfl.sweng.studdybuddy.services.meeting.MeetingLocation;
 import ch.epfl.sweng.studdybuddy.tools.AdapterAdapter;
 import ch.epfl.sweng.studdybuddy.tools.Consumer;
+import ch.epfl.sweng.studdybuddy.tools.Intentable;
 
 import static android.app.Activity.RESULT_OK;
 
-public class ActivityHelper {
+public final class ActivityHelper {
+    private ActivityHelper() {
+        throw new IllegalStateException();
+    }
 
     public static final Comparator<Meeting> comparator = new Comparator<Meeting>() {
         @Override
@@ -131,6 +135,15 @@ public class ActivityHelper {
     public static void adminMeeting(Button add, Group group, String userID) {
         Boolean admin = group.getAdminID().equals(userID);
         add.setVisibility(admin ? View.VISIBLE : View.GONE);
+    }
+
+    public static View.OnClickListener onClickLaunch(Intentable mother) {
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mother.launch();
+            }
+        };
     }
 
 }
