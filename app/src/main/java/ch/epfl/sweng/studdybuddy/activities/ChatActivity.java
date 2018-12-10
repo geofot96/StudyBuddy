@@ -56,7 +56,7 @@ public class ChatActivity extends AppCompatActivity
     private Uri filePath;
     private String downloadUri;
     protected static final int PICK_IMAGE_REQUEST = 1;
-    private static final int OPEN_CAMERA_REQUEST = 42;
+    protected static final int OPEN_CAMERA_REQUEST = 42;
     private FloatingActionButton fab;
 
     private ProgressDialog mProgress;
@@ -129,7 +129,7 @@ public class ChatActivity extends AppCompatActivity
     }
 
     @NonNull
-    private View.OnClickListener getCameraListener()
+    protected View.OnClickListener getCameraListener()
     {
         return new View.OnClickListener()
         {

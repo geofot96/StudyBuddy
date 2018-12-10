@@ -27,6 +27,8 @@ import ch.epfl.sweng.studdybuddy.util.Messages;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
+import static android.support.test.espresso.action.ViewActions.scrollTo;
+import static android.support.test.espresso.action.ViewActions.swipeUp;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static org.junit.Assert.*;
 
@@ -86,26 +88,14 @@ public class ChatActivityTests
     {
         DummyChatActivityIntentRule.launchActivity(intent);
         onView(withId(R.id.gallery)).perform(click());
+        DummyChatActivityIntentRule.finishActivity();
+    }
 
-//        List<ChatMessage> list = new ArrayList<>();
-//
-//        FirebaseReference reference = new FirebaseReference();
-//
-//        reference.select("test_chat").getAll(ChatMessage.class, new Consumer<List<ChatMessage>>()
-//        {
-//            @Override
-//            public void accept(List<ChatMessage> messages)
-//            {
-//                list.clear();
-//                list.addAll(messages);
-//            }
-//        });
-//        try
-//        {
-//            Thread.sleep(1000);
-//        }
-//        catch(Exception e){}
-//        assertEquals(1, list.size());
+    @Test
+    public void cameraTest()
+    {
+        DummyChatActivityIntentRule.launchActivity(intent);
+        onView(withId(R.id.camera)).perform(click());
         DummyChatActivityIntentRule.finishActivity();
     }
 }

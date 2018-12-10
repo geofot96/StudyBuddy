@@ -1,10 +1,14 @@
 package ch.epfl.sweng.studdybuddy;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.view.View;
 
 import com.google.firebase.database.FirebaseDatabase;
+
+import java.io.ByteArrayOutputStream;
 
 import ch.epfl.sweng.studdybuddy.activities.ChatActivity;
 import ch.epfl.sweng.studdybuddy.firebase.FirebaseReference;
@@ -27,6 +31,7 @@ public class DummyChatActivity extends ChatActivity
             public void onClick(View v)
             {
                 ref.setVal(new ChatMessage("this is a test", "the_name_is_mr_potato", ""));
+                displayChatMessages();
             }
         };
     }
@@ -45,13 +50,28 @@ public class DummyChatActivity extends ChatActivity
             @Override
             public void onClick(View v)
             {
-                //Intent galleryIntent = new Intent();
-                //galleryIntent.setType("image/*");
-                //galleryIntent.setAction(Intent.ACTION_GET_CONTENT);
-                //startActivityForResult(Intent.createChooser(galleryIntent, "SELECT IMAGE"), PICK_IMAGE_REQUEST);
                 onActivityResult(PICK_IMAGE_REQUEST, RESULT_OK, new Intent());
             }
         };
     }
+
+    @Override
+    protected View.OnClickListener getCameraListener()
+    {
+        return new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                Bitmap bmp = BitmapFactory.decodeResource(getResources(), R.drawable.george_logo);
+
+
+                Intent in1 = new Intent();
+                in1.putExtra("data",bmp);
+
+
+                onActivityResult(OPEN_CAMERA_REQUEST, RESULT_OK, in1);
+            }
+        };
+    }
 }
-//Uri.parse("android.resource://ch.epfl.sweng.studdybuddy/" + R.drawable.george_logo)
