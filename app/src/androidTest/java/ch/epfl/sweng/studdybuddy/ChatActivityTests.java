@@ -1,8 +1,10 @@
 package ch.epfl.sweng.studdybuddy;
 
+import android.Manifest;
 import android.app.Notification;
 import android.content.Intent;
 import android.support.test.rule.ActivityTestRule;
+import android.support.test.rule.GrantPermissionRule;
 import android.support.test.runner.AndroidJUnit4;
 
 import com.google.android.gms.tasks.Task;
@@ -37,6 +39,9 @@ public class ChatActivityTests
 
     @Rule
     public ActivityTestRule<DummyChatActivity> DummyChatActivityIntentRule = new ActivityTestRule<>(DummyChatActivity.class, false, false);
+
+    @Rule
+    public GrantPermissionRule mRuntimePermissionRule = GrantPermissionRule.grant(Manifest.permission.CAMERA  );
 
     @Before
     public void setIntent()
