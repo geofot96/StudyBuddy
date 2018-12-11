@@ -19,11 +19,11 @@ import ch.epfl.sweng.studdybuddy.firebase.MetaGroup;
 import ch.epfl.sweng.studdybuddy.firebase.Metabase;
 import ch.epfl.sweng.studdybuddy.tools.AdapterAdapter;
 import ch.epfl.sweng.studdybuddy.tools.Consumer;
-<<<<<<< HEAD
+
 import ch.epfl.sweng.studdybuddy.tools.Intentable;
-=======
+
 import ch.epfl.sweng.studdybuddy.util.Messages;
->>>>>>> d052148ded79797635d43794b640d1977f60e9d6
+
 
 import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
