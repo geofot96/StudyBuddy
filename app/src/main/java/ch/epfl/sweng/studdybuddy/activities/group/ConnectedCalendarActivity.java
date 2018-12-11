@@ -1,10 +1,7 @@
 package ch.epfl.sweng.studdybuddy.activities.group;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.util.Log;
@@ -12,26 +9,18 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.GridLayout;
 
-import com.google.firebase.database.ChildEventListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 import ch.epfl.sweng.studdybuddy.R;
 import ch.epfl.sweng.studdybuddy.activities.NavigationActivity;
-import ch.epfl.sweng.studdybuddy.activities.group.GroupActivity;
 import ch.epfl.sweng.studdybuddy.core.ID;
 import ch.epfl.sweng.studdybuddy.core.Pair;
 import ch.epfl.sweng.studdybuddy.firebase.FirebaseReference;
-import ch.epfl.sweng.studdybuddy.firebase.OnGetDataListener;
 import ch.epfl.sweng.studdybuddy.services.calendar.Availability;
-import ch.epfl.sweng.studdybuddy.services.calendar.Calendar;
 import ch.epfl.sweng.studdybuddy.services.calendar.ConcreteAvailability;
 import ch.epfl.sweng.studdybuddy.services.calendar.ConnectedAvailability;
 import ch.epfl.sweng.studdybuddy.services.calendar.ConnectedCalendar;
@@ -39,10 +28,11 @@ import ch.epfl.sweng.studdybuddy.tools.Consumer;
 import ch.epfl.sweng.studdybuddy.tools.Notifiable;
 import ch.epfl.sweng.studdybuddy.util.Messages;
 
+import static ch.epfl.sweng.studdybuddy.services.calendar.AvailabilitiesHelper.calendarEventListener;
+import static ch.epfl.sweng.studdybuddy.services.calendar.AvailabilitiesHelper.calendarGetDataListener;
+import static ch.epfl.sweng.studdybuddy.services.calendar.AvailabilitiesHelper.readData;
 import static ch.epfl.sweng.studdybuddy.services.calendar.Color.updateColor;
-import static ch.epfl.sweng.studdybuddy.tools.AvailabilitiesHelper.calendarEventListener;
-import static ch.epfl.sweng.studdybuddy.tools.AvailabilitiesHelper.calendarGetDataListener;
-import static ch.epfl.sweng.studdybuddy.tools.AvailabilitiesHelper.readData;
+
 
 /**
  * On this activity we're able as a user of the group to see
@@ -77,7 +67,7 @@ public class ConnectedCalendarActivity extends AppCompatActivity implements Noti
 
         retrieveData();
 
-        database = FirebaseDatabase.getInstance().getReference("availabilities").child(pair.getKey());
+        database = FirebaseDatabase.getInstance().getReference(Messages.FirebaseNode.AVAILABILITIES).child(pair.getKey());
         database.addChildEventListener(calendarEventListener(calendar, this, database));
         readData(database.child(pair.getValue()), calendarGetDataListener(callbackCalendar()));
 
