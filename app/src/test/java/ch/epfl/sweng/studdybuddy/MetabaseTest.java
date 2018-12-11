@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import ch.epfl.sweng.studdybuddy.core.Buddy;
 import ch.epfl.sweng.studdybuddy.core.Pair;
 import ch.epfl.sweng.studdybuddy.core.User;
 import ch.epfl.sweng.studdybuddy.firebase.FirebaseReference;
@@ -18,7 +19,11 @@ import ch.epfl.sweng.studdybuddy.firebase.MetaGroup;
 import ch.epfl.sweng.studdybuddy.firebase.Metabase;
 import ch.epfl.sweng.studdybuddy.tools.AdapterAdapter;
 import ch.epfl.sweng.studdybuddy.tools.Consumer;
+<<<<<<< HEAD
 import ch.epfl.sweng.studdybuddy.tools.Intentable;
+=======
+import ch.epfl.sweng.studdybuddy.util.Messages;
+>>>>>>> d052148ded79797635d43794b640d1977f60e9d6
 
 import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
@@ -43,6 +48,7 @@ public class MetabaseTest {
         for(int i = 0; i < ucs.size(); ++i)
             when(ucs.get(i).getValue(Pair.class)).thenReturn(userCourse.get(i));
         when(userCourses.getChildren()).thenReturn(ucs);
+        when(testref.child(anyString())).thenReturn(testref);
     }
     @Test
     public void getUserCoursesInvalidUser() {
@@ -64,7 +70,6 @@ public class MetabaseTest {
     public void getUserAndConsumeTest(){
         DataSnapshot ds = mock(DataSnapshot.class);
         User user = new User("Tintin", "Milou");
-        when(testref.child(anyString())).thenReturn(testref);
         when(ds.getValue()). thenReturn(user);
         mb.getUserAndConsume("Bouba", new Consumer<User>() {
             @Override
@@ -74,28 +79,34 @@ public class MetabaseTest {
         }).onDataChange(ds);
     }
 
-    private static Pair p(String a, String b) {
-        return new Pair(a, b);
+
+    @Test
+    public void testBefriend() {
+        Buddy b = new Buddy("alice", "bob");
+        mb.befriend("alice", "bob");
+        verify(testref, times(1)).child(Messages.FirebaseNode.BUDDIES);
+        verify(testref, times(1)).child(b.hash());
+        verify(testref, times(1)).setValue(any(Buddy.class));
     }
 
     @Test
-    public void testUpdateCourses() {
-        AdapterAdapter ad = mock(AdapterAdapter.class);
-        mb.addListenner(ad);
-        List<Pair> pairs = Arrays.asList(p("1", "2"), p("1", "1"), p("2", "1"));
-        List<DataSnapshot> dss = Arrays.asList(mock(DataSnapshot.class), mock(DataSnapshot.class), mock(DataSnapshot.class));
-        Intentable dest = mock(Intentable.class);
-        DataSnapshot ds = mock(DataSnapshot.class);
-        when(ds.getChildren()).thenReturn(dss);
-        for(int i = 0; i < 3; ++i) {
-            when(dss.get(i).getValue(Pair.class)).thenReturn(pairs.get(i));
+    public void testGetBuddies() {
+        List<Buddy> allBuddies = Arrays.asList(buddy("bob"), buddy("eve"), new Buddy("bob", "eve"));
+        List<User> buddies = new ArrayList<>();
+        DataSnapshot root = mock(DataSnapshot.class);
+        List<DataSnapshot> dsBuds = Arrays.asList(mock(DataSnapshot.class), mock(DataSnapshot.class), mock(DataSnapshot.class));
+        for(int i = 0; i < allBuddies.size(); ++i) {
+            when(dsBuds.get(i).getValue(Buddy.class)).thenReturn(allBuddies.get(i));
         }
-        mb.updateUserCourses("1", Arrays.asList("2"), dest).onDataChange(ds);
-        verify(testref, times(1)).removeEventListener(any(ValueEventListener.class));
-        verify(dest, times(1)).launch();
-        //The only remaining course to put
-        verify(testref, times(1)).setValue(any(Pair.class));
-        //The element to delete
-        verify(testref, times(1)).removeValue();
+        when(root.getChildren()).thenReturn(dsBuds);
+        mb.getBuddies("alice", buddies).onDataChange(root);
+        verify(testref, times(2)).addValueEventListener(any(ValueEventListener.class));
+        verify(testref, times(1)).child(Messages.FirebaseNode.BUDDIES);
+        verify(testref, times(1)).child("users");
+    }
+
+    private static Buddy buddy(String friend) {
+        return new Buddy("alice", friend);
+
     }
 }

@@ -21,12 +21,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ch.epfl.sweng.studdybuddy.R;
-<<<<<<< HEAD
 import ch.epfl.sweng.studdybuddy.activities.AddFriendsActivity;
 import ch.epfl.sweng.studdybuddy.activities.CreateGroupActivity;
-=======
 import ch.epfl.sweng.studdybuddy.activities.CourseSelectActivity;
->>>>>>> d87e0f796fd08699c1c99e92cc5596b70b86a5ec
 import ch.epfl.sweng.studdybuddy.activities.NavigationActivity;
 import ch.epfl.sweng.studdybuddy.auth.AuthManager;
 import ch.epfl.sweng.studdybuddy.auth.FirebaseAuthManager;
