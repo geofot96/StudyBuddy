@@ -10,6 +10,7 @@
     <permission
         android:name="ch.epfl.sweng.studdybuddy.permission.MAPS_RECEIVE"
         android:protectionLevel="signature" />
+
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
@@ -20,7 +21,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
         <activity android:name=".auth.GoogleSignInActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -59,15 +59,12 @@
                 android:value=".activities.NavigationActivity" />
         </activity>
         <activity android:name=".activities.ProfileTab" />
-
         <activity android:name=".auth.DummyGoogleSignInActivity" />
         <activity android:name=".auth.DummyMainActivity" />
         <activity android:name=".activities.MainActivity" />
         <activity android:name=".activities.group.meetings.MeetingsActivity" />
-
         <activity android:name=".activities.group.ConnectedCalendarActivity" />
         <activity android:name=".activities.group.GroupInfoActivity" />
-
         <activity
             android:name=".activities.group.GroupActivity"
             android:parentActivityName=".activities.NavigationActivity">
@@ -87,12 +84,14 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
-        <activity android:name=".DummyChatActivity"/>
+
+        <activity android:name=".DummyChatActivity" />
+
         <activity
             android:name=".activities.group.MapsActivity"
-            android:label="@string/title_activity_maps"/>
-
-        <activity android:name=".activities.group.meetings.createMeetingActivity"
+            android:label="@string/title_activity_maps" />
+        <activity
+            android:name=".activities.group.meetings.createMeetingActivity"
             android:parentActivityName=".activities.group.GroupActivity">
 
             <!-- The meta-data tag is required if you support API level 15 and lower -->
@@ -100,7 +99,9 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activities.group.GroupActivity" />
         </activity>
+        <activity
+            android:name=".activities.group.InviteFriendsActivity"
+            android:label="@string/title_activity_invite_friends"></activity>
     </application>
-
 
 </manifest>
