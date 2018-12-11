@@ -94,10 +94,6 @@ task jacocoTestReport(type: JacocoReport, dependsOn: ['testDebugUnitTest', 'crea
     executionData = fileTree(dir: project.buildDir, includes: [
             'jacoco/testDebugUnitTest.exec', 'outputs/code-coverage/connected/*coverage.ec'
     ])
-
-}
-
-jacocoTestReport {
     afterEvaluate {
         classDirectories = files(classDirectories.files.collect {
             fileTree(dir: it, excludes: ['*/SqlDB_Impl.java', '**/SqlDB_Impl.java', '*SqlDB_Impl.java',
@@ -107,5 +103,4 @@ jacocoTestReport {
         })
     }
 }
-
 apply plugin: 'com.google.gms.google-services'
