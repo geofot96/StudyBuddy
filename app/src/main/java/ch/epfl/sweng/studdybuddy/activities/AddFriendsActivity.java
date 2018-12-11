@@ -17,13 +17,14 @@ import ch.epfl.sweng.studdybuddy.core.User;
 import ch.epfl.sweng.studdybuddy.firebase.FirebaseReference;
 import ch.epfl.sweng.studdybuddy.firebase.MetaGroupAdmin;
 import ch.epfl.sweng.studdybuddy.firebase.ReferenceWrapper;
+import ch.epfl.sweng.studdybuddy.tools.AdapterConsumer;
+import ch.epfl.sweng.studdybuddy.tools.ArrayAdapterAdapter;
 import ch.epfl.sweng.studdybuddy.tools.Intentable;
 import ch.epfl.sweng.studdybuddy.util.StudyBuddy;
 
 import static ch.epfl.sweng.studdybuddy.controllers.CourseSelectController.onClickAddCourse;
 import static ch.epfl.sweng.studdybuddy.controllers.CourseSelectController.resetSelectViews;
 import static ch.epfl.sweng.studdybuddy.controllers.CourseSelectController.updateCoursesOnDone;
-import static ch.epfl.sweng.studdybuddy.util.ActivityHelper.onClickLaunch;
 import static ch.epfl.sweng.studdybuddy.util.ActivityHelper.showDropdown;
 
 public class AddFriendsActivity extends AppCompatActivity {
@@ -32,7 +33,6 @@ public class AddFriendsActivity extends AppCompatActivity {
     static AutoCompleteTextView autocompleteFriends;
     public static final List<String> friendSelection = new ArrayList<>();
     public static ArrayAdapter<String> adapter;
-    static AutoCompleteTextView autocompleteFriends;
     public static ArrayAdapter<String> adapterFriends;
     String uId;
     static Button addButton;
@@ -46,7 +46,7 @@ public class AddFriendsActivity extends AppCompatActivity {
         mga = new MetaGroupAdmin(firebase);
         setContentView(R.layout.activity_find_friends);
         setUpButtons();
-        setUpSelectedCourses();
+       // setUpSelectedCourses();
         setUpDb(setUpAutoComplete());
     }
 
@@ -68,6 +68,19 @@ public class AddFriendsActivity extends AppCompatActivity {
         return adapter;
     }
 
-
-
+//    private void setUpSelectedFriends() {
+//        final RecyclerView selectedFriends = (RecyclerView) findViewById(R.id.friends_set);
+//        RecyclerView.Adapter friendsAdapter = new CourseAdapter(friendSelection);
+//        selectedFriends.setLayoutManager(new LinearLayoutManager(getBaseContext()));
+//        selectedFriends.setAdapter(friendsAdapter);
+//        AdapterAdapter adapterC = new RecyclerAdapterAdapter(friendsAdapter);
+//        mga.addListenner(adapterC);
+//        mga.addListenner(updateClickable(addButton, friendSelection));
+//        //TODO make a func to get friends
+//        mga.getUserCourses(uId, friendSelection);
+//
+//    }
+    private void setUpDb(ArrayAdapter<String> adapter) {
+        firebase.select("users").getAll(String.class, AdapterConsumer.adapterConsumer(String.class, friendsDB, new ArrayAdapterAdapter(adapter)));
+    }
 }

@@ -1,14 +1,9 @@
 package ch.epfl.sweng.studdybuddy.firebase;
 
-<<<<<<< HEAD
-import android.support.annotation.NonNull;
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-=======
 import android.support.annotation.Nullable;
 
->>>>>>> d052148ded79797635d43794b640d1977f60e9d6
+
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;

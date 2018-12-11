@@ -1,10 +1,6 @@
 package ch.epfl.sweng.studdybuddy.firebase;
 
-<<<<<<< HEAD
-import android.util.Log;
-=======
-import android.support.annotation.Nullable;
->>>>>>> d052148ded79797635d43794b640d1977f60e9d6
+
 
 import com.google.firebase.database.ValueEventListener;
 
@@ -143,7 +139,7 @@ public class MetaGroup extends Metabase{
         Pair pair = new Pair(creatorId,g.getGroupID().toString());
         db.select(Messages.FirebaseNode.USERGROUP).select(Helper.hashCode(pair)).setVal(pair);
     }
-<<<<<<< HEAD
+
 
     public ValueEventListener onGroupGet(String gid, Consumer<Group> callback) {
         return db.select(Messages.FirebaseNode.GROUPS).select(gid).get(Group.class, new Consumer<Group>() {
@@ -155,6 +151,5 @@ public class MetaGroup extends Metabase{
             }
         });
     }
-=======
->>>>>>> d052148ded79797635d43794b640d1977f60e9d6
+
 }
