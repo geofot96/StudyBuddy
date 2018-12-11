@@ -1,7 +1,9 @@
 package ch.epfl.sweng.studdybuddy.auth;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -13,6 +15,9 @@ import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import ch.epfl.sweng.studdybuddy.R;
 import ch.epfl.sweng.studdybuddy.activities.CourseSelectActivity;
 import ch.epfl.sweng.studdybuddy.activities.NavigationActivity;
@@ -21,8 +26,15 @@ import ch.epfl.sweng.studdybuddy.core.ID;
 import ch.epfl.sweng.studdybuddy.core.User;
 import ch.epfl.sweng.studdybuddy.firebase.FirebaseReference;
 import ch.epfl.sweng.studdybuddy.firebase.ReferenceWrapper;
+import ch.epfl.sweng.studdybuddy.sql.SqlWrapper;
 import ch.epfl.sweng.studdybuddy.tools.Consumer;
+import ch.epfl.sweng.studdybuddy.tools.Intentable;
 import ch.epfl.sweng.studdybuddy.util.StudyBuddy;
+
+import static ch.epfl.sweng.studdybuddy.controllers.GoogleSigninController.fetchUserAndStart;
+import static ch.epfl.sweng.studdybuddy.controllers.GoogleSigninController.fetchUserAndStartConsumer;
+import static ch.epfl.sweng.studdybuddy.controllers.GoogleSigninController.fetchUserCallback;
+import static ch.epfl.sweng.studdybuddy.sql.DAOs.SqlConsumers.clearAndFill;
 
 public class GoogleSignInActivity extends AppCompatActivity {
 
@@ -31,6 +43,8 @@ public class GoogleSignInActivity extends AppCompatActivity {
 
     private AuthManager mAuth = null;
 
+    private StudyBuddy app;
+    private SqlWrapper sql;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +52,8 @@ public class GoogleSignInActivity extends AppCompatActivity {
         setContentView(R.layout.activity_google_sign_in);
 
         SignInButton mGoogleBtn = findViewById(R.id.googleBtn);
+        sql = new SqlWrapper(this);
+        app =  ((StudyBuddy) GoogleSignInActivity.this.getApplication());
         mGoogleBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -60,8 +76,8 @@ public class GoogleSignInActivity extends AppCompatActivity {
             String personName = acct.getDisplayName();
             //appears only when the user is connected
             Toast.makeText(this, "Welcome " + personName, Toast.LENGTH_SHORT).show();
-            fetchUserAndStart(acct, NavigationActivity.class);
-
+            List<User> users = new ArrayList<>();
+            sql.getUser(acct.getId(), Consumer.sequenced(clearAndFill(users), fetchUserAndStartConsumer(acct, app, getBaseContext())));
         } else {
             //appears only when the user isn't connected to the app
             Toast.makeText(this, "No User", Toast.LENGTH_SHORT).show();
@@ -86,7 +102,7 @@ public class GoogleSignInActivity extends AppCompatActivity {
                             if (onTest()) {
                                 startActivity(new Intent(GoogleSignInActivity.this, CourseSelectActivity.class));
                             } else {
-                                fetchUserAndStart(mAuth.getCurrentUser(), CourseSelectActivity.class);
+                                fetchUserAndStart(mAuth.getCurrentUser(), app, getBaseContext());
                             }
                         }
                     }
@@ -97,30 +113,6 @@ public class GoogleSignInActivity extends AppCompatActivity {
             }
         }
     }
-
-    private ValueEventListener fetchUserAndStart(Account acct, Class destination) {
-        return fetchUserAndStart(new FirebaseReference(), acct, destination);
-    }
-
-    private ValueEventListener fetchUserAndStart(ReferenceWrapper fb, Account acct, Class destination) {
-        final ID<User> userID = new ID<>(acct.getId());
-        return fb.select("users").select(userID.getId()).get(User.class, new Consumer<User>() {
-            @Override
-            public void accept(User user) {
-                StudyBuddy app = ((StudyBuddy) GoogleSignInActivity.this.getApplication());
-                if(user == null) { //create a new user and put in db
-                    app.setAuthendifiedUser(new User(acct.getDisplayName(), userID));
-                    app.disableTravis();
-                    fb.select("users").select(userID.getId()).setVal(app.getAuthendifiedUser());
-                }
-                else {
-                    app.setAuthendifiedUser(user);
-                }
-                startActivity(new Intent(GoogleSignInActivity.this, destination));
-            }
-        });
-    }
-
 
     AuthManager getAuthManager(){
         if (mAuth == null){
@@ -136,4 +128,5 @@ public class GoogleSignInActivity extends AppCompatActivity {
     private Account getRightAccount(Task<GoogleSignInAccount> task) throws ApiException {
         return onTest() ? new Account() : Account.from(task.getResult(ApiException.class));
     }
+
 }

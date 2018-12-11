@@ -80,14 +80,14 @@ public class CourseSelectActivityTest
 //        onView(withId(R.id.coursesSet)).check(matches(hasDescendant(withText(mockCourse))));
     }
 
-    @Test
+    /*@Test
     public void clickOnCourseSuggestionAddsCourseToList() throws InterruptedException {
         onView(withId(R.id.courseComplete)).perform(click(), typeText("concurrent"));
         onData(equalTo(mockCourse)).inRoot(RootMatchers.isPlatformPopup()).perform(click());
         onView(withId(R.id.courseComplete)).perform(closeSoftKeyboard());
         Thread.sleep(500);
         onView(withId(R.id.coursesSet)).check(matches(hasDescendant(withText(mockCourse))));
-    }
+    }*/
 
 /*    //swipe on course
     @Test

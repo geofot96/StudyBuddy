@@ -3,6 +3,7 @@ package ch.epfl.sweng.studdybuddy;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -24,6 +25,7 @@ import ch.epfl.sweng.studdybuddy.firebase.MetaMeeting;
 import ch.epfl.sweng.studdybuddy.services.meeting.Meeting;
 import ch.epfl.sweng.studdybuddy.tools.AdapterAdapter;
 import ch.epfl.sweng.studdybuddy.tools.Consumer;
+import ch.epfl.sweng.studdybuddy.tools.Intentable;
 import ch.epfl.sweng.studdybuddy.util.ActivityHelper;
 import ch.epfl.sweng.studdybuddy.util.MapsHelper;
 import ch.epfl.sweng.studdybuddy.util.Messages;
@@ -32,10 +34,12 @@ import static android.app.Activity.RESULT_OK;
 import static ch.epfl.sweng.studdybuddy.util.ActivityHelper.getConsumerForMeetings;
 import static ch.epfl.sweng.studdybuddy.util.ActivityHelper.listenDate;
 import static ch.epfl.sweng.studdybuddy.util.ActivityHelper.listenTime;
+import static ch.epfl.sweng.studdybuddy.util.ActivityHelper.onClickLaunch;
 import static ch.epfl.sweng.studdybuddy.util.CoreFactory.blankGroupWId;
 import static ch.epfl.sweng.studdybuddy.util.CoreFactory.randomMeeting;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.RETURNS_DEEP_STUBS;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -140,7 +144,7 @@ public class ActivityHelperTest {
         return c.getTime();
     }
 
-   /* @Test
+/*    @Test
     public void testNoMeetingConsumer() {
         meetingConsumer(title, timeB, date, plus).accept(new ArrayList<>());
         verify(timeB).setVisibility(View.GONE);

@@ -9,21 +9,16 @@ import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 
-import ch.epfl.sweng.studdybuddy.activities.group.ConnectedCalendarActivity;
 import ch.epfl.sweng.studdybuddy.activities.group.GlobalBundle;
 import ch.epfl.sweng.studdybuddy.activities.group.GroupActivity;
 import ch.epfl.sweng.studdybuddy.activities.group.meetings.createMeetingActivity;
-import ch.epfl.sweng.studdybuddy.core.Group;
-import ch.epfl.sweng.studdybuddy.firebase.MetaMeeting;
 import ch.epfl.sweng.studdybuddy.tools.Resultable;
 import ch.epfl.sweng.studdybuddy.util.Messages;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
-import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.intent.Intents.intended;
 import static android.support.test.espresso.intent.matcher.IntentMatchers.hasComponent;
-import static android.support.test.espresso.matcher.ViewMatchers.isEnabled;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static org.hamcrest.CoreMatchers.not;
 import static org.junit.Assert.assertEquals;
@@ -60,14 +55,6 @@ public class GroupActivityTest {
         mManualRule.finishActivity();
     }
 
-    @Test
-    public void resultActivity() {
-        Resultable res = mock(Resultable.class);
-        GroupActivity.resultActivity(0, Activity.RESULT_OK, res);
-        GroupActivity.resultActivity(1, Activity.RESULT_OK, res);
-        GroupActivity.resultActivity(1, Activity.RESULT_CANCELED, res);
-
-    }
 
     /*@Test
     public void leadsToCalendar(){

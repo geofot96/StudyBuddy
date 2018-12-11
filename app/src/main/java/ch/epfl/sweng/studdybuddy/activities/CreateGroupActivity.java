@@ -27,10 +27,12 @@ import ch.epfl.sweng.studdybuddy.services.calendar.ConnectedAvailability;
 import ch.epfl.sweng.studdybuddy.tools.AdapterConsumer;
 import ch.epfl.sweng.studdybuddy.tools.ArrayAdapterAdapter;
 import ch.epfl.sweng.studdybuddy.tools.Consumer;
+import ch.epfl.sweng.studdybuddy.tools.Intentable;
 import ch.epfl.sweng.studdybuddy.util.Language;
 import ch.epfl.sweng.studdybuddy.util.Messages;
 import ch.epfl.sweng.studdybuddy.util.StudyBuddy;
 
+import static ch.epfl.sweng.studdybuddy.controllers.CreateGroupController.joinGroupsAndGo;
 import static ch.epfl.sweng.studdybuddy.util.ActivityHelper.showDropdown;
 
 public class CreateGroupActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener
@@ -128,15 +130,11 @@ public class CreateGroupActivity extends AppCompatActivity implements AdapterVie
 
     }
 
-    public void addtoGroups(View view)
-    {
-
-            User user = ((StudyBuddy) CreateGroupActivity.this.getApplication()).authendifiedUser;
-            Group g = new Group(maxParticipants, new Course(selectedCourse),selectedLanguage, UUID.randomUUID().toString(), user.getUserID().getId());
-            mb.pushGroup(g, user.getUserID().getId());
-            createUserInitialAvailabilities(user.getUserID().getId(), g.getGroupID().getId());
-	        Intent intent = new Intent(this, NavigationActivity.class);
-	        startActivity(intent);
+    public void addtoGroups(View view) {
+        User user = ((StudyBuddy) CreateGroupActivity.this.getApplication()).authendifiedUser;
+        Group g = new Group(maxParticipants, new Course(selectedCourse),selectedLanguage, UUID.randomUUID().toString(), user.getUserID().getId());
+        Intentable toNav = new Intentable(this, NavigationActivity.class);
+        joinGroupsAndGo(mb, user, g, toNav);
     }
 
     NumberPicker.OnValueChangeListener onValueChangeListener = new NumberPicker.OnValueChangeListener()
@@ -149,7 +147,4 @@ public class CreateGroupActivity extends AppCompatActivity implements AdapterVie
         }
     };
 
-    public static void createUserInitialAvailabilities(String user, String group){
-        Availability a = new ConnectedAvailability(user, group);
-    }
 }

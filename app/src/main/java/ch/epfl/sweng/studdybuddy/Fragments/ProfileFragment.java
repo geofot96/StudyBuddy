@@ -21,8 +21,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ch.epfl.sweng.studdybuddy.R;
+<<<<<<< HEAD
 import ch.epfl.sweng.studdybuddy.activities.AddFriendsActivity;
 import ch.epfl.sweng.studdybuddy.activities.CreateGroupActivity;
+=======
+import ch.epfl.sweng.studdybuddy.activities.CourseSelectActivity;
+>>>>>>> d87e0f796fd08699c1c99e92cc5596b70b86a5ec
 import ch.epfl.sweng.studdybuddy.activities.NavigationActivity;
 import ch.epfl.sweng.studdybuddy.auth.AuthManager;
 import ch.epfl.sweng.studdybuddy.auth.FirebaseAuthManager;
@@ -34,8 +38,11 @@ import ch.epfl.sweng.studdybuddy.firebase.MetaGroup;
 import ch.epfl.sweng.studdybuddy.firebase.ReferenceWrapper;
 import ch.epfl.sweng.studdybuddy.tools.CourseAdapter;
 import ch.epfl.sweng.studdybuddy.tools.GroupsRecyclerAdapter;
+import ch.epfl.sweng.studdybuddy.tools.Intentable;
 import ch.epfl.sweng.studdybuddy.tools.RecyclerAdapterAdapter;
 import ch.epfl.sweng.studdybuddy.util.StudyBuddy;
+
+import static ch.epfl.sweng.studdybuddy.util.ActivityHelper.onClickLaunch;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -45,12 +52,11 @@ public class ProfileFragment extends Fragment
 
     private final List<String> userCourses =  new ArrayList<>();
     private  final List<Group> userGroups = new ArrayList<>();
-    protected ReferenceWrapper firebase;
     private GroupsRecyclerAdapter ad;
     private CourseAdapter adCourse;
     private User user;
     private String userID;
-    private MetaGroup metabase;
+    private MetaGroup metabase = new MetaGroup();
     private AuthManager mAuth = null;
     Button addFriends;
 
@@ -66,16 +72,17 @@ public class ProfileFragment extends Fragment
     {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_profile, container, false);
-
-        firebase = getDB();
-        user = ((StudyBuddy) getActivity().getApplication()).getAuthendifiedUser();
-        userID = user.getUserID().toString();
-        metabase = new MetaGroup();
+        setupUser();
         setUI(v);
         setCoursesUp();
         setGroupsUp();
 
         return v;
+    }
+
+    public void setupUser() {
+        user = ((StudyBuddy) getActivity().getApplication()).getAuthendifiedUser();
+        userID = user.getUserID().toString();
     }
 
     public ValueEventListener setGroupsUp() {
@@ -103,6 +110,9 @@ public class ProfileFragment extends Fragment
         RecyclerView recyclerView_groups = (RecyclerView) v.findViewById(R.id.groups_list);
         recyclerView_groups.setLayoutManager(new LinearLayoutManager(v.getContext()));
         recyclerView_groups.setAdapter(ad);
+        //Intentable toCourseEdit = new Intentable(v.getContext(), new Intent(v.getContext(), CourseSelectActivity.class));
+        Button editCourses = v.findViewById(R.id.editCourses);
+        editCourses.setOnClickListener(onClickLaunch(new Intentable(v.getContext(), CourseSelectActivity.class)));
     }
 
     public ReferenceWrapper getDB(){
