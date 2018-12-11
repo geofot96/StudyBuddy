@@ -4,12 +4,15 @@ import android.support.annotation.NonNull;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import android.support.annotation.Nullable;
+
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import ch.epfl.sweng.studdybuddy.core.Buddy;
 import ch.epfl.sweng.studdybuddy.core.ID;
 import ch.epfl.sweng.studdybuddy.core.Pair;
 import ch.epfl.sweng.studdybuddy.core.User;
@@ -96,4 +99,25 @@ abstract public class Metabase {
 
     public void clearListeners() { this.ads.clear(); }
 
+    //Will override old friendship but will not create doublon
+    public void befriend(String uid, String friend) {
+        Buddy buddy = new Buddy(uid, friend);
+        db.select(Messages.FirebaseNode.BUDDIES).select(buddy.hash()).setVal(buddy);
+    }
+
+    public ValueEventListener getBuddies(String uid, List<User> users) {
+        return db.select(Messages.FirebaseNode.BUDDIES).getAll(Buddy.class, new Consumer<List<Buddy>>() {
+            @Override
+            public void accept(@Nullable List<Buddy> buddies) {
+                List<String> buddiesIDs = new ArrayList<>();
+                for(Buddy buddy: buddies) {
+                    String bob = buddy.buddyOf(uid);
+                    if(bob != null) {
+                        buddiesIDs.add(bob);
+                    }
+                }
+                getUsersfromIds(buddiesIDs, users);
+            }
+        });
+    }
 }
