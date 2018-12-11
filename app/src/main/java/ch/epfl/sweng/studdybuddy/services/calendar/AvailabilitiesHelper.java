@@ -1,4 +1,4 @@
-package ch.epfl.sweng.studdybuddy.tools;
+package ch.epfl.sweng.studdybuddy.services.calendar;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -22,6 +22,8 @@ import ch.epfl.sweng.studdybuddy.services.calendar.Availability;
 import ch.epfl.sweng.studdybuddy.services.calendar.ConcreteAvailability;
 import ch.epfl.sweng.studdybuddy.services.calendar.ConnectedAvailability;
 import ch.epfl.sweng.studdybuddy.services.calendar.ConnectedCalendar;
+import ch.epfl.sweng.studdybuddy.tools.Consumer;
+import ch.epfl.sweng.studdybuddy.tools.Notifiable;
 
 public class AvailabilitiesHelper {
 
@@ -78,7 +80,7 @@ public class AvailabilitiesHelper {
 
     /**
      * this listener will wait for the data contained in firebase so that
-     * we can initializing <tt>userAvailabilities</tt> with the newly retrieved
+     * we can initialize <tt>userAvailabilities</tt> with the newly retrieved
      * list of booleans
      */
     public static OnGetDataListener calendarGetDataListener(Consumer<List<Boolean>> callback) {

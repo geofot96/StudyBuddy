@@ -45,9 +45,9 @@ import ch.epfl.sweng.studdybuddy.util.Messages;
 import ch.epfl.sweng.studdybuddy.util.StudyBuddy;
 
 import static ch.epfl.sweng.studdybuddy.services.calendar.Color.updateColor;
-import static ch.epfl.sweng.studdybuddy.tools.AvailabilitiesHelper.calendarEventListener;
-import static ch.epfl.sweng.studdybuddy.tools.AvailabilitiesHelper.calendarGetDataListener;
-import static ch.epfl.sweng.studdybuddy.tools.AvailabilitiesHelper.readData;
+import static ch.epfl.sweng.studdybuddy.services.calendar.AvailabilitiesHelper.calendarEventListener;
+import static ch.epfl.sweng.studdybuddy.services.calendar.AvailabilitiesHelper.calendarGetDataListener;
+import static ch.epfl.sweng.studdybuddy.services.calendar.AvailabilitiesHelper.readData;
 public class GroupActivity extends AppCompatActivity implements Notifiable, Resultable {
     private boolean wrongInput = false;
     List<User> participants  = new ArrayList<>();

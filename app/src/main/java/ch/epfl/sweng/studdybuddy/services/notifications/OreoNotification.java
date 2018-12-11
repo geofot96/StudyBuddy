@@ -14,18 +14,35 @@ public class OreoNotification extends ContextWrapper {
 
     private static final String CHANNEL_ID = "ch.epfl.sweng.studdybuddy";
     private static final String CHANNEL_NAME = "studdybuddy";
+
     private NotificationManager notificationManager;
-    
+
+    private static NotifFactory notifFactory = new NotifFactory();
+    private static ChannelFactory channelFactory = new ChannelFactory();
+    private static Version versionGetter = new Version();
+
+    public static void setNotifFactory(NotifFactory factory) {
+        notifFactory = factory;
+    }
+
+    public static void setChannelFactory(ChannelFactory factory){
+        channelFactory = factory;
+    }
+
+    public static void setVersion(Version version){
+        versionGetter = version;
+    }
+
     public OreoNotification(Context base) {
         super(base);
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+        if(versionGetter.getBuildVersion() >= Build.VERSION_CODES.O){
             createChannel();
         }
     }
 
     @TargetApi(Build.VERSION_CODES.O)
     private void createChannel() {
-        NotificationChannel channel = new NotificationChannel(CHANNEL_ID, CHANNEL_NAME, NotificationManager.IMPORTANCE_DEFAULT);
+        NotificationChannel channel = channelFactory.getNotificationChannel(CHANNEL_ID, CHANNEL_NAME, NotificationManager.IMPORTANCE_DEFAULT);
         channel.enableLights(false);
         channel.enableVibration(true);
         channel.setLockscreenVisibility(Notification.VISIBILITY_PRIVATE);
@@ -35,7 +52,7 @@ public class OreoNotification extends ContextWrapper {
 
     public NotificationManager getNotificationManager() {
         if(notificationManager == null){
-            notificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
+            notificationManager = notifFactory.nManagerFactory(this);
         }
         return notificationManager;
     }

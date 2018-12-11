@@ -5,7 +5,11 @@ import android.widget.GridLayout;
 
 import java.util.List;
 
+/**
+ * Controller of the color of a targeted cell in the calendar
+ */
 public class Color {
+
     public static void updateColor(GridLayout calendarGrid, List<Integer> av, float NmaxUsers, int CalendarWidth){
         int size = calendarGrid.getColumnCount() * calendarGrid.getRowCount();
         for (int i = 0; i < size; i++) {

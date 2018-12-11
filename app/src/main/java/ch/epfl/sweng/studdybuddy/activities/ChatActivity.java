@@ -37,7 +37,7 @@ public class ChatActivity extends AppCompatActivity{
     public FirebaseReference ref;
 
 
-    private static DatabaseReference mNotificationsRef = FirebaseDatabase.getInstance().getReference("notifications");;
+    private static DatabaseReference mNotificationsRef = FirebaseDatabase.getInstance().getReference("notifications");
     private static List<User> users = new ArrayList<>();
 
     @Override
@@ -97,7 +97,6 @@ public class ChatActivity extends AppCompatActivity{
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        //TODO exclude the sender for the notifications
                         HashMap<String, String> notification = new HashMap<>();
                         notification.put("FROM", auth.getUid());
                         notification.put("GROUP", groupID);

@@ -31,12 +31,21 @@ public class MyFirebaseMessaging extends FirebaseMessagingService {
         MyFirebaseMessaging.currentGroupID = currentGroupID;
     }
 
+    public static String getCurrentGroupID() {
+        return currentGroupID;
+    }
+
     private String title;
     private String body;
     private String click_action;
     private String groupID;
     private PendingIntent pendingIntent;
     private Uri defaultSound;
+
+    private NotifFactory notifFactory = new NotifFactory();
+
+    private Version version = new Version();
+
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
@@ -57,7 +66,7 @@ public class MyFirebaseMessaging extends FirebaseMessagingService {
         defaultSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 
         if(!groupID.equals(currentGroupID)) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            if (version.getBuildVersion() >= Build.VERSION_CODES.O) {
                 sendOreoNotification();
             } else {
                 sendNotification();
@@ -66,7 +75,7 @@ public class MyFirebaseMessaging extends FirebaseMessagingService {
     }
 
     private void sendOreoNotification() {
-        OreoNotification oreoNotification = new OreoNotification(this);
+        OreoNotification oreoNotification = notifFactory.OreoNotificationFactory(this);
         Notification.Builder builder = oreoNotification.getOreoNotification(title, body, pendingIntent, defaultSound, R.mipmap.ic_launcher);
 
         int mNotificationID = (int) System.currentTimeMillis();
@@ -84,8 +93,16 @@ public class MyFirebaseMessaging extends FirebaseMessagingService {
                 .setContentIntent(pendingIntent);
 
         int mNotificationId = (int) System.currentTimeMillis();
-        NotificationManager mNotifyMgr = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        NotificationManager mNotifyMgr = notifFactory.nManagerFactory(this);
 
         mNotifyMgr.notify(mNotificationId, builder.build());
+    }
+
+    public void setNotifFactory(NotifFactory factory) {
+        this.notifFactory = factory;
+    }
+
+    public void setVersion(Version version){
+        this.version = version;
     }
 }
