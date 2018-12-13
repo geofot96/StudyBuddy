@@ -16,7 +16,6 @@ import ch.epfl.sweng.studdybuddy.core.Pair;
 import ch.epfl.sweng.studdybuddy.core.User;
 import ch.epfl.sweng.studdybuddy.firebase.FirebaseReference;
 import ch.epfl.sweng.studdybuddy.firebase.MetaGroup;
-import ch.epfl.sweng.studdybuddy.firebase.Metabase;
 import ch.epfl.sweng.studdybuddy.tools.AdapterAdapter;
 import ch.epfl.sweng.studdybuddy.tools.Consumer;
 import ch.epfl.sweng.studdybuddy.tools.Intentable;
@@ -89,7 +88,7 @@ public class MetabaseTest {
         Intentable dest = mock(Intentable.class);
         DataSnapshot ds = mock(DataSnapshot.class);
         when(ds.getChildren()).thenReturn(dss);
-        for(int i = 0; i < 3; ++i) {
+        for (int i = 0; i < 3; ++i) {
             when(dss.get(i).getValue(Pair.class)).thenReturn(pairs.get(i));
         }
         mb.updateUserCourses("1", Arrays.asList("2"), dest).onDataChange(ds);
@@ -99,6 +98,7 @@ public class MetabaseTest {
         verify(testref, times(1)).setValue(any(Pair.class));
         //The element to delete
         verify(testref, times(1)).removeValue();
+    }
     @Test
     public void testBefriend() {
         Buddy b = new Buddy("alice", "bob");
