@@ -1,9 +1,5 @@
 package ch.epfl.sweng.studdybuddy.firebase;
 
-import android.support.annotation.NonNull;
-
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import android.support.annotation.Nullable;
 
 import com.google.firebase.database.ValueEventListener;
@@ -40,6 +36,10 @@ abstract public class Metabase {
     }
 
     public ValueEventListener getUsersfromIds(List<String> uIds, List<User> groupUsers) {
+        return getUsersFromIdsAndConsume(uIds, groupUsers, Consumer.doNothing());
+    }
+
+    public ValueEventListener getUsersFromIdsAndConsume(List<String> uIds, List<User> groupUsers, Consumer<List<User>> consumer){
         return db.select("users").getAll(User.class, new Consumer<List<User>>() {
             @Override
             public void accept(List<User> users) {
@@ -49,6 +49,9 @@ abstract public class Metabase {
                     if(u != null && id != null && uIds.contains(users.get(i).getUserID().toString())) {
                         groupUsers.add(users.get(i));
                     }
+                }
+                if(consumer != null) {
+                    consumer.accept(groupUsers);
                 }
                 notif();
             }
@@ -106,18 +109,23 @@ abstract public class Metabase {
     }
 
     public ValueEventListener getBuddies(String uid, List<User> users) {
+        return getBuddiesAndConsume(uid, users, new LinkedList<>(), Consumer.doNothing());
+    }
+
+    public ValueEventListener getBuddiesAndConsume(String uid, List<User> users,  List<String>uIdsToFill, Consumer<List<User>> consumer){
         return db.select(Messages.FirebaseNode.BUDDIES).getAll(Buddy.class, new Consumer<List<Buddy>>() {
             @Override
             public void accept(@Nullable List<Buddy> buddies) {
-                List<String> buddiesIDs = new ArrayList<>();
                 for(Buddy buddy: buddies) {
                     String bob = buddy.buddyOf(uid);
                     if(bob != null) {
-                        buddiesIDs.add(bob);
+                        uIdsToFill.add(bob);
                     }
                 }
-                getUsersfromIds(buddiesIDs, users);
+
+                getUsersFromIdsAndConsume(uIdsToFill, users, consumer);
             }
         });
     }
+
 }
