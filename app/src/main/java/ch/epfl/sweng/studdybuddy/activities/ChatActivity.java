@@ -64,7 +64,7 @@ public class ChatActivity extends AppCompatActivity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
-        this.ref = new FirebaseReference();
+        this.ref = initRef();
         storageRef = FirebaseStorage.getInstance().getReference();
 
         Bundle extras = getIntent().getExtras();
@@ -150,7 +150,7 @@ public class ChatActivity extends AppCompatActivity
             if(requestCode == PICK_IMAGE_REQUEST)// && data.getData() != null)
             {
                 filePath = getFilePath(data);
-                uploadImage();
+                ChatUtils.uploadImage(filePath,mProgress,storageRef).addOnCompleteListener(getOnCompleteListener());
             }
             else if(requestCode == OPEN_CAMERA_REQUEST)
             {
@@ -223,6 +223,10 @@ public class ChatActivity extends AppCompatActivity
                 fab.performClick();
             }
         };
+    }
+    public FirebaseReference initRef()
+    {
+       return new FirebaseReference();
     }
 
     private void uploadImage()
