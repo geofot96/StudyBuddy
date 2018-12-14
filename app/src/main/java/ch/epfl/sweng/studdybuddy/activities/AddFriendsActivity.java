@@ -19,7 +19,12 @@ import ch.epfl.sweng.studdybuddy.firebase.MetaGroupAdmin;
 import ch.epfl.sweng.studdybuddy.firebase.ReferenceWrapper;
 import ch.epfl.sweng.studdybuddy.tools.AdapterConsumer;
 import ch.epfl.sweng.studdybuddy.tools.ArrayAdapterAdapter;
+import ch.epfl.sweng.studdybuddy.tools.Consumer;
 import ch.epfl.sweng.studdybuddy.tools.Intentable;
+import ch.epfl.sweng.studdybuddy.tools.ParticipantAdapter;
+import ch.epfl.sweng.studdybuddy.tools.UserAdapter;
+import ch.epfl.sweng.studdybuddy.util.Language;
+import ch.epfl.sweng.studdybuddy.util.Messages;
 import ch.epfl.sweng.studdybuddy.util.StudyBuddy;
 
 import static ch.epfl.sweng.studdybuddy.controllers.CourseSelectController.onClickAddCourse;
@@ -32,7 +37,7 @@ public class AddFriendsActivity extends AppCompatActivity {
     static List<String> friendsDB;
     static AutoCompleteTextView autocompleteFriends;
     public static final List<String> friendSelection = new ArrayList<>();
-    public static ArrayAdapter<String> adapter;
+    public static UserAdapter adapter;
     public static ArrayAdapter<String> adapterFriends;
     String uId;
     static Button addButton;
@@ -45,9 +50,9 @@ public class AddFriendsActivity extends AppCompatActivity {
         firebase  = new FirebaseReference();
         mga = new MetaGroupAdmin(firebase);
         setContentView(R.layout.activity_find_friends);
-        setUpButtons();
+       // setUpButtons();
        // setUpSelectedCourses();
-        setUpDb(setUpAutoComplete());
+       // setUpDb(setUpAutoComplete());
     }
 
     private void setUpButtons() {
@@ -63,8 +68,8 @@ public class AddFriendsActivity extends AppCompatActivity {
         autocompleteFriends = (AutoCompleteTextView) findViewById(R.id.friendsComplete);
         autocompleteFriends.setAdapter(adapter);
         autocompleteFriends.setOnClickListener(showDropdown(autocompleteFriends));
-        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        autocompleteFriends.setOnItemClickListener(onClickAddCourse(friendSelection, resetSelectViews(addButton, autocompleteFriends, imm)));
+        //InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        //autocompleteFriends.setOnItemClickListener(onClickAddCourse(friendSelection, resetSelectViews(addButton, autocompleteFriends, imm)));
         return adapter;
     }
 
@@ -80,7 +85,17 @@ public class AddFriendsActivity extends AppCompatActivity {
 //        mga.getUserCourses(uId, friendSelection);
 //
 //    }
-    private void setUpDb(ArrayAdapter<String> adapter) {
-        firebase.select("users").getAll(String.class, AdapterConsumer.adapterConsumer(String.class, friendsDB, new ArrayAdapterAdapter(adapter)));
+    private void setUpDb(ArrayAdapter<User> adapter) {
+        firebase.select(Messages.FirebaseNode.USERS).getAll(User.class, AdapterConsumer.adapterConsumer(User.class, friendsDB, new Consumer<User> ()
+        {
+        @Override
+        public void accept(List<User> users) {
+            friendsDB.clear();
+            for(User u: users){
+                friendsDB.add(u.getName());
+            }
+            notify();
+        }
+        }));
     }
 }
