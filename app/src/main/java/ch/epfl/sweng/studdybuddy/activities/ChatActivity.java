@@ -131,13 +131,17 @@ public class ChatActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK && data != null) {
-            if (requestCode == PICK_IMAGE_REQUEST)
-            {
-                ChatUtils.uploadImageFromGallery(getFilePath(data), mProgress, storageRef).addOnCompleteListener(getOnCompleteListener());
-            }
-            if (requestCode == OPEN_CAMERA_REQUEST) {
-                ChatUtils.openCamera(data, mProgress, getApplicationContext()).addOnSuccessListener(getOnSuccessListener());
-            }
+            initiatePhotoRequest(requestCode, data);
+        }
+    }
+
+    private void initiatePhotoRequest(int requestCode, Intent data) {
+        if (requestCode == PICK_IMAGE_REQUEST)
+        {
+            ChatUtils.uploadImageFromGallery(getFilePath(data), mProgress, storageRef).addOnCompleteListener(getOnCompleteListener());
+        }
+        if (requestCode == OPEN_CAMERA_REQUEST) {
+            ChatUtils.openCamera(data, mProgress, getApplicationContext()).addOnSuccessListener(getOnSuccessListener());
         }
     }
 
