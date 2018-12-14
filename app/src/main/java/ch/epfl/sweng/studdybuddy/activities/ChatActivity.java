@@ -170,21 +170,6 @@ public class ChatActivity extends AppCompatActivity
         return data.getData();
     }
 
-    private void openCamera(Intent data)
-    {
-        mProgress.setMessage("Uploading");
-        mProgress.show();
-
-        //get the camera image
-        Bundle extras = data.getExtras();
-        Bitmap bitmap = (Bitmap) data.getExtras().get("data");
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-        byte[] dataBAOS = baos.toByteArray();
-        //ImageView image = (ImageView) ChatActivity.this.findViewById(R.id.imgViewGall);
-
-        ChatUtils.uploadImageFromCamera(dataBAOS,getApplicationContext(),mProgress).addOnSuccessListener(getOnSuccessListener());
-    }
 
 
     @NonNull

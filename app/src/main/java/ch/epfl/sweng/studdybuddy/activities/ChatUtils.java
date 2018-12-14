@@ -86,7 +86,6 @@ public class ChatUtils {
         mProgress.show();
 
         //get the camera image
-        Bundle extras = data.getExtras();
         Bitmap bitmap = (Bitmap) data.getExtras().get("data");
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
