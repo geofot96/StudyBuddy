@@ -64,7 +64,7 @@ public class ChatActivity extends AppCompatActivity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
-        this.ref = initRef();
+        this.ref = new FirebaseReference();
         storageRef = FirebaseStorage.getInstance().getReference();
 
         Bundle extras = getIntent().getExtras();
@@ -293,10 +293,6 @@ public class ChatActivity extends AppCompatActivity
         };
     }
 
-    public FirebaseReference initRef()
-    {
-        return new FirebaseReference();
-    }
 
     public void displayChatMessages()
     {
