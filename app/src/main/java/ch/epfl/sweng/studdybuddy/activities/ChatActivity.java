@@ -150,11 +150,11 @@ public class ChatActivity extends AppCompatActivity
             if(requestCode == PICK_IMAGE_REQUEST)// && data.getData() != null)
             {
                 filePath = getFilePath(data);
-                ChatUtils.uploadImage(filePath,mProgress,storageRef).addOnCompleteListener(getOnCompleteListener());
+                ChatUtils.uploadImageFromGallery(filePath,mProgress,storageRef).addOnCompleteListener(getOnCompleteListener());
             }
             else if(requestCode == OPEN_CAMERA_REQUEST)
             {
-                openCamera(data);
+                ChatUtils.openCamera(data,mProgress,getApplicationContext()).addOnSuccessListener(getOnSuccessListener());
             }
         }
     }
@@ -181,31 +181,11 @@ public class ChatActivity extends AppCompatActivity
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
         byte[] dataBAOS = baos.toByteArray();
-        ImageView image = (ImageView) ChatActivity.this.findViewById(R.id.imgViewGall);
+        //ImageView image = (ImageView) ChatActivity.this.findViewById(R.id.imgViewGall);
 
-        uploadImage(dataBAOS);
+        ChatUtils.uploadImageFromCamera(dataBAOS,getApplicationContext(),mProgress).addOnSuccessListener(getOnSuccessListener());
     }
 
-    private void uploadImage(byte[] dataBAOS)
-    {
-        //Firebase storage folder where you want to put the images
-        StorageReference storageRef = FirebaseStorage.getInstance().getReferenceFromUrl("gs://studybuddy-a5bfe.appspot.com/images");
-
-        //name of the image file (add time to have different files to avoid rewrite on the same file)
-        StorageReference imagesRef = storageRef.child("image" + String.valueOf(System.currentTimeMillis()) + ".jpg");
-
-        //upload image to firebase
-        UploadTask uploadTask = imagesRef.putBytes(dataBAOS);
-        uploadTask.addOnFailureListener(new OnFailureListener()
-        {
-            @Override
-            public void onFailure(@NonNull Exception exception)
-            {
-                Toast.makeText(getApplicationContext(), "Sending failed", Toast.LENGTH_SHORT).show();
-                mProgress.dismiss();
-            }
-        }).addOnSuccessListener(getOnSuccessListener());
-    }
 
     @NonNull
     private OnSuccessListener<UploadTask.TaskSnapshot> getOnSuccessListener()

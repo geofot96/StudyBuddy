@@ -1,19 +1,28 @@
 package ch.epfl.sweng.studdybuddy.activities;
 
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.io.ByteArrayOutputStream;
 import java.util.UUID;
 
+import ch.epfl.sweng.studdybuddy.R;
 import ch.epfl.sweng.studdybuddy.firebase.FirebaseReference;
 import ch.epfl.sweng.studdybuddy.services.chat.ChatMessage;
 import ch.epfl.sweng.studdybuddy.util.Messages;
@@ -24,7 +33,7 @@ public class ChatUtils {
         ref.select(Messages.FirebaseNode.CHAT).select(groupID).push(new ChatMessage(input,
                 FirebaseAuth.getInstance().getCurrentUser().getDisplayName(), downloadUri));
     }
-    protected static Task<Uri> uploadImage(Uri filePath,ProgressDialog mProgress,StorageReference storageRef)
+    protected static Task<Uri> uploadImageFromGallery(Uri filePath,ProgressDialog mProgress,StorageReference storageRef)
     {
         Task result=null;
         if(filePath != null)
@@ -47,6 +56,42 @@ public class ChatUtils {
             });
         }
         return result;
+    }
+    protected static UploadTask uploadImageFromCamera(byte[] dataBAOS, Context applicationContext, ProgressDialog mProgress)
+    {
+
+
+        //Firebase storage folder where you want to put the images
+        StorageReference storageRef = FirebaseStorage.getInstance().getReferenceFromUrl("gs://studybuddy-a5bfe.appspot.com/images");
+
+        //name of the image file (add time to have different files to avoid rewrite on the same file)
+        StorageReference imagesRef = storageRef.child("image" + String.valueOf(System.currentTimeMillis()) + ".jpg");
+
+        //upload image to firebase
+        UploadTask uploadTask = imagesRef.putBytes(dataBAOS);
+        uploadTask.addOnFailureListener(new OnFailureListener()
+        {
+            @Override
+            public void onFailure(@NonNull Exception exception)
+            {
+                Toast.makeText(applicationContext, "Sending failed", Toast.LENGTH_SHORT).show();
+                mProgress.dismiss();
+            }
+        });
+        return uploadTask;
+    }
+    protected static UploadTask openCamera(Intent data,ProgressDialog mProgress,Context applicationContext)
+    {
+        mProgress.setMessage("Uploading");
+        mProgress.show();
+
+        //get the camera image
+        Bundle extras = data.getExtras();
+        Bitmap bitmap = (Bitmap) data.getExtras().get("data");
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        byte[] dataBAOS = baos.toByteArray();
+       return ChatUtils.uploadImageFromCamera(dataBAOS,applicationContext,mProgress);
     }
 
 }
