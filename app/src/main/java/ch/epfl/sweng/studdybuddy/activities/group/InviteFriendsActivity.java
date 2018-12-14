@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ch.epfl.sweng.studdybuddy.R;
+import ch.epfl.sweng.studdybuddy.core.ID;
 import ch.epfl.sweng.studdybuddy.core.User;
 import ch.epfl.sweng.studdybuddy.firebase.MetaGroup;
 import ch.epfl.sweng.studdybuddy.tools.BuddyAdapter;
@@ -28,7 +29,7 @@ public class InviteFriendsActivity extends AppCompatActivity {
         getBundleData();
         buddies = new ArrayList<>();
         rv = findViewById(R.id.buddiesToInvite);
-        buddyAdapter = new BuddyAdapter(buddies);
+        buddyAdapter = new BuddyAdapter(buddies, new ID<>(gId), new ID<>(uId));
         mg.addListenner(new RecyclerAdapterAdapter(buddyAdapter));
         buddyAdapter.initRecyclerView(this, rv);
         initBuddies();
