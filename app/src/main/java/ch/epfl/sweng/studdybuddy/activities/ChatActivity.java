@@ -45,8 +45,7 @@ import ch.epfl.sweng.studdybuddy.firebase.FirebaseReference;
 import ch.epfl.sweng.studdybuddy.services.chat.ChatMessage;
 import ch.epfl.sweng.studdybuddy.util.Messages;
 
-public class ChatActivity extends AppCompatActivity
-{
+public class ChatActivity extends AppCompatActivity {
     String groupID;
     public FirebaseReference ref;
     private StorageReference storageRef;
@@ -60,8 +59,7 @@ public class ChatActivity extends AppCompatActivity
     private ProgressDialog mProgress;
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState)
-    {
+    public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
         this.ref = initRef();
@@ -69,12 +67,9 @@ public class ChatActivity extends AppCompatActivity
 
         Bundle extras = getIntent().getExtras();
 
-        if(extras != null)
-        {
+        if (extras != null) {
             groupID = extras.getString(Messages.groupID);
-        }
-        else
-        {
+        } else {
             Toast.makeText(this,
                     "Group not found in database",
                     Toast.LENGTH_LONG).show();
@@ -83,8 +78,7 @@ public class ChatActivity extends AppCompatActivity
         initializations();
     }
 
-    private void initializations()
-    {
+    private void initializations() {
         downloadUri = "";
         displayChatMessages();
         mProgress = new ProgressDialog(this);
@@ -98,11 +92,9 @@ public class ChatActivity extends AppCompatActivity
         fab.setOnClickListener(getFabListener());
     }
 
-    private void askForCameraPermission()
-    {
-        if(ContextCompat.checkSelfPermission(ChatActivity.this.getApplicationContext(),
-                Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED)
-        {
+    private void askForCameraPermission() {
+        if (ContextCompat.checkSelfPermission(ChatActivity.this.getApplicationContext(),
+                Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(ChatActivity.this,
                     new String[]{Manifest.permission.CAMERA},
                     1);
@@ -110,13 +102,10 @@ public class ChatActivity extends AppCompatActivity
     }
 
     @NonNull
-    protected View.OnClickListener getGalleryImage()
-    {
-        return new View.OnClickListener()
-        {
+    protected View.OnClickListener getGalleryImage() {
+        return new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 Intent galleryIntent = new Intent();
                 galleryIntent.setType("image/*");
                 galleryIntent.setAction(Intent.ACTION_GET_CONTENT);
@@ -127,13 +116,10 @@ public class ChatActivity extends AppCompatActivity
     }
 
     @NonNull
-    protected View.OnClickListener getCameraListener()
-    {
-        return new View.OnClickListener()
-        {
+    protected View.OnClickListener getCameraListener() {
+        return new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 startActivityForResult(intent, OPEN_CAMERA_REQUEST);
             }
@@ -142,19 +128,15 @@ public class ChatActivity extends AppCompatActivity
 
     //Get the filepath of the selected image
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data)
-    {
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(resultCode == RESULT_OK && data != null)
-        {
-            if(requestCode == PICK_IMAGE_REQUEST)// && data.getData() != null)
+        if (resultCode == RESULT_OK && data != null) {
+            if (requestCode == PICK_IMAGE_REQUEST)// && data.getData() != null)
             {
                 filePath = getFilePath(data);
-                ChatUtils.uploadImageFromGallery(filePath,mProgress,storageRef).addOnCompleteListener(getOnCompleteListener());
-            }
-            else if(requestCode == OPEN_CAMERA_REQUEST)
-            {
-                ChatUtils.openCamera(data,mProgress,getApplicationContext()).addOnSuccessListener(getOnSuccessListener());
+                ChatUtils.uploadImageFromGallery(filePath, mProgress, storageRef).addOnCompleteListener(getOnCompleteListener());
+            } else if (requestCode == OPEN_CAMERA_REQUEST) {
+                ChatUtils.openCamera(data, mProgress, getApplicationContext()).addOnSuccessListener(getOnSuccessListener());
             }
         }
     }
@@ -165,23 +147,18 @@ public class ChatActivity extends AppCompatActivity
      * @param data
      * @return
      */
-    protected Uri getFilePath(Intent data)
-    {
+    protected Uri getFilePath(Intent data) {
         return data.getData();
     }
 
 
-
     @NonNull
-    private OnSuccessListener<UploadTask.TaskSnapshot> getOnSuccessListener()
-    {
-        return new OnSuccessListener<UploadTask.TaskSnapshot>()
-        {
+    private OnSuccessListener<UploadTask.TaskSnapshot> getOnSuccessListener() {
+        return new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot)
-            {
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                 Task<Uri> urlTask = taskSnapshot.getStorage().getDownloadUrl();
-                while(!urlTask.isSuccessful()) ;
+                while (!urlTask.isSuccessful()) ;
                 downloadUri = urlTask.getResult().toString();
                 mProgress.dismiss();
                 Toast.makeText(ChatActivity.this, downloadUri, Toast.LENGTH_SHORT).show();
@@ -189,30 +166,24 @@ public class ChatActivity extends AppCompatActivity
             }
         };
     }
-    public FirebaseReference initRef()
-    {
-       return new FirebaseReference();
+
+    public FirebaseReference initRef() {
+        return new FirebaseReference();
     }
 
 
     @NonNull
-    private OnCompleteListener<Uri> getOnCompleteListener()
-    {
-        return new OnCompleteListener<Uri>()
-        {
+    private OnCompleteListener<Uri> getOnCompleteListener() {
+        return new OnCompleteListener<Uri>() {
             @Override
-            public void onComplete(@NonNull Task<Uri> task)
-            {
-                if(task.isSuccessful())
-                {
+            public void onComplete(@NonNull Task<Uri> task) {
+                if (task.isSuccessful()) {
                     downloadUri = task.getResult().toString();
                     mProgress.dismiss();
                     fab.performClick();
                     Toast.makeText(ChatActivity.this, "Uploaded " + downloadUri, Toast.LENGTH_SHORT).show();
 
-                }
-                else
-                {
+                } else {
                     mProgress.dismiss();
                     Toast.makeText(ChatActivity.this, "Failed Uploading" + task.getException().toString(), Toast.LENGTH_LONG).show();
                 }
@@ -221,17 +192,13 @@ public class ChatActivity extends AppCompatActivity
     }
 
     @NonNull
-    protected View.OnClickListener getFabListener()
-    {
-        return new View.OnClickListener()
-        {
+    protected View.OnClickListener getFabListener() {
+        return new View.OnClickListener() {
             @Override
-            public void onClick(View view)
-            {
+            public void onClick(View view) {
                 EditText input = (EditText) findViewById(R.id.input);
-                if(input.getText().toString().trim().length() > 0 || !downloadUri.isEmpty())
-                {
-                    ChatUtils.pushToFirebase(ref,groupID,input.getText().toString(), downloadUri);
+                if (input.getText().toString().trim().length() > 0 || !downloadUri.isEmpty()) {
+                    ChatUtils.pushToFirebase(ref, groupID, input.getText().toString(), downloadUri);
                     input.setText("");
                     downloadUri = "";
                     displayChatMessages();
@@ -241,17 +208,14 @@ public class ChatActivity extends AppCompatActivity
     }
 
 
-    public void displayChatMessages()
-    {
+    public void displayChatMessages() {
         ListView listOfMessages = (ListView) findViewById(R.id.list_of_messages);
 
         FirebaseListAdapter<ChatMessage> adapter = new FirebaseListAdapter<ChatMessage>(this, ChatMessage.class,
                 R.layout.message,
-                FirebaseDatabase.getInstance().getReference().child(Messages.FirebaseNode.CHAT).child(groupID))
-        {
+                FirebaseDatabase.getInstance().getReference().child(Messages.FirebaseNode.CHAT).child(groupID)) {
             @Override
-            protected void populateView(View v, ChatMessage model, int position)
-            {
+            protected void populateView(View v, ChatMessage model, int position) {
                 TextView messageUser = (TextView) v.findViewById(R.id.message_user);
                 messageUser.setText(model.getMessageUser());
                 TextView messageTime = (TextView) v.findViewById(R.id.message_time);
@@ -260,16 +224,13 @@ public class ChatActivity extends AppCompatActivity
                 messageText.setText(model.getMessageText());
                 ImageView image = (ImageView) v.findViewById(R.id.imgViewGall);
                 String modelUri = model.getImageUri();
-                if(modelUri != null && !modelUri.isEmpty())
-                {
+                if (modelUri != null && !modelUri.isEmpty()) {
                     //Put the image in the chat
                     Glide.with(ChatActivity.this).
                             load(modelUri)
                             .apply(new RequestOptions().override(500, 700)).
                             into(image);
-                }
-                else
-                {
+                } else {
                     image.setImageResource(android.R.color.transparent);
                 }
             }
