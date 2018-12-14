@@ -30,8 +30,7 @@ public class BuddyHolder extends RecyclerView.ViewHolder
         buddyInvite.setOnClickListener(getInvitationListener());
     }
 
-    @NonNull
-    private View.OnClickListener getInvitationListener()
+    public View.OnClickListener getInvitationListener()
     {
         return new View.OnClickListener()
         {
