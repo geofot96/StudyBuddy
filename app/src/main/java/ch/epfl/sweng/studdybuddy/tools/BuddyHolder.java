@@ -40,7 +40,6 @@ public class BuddyHolder extends RecyclerView.ViewHolder
             {
                 Pair pair = new Pair(userID.toString(), groupID.toString());
                 FirebaseReference reference = new FirebaseReference();
-                String s = Helper.hashCode(pair);
                 reference.select(Messages.FirebaseNode.USERGROUP).select(Helper.hashCode(pair)).setVal(pair);
                 buddyInvite.setText("INVITED");
                 buddyInvite.setEnabled(false);
@@ -53,7 +52,7 @@ public class BuddyHolder extends RecyclerView.ViewHolder
         return buddyName.getText().toString();
     }
 
-    public void bind(String name, boolean invite, ID<Group> groupID, ID<User> userID)
+    public void bind(String name, boolean invite, ID<Group> gID, ID<User> uID)
     {
         buddyName.setText(name);
         if(invite)
@@ -65,7 +64,7 @@ public class BuddyHolder extends RecyclerView.ViewHolder
             buddyInvite.setEnabled(false);
             buddyInvite.setVisibility(View.INVISIBLE);
         }
-        this.groupID = groupID;
-        this.userID = userID;
+        this.groupID = gID;
+        this.userID = uID;
     }
 }
