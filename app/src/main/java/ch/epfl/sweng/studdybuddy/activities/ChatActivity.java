@@ -133,8 +133,7 @@ public class ChatActivity extends AppCompatActivity {
         if (resultCode == RESULT_OK && data != null) {
             if (requestCode == PICK_IMAGE_REQUEST)// && data.getData() != null)
             {
-                filePath = getFilePath(data);
-                ChatUtils.uploadImageFromGallery(filePath, mProgress, storageRef).addOnCompleteListener(getOnCompleteListener());
+                ChatUtils.uploadImageFromGallery(getFilePath(data), mProgress, storageRef).addOnCompleteListener(getOnCompleteListener());
             } else if (requestCode == OPEN_CAMERA_REQUEST) {
                 ChatUtils.openCamera(data, mProgress, getApplicationContext()).addOnSuccessListener(getOnSuccessListener());
             }
