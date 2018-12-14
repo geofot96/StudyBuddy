@@ -284,19 +284,13 @@ public class ChatActivity extends AppCompatActivity
                 EditText input = (EditText) findViewById(R.id.input);
                 if(input.getText().toString().trim().length() > 0 || !downloadUri.isEmpty())
                 {
-                    pushToFirebase(input.getText().toString(), downloadUri);
+                    ChatUtils.pushToFirebase(ref,groupID,input.getText().toString(), downloadUri);
                     input.setText("");
                     downloadUri = "";
                     displayChatMessages();
                 }
             }
         };
-    }
-
-    private void pushToFirebase(String input, String downloadUri)
-    {
-        ref.select(Messages.FirebaseNode.CHAT).select(groupID).push(new ChatMessage(input,
-                FirebaseAuth.getInstance().getCurrentUser().getDisplayName(), downloadUri));
     }
 
     public FirebaseReference initRef()
