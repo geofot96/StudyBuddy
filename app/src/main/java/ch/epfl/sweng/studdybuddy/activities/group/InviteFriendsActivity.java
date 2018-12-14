@@ -19,7 +19,7 @@ public class InviteFriendsActivity extends AppCompatActivity {
     private RecyclerView rv ;
     private List<User> buddies;
     private BuddyAdapter buddyAdapter;
-    private         MetaGroup mg = new MetaGroup();
+    private MetaGroup mg = new MetaGroup();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

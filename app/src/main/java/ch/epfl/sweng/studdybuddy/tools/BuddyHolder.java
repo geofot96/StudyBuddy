@@ -7,9 +7,11 @@ import android.widget.TextView;
 
 import ch.epfl.sweng.studdybuddy.R;
 
-public class BuddyHolder extends RecyclerView.ViewHolder {
+public class BuddyHolder extends RecyclerView.ViewHolder
+{
     private TextView buddyName;
     private Button buddyInvite;
+
     public BuddyHolder(View itemView)
     {
         super(itemView);
@@ -25,9 +27,12 @@ public class BuddyHolder extends RecyclerView.ViewHolder {
     public void bind(String name, boolean invite)
     {
         buddyName.setText(name);
-        if(invite){
+        if(invite)
+        {
             buddyInvite.setText("Invite");
-        }else{
+        }
+        else
+        {
             buddyInvite.setEnabled(false);
             buddyInvite.setVisibility(View.INVISIBLE);
         }
