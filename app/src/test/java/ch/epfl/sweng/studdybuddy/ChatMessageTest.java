@@ -16,8 +16,9 @@ public class ChatMessageTest {
     private static User user = new User( "Mr Potato", new ID<>("dumbid"));
     private String userName = user.getName();
     private String message = "Hello! How are you?";
+    private String uri = "firebase.com";
     public long time = new Date().getTime();
-    private ChatMessage testChatMessage = new ChatMessage(message, userName, "");
+    private ChatMessage testChatMessage = new ChatMessage(message, userName, uri);
 
     private ChatMessage emptyChatMessage = new ChatMessage();
 
@@ -53,5 +54,15 @@ public class ChatMessageTest {
         long time = new Date().getTime();
         emptyChatMessage.setMessageTime(time);
         assertEquals(time, emptyChatMessage.getMessageTime());
+    }
+    @Test
+    public void getMessageUri(){
+        assertEquals("firebase.com", testChatMessage.getImageUri());
+    }
+
+    @Test
+    public void setMessageUri(){
+        emptyChatMessage.setImageUri("travis.com");
+        assertEquals("travis.com", emptyChatMessage.getImageUri());
     }
 }
