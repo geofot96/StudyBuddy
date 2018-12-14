@@ -229,28 +229,6 @@ public class ChatActivity extends AppCompatActivity
        return new FirebaseReference();
     }
 
-    private void uploadImage()
-    {
-        if(filePath != null)
-        {
-            mProgress.setTitle("Uploading...");
-            mProgress.show();
-            StorageReference ref = storageRef.child("images/" + UUID.randomUUID().toString());
-            ref.putFile(filePath).continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>()
-            {
-                @Override
-                public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception
-                {
-                    if(!task.isSuccessful())
-                    {
-                        throw task.getException();
-                    }
-                    // Continue with the task to get the download URL
-                    return ref.getDownloadUrl();
-                }
-            }).addOnCompleteListener(getOnCompleteListener());
-        }
-    }
 
     @NonNull
     private OnCompleteListener<Uri> getOnCompleteListener()
