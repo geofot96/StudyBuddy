@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -17,11 +19,14 @@ import ch.epfl.sweng.studdybuddy.core.User;
 import ch.epfl.sweng.studdybuddy.firebase.FirebaseReference;
 import ch.epfl.sweng.studdybuddy.firebase.MetaGroupAdmin;
 import ch.epfl.sweng.studdybuddy.firebase.ReferenceWrapper;
+import ch.epfl.sweng.studdybuddy.tools.AdapterAdapter;
 import ch.epfl.sweng.studdybuddy.tools.AdapterConsumer;
 import ch.epfl.sweng.studdybuddy.tools.ArrayAdapterAdapter;
 import ch.epfl.sweng.studdybuddy.tools.Consumer;
+import ch.epfl.sweng.studdybuddy.tools.CourseAdapter;
 import ch.epfl.sweng.studdybuddy.tools.Intentable;
 import ch.epfl.sweng.studdybuddy.tools.ParticipantAdapter;
+import ch.epfl.sweng.studdybuddy.tools.RecyclerAdapterAdapter;
 import ch.epfl.sweng.studdybuddy.tools.UserAdapter;
 import ch.epfl.sweng.studdybuddy.util.Language;
 import ch.epfl.sweng.studdybuddy.util.Messages;
@@ -29,6 +34,7 @@ import ch.epfl.sweng.studdybuddy.util.StudyBuddy;
 
 import static ch.epfl.sweng.studdybuddy.controllers.CourseSelectController.onClickAddCourse;
 import static ch.epfl.sweng.studdybuddy.controllers.CourseSelectController.resetSelectViews;
+import static ch.epfl.sweng.studdybuddy.controllers.CourseSelectController.updateClickable;
 import static ch.epfl.sweng.studdybuddy.controllers.CourseSelectController.updateCoursesOnDone;
 import static ch.epfl.sweng.studdybuddy.util.ActivityHelper.showDropdown;
 
@@ -50,9 +56,8 @@ public class AddFriendsActivity extends AppCompatActivity {
         firebase  = new FirebaseReference();
         mga = new MetaGroupAdmin(firebase);
         setContentView(R.layout.activity_find_friends);
-       // setUpButtons();
-       // setUpSelectedCourses();
-       // setUpDb(setUpAutoComplete());
+        setUpButtons();
+        setUpSelectedFriends();
         setUpAutoComplete();
         setUpDb();
     }
@@ -70,22 +75,20 @@ public class AddFriendsActivity extends AppCompatActivity {
         autocompleteFriends = (AutoCompleteTextView) findViewById(R.id.friendsComplete);
         autocompleteFriends.setAdapter(adapterFriends);
         autocompleteFriends.setOnClickListener(showDropdown(autocompleteFriends));
-        //InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        //autocompleteFriends.setOnItemClickListener(onClickAddCourse(friendSelection, resetSelectViews(addButton, autocompleteFriends, imm)));
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        autocompleteFriends.setOnItemClickListener(onClickAddCourse(friendSelection, resetSelectViews(addButton, autocompleteFriends, imm)));
     }
 
-//    private void setUpSelectedFriends() {
-//        final RecyclerView selectedFriends = (RecyclerView) findViewById(R.id.friends_set);
-//        RecyclerView.Adapter friendsAdapter = new CourseAdapter(friendSelection);
-//        selectedFriends.setLayoutManager(new LinearLayoutManager(getBaseContext()));
-//        selectedFriends.setAdapter(friendsAdapter);
-//        AdapterAdapter adapterC = new RecyclerAdapterAdapter(friendsAdapter);
-//        mga.addListenner(adapterC);
-//        mga.addListenner(updateClickable(addButton, friendSelection));
-//        //TODO make a func to get friends
-//        mga.getUserCourses(uId, friendSelection);
-//
-//    }
+    private void setUpSelectedFriends() {
+        final RecyclerView selectedFriends = (RecyclerView) findViewById(R.id.friends_set);
+        RecyclerView.Adapter friendsAdapter = new CourseAdapter(friendSelection);
+        selectedFriends.setLayoutManager(new LinearLayoutManager(getBaseContext()));
+        selectedFriends.setAdapter(friendsAdapter);
+        AdapterAdapter adapterC = new RecyclerAdapterAdapter(friendsAdapter);
+        mga.addListenner(adapterC);
+        mga.addListenner(updateClickable(addButton, friendSelection));
+    }
+    
     private void setUpDb() {
         mga.addListenner(new ArrayAdapterAdapter(adapterFriends));
         mga.fetchUserNames(friendsDB);
