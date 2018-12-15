@@ -10,14 +10,20 @@ import android.view.ViewGroup;
 import java.util.List;
 
 import ch.epfl.sweng.studdybuddy.R;
+import ch.epfl.sweng.studdybuddy.core.Group;
+import ch.epfl.sweng.studdybuddy.core.ID;
 import ch.epfl.sweng.studdybuddy.core.User;
 
 public class BuddyAdapter extends RecyclerView.Adapter<BuddyHolder> {
     List<User> buddies;
+    private ID<Group> groupID;
+    private ID<User> userID;
 
-    public BuddyAdapter(List<User> buddies)
+    public BuddyAdapter(List<User> buddies, ID<Group> groupID, ID<User> userID)
     {
         this.buddies = buddies;
+        this.groupID = groupID;
+        this.userID = userID;
     }
 
 
@@ -25,7 +31,7 @@ public class BuddyAdapter extends RecyclerView.Adapter<BuddyHolder> {
     public void onBindViewHolder(BuddyHolder holder, int position)
     {
         String username = buddies.get(position).getName();
-        holder.bind(username, true);
+        holder.bind(username, true, groupID, userID);
     }
 
     @Override
