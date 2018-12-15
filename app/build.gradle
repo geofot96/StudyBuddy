@@ -85,7 +85,7 @@ task jacocoTestReport(type: JacocoReport, dependsOn: ['testDebugUnitTest', 'crea
         html.enabled = true
     }
 
-    def fileFilter = ['**/R.class', '**/R$*.class', '**/BuildConfig.*', '**/Manifest*.*', '**/*Test*.*', 'android/**/*.*', '**/*Sql*Impl*']
+    def fileFilter = ['**/R.class', '**/R$*.class', '**/BuildConfig.*', '**/Manifest*.*', '**/*Test*.*', 'android/**/*.*']
     def debugTree = fileTree(dir: "$project.buildDir/intermediates/classes/debug", excludes: fileFilter)
     def mainSrc = "$project.projectDir/src/main/java"
 
@@ -94,5 +94,13 @@ task jacocoTestReport(type: JacocoReport, dependsOn: ['testDebugUnitTest', 'crea
     executionData = fileTree(dir: project.buildDir, includes: [
             'jacoco/testDebugUnitTest.exec', 'outputs/code-coverage/connected/*coverage.ec'
     ])
+    afterEvaluate {
+        classDirectories = files(classDirectories.files.collect {
+            fileTree(dir: it, excludes: ['*/SqlDB_Impl.java', '**/SqlDB_Impl.java', '*SqlDB_Impl.java',
+                                         '**SqlDB_Impl.java', 'app/src/main/java/ch/epfl/sweng/studdybuddy/sql/SqlDB_Impl.java',
+                                         'app/src/main/java/ch.epfl.sweng.studdybuddy/sql/SqlDB_Impl.java'
+            ])
+        })
+    }
 }
 apply plugin: 'com.google.gms.google-services'
