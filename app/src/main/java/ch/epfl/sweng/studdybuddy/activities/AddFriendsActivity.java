@@ -18,6 +18,7 @@ import ch.epfl.sweng.studdybuddy.R;
 import ch.epfl.sweng.studdybuddy.core.User;
 import ch.epfl.sweng.studdybuddy.firebase.FirebaseReference;
 import ch.epfl.sweng.studdybuddy.firebase.MetaGroupAdmin;
+import ch.epfl.sweng.studdybuddy.firebase.Metabase;
 import ch.epfl.sweng.studdybuddy.firebase.ReferenceWrapper;
 import ch.epfl.sweng.studdybuddy.tools.AdapterAdapter;
 import ch.epfl.sweng.studdybuddy.tools.AdapterConsumer;
@@ -67,7 +68,7 @@ public class AddFriendsActivity extends AppCompatActivity {
         addButton = findViewById(R.id.btn_add);
         User currentUser = ((StudyBuddy) AddFriendsActivity.this.getApplication()).getAuthendifiedUser();
         uId = currentUser.getUserID().getId();
-        addButton.setOnClickListener(updateCoursesOnDone(currentUser, friendSelection, mga, i));
+        addButton.setOnClickListener(Metabase.updateFriendsOnDone(uId, friendSelection, mga, i));
     }
 
     private void setUpAutoComplete(){
@@ -88,7 +89,7 @@ public class AddFriendsActivity extends AppCompatActivity {
         mga.addListenner(adapterC);
         mga.addListenner(updateClickable(addButton, friendSelection));
     }
-    
+
     private void setUpDb() {
         mga.addListenner(new ArrayAdapterAdapter(adapterFriends));
         mga.fetchUserNames(friendsDB);

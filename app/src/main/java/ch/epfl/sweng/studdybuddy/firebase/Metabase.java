@@ -2,6 +2,7 @@ package ch.epfl.sweng.studdybuddy.firebase;
 
 
 import android.support.annotation.Nullable;
+import android.view.View;
 
 
 import com.google.firebase.database.ValueEventListener;
@@ -130,5 +131,22 @@ abstract public class Metabase {
                 notif();
             }
         });
+    }
+
+    public static View.OnClickListener updateFriendsOnDone(String uId, List<String> friendsSelection, MetaGroupAdmin mga, Intentable mother) {
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //mga.updateUserFriends(currentUser.getUserID().getId(), friendsSelection, mother);
+                mga.putAllFriends(friendsSelection, uId );
+                mother.launch();
+            }
+        };
+    }
+
+    public void putAllFriends(List<String> friendsSelection, String userid) {
+        for(String friend : friendsSelection){
+           befriend(userid, friend);
+        }
     }
 }
