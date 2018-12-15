@@ -53,16 +53,16 @@
     <ListView
         android:id="@+id/list_of_messages"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="526dp"
         android:layout_above="@id/fab"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="-15dp"
         android:divider="@android:color/transparent"
         android:dividerHeight="16dp"
         android:smoothScrollbar="false"
-        android:transcriptMode="alwaysScroll"
-        android:stackFromBottom="true"/>
+        android:stackFromBottom="true"
+        android:transcriptMode="alwaysScroll" />
 
     <Button
         android:id="@+id/gallery"
@@ -71,8 +71,6 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
         android:background="@android:color/transparent"
-        android:drawableTop="@drawable/iconfinder_ui_32_3556073"
-
-  />
+        android:drawableTop="@drawable/iconfinder_ui_32_3556073" />
 
 </RelativeLayout>
