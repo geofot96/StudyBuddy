@@ -39,12 +39,13 @@ import ch.epfl.sweng.studdybuddy.util.StudyBuddy;
 public class FeedFragment extends Fragment
 {
 
-    GroupsRecyclerAdapter mAdapter;
-    static List<Group> groupSet = new ArrayList<>();
+    private GroupsRecyclerAdapter mAdapter;
+    private static List<Group> groupSet = new ArrayList<>();
     public static final String IS_PARTICIPANT = "ch.epfl.sweng.studybuddy.particip";
     static List<Group> filteredGroupSet = new ArrayList<>();
-    Button sortButton;
-    FloatingActionButton actionButton;
+    private Button sortButton;
+    private FloatingActionButton actionButton;
+    private ToggleButton toggleFull;
 
 
     public FeedFragment()
@@ -76,7 +77,7 @@ public class FeedFragment extends Fragment
         firebase.select(Messages.FirebaseNode.GROUPS).getAll(Group.class, AdapterConsumer.adapterConsumer(Group.class, groupSet, new RecyclerAdapterAdapter(mAdapter)));
         SearchView sv = (SearchView) v.findViewById(R.id.feed_search);
         setUpActivity(rv, sv, v);
-        ToggleButton toggleFull = (ToggleButton) v.findViewById(R.id.toggleButton);
+         toggleFull = (ToggleButton) v.findViewById(R.id.toggleButton);
         toggleFull.setOnCheckedChangeListener(getToggleListener());
 
 
