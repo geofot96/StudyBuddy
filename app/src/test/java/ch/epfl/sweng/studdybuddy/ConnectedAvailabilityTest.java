@@ -37,7 +37,7 @@ public class ConnectedAvailabilityTest {
     @Test
     public void addAvailabilityInParticularSlot(){
         connectedA.modifyAvailability(rowTest, columnTest);
-        checkHeadTrueTailFalse(connectedA, rowTest, columnTest);
+        checkHeadTrueTailFalse(connectedA);
     }
 
     @Test
