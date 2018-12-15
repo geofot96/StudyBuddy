@@ -43,6 +43,6 @@ public class GroupsActivityTest
     public void filterOutFullGroupsToggleButtonActivates()
     {
         onView(withId(R.id.toggleAllCourses)).perform(click());
-        onView(withId(R.id.toggleAllCourses)).perform(click());
+        onView(withId(R.id.toggleYourCourses)).perform(click());
     }
 }
