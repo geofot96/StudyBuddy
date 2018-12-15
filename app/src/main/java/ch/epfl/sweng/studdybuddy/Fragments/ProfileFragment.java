@@ -49,8 +49,10 @@ public class ProfileFragment extends Fragment
 
     private final List<String> userCourses =  new ArrayList<>();
     private  final List<Group> userGroups = new ArrayList<>();
+    private  final List<String> userFriends = new ArrayList<>();
     private GroupsRecyclerAdapter ad;
     private CourseAdapter adCourse;
+    private CourseAdapter adFriend;
     private User user;
     private String userID;
     private MetaGroup metabase = new MetaGroup();
@@ -73,6 +75,8 @@ public class ProfileFragment extends Fragment
         setUI(v);
         setCoursesUp();
         setGroupsUp();
+        setFriendsUp();
+
 
         return v;
     }
@@ -92,6 +96,12 @@ public class ProfileFragment extends Fragment
         return metabase.getUserCourses(userID, userCourses);
     }
 
+    public ValueEventListener setFriendsUp() {
+        metabase.addListenner(new RecyclerAdapterAdapter(adCourse));
+        return metabase.getUserCourses(userID, userCourses);
+    }
+
+
     private void setUI(View v){
         TextView nameView = (TextView) v.findViewById(R.id.profile_name_text);
         nameView.setText(user.getName());
@@ -99,6 +109,10 @@ public class ProfileFragment extends Fragment
         adCourse = new CourseAdapter(userCourses);
         RecyclerView recyclerView_courses = (RecyclerView) v.findViewById(R.id.courses_list);
         adCourse.initRecyclerView(v.getContext(), recyclerView_courses);
+
+        adFriend = new CourseAdapter(userFriends);
+        RecyclerView recyclerView_friends = v.findViewById(R.id.friends_list);
+        adFriend.initRecyclerView(v.getContext(), recyclerView_friends);
 
         addFriends = v.findViewById(R.id.btn_add_friend);
         addFriends.setOnClickListener(getOnClickListener());
@@ -130,21 +144,4 @@ public class ProfileFragment extends Fragment
             }
         };
     }
-
-    /*
-    *
-    @Override
-    protected void onStart()
-    {
-        super.onStart();
-        Account currentUser = getAuthManager().getCurrentUser();
-        if(currentUser == null)
-        {
-            signOut();
-        }
-    }
-
-    * */
-
-
 }
