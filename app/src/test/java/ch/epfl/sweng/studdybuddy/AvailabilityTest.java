@@ -28,7 +28,7 @@ public class AvailabilityTest {
     @Test
     public void addAvailabilityInParticularSlot(){
         A.modifyAvailability(rowTest, columnTest);
-        checkHeadTrueTailFalse(A);
+        checkHeadTrueTailFalse(A, rowTest, columnTest);
     }
 
     @Test
@@ -69,7 +69,7 @@ public class AvailabilityTest {
         A.modifyAvailability(0,11);
    }
 
-    public void checkAllFalse(Availability list){
+    public static void checkAllFalse(Availability list){
         int L = ConcreteAvailability.rowsNum;
         int l = ConcreteAvailability.columnsNum;
         for (int i = 0; i < L; i++) {
@@ -78,7 +78,7 @@ public class AvailabilityTest {
             }
         }
     }
-    public void checkHeadTrueTailFalse(Availability list){
+    public static void checkHeadTrueTailFalse(Availability list, int rowTest, int columnTest){
         int L = ConcreteAvailability.rowsNum;
         int l = ConcreteAvailability.columnsNum;
         assertEquals(true, list.isAvailable(rowTest,columnTest));

@@ -8,6 +8,8 @@ import ch.epfl.sweng.studdybuddy.services.calendar.Availability;
 import ch.epfl.sweng.studdybuddy.services.calendar.ConcreteAvailability;
 import ch.epfl.sweng.studdybuddy.services.calendar.ConnectedAvailability;
 
+import static ch.epfl.sweng.studdybuddy.AvailabilityTest.checkAllFalse;
+import static ch.epfl.sweng.studdybuddy.AvailabilityTest.checkHeadTrueTailFalse;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
@@ -35,7 +37,7 @@ public class ConnectedAvailabilityTest {
     @Test
     public void addAvailabilityInParticularSlot(){
         connectedA.modifyAvailability(rowTest, columnTest);
-        checkHeadTrueTailFalse(connectedA);
+        checkHeadTrueTailFalse(connectedA, rowTest, columnTest);
     }
 
     @Test
@@ -63,26 +65,5 @@ public class ConnectedAvailabilityTest {
     public void columnOutOfBound(){ connectedA.modifyAvailability(0,11);
     }
 
-    public void checkAllFalse(Availability list){
-        int L = ConcreteAvailability.rowsNum;
-        int l = ConcreteAvailability.columnsNum;
-        for (int i = 0; i < L; i++) {
-            for (int j = 0; j < l; j++) {
-                assertEquals(false, list.isAvailable(i,j));
-            }
-        }
-    }
-    public void checkHeadTrueTailFalse(Availability list){
-        int L = ConcreteAvailability.rowsNum;
-        int l = ConcreteAvailability.columnsNum;
-        assertEquals(true, list.isAvailable(rowTest, columnTest));
-        for (int i = 0; i < L; i++){
-            for(int j = 0; j < l; j++){
-                if(i!=rowTest || j!= columnTest){
-                    assertEquals(false, list.isAvailable(i,j));
-                }
-            }
-        }
-    }
 }
 

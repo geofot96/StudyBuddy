@@ -28,13 +28,11 @@ public class CalendarUnitTests {
     public void twoZeroIntegerListReturnZeroIntegerList(){
 
         List<Integer> a = new ArrayList<>();
+        pushNValue(a, 0, 5);
         List<Integer> b = new ArrayList<>();
+        pushNValue(b, 0, 5);
         List<Integer> c = new ArrayList<>();
-        for (int i = 0; i < 5; i ++){
-            a.add(0);
-            b.add(0);
-            c.add(0);
-        }
+        pushNValue(c, 0, 5);
 
         ID<Group> groupID = new ID<>(UUID.randomUUID().toString());
         Calendar testCalendar = new Calendar(groupID);
@@ -42,17 +40,18 @@ public class CalendarUnitTests {
         assertEquals(c, result);
     }
 
+    private static void pushNValue(List<Integer> list, Integer value, Integer N) {
+        for(int i = 0; i < N; ++i) {
+            list.add(value);
+        }
+    }
     @Test
     public void twoOneFilledIntegerListReturnTwoFilledIntegerList(){
 
-        List<Integer> a = new ArrayList<>();
-        List<Integer> b = new ArrayList<>();
-        List<Integer> c = new ArrayList<>();
-        for (int i = 0; i < 5; i ++){
-            a.add(1);
-            b.add(1);
-            c.add(2);
-        }
+        List<Integer> a = new ArrayList<>(), b = new ArrayList<>(), c = new ArrayList<>();
+        pushNValue(a, 1, 5);
+        pushNValue(b, 1, 5);
+        pushNValue(c, 2, 5);
 
         ID<Group> groupID = new ID<>(UUID.randomUUID().toString());
         Calendar testCalendar = new Calendar(groupID);
@@ -69,9 +68,8 @@ public class CalendarUnitTests {
 
         for (int i = 0; i < 5; i ++){
             a.add(Boolean.FALSE);
-            b.add(0);
         }
-
+        pushNValue(b, 0, 5);
         ID<Group> groupID = new ID<>(UUID.randomUUID().toString());
         Calendar testCalendar = new Calendar(groupID);
         List<Integer> result =  testCalendar.getIntegerListFromBooleanList(a);
@@ -81,12 +79,11 @@ public class CalendarUnitTests {
     @Test
     public void trueBooleanListEqualOneFilledIntegerList(){
 
-        List<Boolean> a = new ArrayList<>();
         List<Integer> b = new ArrayList<>();
-
+        List<Boolean> a = new ArrayList<>();
+        pushNValue(b, 1, 5);
         for (int i = 0; i < 5; i ++){
             a.add(Boolean.TRUE);
-            b.add(1);
         }
 
         ID<Group> groupID = new ID<>(UUID.randomUUID().toString());
@@ -102,12 +99,11 @@ public class CalendarUnitTests {
         List<Boolean> b = new ArrayList<>();
         List<Boolean> c = new ArrayList<>();
         List<Integer> d = new ArrayList<>();
-
+        pushNValue(d, 1, 5);
         for (int i = 0; i < 5; i ++){
             a.add(Boolean.TRUE);
             b.add(Boolean.TRUE);
             c.add(Boolean.FALSE);
-            d.add(2);
         }
 
         List<List<Boolean>> lists = new ArrayList<>();
