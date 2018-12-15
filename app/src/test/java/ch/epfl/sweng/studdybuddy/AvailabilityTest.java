@@ -70,26 +70,24 @@ public class AvailabilityTest {
    }
 
     public static void checkAllFalse(Availability list){
-        int L = ConcreteAvailability.rowsNum;
-        int l = ConcreteAvailability.columnsNum;
-        for (int i = 0; i < L; i++) {
-            for (int j = 0; j < l; j++) {
-                assertEquals(false, list.isAvailable(i, j));
-            }
-        }
+        forAllIsAvailable(list, 0, 0);
     }
     public static void checkHeadTrueTailFalse(Availability list){
         int L = ConcreteAvailability.rowsNum;
         int l = ConcreteAvailability.columnsNum;
         assertEquals(true, list.isAvailable(0,0));
-        for (int i = 1; i < L; i++){
             for(int j = 1; j < l; j++){
+                for (int i = 1; i < L; i++){
                 assertEquals(false, list.isAvailable(i, j));
             }
         }
     }
 
-    private void test(int i, int j, int rowTest, int columnTest) {
-
+    public static void forAllIsAvailable(Availability list, int startX, int startY) {
+        for (int i = startX; i < ConcreteAvailability.rowsNum; i++) {
+            for (int j = startY; j < ConcreteAvailability.columnsNum; j++) {
+                assertEquals(false, list.isAvailable(i, j));
+            }
+        }
     }
 }
