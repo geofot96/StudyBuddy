@@ -99,7 +99,7 @@ public class CalendarUnitTests {
         List<Boolean> b = new ArrayList<>();
         List<Boolean> c = new ArrayList<>();
         List<Integer> d = new ArrayList<>();
-        pushNValue(d, 1, 5);
+        pushNValue(d, 2, 5);
         for (int i = 0; i < 5; i ++){
             a.add(Boolean.TRUE);
             b.add(Boolean.TRUE);
