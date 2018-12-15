@@ -1,0 +1,3 @@
+exclude_patterns:
+- "app/src/main/java/ch/epfl/sweng/studdybuddy/sql/SqlDB_Impl.java"
+- "**/SqlDB_Impl.java"
