@@ -45,7 +45,7 @@ public class FeedFragment extends Fragment
     static List<Group> filteredGroupSet = new ArrayList<>();
     private Button sortButton;
     private FloatingActionButton actionButton;
-    private ToggleButton toggleFull;
+    private ToggleButton toggleFull, toggleUserCourses;
 
 
     public FeedFragment()
@@ -77,7 +77,8 @@ public class FeedFragment extends Fragment
         firebase.select(Messages.FirebaseNode.GROUPS).getAll(Group.class, AdapterConsumer.adapterConsumer(Group.class, groupSet, new RecyclerAdapterAdapter(mAdapter)));
         SearchView sv = (SearchView) v.findViewById(R.id.feed_search);
         setUpActivity(rv, sv, v);
-         toggleFull = (ToggleButton) v.findViewById(R.id.toggleButton);
+         toggleFull = (ToggleButton) v.findViewById(R.id.toggleAllCourses);
+        toggleUserCourses = (ToggleButton) v.findViewById(R.id.toggleYourCourses);
         toggleFull.setOnCheckedChangeListener(getToggleListener());
 
 
