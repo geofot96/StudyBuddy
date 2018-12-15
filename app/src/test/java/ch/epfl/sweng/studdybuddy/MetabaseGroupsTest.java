@@ -54,31 +54,28 @@ public class MetabaseGroupsTest {
     @Before public void setup() {
         DataSnapshot a = mock(DataSnapshot.class), b = mock(DataSnapshot.class), c = mock(DataSnapshot.class);
         List<DataSnapshot> snaps = Arrays.asList(a, b, c);
-        for(int i = 0; i < snaps.size(); ++i) {
-            when(snaps.get(i).getValue(Pair.class)).thenReturn(tuples.get(i));
-        }
+        fillSnapshots(snaps, tuples, Pair.class);
         when(dataSnapshot.getValue(Pair.class)).thenReturn(null);
         when(dataSnapshot.getChildren()).thenReturn(snaps);
         DataSnapshot s1 = mock(DataSnapshot.class), s2 = mock(DataSnapshot.class), s3 = mock(DataSnapshot.class), s4 = mock(DataSnapshot.class);
         List<DataSnapshot> insaneSnaps = Arrays.asList(s1, s2, s3, s4);
-        for(int i = 0; i < doublons.size(); ++i) {
-            when(insaneSnaps.get(i).getValue(Pair.class)).thenReturn(doublons.get(i));
-        }
+        fillSnapshots(insaneSnaps, doublons, Pair.class);
         when(insaneSnapshot.getValue(Pair.class)).thenReturn(null);
         when(insaneSnapshot.getChildren()).thenReturn(insaneSnaps);
-
         List<DataSnapshot> groups = Arrays.asList(mock(DataSnapshot.class), mock(DataSnapshot.class), mock(DataSnapshot.class), mock(DataSnapshot.class));
-        for(int i = 0; i < groups.size(); ++i) {
-            when(groups.get(i).getValue(Group.class)).thenReturn(gs.get(i));
-        }
+        fillSnapshots(groups, gs, Group.class);
         when(groupTbl.getValue(Group.class)).thenReturn(null);
         when(groupTbl.getChildren()).thenReturn(groups);
 
         List<DataSnapshot> usrSnaps = Arrays.asList(mock(DataSnapshot.class), mock(DataSnapshot.class), mock(DataSnapshot.class), mock(DataSnapshot.class), mock(DataSnapshot.class));
-        for(int i = 0; i < usrSnaps.size(); ++i) {
-            when(usrSnaps.get(i).getValue(User.class)).thenReturn(usrs.get(i));
-        }
+        fillSnapshots(usrSnaps, usrs, User.class);
         when(usrTbl.getChildren()).thenReturn(usrSnaps);
+    }
+
+    private <T> void fillSnapshots(List<DataSnapshot> snapshots, List<T> values, Class<T> classT){
+        for(int i = 0; i < snapshots.size(); ++i) {
+            when(snapshots.get(i).getValue(classT)).thenReturn(values.get(i));
+        }
     }
     @Test
     public void getAllGroupSizesWorksWhenNoGroup() {
