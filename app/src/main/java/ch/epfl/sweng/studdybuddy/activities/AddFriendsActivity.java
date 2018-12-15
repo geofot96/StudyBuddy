@@ -34,7 +34,7 @@ import static ch.epfl.sweng.studdybuddy.util.ActivityHelper.showDropdown;
 
 public class AddFriendsActivity extends AppCompatActivity {
     static ReferenceWrapper firebase;
-    static List<String> friendsDB;
+    static List<String> friendsDB = new ArrayList<>();
     static AutoCompleteTextView autocompleteFriends;
     public static final List<String> friendSelection = new ArrayList<>();
     public static UserAdapter adapter;
@@ -53,6 +53,8 @@ public class AddFriendsActivity extends AppCompatActivity {
        // setUpButtons();
        // setUpSelectedCourses();
        // setUpDb(setUpAutoComplete());
+        setUpAutoComplete();
+        setUpDb();
     }
 
     private void setUpButtons() {
@@ -63,14 +65,13 @@ public class AddFriendsActivity extends AppCompatActivity {
         addButton.setOnClickListener(updateCoursesOnDone(currentUser, friendSelection, mga, i));
     }
 
-    private ArrayAdapter<String> setUpAutoComplete(){
-        adapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, friendsDB);
+    private void setUpAutoComplete(){
+        adapterFriends = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, friendsDB);
         autocompleteFriends = (AutoCompleteTextView) findViewById(R.id.friendsComplete);
-        autocompleteFriends.setAdapter(adapter);
+        autocompleteFriends.setAdapter(adapterFriends);
         autocompleteFriends.setOnClickListener(showDropdown(autocompleteFriends));
         //InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         //autocompleteFriends.setOnItemClickListener(onClickAddCourse(friendSelection, resetSelectViews(addButton, autocompleteFriends, imm)));
-        return adapter;
     }
 
 //    private void setUpSelectedFriends() {
@@ -85,17 +86,8 @@ public class AddFriendsActivity extends AppCompatActivity {
 //        mga.getUserCourses(uId, friendSelection);
 //
 //    }
-    private void setUpDb(ArrayAdapter<User> adapter) {
-        firebase.select(Messages.FirebaseNode.USERS).getAll(User.class, AdapterConsumer.adapterConsumer(User.class, friendsDB, new Consumer<User> ()
-        {
-        @Override
-        public void accept(List<User> users) {
-            friendsDB.clear();
-            for(User u: users){
-                friendsDB.add(u.getName());
-            }
-            notify();
-        }
-        }));
+    private void setUpDb() {
+        mga.addListenner(new ArrayAdapterAdapter(adapterFriends));
+        mga.fetchUserNames(friendsDB);
     }
 }

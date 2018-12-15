@@ -118,4 +118,17 @@ abstract public class Metabase {
             }
         });
     }
+
+    public ValueEventListener fetchUserNames(List<String> usernames) {
+        return db.select(Messages.FirebaseNode.USERS).getAll(User.class, new Consumer<List<User>>() {
+            @Override
+            public void accept(@Nullable List<User> users) {
+                usernames.clear();
+                for(User user: users) {
+                    usernames.add(user.getName());
+                }
+                notif();
+            }
+        });
+    }
 }
