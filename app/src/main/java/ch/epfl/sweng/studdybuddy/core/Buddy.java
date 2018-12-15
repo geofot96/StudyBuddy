@@ -2,8 +2,6 @@ package ch.epfl.sweng.studdybuddy.core;
 
 import java.util.Date;
 
-import ch.epfl.sweng.studdybuddy.util.Helper;
-
 public final class Buddy {
     public String getAlice() {
         return alice;
@@ -32,6 +30,7 @@ public final class Buddy {
     private String alice;
     private String bob;
     private Long creationDate;
+    public Buddy(){}
     public Buddy(String alice, String bob) {
         creationDate = new Date().getTime();
         this.alice = alice;

@@ -16,11 +16,14 @@ import ch.epfl.sweng.studdybuddy.core.Pair;
 import ch.epfl.sweng.studdybuddy.core.User;
 import ch.epfl.sweng.studdybuddy.firebase.FirebaseReference;
 import ch.epfl.sweng.studdybuddy.firebase.MetaGroup;
-import ch.epfl.sweng.studdybuddy.firebase.Metabase;
 import ch.epfl.sweng.studdybuddy.tools.AdapterAdapter;
 import ch.epfl.sweng.studdybuddy.tools.Consumer;
 
+
 import ch.epfl.sweng.studdybuddy.tools.Intentable;
+
+import ch.epfl.sweng.studdybuddy.util.Messages;
+
 
 import ch.epfl.sweng.studdybuddy.util.Messages;
 
@@ -82,6 +85,31 @@ public class MetabaseTest {
     }
 
 
+    private static Pair p(String a, String b) {
+        return new Pair(a, b);
+    }
+
+    @Test
+    public void testUpdateCourses() {
+        AdapterAdapter ad = mock(AdapterAdapter.class);
+        mb.addListenner(ad);
+        List<Pair> pairs = Arrays.asList(p("1", "2"), p("1", "1"), p("2", "1"));
+        List<DataSnapshot> dss = Arrays.asList(mock(DataSnapshot.class), mock(DataSnapshot.class), mock(DataSnapshot.class));
+        Intentable dest = mock(Intentable.class);
+        DataSnapshot ds = mock(DataSnapshot.class);
+        when(ds.getChildren()).thenReturn(dss);
+        for (int i = 0; i < 3; ++i) {
+            when(dss.get(i).getValue(Pair.class)).thenReturn(pairs.get(i));
+        }
+        mb.updateUserCourses("1", Arrays.asList("2"), dest).onDataChange(ds);
+        verify(testref, times(1)).removeEventListener(any(ValueEventListener.class));
+        verify(dest, times(1)).launch();
+        //The only remaining course to put
+        verify(testref, times(1)).setValue(any(Pair.class));
+        //The element to delete
+        verify(testref, times(1)).removeValue();
+    }
+
     @Test
     public void testBefriend() {
         Buddy b = new Buddy("alice", "bob");
@@ -128,6 +156,5 @@ public class MetabaseTest {
 
     private static Buddy buddy(String friend) {
         return new Buddy("alice", friend);
-
     }
 }

@@ -43,6 +43,7 @@ final public class User
     public boolean equals(Object o) {
         User user = (User) o;
         return  !(o == null || getClass() != o.getClass()) &&
+                name.equals(user.getName()) &&
                 userID.equals(user.userID) &&
                 favoriteLocation.equals(user.favoriteLocation) &&
                 favoriteLanguage.equals(user.favoriteLanguage);

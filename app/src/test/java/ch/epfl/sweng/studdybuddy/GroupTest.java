@@ -11,7 +11,7 @@ import static org.junit.Assert.assertEquals;
 public class GroupTest {
 
 
-    private static Group groupFactory() {
+    public static Group groupFactory() {
         return new Group(10,new Course("CLP"), "EN", "123");
     }
     private static Group g = groupFactory();

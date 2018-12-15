@@ -1,3 +1,7 @@
 exclude_patterns:
 - "app/src/main/java/ch/epfl/sweng/studdybuddy/sql/SqlDB_Impl.java"
+<<<<<<< HEAD
 - "**/SqlDB_Impl.java"
+=======
+- "**/SqlDB_Impl.java"
+>>>>>>> 76c24c2506a48f87659944e6260d83a61a948c09
