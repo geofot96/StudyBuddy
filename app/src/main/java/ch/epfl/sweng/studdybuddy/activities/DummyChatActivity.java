@@ -12,6 +12,9 @@ import ch.epfl.sweng.studdybuddy.R;
 import ch.epfl.sweng.studdybuddy.firebase.FirebaseReference;
 import ch.epfl.sweng.studdybuddy.services.chat.ChatMessage;
 
+/**
+ * An activity that mocks certain methods of ChatActivity solely for the purpose of testing
+ */
 public class DummyChatActivity extends ChatActivity {
     @Override
     public FirebaseReference initRef() {
