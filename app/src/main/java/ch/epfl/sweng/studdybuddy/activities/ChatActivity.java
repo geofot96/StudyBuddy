@@ -94,6 +94,9 @@ public class ChatActivity extends AppCompatActivity {
         fab.setOnClickListener(getFabListener());
     }
 
+    /**
+     * Check if permissions for using the camera are granted and if not prompt a message to ask the user
+     */
     private void askForCameraPermission() {
         if (ContextCompat.checkSelfPermission(ChatActivity.this.getApplicationContext(),
                 Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
