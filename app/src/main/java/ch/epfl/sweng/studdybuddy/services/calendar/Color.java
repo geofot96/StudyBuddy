@@ -10,14 +10,23 @@ import java.util.List;
  */
 public class Color {
 
-    public static void updateColor(GridLayout calendarGrid, List<Integer> av, float NmaxUsers, int CalendarWidth){
+    /**
+     * go through the each cell of the calendar to update its color according
+     * to the gradient
+     *
+     * @param calendarGrid the view of the calendar
+     * @param groupAvailabilities the number of participant available for each time slot (cell of the calendar)
+     * @param maxNumberOfUsers the maximum number of users the group can accept
+     * @param CalendarWidth the width of the calendar
+     */
+    public static void updateColor(GridLayout calendarGrid, List<Integer> groupAvailabilities, float maxNumberOfUsers, int CalendarWidth){
         int size = calendarGrid.getColumnCount() * calendarGrid.getRowCount();
         for (int i = 0; i < size; i++) {
             CardView cardView;
             if (i % CalendarWidth != 0) {//Hours shouldn't be clickable
                 cardView = (CardView) calendarGrid.getChildAt(i);
                 int index = (i / CalendarWidth) * (CalendarWidth - 1) + (i % CalendarWidth) - 1;
-                cardView.setCardBackgroundColor(gradient((float) av.get(index), NmaxUsers));
+                cardView.setCardBackgroundColor(Color.gradient((float) groupAvailabilities.get(index), maxNumberOfUsers));
             }
         }
     }
@@ -31,12 +40,12 @@ public class Color {
      * @param nAvailableUser the number of available users in this time slot
      * @return the right color according to the ration of available users
      */
-    private static int gradient(float nAvailableUser, float NmaxUsers){
+    public static int gradient(float nAvailableUser, float maxNumberOfUsers){
         float[] hsv = new float[3];
         android.graphics.Color.colorToHSV(android.graphics.Color.WHITE, hsv);
         float s = hsv[1];
         android.graphics.Color.colorToHSV(android.graphics.Color.GREEN, hsv);
-        float coef = nAvailableUser/NmaxUsers;
+        float coef = nAvailableUser/maxNumberOfUsers;
         hsv[1] = s +  coef * (hsv[1] - s);
         return android.graphics.Color.HSVToColor(hsv);
     }

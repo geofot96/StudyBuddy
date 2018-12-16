@@ -12,7 +12,7 @@ import org.junit.Test;
 import ch.epfl.sweng.studdybuddy.activities.group.ConnectedCalendarActivity;
 import ch.epfl.sweng.studdybuddy.activities.group.GlobalBundle;
 import ch.epfl.sweng.studdybuddy.activities.group.GroupActivity;
-import ch.epfl.sweng.studdybuddy.activities.group.meetings.createMeetingActivity;
+import ch.epfl.sweng.studdybuddy.activities.group.meetings.CreateMeetingActivity;
 import ch.epfl.sweng.studdybuddy.core.Group;
 import ch.epfl.sweng.studdybuddy.firebase.MetaMeeting;
 import ch.epfl.sweng.studdybuddy.tools.Resultable;
@@ -56,7 +56,7 @@ public class GroupActivityTest {
     @Test
     public void AdminCanLeadToCreateMeeting(){
         mManualRule.launchActivity(new Intent());
-        testIntent(R.id.createMeeting, createMeetingActivity.class.getName());
+        testIntent(R.id.createMeeting, CreateMeetingActivity.class.getName());
         mManualRule.finishActivity();
     }
 

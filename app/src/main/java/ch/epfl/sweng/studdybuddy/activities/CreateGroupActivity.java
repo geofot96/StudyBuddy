@@ -19,6 +19,7 @@ import java.util.UUID;
 import ch.epfl.sweng.studdybuddy.R;
 import ch.epfl.sweng.studdybuddy.core.Course;
 import ch.epfl.sweng.studdybuddy.core.Group;
+import ch.epfl.sweng.studdybuddy.core.ID;
 import ch.epfl.sweng.studdybuddy.core.User;
 import ch.epfl.sweng.studdybuddy.firebase.FirebaseReference;
 import ch.epfl.sweng.studdybuddy.firebase.MetaGroup;
@@ -150,6 +151,6 @@ public class CreateGroupActivity extends AppCompatActivity implements AdapterVie
     };
 
     public static void createUserInitialAvailabilities(String user, String group){
-        Availability a = new ConnectedAvailability(user, group);
+        new ConnectedAvailability(new ID<>(user), new ID<>(group));
     }
 }

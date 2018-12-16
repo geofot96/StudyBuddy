@@ -1,5 +1,7 @@
 package ch.epfl.sweng.studdybuddy;
 
+import com.google.firebase.database.DatabaseReference;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -20,15 +22,15 @@ public class ConnectedAvailabilityTest {
     ConnectedAvailability connectedA;
     ConnectedAvailability connectedAvailable;
 
-    FirebaseReference ref = mock(FirebaseReference.class);
+    DatabaseReference ref = mock(DatabaseReference.class);
 
     @Before
     public void setUp(){
-        when(ref.select(anyString())).thenReturn(ref);
+        when(ref.child(anyString())).thenReturn(ref);
         Availability A = new ConcreteAvailability();
         Availability Available = new ConcreteAvailability();
-        connectedA = new ConnectedAvailability("","",A, ref);
-        connectedAvailable = new ConnectedAvailability("","",Available,ref);
+        connectedA = new ConnectedAvailability(A, ref);
+        connectedAvailable = new ConnectedAvailability(Available,ref);
         connectedAvailable.modifyAvailability(rowTest,columnTest);
     }
 

@@ -5,19 +5,20 @@ import android.support.test.runner.AndroidJUnit4;
 import android.support.v7.widget.CardView;
 import android.widget.GridLayout;
 
-import com.google.android.gms.tasks.Task;
-
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import ch.epfl.sweng.studdybuddy.activities.group.ConnectedCalendarActivity;
-import ch.epfl.sweng.studdybuddy.firebase.FirebaseReference;
-import ch.epfl.sweng.studdybuddy.util.Messages;
+import ch.epfl.sweng.studdybuddy.services.calendar.Availability;
+import ch.epfl.sweng.studdybuddy.services.calendar.ConcreteAvailability;
+import ch.epfl.sweng.studdybuddy.services.calendar.ConnectedCalendar;
 
 import static android.support.test.internal.runner.junit4.statement.UiThreadStatement.runOnUiThread;
 import static org.junit.Assert.assertEquals;
@@ -27,7 +28,11 @@ import static org.junit.Assert.assertTrue;
 
 public class ConnectedCalendarActivityTest{
 
-    private GridLayout calendar;
+    private GridLayout calendarView;
+
+    private ConnectedCalendar calendar;
+
+    private ConnectedCalendarActivity activity;
 
     @Rule
     public myRule mActivityRule =
@@ -36,12 +41,23 @@ public class ConnectedCalendarActivityTest{
 
     @Before
     public void setUp(){
-        calendar = mActivityRule.getActivity().findViewById(R.id.calendarGrid);
+        Map<String, List<Boolean>> mapAvailabailities = new HashMap<>();
+        mapAvailabailities.put("test", mActivityRule.getMockAvailabilities());
+        calendar = new ConnectedCalendar(mapAvailabailities);
+        calendarView = mActivityRule.getActivity().findViewById(R.id.calendarGrid);
     }
 
     @Test
-    public void seeAvailabilitiyInFirstTimeSlot(){
-        CardView cardView = (CardView) calendar.getChildAt(1);
+    public void seeAvailabilitiyInFirstTimeSlot() throws Throwable {
+        activity = mActivityRule.getActivity();
+        runOnUiThread(new Runnable() {
+                          @Override
+                          public void run() {
+                              activity.update(calendar);
+                          }
+                      }
+        );
+        CardView cardView = (CardView) calendarView.getChildAt(1);
         boolean rightColors = (cardView.getCardBackgroundColor().getDefaultColor() == -16711936) && checkAreWhite(2);
         assertTrue(rightColors);
     }
@@ -66,7 +82,7 @@ public class ConnectedCalendarActivityTest{
    private boolean checkAreWhite(int start) {
         CardView cardView;
         for (int i = start; i < 88; i += (i % 8 == 7) ? 2 : 1) {
-                cardView = (CardView) calendar.getChildAt(i);
+                cardView = (CardView) calendarView.getChildAt(i);
                 if (cardView.getCardBackgroundColor().getDefaultColor() != -1) {
                     return false;
                 }
@@ -89,24 +105,22 @@ public class ConnectedCalendarActivityTest{
     }
 
     private int setAvailability(int index){
-        CardView cardView = (CardView) calendar.getChildAt(index);
+        CardView cardView = (CardView) calendarView.getChildAt(index);
         try{
             clickOnCardView(cardView);
         }catch (Throwable e){
             e.printStackTrace();
         }
 
-        try{
-            Thread.sleep(3000);
-        }catch(InterruptedException e){
-            e.printStackTrace();
-        }
+        activity = mActivityRule.getActivity();
+        calendar.modify("test", activity.getUserAvailabilities().getUserAvailabilities());
+        activity.update(calendar);
         return cardView.getCardBackgroundColor().getDefaultColor();
     }
 
 
     private class myRule extends ActivityTestRule<ConnectedCalendarActivity> {
-
+        private List<Boolean> mockAvailabilities = new ArrayList<>();
 
         public myRule(Class<ConnectedCalendarActivity> activityClass) {
             super(activityClass);
@@ -115,15 +129,30 @@ public class ConnectedCalendarActivityTest{
         @Override
         protected void beforeActivityLaunched() {
             super.beforeActivityLaunched();
-            List<Boolean> list = new ArrayList<>();
-            for (int i = 0; i < 77; i++) {
-                list.add(false);
-            }
-            list.set(0, true);
-            FirebaseReference fb = new FirebaseReference();
-            Task<Void> task = fb.select(Messages.FirebaseNode.AVAILABILITIES).select(Messages.TEST).select(Messages.TEST).setVal(list);
-            while (!(task.isComplete())) ;
+            setUpMockAvailaibilities();
             GroupActivityTest.setup();
+        }
+
+        private void setUpMockAvailaibilities() {
+            mockAvailabilities.clear();
+            for (int i = 0; i < ConnectedCalendar.CALENDAR_SIZE; i++) {
+                mockAvailabilities.add(false);
+            }
+            mockAvailabilities.set(0, true);
+        }
+
+        @Override
+        protected void afterActivityLaunched(){
+            ConnectedCalendarActivity activity = getActivity();
+            Availability availability = new ConcreteAvailability(mockAvailabilities);
+            activity.setUserAvailabilities(availability);
+        }
+
+        public List<Boolean> getMockAvailabilities() {
+            if(mockAvailabilities.size()< ConnectedCalendar.CALENDAR_SIZE){
+                setUpMockAvailaibilities();
+            }
+            return mockAvailabilities;
         }
     }
 

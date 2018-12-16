@@ -18,7 +18,7 @@ import org.junit.Test;
 import java.util.Date;
 
 import ch.epfl.sweng.studdybuddy.activities.group.MapsActivity;
-import ch.epfl.sweng.studdybuddy.activities.group.meetings.createMeetingActivity;
+import ch.epfl.sweng.studdybuddy.activities.group.meetings.CreateMeetingActivity;
 import ch.epfl.sweng.studdybuddy.services.meeting.MeetingLocation;
 
 import static android.support.test.espresso.Espresso.onView;
@@ -31,7 +31,6 @@ import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.isEnabled;
 import static android.support.test.espresso.matcher.ViewMatchers.withClassName;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
-import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static android.support.test.internal.runner.junit4.statement.UiThreadStatement.runOnUiThread;
 import static ch.epfl.sweng.studdybuddy.ExampleInstrumentedTest.matchesDate;
 import static ch.epfl.sweng.studdybuddy.ExampleInstrumentedTest.matchesTime;
@@ -48,16 +47,14 @@ public class createMeetingActivityTest {
 
 
     @Rule
-    public ActivityTestRule<createMeetingActivity> mActivityRule =
-            new ActivityTestRule<>(createMeetingActivity.class, false, false);
+    public ActivityTestRule<CreateMeetingActivity> mActivityRule =
+            new ActivityTestRule<>(CreateMeetingActivity.class, false, false);
 
     @Rule
-    public IntentsTestRule<createMeetingActivity> mIntentRule =
-            new IntentsTestRule<>(createMeetingActivity.class, false, false);
+    public IntentsTestRule<CreateMeetingActivity> mIntentRule =
+            new IntentsTestRule<>(CreateMeetingActivity.class, false, false);
 
-   /* @Rule
-    public GrantPermissionRule permissionRule = GrantPermissionRule.grant(android.Manifest.permission.ACCESS_FINE_LOCATION);
-*/
+
     @BeforeClass
     public static void setUpBeforeClass(){
     }
@@ -86,7 +83,7 @@ public class createMeetingActivityTest {
 
     @Test
     public void ButtonIsEnabled() throws Throwable {
-        createMeetingActivity mActivity = mActivityRule.launchActivity(intent);
+        CreateMeetingActivity mActivity = mActivityRule.launchActivity(intent);
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -103,7 +100,7 @@ public class createMeetingActivityTest {
 
     @Test
     public void WrongTimeSlot() throws Throwable {
-        createMeetingActivity mActivity = mActivityRule.launchActivity(intent);
+        CreateMeetingActivity mActivity = mActivityRule.launchActivity(intent);
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -118,7 +115,7 @@ public class createMeetingActivityTest {
 
     @Test
     public void noLocation() throws Throwable {
-        createMeetingActivity mActivity = mActivityRule.launchActivity(intent);
+        CreateMeetingActivity mActivity = mActivityRule.launchActivity(intent);
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -141,7 +138,7 @@ public class createMeetingActivityTest {
 
     @Test
     public void testOnActivityResult() throws Throwable {
-        createMeetingActivity mActivity = mActivityRule.launchActivity(intent);
+        CreateMeetingActivity mActivity = mActivityRule.launchActivity(intent);
         runOnUiThread(new Runnable() {
             @Override
             public void run() {

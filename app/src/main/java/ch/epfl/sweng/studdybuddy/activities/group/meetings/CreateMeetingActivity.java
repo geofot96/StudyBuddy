@@ -34,14 +34,11 @@ import ch.epfl.sweng.studdybuddy.util.ActivityHelper;
 import ch.epfl.sweng.studdybuddy.util.DateTimeHelper;
 import ch.epfl.sweng.studdybuddy.util.MapsHelper;
 import ch.epfl.sweng.studdybuddy.util.Messages;
-
 import ch.epfl.sweng.studdybuddy.util.RequestCodes;
 
-import ch.epfl.sweng.studdybuddy.util.StudyBuddy;
 
 
-
-public class createMeetingActivity extends AppCompatActivity {
+public class CreateMeetingActivity extends AppCompatActivity {
     private Meeting meeting;
 
     private TextView mDisplayDate;
@@ -132,7 +129,7 @@ public class createMeetingActivity extends AppCompatActivity {
         mDisplayLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(createMeetingActivity.this, MapsActivity.class);
+                Intent i = new Intent(CreateMeetingActivity.this, MapsActivity.class);
                 i.putExtra(Messages.groupID, groupID);
                 i.putExtra(Messages.meetingID, meeting.getId().getId());
                 i.putExtra(Messages.ADMIN, adminID);
@@ -165,7 +162,7 @@ public class createMeetingActivity extends AppCompatActivity {
                     finish();
                 }else{
                     metaM.pushMeeting(meeting, new ID<>(groupID));
-                    intent = new Intent(createMeetingActivity.this, GroupActivity.class);
+                    intent = new Intent(CreateMeetingActivity.this, GroupActivity.class);
                     GlobalBundle.getInstance().putAll(origin);
                     startActivity(intent);
                 }
@@ -265,13 +262,13 @@ public class createMeetingActivity extends AppCompatActivity {
 
             if(forDate){
                 dialog = new DatePickerDialog(
-                        createMeetingActivity.this,
+                        CreateMeetingActivity.this,
                         ActivityHelper.listenDate(mDisplayDate, startingDate,endingDate, ButtonListener),
                         year, month, day
                 );
             }else{
                 dialog = new TimePickerDialog(
-                        createMeetingActivity.this,
+                        CreateMeetingActivity.this,
                         ActivityHelper.listenTime(mDisplayTime, dateToSet, ButtonListener),
                         hour, minute, true
                 );

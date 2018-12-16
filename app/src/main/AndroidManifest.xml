@@ -93,7 +93,7 @@
             android:name=".activities.group.MapsActivity"
             android:label="@string/title_activity_maps"/>
 
-        <activity android:name=".activities.group.meetings.createMeetingActivity"
+        <activity android:name=".activities.group.meetings.CreateMeetingActivity"
             android:parentActivityName=".activities.group.GroupActivity">
 
             <!-- The meta-data tag is required if you support API level 15 and lower -->

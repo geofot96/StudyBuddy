@@ -6,16 +6,7 @@ import java.util.List;
 import ch.epfl.sweng.studdybuddy.core.Group;
 import ch.epfl.sweng.studdybuddy.core.ID;
 
-public final class Calendar {
-
-    private ID<Group> groupID;
-
-    public Calendar(ID<Group> id){
-
-        this.groupID = id;
-
-    }
-
+public class CalendarComputation {
 
     public List<Integer> getSumOfTwoLists(List<Integer> first_list, List<Integer> second_list){
 
@@ -63,15 +54,5 @@ public final class Calendar {
         }
         return result;
     }
-
-    public String getID(){
-        return groupID.getId();
-    }
-
-    public List<Integer> getGroupsAvailabilities(){
-        throw new UnsupportedOperationException();
-    }
-
-
 
 }

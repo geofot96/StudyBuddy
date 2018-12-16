@@ -11,32 +11,24 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.GridLayout;
 
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import ch.epfl.sweng.studdybuddy.R;
 import ch.epfl.sweng.studdybuddy.activities.NavigationActivity;
-import ch.epfl.sweng.studdybuddy.activities.group.meetings.createMeetingActivity;
+import ch.epfl.sweng.studdybuddy.activities.group.meetings.CreateMeetingActivity;
 import ch.epfl.sweng.studdybuddy.core.Group;
 import ch.epfl.sweng.studdybuddy.core.ID;
 import ch.epfl.sweng.studdybuddy.core.Pair;
 import ch.epfl.sweng.studdybuddy.core.User;
-import ch.epfl.sweng.studdybuddy.firebase.FirebaseReference;
 import ch.epfl.sweng.studdybuddy.firebase.MetaGroupAdmin;
 import ch.epfl.sweng.studdybuddy.firebase.MetaMeeting;
-import ch.epfl.sweng.studdybuddy.services.calendar.Availability;
-import ch.epfl.sweng.studdybuddy.services.calendar.ConcreteAvailability;
-import ch.epfl.sweng.studdybuddy.services.calendar.ConnectedAvailability;
 import ch.epfl.sweng.studdybuddy.services.calendar.ConnectedCalendar;
 import ch.epfl.sweng.studdybuddy.services.meeting.Meeting;
 import ch.epfl.sweng.studdybuddy.services.meeting.MeetingLocation;
 import ch.epfl.sweng.studdybuddy.services.meeting.MeetingRecyclerAdapter;
-import ch.epfl.sweng.studdybuddy.tools.Consumer;
-import ch.epfl.sweng.studdybuddy.tools.Notifiable;
+import ch.epfl.sweng.studdybuddy.tools.Observable;
+import ch.epfl.sweng.studdybuddy.tools.Observer;
 import ch.epfl.sweng.studdybuddy.tools.ParticipantAdapter;
 import ch.epfl.sweng.studdybuddy.tools.RecyclerAdapterAdapter;
 import ch.epfl.sweng.studdybuddy.tools.Resultable;
@@ -45,10 +37,7 @@ import ch.epfl.sweng.studdybuddy.util.Messages;
 import ch.epfl.sweng.studdybuddy.util.StudyBuddy;
 
 import static ch.epfl.sweng.studdybuddy.services.calendar.Color.updateColor;
-import static ch.epfl.sweng.studdybuddy.services.calendar.AvailabilitiesHelper.calendarEventListener;
-import static ch.epfl.sweng.studdybuddy.services.calendar.AvailabilitiesHelper.calendarGetDataListener;
-import static ch.epfl.sweng.studdybuddy.services.calendar.AvailabilitiesHelper.readData;
-public class GroupActivity extends AppCompatActivity implements Notifiable, Resultable {
+public class GroupActivity extends AppCompatActivity implements Observer, Resultable {
     private boolean wrongInput = false;
     List<User> participants  = new ArrayList<>();
     MetaGroupAdmin mb  = new MetaGroupAdmin();
@@ -64,9 +53,6 @@ public class GroupActivity extends AppCompatActivity implements Notifiable, Resu
     private RecyclerView.Adapter adapter;
     GridLayout calendarGrid;
     private float NmaxUsers;
-    private Availability userAvailabilities;
-    private ConnectedCalendar calendar;
-    private DatabaseReference database;
     private Pair pair = new Pair();
 
     @Override
@@ -77,7 +63,7 @@ public class GroupActivity extends AppCompatActivity implements Notifiable, Resu
         setUI();
         setupMeetings();
         FloatingActionButton actionButton = findViewById(R.id.createMeeting);
-        actionButton.setOnClickListener(goTo(createMeetingActivity.class, this));
+        actionButton.setOnClickListener(goTo(CreateMeetingActivity.class, this));
         setupAvails();
     }
 
@@ -115,12 +101,8 @@ public class GroupActivity extends AppCompatActivity implements Notifiable, Resu
         /*if(pair.getKey() == null || pair.getValue() == null){
             throw new NullPointerException("the intent didn't content expected data");
         }*/
-        calendar = new ConnectedCalendar(new ID<>(pair.getKey()), new HashMap<>());
+        new ConnectedCalendar(this, new ID<>(pair.getKey()));
 
-        database = FirebaseDatabase.getInstance().getReference("availabilities").child(pair.getKey());
-        database.addChildEventListener(calendarEventListener(calendar, this, database));
-
-        readData(database.child(pair.getValue()), calendarGetDataListener(callbackCalendar()));
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -145,15 +127,6 @@ public class GroupActivity extends AppCompatActivity implements Notifiable, Resu
             Log.d(TAG, "Information of the group is not fully recovered");
         }*/
         NmaxUsers = (float) origin.getInt(Messages.maxUser, -1);
-    }
-
-    private void goToActivity(Intent intent){
-        startActivity(intent);
-    }
-
-    @Override
-    public void getNotified() {
-        update();
     }
 
 
@@ -197,31 +170,16 @@ public class GroupActivity extends AppCompatActivity implements Notifiable, Resu
         meetingRV.setAdapter(adapter);
     }
 
-    public boolean getInfoWrongInput(){
-        return wrongInput;
-    }
-
-    public Consumer<List<Boolean>> callbackCalendar() {
-        return new Consumer<List<Boolean>>() {
-            @Override
-            public void accept(List<Boolean> booleans) {
-                userAvailabilities = new ConnectedAvailability(pair.getValue(), pair.getKey(), new ConcreteAvailability(booleans), new FirebaseReference());
-                update();
-            }
-        };
-    }
-
 
     /**
      * change the color of every cell of the calendar when a change has been added to
      * the availabilities of the users.
      */
-    public void update() {
-        List<Integer> groupAvailabilities = calendar.getComputedAvailabilities();
-        if(groupAvailabilities.size() == 77) {
+    @Override
+    public void update(Observable observable) {
+        List<Integer> groupAvailabilities = ((ConnectedCalendar) observable).getComputedAvailabilities();
+        if(groupAvailabilities.size() == ConnectedCalendar.CALENDAR_SIZE) {
             updateColor(calendarGrid, groupAvailabilities, NmaxUsers, CalendarWidth);
         }
     }
-
-
 }

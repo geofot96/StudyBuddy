@@ -9,7 +9,7 @@ import java.util.UUID;
 
 import ch.epfl.sweng.studdybuddy.core.Group;
 import ch.epfl.sweng.studdybuddy.core.ID;
-import ch.epfl.sweng.studdybuddy.services.calendar.Calendar;
+import ch.epfl.sweng.studdybuddy.services.calendar.CalendarComputation;
 
 import static org.junit.Assert.assertEquals;
 
@@ -18,10 +18,10 @@ import static org.junit.Assert.assertEquals;
  */
 
 public class CalendarUnitTests {
-    private Calendar randomCalendar;
+    private CalendarComputation calendarController;
     @Before
     public void setUp(){
-        randomCalendar = new Calendar(new ID<>("test"));
+        calendarController = new CalendarComputation();
     }
 
     @Test
@@ -36,9 +36,7 @@ public class CalendarUnitTests {
             c.add(0);
         }
 
-        ID<Group> groupID = new ID<>(UUID.randomUUID().toString());
-        Calendar testCalendar = new Calendar(groupID);
-        List<Integer> result =  testCalendar.getSumOfTwoLists(a,b);
+        List<Integer> result =  calendarController.getSumOfTwoLists(a,b);
         assertEquals(c, result);
     }
 
@@ -53,10 +51,7 @@ public class CalendarUnitTests {
             b.add(1);
             c.add(2);
         }
-
-        ID<Group> groupID = new ID<>(UUID.randomUUID().toString());
-        Calendar testCalendar = new Calendar(groupID);
-        List<Integer> result =  testCalendar.getSumOfTwoLists(a,b);
+        List<Integer> result =  calendarController.getSumOfTwoLists(a,b);
         assertEquals(c, result);
     }
 
@@ -72,9 +67,7 @@ public class CalendarUnitTests {
             b.add(0);
         }
 
-        ID<Group> groupID = new ID<>(UUID.randomUUID().toString());
-        Calendar testCalendar = new Calendar(groupID);
-        List<Integer> result =  testCalendar.getIntegerListFromBooleanList(a);
+        List<Integer> result =  calendarController.getIntegerListFromBooleanList(a);
         assertEquals(b, result);
     }
 
@@ -89,9 +82,7 @@ public class CalendarUnitTests {
             b.add(1);
         }
 
-        ID<Group> groupID = new ID<>(UUID.randomUUID().toString());
-        Calendar testCalendar = new Calendar(groupID);
-        List<Integer> result =  testCalendar.getIntegerListFromBooleanList(a);
+        List<Integer> result =  calendarController.getIntegerListFromBooleanList(a);
         assertEquals(b, result);
     }
 
@@ -116,15 +107,7 @@ public class CalendarUnitTests {
         lists.add(b);
         lists.add(c);
 
-        ID<Group> groupID = new ID<>(UUID.randomUUID().toString());
-        Calendar testCalendar = new Calendar(groupID);
-        List<Integer> result =  testCalendar.sumBooleanLists(lists);
+        List<Integer> result =  calendarController.sumBooleanLists(lists);
         assertEquals(d, result);
     }
-
-    @Test(expected = UnsupportedOperationException.class)
-    public void getGroupsAvailabilitiesThrowsException(){
-        randomCalendar.getGroupsAvailabilities();
-    }
-
 }

@@ -13,20 +13,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import ch.epfl.sweng.studdybuddy.R;
 import ch.epfl.sweng.studdybuddy.activities.group.GlobalBundle;
 import ch.epfl.sweng.studdybuddy.activities.group.MapsActivity;
-import ch.epfl.sweng.studdybuddy.activities.group.meetings.createMeetingActivity;
-import ch.epfl.sweng.studdybuddy.core.Pair;
+import ch.epfl.sweng.studdybuddy.activities.group.meetings.CreateMeetingActivity;
 import ch.epfl.sweng.studdybuddy.util.DateTimeHelper;
 import ch.epfl.sweng.studdybuddy.util.Messages;
 import ch.epfl.sweng.studdybuddy.util.RequestCodes;
-import ch.epfl.sweng.studdybuddy.util.StudyBuddy;
 
 import static android.support.v4.app.ActivityCompat.startActivityForResult;
 
@@ -95,7 +90,7 @@ public class MeetingRecyclerAdapter extends RecyclerView.Adapter<MeetingRecycler
                 bundle.putString(Messages.ADMIN, adminID);
                 int requestCode = RequestCodes.MAPS.getRequestCode();
                 if(adminID.equals(userID)){
-                    intent = new Intent(context, createMeetingActivity.class);
+                    intent = new Intent(context, CreateMeetingActivity.class);
                     GlobalBundle.getInstance().putMeeting(meeting);
                     requestCode = RequestCodes.CREATEMEETING.getRequestCode();
                 }
