@@ -61,7 +61,7 @@ final public class User
         if(!favoriteLocation.equals(user.favoriteLocation)) {
             return false;
         }
-        if (!favoriteLanguage.equals(user.favoriteLanguage){
+        if (!favoriteLanguage.equals(user.favoriteLanguage)){
             return false;
         }
 
