@@ -53,14 +53,26 @@ public class Account {
         return new Account(fbu.getDisplayName(), fbu.getUid(), null);
     }
 
+    /**
+     *
+     * @return the name to be displayed
+     */
     public String getDisplayName() {
         return displayName;
     }
 
+    /**
+     *
+     * @return The uniqueID of this account
+     */
     public String getId() {
         return uid;
     }
 
+    /**
+     *
+     * @return The token of the id
+     */
     public String getIdToken() {
         return idToken;
     }
