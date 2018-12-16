@@ -146,6 +146,9 @@ public class CreateGroupActivity extends AppCompatActivity implements AdapterVie
         startActivity(intent);
     }
 
+    /**
+     * Listener of the Number Picker
+     */
     NumberPicker.OnValueChangeListener onValueChangeListener = new NumberPicker.OnValueChangeListener() {
         @Override
         public void onValueChange(NumberPicker numberPicker, int i, int i1) {
@@ -153,7 +156,7 @@ public class CreateGroupActivity extends AppCompatActivity implements AdapterVie
             maxParticipants = numberPicker.getValue();
         }
     };
-
+//TODO
     private void createUserInitialAvailabilities(String user, String group) {
         Availability a = new ConnectedAvailability(user, group);
     }
