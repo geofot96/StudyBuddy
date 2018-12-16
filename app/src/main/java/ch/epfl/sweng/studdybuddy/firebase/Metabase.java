@@ -105,11 +105,6 @@ abstract public class Metabase {
 
     public void clearListeners() { this.ads.clear(); }
 
-    //Will override old friendship but will not create doublon
-    public void befriend(String uid, String friend) {
-        Buddy buddy = new Buddy(uid, friend);
-        db.select(Messages.FirebaseNode.BUDDIES).select(buddy.hash()).setVal(buddy);
-    }
 
     public ValueEventListener getBuddies(String uid, List<User> users) {
         return getBuddiesAndConsume(uid, users, new LinkedList<>(), Consumer.doNothing());
@@ -158,19 +153,6 @@ abstract public class Metabase {
         });
     }
 
-    public ValueEventListener fetchUserId(List<String> usernames) {
-        return db.select(Messages.FirebaseNode.USERS).getAll(User.class, new Consumer<List<User>>() {
-            @Override
-            public void accept(@Nullable List<User> users) {
-                usernames.clear();
-                for(User user: users) {
-                    usernames.add(user.getUserID().getId());
-                }
-                notif();
-            }
-        });
-    }
-
     public static View.OnClickListener updateFriendsOnDone(String uId, List<User> friendsSelection, MetaGroupAdmin mga, Intentable mother) {
         return new View.OnClickListener() {
             @Override
@@ -184,7 +166,8 @@ abstract public class Metabase {
 
     public void putAllFriends(List<User> friendsSelection, String userid) {
         for(User friend : friendsSelection){
-           befriend(userid, friend.getUserID().getId());
+            Buddy buddy = new Buddy(userid, friend.getUserID().getId());
+            db.select(Messages.FirebaseNode.BUDDIES).select(buddy.hash()).setVal(buddy);
         }
     }
 
