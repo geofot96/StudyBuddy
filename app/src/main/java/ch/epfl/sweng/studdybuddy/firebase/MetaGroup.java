@@ -56,15 +56,6 @@ public class MetaGroup extends Metabase{
         });
     }
 
-    public ValueEventListener getGroup(String id, Group g, AdapterAdapter adapter) {
-        return db.select(Messages.FirebaseNode.GROUPS).select(id).get(Group.class, new Consumer<Group>() {
-            @Override
-            public void accept(Group group) {
-                g.copy(group);
-                adapter.update();
-            }
-        });
-    }
     //protected ?
     public ValueEventListener getGroupsfromIds(List<String> gIds, List<Group> userGroups) {
         return db.select(Messages.FirebaseNode.GROUPS).getAll(Group.class, groupsFromIds(gIds, userGroups));
