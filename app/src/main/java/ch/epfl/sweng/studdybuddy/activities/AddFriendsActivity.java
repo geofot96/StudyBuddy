@@ -60,7 +60,7 @@ public class AddFriendsActivity extends AppCompatActivity {
         addButton = findViewById(R.id.btn_add);
         User currentUser = ((StudyBuddy) AddFriendsActivity.this.getApplication()).getAuthendifiedUser();
         uId = currentUser.getUserID().getId();
-        addButton.setOnClickListener(Metabase.updateFriendsOnDone(uId, friendSelection, mga, i));
+        addButton.setOnClickListener(mga.updateFriendsOnDone(uId, friendSelection, mga, i));
     }
 
     private void setUpAutoComplete(){
