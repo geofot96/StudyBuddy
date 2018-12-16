@@ -23,18 +23,13 @@ public class InviteFriendsActivity extends AppCompatActivity {
 
     private BuddyAdapter buddyAdapter;
     private MetaGroup mg = new MetaGroup();
-    private final String A = "TnGyoumVk2SDqYCQx0psDttd3Ea2";
-    private final String B = "RfxAvevZKyZFfjqrvRLq7hmHDdu2";
-    private final String C = "ZqHa4GLFGEfbuQW9gO6E0kndWNw2";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_invite_friends);
         getBundleData();
-
-        mg.befriend(A,B);
-        mg.befriend(A, B);
         buddies = new ArrayList<>();
         participants = new ArrayList<>();
         rv = findViewById(R.id.buddiesToInvite);
