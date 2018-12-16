@@ -94,6 +94,9 @@ public class CreateGroupActivity extends AppCompatActivity implements AdapterVie
         np.setOnValueChangedListener(onValueChangeListener);
     }
 
+    /**
+     * Assigns different emojis representing different languages to the LanguageSpinner
+     */
     void setUpLang() {
         //Language spinner
         Spinner spinnerLanguage = (Spinner) findViewById(R.id.spinnerLanguage);
