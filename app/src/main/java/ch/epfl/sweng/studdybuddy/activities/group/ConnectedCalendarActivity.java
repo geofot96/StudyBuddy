@@ -9,7 +9,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.GridLayout;
 
-import java.util.HashMap;
 import java.util.List;
 
 import ch.epfl.sweng.studdybuddy.R;
@@ -19,15 +18,12 @@ import ch.epfl.sweng.studdybuddy.core.ID;
 import ch.epfl.sweng.studdybuddy.core.Pair;
 import ch.epfl.sweng.studdybuddy.core.User;
 import ch.epfl.sweng.studdybuddy.services.calendar.Availability;
-import ch.epfl.sweng.studdybuddy.services.calendar.Color;
+import ch.epfl.sweng.studdybuddy.services.calendar.ColorController;
 import ch.epfl.sweng.studdybuddy.services.calendar.ConnectedAvailability;
 import ch.epfl.sweng.studdybuddy.services.calendar.ConnectedCalendar;
 import ch.epfl.sweng.studdybuddy.tools.Observable;
 import ch.epfl.sweng.studdybuddy.tools.Observer;
 import ch.epfl.sweng.studdybuddy.util.Messages;
-
-import static ch.epfl.sweng.studdybuddy.services.calendar.Color.updateColor;
-
 
 /**
  * On this activity we're able as a user of the group to see
@@ -50,6 +46,8 @@ public class ConnectedCalendarActivity extends AppCompatActivity implements Obse
     private Pair pair = new Pair();
 
     private ConnectedCalendar calendar;
+
+    private ColorController colorController = new ColorController();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -128,7 +126,7 @@ public class ConnectedCalendarActivity extends AppCompatActivity implements Obse
     public void update(Observable observable) {
         List<Integer> groupAvailabilities = ((ConnectedCalendar) observable).getComputedAvailabilities();
         if(groupAvailabilities.size() == ConnectedCalendar.CALENDAR_SIZE) {
-            updateColor(calendarGrid, groupAvailabilities, maxNumberOfUsers, calendarWidth);
+            colorController.updateColor(calendarGrid, groupAvailabilities, maxNumberOfUsers, calendarWidth);
         }
     }
 

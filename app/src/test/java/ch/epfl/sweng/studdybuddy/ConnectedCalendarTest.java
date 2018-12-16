@@ -1,5 +1,8 @@
 package ch.epfl.sweng.studdybuddy;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseReference;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -10,13 +13,20 @@ import java.util.Map;
 
 import ch.epfl.sweng.studdybuddy.core.Group;
 import ch.epfl.sweng.studdybuddy.core.ID;
+import ch.epfl.sweng.studdybuddy.firebase.FirebaseReference;
 import ch.epfl.sweng.studdybuddy.services.calendar.ConnectedCalendar;
 import ch.epfl.sweng.studdybuddy.tools.Observer;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
-public class ConnectedCalendartest {
+public class ConnectedCalendarTest {
     ConnectedCalendar calendar;
     List<Boolean> list1 = new ArrayList<>();
     List<Boolean> list2 = new ArrayList<>();
@@ -25,9 +35,12 @@ public class ConnectedCalendartest {
     List<Integer> expectedList = new ArrayList<>();
     Map<String, List<Boolean>> hashMap = new HashMap<>();
     Map<String, List<Boolean>> emptyHashMap = new HashMap<>();
-    ID<Group> groupID = new ID<>("group");
 
     Observer observer = mock(Observer.class);
+
+    FirebaseReference firebaseReference = mock(FirebaseReference.class);
+    ConnectedCalendar mockedCalendar = mock(ConnectedCalendar.class);
+    DataSnapshot dataSnapshot = mock(DataSnapshot.class);
 
     @Before
     public void setUp(){
@@ -49,6 +62,8 @@ public class ConnectedCalendartest {
         hashMap.put("user1", list1);
         hashMap.put("user2", list2);
 
+        when(firebaseReference.select(anyString())).thenReturn(firebaseReference);
+        when(dataSnapshot.getKey()).thenReturn("");
     }
 
     @Test
@@ -97,4 +112,63 @@ public class ConnectedCalendartest {
         calendar = new ConnectedCalendar(emptyHashMap);
         assertEquals(new ArrayList<>(), calendar.getComputedAvailabilities());
     }
+
+    @Test
+    public void addObserverAndNotifyItTest(){
+        calendar = new ConnectedCalendar(hashMap);
+        calendar.addObserver(observer);
+        calendar.notifyObservers();
+        verify(observer, times(1)).update(calendar);
+    }
+
+    @Test
+    public void addNullAsObserverShouldThrowAnException(){
+        calendar = new ConnectedCalendar(hashMap);
+        try{
+            calendar.addObserver(null);
+        }catch (IllegalArgumentException e){
+            return;
+        }
+        fail("Should have thrown an IllegalArgumentException");
+    }
+
+    @Test
+    public void onChildChangedOnFirebaseTest(){
+        calendar = new ConnectedCalendar(hashMap);
+        calendar.calendarEventListener(mockedCalendar, firebaseReference).onChildChanged(dataSnapshot, "");
+        verify(dataSnapshot, times(1)).getKey();
+        verify(firebaseReference, times(1)).getAll(any(), any());
+    }
+
+    @Test
+    public void onChildAddedOnFirebaseTest(){
+        calendar = new ConnectedCalendar(hashMap);
+        calendar.calendarEventListener(mockedCalendar, firebaseReference).onChildAdded(dataSnapshot, "");
+        verify(dataSnapshot, times(1)).getKey();
+        verify(firebaseReference, times(1)).getAll(any(), any());
+    }
+
+    @Test
+    public void onChildRemovedOnFirebaseTest(){
+        calendar = new ConnectedCalendar(hashMap);
+        calendar.calendarEventListener(mockedCalendar, firebaseReference).onChildRemoved(dataSnapshot);
+        verify(dataSnapshot, times(1)).getKey();
+        verify(mockedCalendar, times(1)).removeUser(anyString());
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void createCalendarWithNoObserver(){
+        new ConnectedCalendar(null, new ID<>(""));
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void createCalendarWithNoID(){
+        new ConnectedCalendar(observer, null);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void createCalendarWithNullParameters(){
+        new ConnectedCalendar(null, null);
+    }
 }
+

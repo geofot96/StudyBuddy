@@ -45,7 +45,7 @@ public class ConnectedAvailability implements Availability {
         }
 
         List<Boolean> data = new ArrayList<>();
-        readData(databaseReference, calendarGetDataListener(callbackCalendar(data)));
+        readData(databaseReference, availabilityGetDataListener(callbackAvailabilities(data)));
 
         this.availabilities = new ConcreteAvailability(data);
         this.databaseReference = databaseReference;
@@ -106,7 +106,7 @@ public class ConnectedAvailability implements Availability {
     }
 
 
-    public static Consumer<List<Boolean>> callbackCalendar(List<Boolean> absorber) {
+    public  Consumer<List<Boolean>> callbackAvailabilities(List<Boolean> absorber) {
         return new Consumer<List<Boolean>>() {
             @Override
             public void accept(List<Boolean> booleans) {
@@ -121,7 +121,7 @@ public class ConnectedAvailability implements Availability {
      * we can initialize <tt>userAvailabilities</tt> with the newly retrieved
      * list of booleans
      */
-    public static OnGetDataListener calendarGetDataListener(Consumer<List<Boolean>> callback) {
+    public OnGetDataListener availabilityGetDataListener(Consumer<List<Boolean>> callback) {
         return new OnGetDataListener() {
             @Override
             public void onSuccess(DataSnapshot dataSnapshot) {

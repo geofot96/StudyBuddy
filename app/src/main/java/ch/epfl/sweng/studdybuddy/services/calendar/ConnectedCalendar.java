@@ -30,7 +30,7 @@ import ch.epfl.sweng.studdybuddy.util.Messages;
  * of every user of the group.
  */
 
-public final class ConnectedCalendar implements Observable{
+public class ConnectedCalendar implements Observable{
     public static final int CALENDAR_SIZE = 77;
     private CalendarComputation calendarController;
     private HashMap<String, List<Boolean>> availabilities = new HashMap<>() ;
@@ -52,7 +52,7 @@ public final class ConnectedCalendar implements Observable{
 
         calendarController = new CalendarComputation();
         databaseReference = FirebaseDatabase.getInstance().getReference().child(Messages.FirebaseNode.AVAILABILITIES).child(groupID.getId());
-        databaseReference.addChildEventListener(calendarEventListener(this, databaseReference));
+        databaseReference.addChildEventListener(calendarEventListener(this, new FirebaseReference(databaseReference)));
 
         addObserver(observer);
     }
@@ -94,12 +94,12 @@ public final class ConnectedCalendar implements Observable{
      * this ChildEventListener will set after any changes in the users availabilities
      * the calendar to keep the activity updated with firebase
      */
-    public static ChildEventListener calendarEventListener(ConnectedCalendar calendar, DatabaseReference database) {
+    public ChildEventListener calendarEventListener(ConnectedCalendar calendar, FirebaseReference database) {
         return  new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 String targetID = dataSnapshot.getKey();
-                new FirebaseReference(database.child(targetID)).getAll(Boolean.class, new Consumer<List<Boolean>>() {
+                database.select(targetID).getAll(Boolean.class, new Consumer<List<Boolean>>() {
                     @Override
                     public void accept(List<Boolean> booleans) {
                         calendar.modify(targetID, booleans);

@@ -23,6 +23,7 @@ import ch.epfl.sweng.studdybuddy.core.Pair;
 import ch.epfl.sweng.studdybuddy.core.User;
 import ch.epfl.sweng.studdybuddy.firebase.MetaGroupAdmin;
 import ch.epfl.sweng.studdybuddy.firebase.MetaMeeting;
+import ch.epfl.sweng.studdybuddy.services.calendar.ColorController;
 import ch.epfl.sweng.studdybuddy.services.calendar.ConnectedCalendar;
 import ch.epfl.sweng.studdybuddy.services.meeting.Meeting;
 import ch.epfl.sweng.studdybuddy.services.meeting.MeetingLocation;
@@ -36,7 +37,6 @@ import ch.epfl.sweng.studdybuddy.util.ActivityHelper;
 import ch.epfl.sweng.studdybuddy.util.Messages;
 import ch.epfl.sweng.studdybuddy.util.StudyBuddy;
 
-import static ch.epfl.sweng.studdybuddy.services.calendar.Color.updateColor;
 public class GroupActivity extends AppCompatActivity implements Observer, Resultable {
     private boolean wrongInput = false;
     List<User> participants  = new ArrayList<>();
@@ -55,6 +55,8 @@ public class GroupActivity extends AppCompatActivity implements Observer, Result
     private float NmaxUsers;
     private Pair pair = new Pair();
 
+
+    private ColorController colorController = new ColorController();
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -179,7 +181,7 @@ public class GroupActivity extends AppCompatActivity implements Observer, Result
     public void update(Observable observable) {
         List<Integer> groupAvailabilities = ((ConnectedCalendar) observable).getComputedAvailabilities();
         if(groupAvailabilities.size() == ConnectedCalendar.CALENDAR_SIZE) {
-            updateColor(calendarGrid, groupAvailabilities, NmaxUsers, CalendarWidth);
+            colorController.updateColor(calendarGrid, groupAvailabilities, NmaxUsers, CalendarWidth);
         }
     }
 }
