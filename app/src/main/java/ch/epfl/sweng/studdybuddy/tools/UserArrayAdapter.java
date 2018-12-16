@@ -57,15 +57,15 @@ public class UserArrayAdapter extends ArrayAdapter<User> {
     @Nullable
     @Override
     public User getItem(int position) {
-        return items.get(position);
+        return super.getItem(position);
     }
     @Override
     public int getCount() {
-        return items.size();
+        return super.getCount();
     }
     @Override
     public long getItemId(int position) {
-        return position;
+        return super.getItemId(position);
     }
     @NonNull
     @Override
@@ -84,7 +84,7 @@ public class UserArrayAdapter extends ArrayAdapter<User> {
         protected FilterResults performFiltering(CharSequence charSequence) {
             if (charSequence != null) {
                 suggestions.clear();
-                for (User user: tempItems) {
+                for (User user: items) {
                     if (user.getName().toLowerCase().startsWith(charSequence.toString().toLowerCase())) {
                         suggestions.add(user);
                     }
