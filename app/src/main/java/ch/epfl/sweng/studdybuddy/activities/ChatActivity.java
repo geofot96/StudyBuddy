@@ -54,10 +54,11 @@ public class ChatActivity extends AppCompatActivity {
 
     private ProgressDialog mProgress;
 
-    @Override
+
     /**
      * OnCreate method setting up all the graphical components
      */
+    @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
@@ -106,10 +107,11 @@ public class ChatActivity extends AppCompatActivity {
         }
     }
 
-    @NonNull
+
     /**
      * Start an intent demanding for the system gallery- style photo picker to be started
      */
+    @NonNull
     protected View.OnClickListener getGalleryImage() {
         return new View.OnClickListener() {
             @Override
@@ -122,10 +124,11 @@ public class ChatActivity extends AppCompatActivity {
         };
     }
 
-    @NonNull
+
     /**
      * Start an intent demanding for the system camera capture to be started
      */
+    @NonNull
     protected View.OnClickListener getCameraListener() {
         return new View.OnClickListener() {
             @Override
@@ -136,7 +139,14 @@ public class ChatActivity extends AppCompatActivity {
         };
     }
 
-    //Get the filepath of the selected image
+    //
+
+    /**
+     * Initiate the retrieval of filepath of the selected image
+     * @param requestCode The code to be transmitted through an intent
+     * @param resultCode resulting code of the operation
+     * @param data intent to be started
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
