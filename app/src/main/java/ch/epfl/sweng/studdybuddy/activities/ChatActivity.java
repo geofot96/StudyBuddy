@@ -38,6 +38,9 @@ import ch.epfl.sweng.studdybuddy.firebase.FirebaseReference;
 import ch.epfl.sweng.studdybuddy.services.chat.ChatMessage;
 import ch.epfl.sweng.studdybuddy.util.Messages;
 
+/**
+ * An activity showing text messages and photos sent between the members of a group
+ */
 public class ChatActivity extends AppCompatActivity {
     String groupID;
     public FirebaseReference ref;
