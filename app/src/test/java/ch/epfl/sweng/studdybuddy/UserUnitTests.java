@@ -52,12 +52,12 @@ public class UserUnitTests
 
     }
 
-//    @Test
-//    public void setAsTest(){
-//        User u = new User("a", "b");
-//        u.setAs(user);
-//        assertEquals(u, user);
-//    }
+    @Test
+    public void setAsTest(){
+        User u = new User("a", "b");
+        u.setAs(user);
+        assertEquals(u, user);
+    }
 
    /* @Test
     public void getCurrentGroupIfNull(){
