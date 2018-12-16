@@ -37,7 +37,7 @@ import ch.epfl.sweng.studdybuddy.util.StudyBuddy;
 import static ch.epfl.sweng.studdybuddy.util.ActivityHelper.showDropdown;
 
 /**
- * An activity used by the user to create a new group with specific course, language and participant number limit
+ * Activity offering to the user the possibility to add a preferred course to his account
  */
 public class CourseSelectActivity extends AppCompatActivity {
 
