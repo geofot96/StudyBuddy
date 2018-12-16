@@ -18,7 +18,6 @@ import ch.epfl.sweng.studdybuddy.R;
 import ch.epfl.sweng.studdybuddy.core.User;
 import ch.epfl.sweng.studdybuddy.firebase.FirebaseReference;
 import ch.epfl.sweng.studdybuddy.firebase.MetaGroupAdmin;
-import ch.epfl.sweng.studdybuddy.firebase.Metabase;
 import ch.epfl.sweng.studdybuddy.firebase.ReferenceWrapper;
 import ch.epfl.sweng.studdybuddy.tools.AdapterAdapter;
 import ch.epfl.sweng.studdybuddy.tools.ArrayAdapterAdapter;

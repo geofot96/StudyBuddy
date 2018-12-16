@@ -4,7 +4,7 @@ import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
-
+import org.apache.commons.lang3.builder.EqualsBuilder;
 import ch.epfl.sweng.studdybuddy.services.meeting.MeetingLocation;
 import ch.epfl.sweng.studdybuddy.util.Language;
 import ch.epfl.sweng.studdybuddy.util.MapsHelper;
@@ -41,31 +41,19 @@ final public class User
 
     @Override
     public boolean equals(Object o) {
-        if (o == null){
+        if (o == null) { return false; }
+        if (o == this) { return true; }
+        if (o.getClass() != getClass()) {
             return false;
         }
-
         User user = (User) o;
-        if (getClass() != o.getClass()) {
-            return false;
-        }
-        if(!name.equals(user.getName())) {
-            return false;
-        }
-        if (!userID.equals(user.userID)){
-            return false;
-        }
-        if (!userID.equals(user.userID)){
-            return false;
-        }
-        if(!favoriteLocation.equals(user.favoriteLocation)) {
-            return false;
-        }
-        if (!favoriteLanguage.equals(user.favoriteLanguage)){
-            return false;
-        }
-
-        return true;
+        return new EqualsBuilder()
+                .appendSuper(super.equals(o))
+                .append(name, user.getName())
+                .append(userID, user.getUserID())
+                .append(favoriteLanguage, user.getFavoriteLanguage())
+                .append(favoriteLocation, user.getFavoriteLocation())
+                .isEquals();
     }
 
     public User(String name, String uId) {
