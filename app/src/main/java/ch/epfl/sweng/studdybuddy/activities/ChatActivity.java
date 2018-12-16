@@ -179,7 +179,10 @@ public class ChatActivity extends AppCompatActivity {
         return data.getData();
     }
 
-
+    /**
+     *
+     * @return Upload the image once the selected or captured photo has been loaded
+     */
     @NonNull
     private OnSuccessListener<UploadTask.TaskSnapshot> getOnSuccessListener() {
         return new OnSuccessListener<UploadTask.TaskSnapshot>() {
