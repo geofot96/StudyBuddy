@@ -107,6 +107,9 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     @NonNull
+    /**
+     * Start an intent demanding for the system gallery- style photo picker to be started
+     */
     protected View.OnClickListener getGalleryImage() {
         return new View.OnClickListener() {
             @Override
@@ -114,7 +117,6 @@ public class ChatActivity extends AppCompatActivity {
                 Intent galleryIntent = new Intent();
                 galleryIntent.setType("image/*");
                 galleryIntent.setAction(Intent.ACTION_GET_CONTENT);
-
                 startActivityForResult(Intent.createChooser(galleryIntent, "SELECT IMAGE"), PICK_IMAGE_REQUEST);
             }
         };
