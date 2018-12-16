@@ -68,6 +68,9 @@ public class CourseSelectActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Method used to set up the graphical buttons
+     */
     private void setUpButtons() {
         final Intent toMain = new Intent(this, NavigationActivity.class);
         Button skipButton = findViewById(R.id.skipButton);
