@@ -155,6 +155,11 @@ public class ChatActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Decide wether the user asked to pick an existing photo or capture a new one
+     * @param requestCode the code contained within the received intent
+     * @param data the intent captured
+     */
     private void initiatePhotoRequest(int requestCode, Intent data) {
         if (requestCode == PICK_IMAGE_REQUEST) {
             ChatUtils.uploadImageFromGallery(getFilePath(data), mProgress, storageRef).addOnCompleteListener(getOnCompleteListener());
