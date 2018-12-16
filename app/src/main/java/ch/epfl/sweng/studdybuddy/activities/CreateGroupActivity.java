@@ -132,6 +132,10 @@ public class CreateGroupActivity extends AppCompatActivity implements AdapterVie
 
     }
 
+    /**
+     * Push the newly created group to firebase and switch view with the FeedFragment
+     * @param view The current view
+     */
     public void addtoGroups(View view) {
 
         User user = ((StudyBuddy) CreateGroupActivity.this.getApplication()).authendifiedUser;
