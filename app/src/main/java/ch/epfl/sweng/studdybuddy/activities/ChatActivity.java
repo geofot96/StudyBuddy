@@ -248,7 +248,9 @@ public class ChatActivity extends AppCompatActivity {
         };
     }
 
-
+    /**
+     * Updates the list of messages visible on screen with the information retrieved from Firebase
+     */
     public void displayChatMessages() {
         ListView listOfMessages = (ListView) findViewById(R.id.list_of_messages);
 
