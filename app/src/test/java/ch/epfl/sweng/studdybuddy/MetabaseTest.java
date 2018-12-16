@@ -111,15 +111,6 @@ public class MetabaseTest {
     }
 
     @Test
-    public void testBefriend() {
-        Buddy b = new Buddy("alice", "bob");
-        mb.befriend("alice", "bob");
-        verify(testref, times(1)).child(Messages.FirebaseNode.BUDDIES);
-        verify(testref, times(1)).child(b.hash());
-        verify(testref, times(1)).setValue(any(Buddy.class));
-    }
-
-    @Test
     public void testGetBuddies() {
         List<Buddy> allBuddies = Arrays.asList(buddy("bob"), buddy("eve"), new Buddy("bob", "eve"));
         List<User> buddies = new ArrayList<>();

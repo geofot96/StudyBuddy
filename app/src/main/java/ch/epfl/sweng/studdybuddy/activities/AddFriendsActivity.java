@@ -25,7 +25,6 @@ import ch.epfl.sweng.studdybuddy.tools.ArrayAdapterAdapter;
 import ch.epfl.sweng.studdybuddy.tools.Intentable;
 import ch.epfl.sweng.studdybuddy.tools.ParticipantAdapter;
 import ch.epfl.sweng.studdybuddy.tools.RecyclerAdapterAdapter;
-import ch.epfl.sweng.studdybuddy.tools.UserAdapter;
 import ch.epfl.sweng.studdybuddy.util.StudyBuddy;
 
 import static ch.epfl.sweng.studdybuddy.controllers.CourseSelectController.onClickAddUser;
@@ -39,7 +38,6 @@ public class AddFriendsActivity extends AppCompatActivity {
     List<String> userNames = new ArrayList<>();
     static AutoCompleteTextView autocompleteFriends;
     public static final List<User> friendSelection = new ArrayList<>();
-    public static UserAdapter adapter;
     static ArrayAdapter<String> ad;
     String uId;
     static Button addButton;
