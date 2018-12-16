@@ -123,6 +123,9 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     @NonNull
+    /**
+     * Start an intent demanding for the system camera capture to be started
+     */
     protected View.OnClickListener getCameraListener() {
         return new View.OnClickListener() {
             @Override
