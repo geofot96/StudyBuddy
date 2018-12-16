@@ -12,7 +12,6 @@ import ch.epfl.sweng.studdybuddy.activities.AddFriendsActivity;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
-import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isClickable;
@@ -48,8 +47,7 @@ public class AddFriendsActivityTest {
     @Test //()
     public void friendsNotAddedIfGibberish () throws InterruptedException {
     onView(withId(R.id.friendsComplete)).perform(click(), typeText("Nobody"));
-    onView(withId(R.id.btn_add)).perform(closeSoftKeyboard());
-    Thread.sleep(500);
+    Thread.sleep(1000);
     onView(withId(R.id.btn_add)).check(matches(not(isEnabled())));
 }
 
