@@ -228,6 +228,10 @@ public class ChatActivity extends AppCompatActivity {
         };
     }
 
+    /**
+     * The listener assigned to the FAB that sends the message
+     * @return The aforementioned listener
+     */
     @NonNull
     protected View.OnClickListener getFabListener() {
         return new View.OnClickListener() {
