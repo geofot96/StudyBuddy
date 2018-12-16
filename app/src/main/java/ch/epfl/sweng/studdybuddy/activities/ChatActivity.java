@@ -170,10 +170,10 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     /**
-     * method to be mocked at DummyChatChatActivity
+     *Method to be mocked at DummyChatChatActivity.
      *
-     * @param data
-     * @return
+     * @param data Intent containing the data
+     * @return Returns the Filepath of a Uri contained within an intent
      */
     protected Uri getFilePath(Intent data) {
         return data.getData();
