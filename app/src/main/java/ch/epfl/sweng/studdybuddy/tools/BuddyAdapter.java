@@ -30,8 +30,8 @@ public class BuddyAdapter extends RecyclerView.Adapter<BuddyHolder> {
     @Override
     public void onBindViewHolder(BuddyHolder holder, int position)
     {
-        String username = buddies.get(position).getName();
-        holder.bind(username, true, groupID, userID);
+        User buddy = buddies.get(position);
+        holder.bind(buddy.getName(), true, groupID, buddy.getUserID());
     }
 
     @Override

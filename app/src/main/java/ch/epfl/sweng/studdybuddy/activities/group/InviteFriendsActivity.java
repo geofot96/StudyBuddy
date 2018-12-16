@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ch.epfl.sweng.studdybuddy.R;
-import ch.epfl.sweng.studdybuddy.core.Buddy;
 import ch.epfl.sweng.studdybuddy.core.ID;
 import ch.epfl.sweng.studdybuddy.core.User;
 import ch.epfl.sweng.studdybuddy.firebase.MetaGroup;
@@ -34,8 +33,8 @@ public class InviteFriendsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_invite_friends);
         getBundleData();
 
-        mg.pushBuddies(new Buddy(A, B));
-        mg.pushBuddies(new Buddy(A, C));
+        mg.befriend(A,B);
+        mg.befriend(A, B);
         buddies = new ArrayList<>();
         participants = new ArrayList<>();
         rv = findViewById(R.id.buddiesToInvite);
