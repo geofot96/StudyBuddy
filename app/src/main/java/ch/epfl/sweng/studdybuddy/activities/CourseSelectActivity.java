@@ -118,6 +118,9 @@ public class CourseSelectActivity extends AppCompatActivity {
         return adapter;
     }
 
+    /**
+     * Method which attaches to the suggested list only the appropriate courses
+     */
     private void setUpSelectedCourses() {
 
         final RecyclerView selectedCourses = (RecyclerView) findViewById(R.id.coursesSet);
