@@ -23,12 +23,22 @@ import ch.epfl.sweng.studdybuddy.firebase.FirebaseReference;
 import ch.epfl.sweng.studdybuddy.services.chat.ChatMessage;
 import ch.epfl.sweng.studdybuddy.util.Messages;
 
+/**
+ * A class containing a selection of auxiliary methods used in ChatActivity
+ */
 public class ChatUtils {
     protected static void pushToFirebase(FirebaseReference ref, String groupID, String input, String downloadUri) {
         ref.select(Messages.FirebaseNode.CHAT).select(groupID).push(new ChatMessage(input,
                 FirebaseAuth.getInstance().getCurrentUser().getDisplayName(), downloadUri));
     }
 
+    /**
+     *Uploads the provided image selected from the system "gallery picker" to the Firebase Storage
+     * @param filePath the path of the selected image
+     * @param mProgress progress bar showing uploading progress
+     * @param storageRef Firebase Storage reference
+     * @return A task containing the URI of the uploaded image
+     */
     protected static Task<Uri> uploadImageFromGallery(Uri filePath, ProgressDialog mProgress, StorageReference storageRef) {
         Task result = null;
         if (filePath != null) {
@@ -49,6 +59,13 @@ public class ChatUtils {
         return result;
     }
 
+    /**
+     * Uploads the provided image from the camera capture to the Firebase Storage
+     * @param dataBAOS An array of bytes representing the image
+     * @param applicationContext Context of the caller
+     * @param mProgress  progress bar showing uploading progress
+     * @return v
+     */
     protected static UploadTask uploadImageFromCamera(byte[] dataBAOS, Context applicationContext, ProgressDialog mProgress) {
 
 
@@ -69,6 +86,7 @@ public class ChatUtils {
         });
         return uploadTask;
     }
+
 
     protected static UploadTask openCamera(Intent data, ProgressDialog mProgress, Context applicationContext) {
         mProgress.setMessage("Uploading");
