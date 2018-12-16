@@ -46,16 +46,26 @@ final public class User
         }
 
         User user = (User) o;
-        if (getClass() == o.getClass()){
-            if(name.equals(user.getName())){
-                if (userID.equals(user.userID)){
-                    if(favoriteLocation.equals(user.favoriteLocation)){
-                        return favoriteLanguage.equals(user.favoriteLanguage);
-                    }
-                }
-            }
-        }
+        if (getClass() != o.getClass()) {
             return false;
+        }
+        if(!name.equals(user.getName())) {
+            return false;
+        }
+        if (!userID.equals(user.userID)){
+            return false;
+        }
+        if (!userID.equals(user.userID)){
+            return false;
+        }
+        if(!favoriteLocation.equals(user.favoriteLocation)) {
+            return false;
+        }
+        if (!favoriteLanguage.equals(user.favoriteLanguage){
+            return false;
+        }
+
+        return true;
     }
 
     public User(String name, String uId) {
