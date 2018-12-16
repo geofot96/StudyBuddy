@@ -156,6 +156,10 @@ public class CourseSelectActivity extends AppCompatActivity {
         firebase.select("courses").getAll(String.class, AdapterConsumer.adapterConsumer(String.class, coursesDB, new ArrayAdapterAdapter(adapter)));
     }
 
+    /**
+     * Ads a course to the current selection
+     * @param course The course to be added
+     */
     private void addCourse(String course) {
         courseSelection.add(course);
         //Dismiss KB
@@ -166,8 +170,5 @@ public class CourseSelectActivity extends AppCompatActivity {
         doneButton.setEnabled(true);
     }
 
-    private void removeCourse(String course) {
-        courseSelection.remove(course);
-    }
 
 }
