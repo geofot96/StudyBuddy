@@ -62,6 +62,10 @@ public class CreateGroupActivity extends AppCompatActivity implements AdapterVie
         create.setEnabled(false);
     }
 
+    /**
+     * Prepares the text field which suggests courses as the user types
+     * @return An ArrayAdapter of the suggested courses
+     */
     ArrayAdapter<String> setUpAutoComplete() {
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_dropdown_item_1line, coursesDB);
@@ -79,6 +83,9 @@ public class CreateGroupActivity extends AppCompatActivity implements AdapterVie
         return adapter;
     }
 
+    /**
+     * Set the limits of the graphical numberPicker
+     */
     void setUpNumberPicker() {
         //Number picker
         NumberPicker np = findViewById(R.id.numberPicker);
