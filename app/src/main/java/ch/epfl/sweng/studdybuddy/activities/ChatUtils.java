@@ -23,11 +23,15 @@ import ch.epfl.sweng.studdybuddy.firebase.FirebaseReference;
 import ch.epfl.sweng.studdybuddy.services.chat.ChatMessage;
 import ch.epfl.sweng.studdybuddy.util.Messages;
 
+/**
+ * A class containing a selection of auxiliary methods used in ChatActivity
+ */
 public class ChatUtils {
     protected static void pushToFirebase(FirebaseReference ref, String groupID, String input, String downloadUri) {
         ref.select(Messages.FirebaseNode.CHAT).select(groupID).push(new ChatMessage(input,
                 FirebaseAuth.getInstance().getCurrentUser().getDisplayName(), downloadUri));
     }
+
 
     protected static Task<Uri> uploadImageFromGallery(Uri filePath, ProgressDialog mProgress, StorageReference storageRef) {
         Task result = null;
