@@ -44,12 +44,18 @@ final public class User
         if (o == null){
             return false;
         }
+
         User user = (User) o;
-        return getClass() == o.getClass() &&
-                name.equals(user.getName()) &&
-                userID.equals(user.userID) &&
-                favoriteLocation.equals(user.favoriteLocation) &&
-                favoriteLanguage.equals(user.favoriteLanguage);
+        if (getClass() == o.getClass()){
+            if(name.equals(user.getName())){
+                if (userID.equals(user.userID)){
+                    if(favoriteLocation.equals(user.favoriteLocation)){
+                        return favoriteLanguage.equals(user.favoriteLanguage);
+                    }
+                }
+            }
+        }
+            return false;
     }
 
     public User(String name, String uId) {
