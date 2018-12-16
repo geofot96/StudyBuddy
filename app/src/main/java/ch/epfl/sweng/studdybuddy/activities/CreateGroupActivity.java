@@ -107,7 +107,13 @@ public class CreateGroupActivity extends AppCompatActivity implements AdapterVie
         spinnerLanguage.setAdapter(dataAdapterLanguages);
     }
 
-
+    /**
+     * Sets the selected language
+     * @param parent Parent of the current view
+     * @param view Current view
+     * @param position Position in the list of children
+     * @param id element id
+     */
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         String item = parent.getItemAtPosition(position).toString();
