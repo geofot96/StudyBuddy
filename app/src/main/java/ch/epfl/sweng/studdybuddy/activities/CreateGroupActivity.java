@@ -37,12 +37,15 @@ public class CreateGroupActivity extends AppCompatActivity implements AdapterVie
     private String selectedLanguage;
     private int maxParticipants = 2;//default value
     private static List<String> coursesDB;
-
     private static final List<String> courseSelection = new ArrayList<>();
     FirebaseReference firebase;
     MetaGroup mb;
     Button create;
 
+    /**
+     * OnCreate method setting up all the graphical components
+     * @param savedInstanceState  The state of the previous instance
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
