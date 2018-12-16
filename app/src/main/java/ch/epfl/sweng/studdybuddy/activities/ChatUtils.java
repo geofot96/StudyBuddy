@@ -32,7 +32,13 @@ public class ChatUtils {
                 FirebaseAuth.getInstance().getCurrentUser().getDisplayName(), downloadUri));
     }
 
-
+    /**
+     *Uploads the provided image selected from the system "gallery picker" to the Firebase Storage
+     * @param filePath the path of the selected image
+     * @param mProgress progress bar showing uploading progress
+     * @param storageRef Firebase Storage reference
+     * @return A task containing the URI of the uploaded image
+     */
     protected static Task<Uri> uploadImageFromGallery(Uri filePath, ProgressDialog mProgress, StorageReference storageRef) {
         Task result = null;
         if (filePath != null) {
