@@ -147,6 +147,10 @@ public class CourseSelectActivity extends AppCompatActivity {
         mIth.attachToRecyclerView(selectedCourses);
     }
 
+    /**
+     * Selects the courses and stores them in a list
+     * @param adapter Adapter containing the necessary information
+     */
     private void setUpDb(ArrayAdapter<String> adapter) {
         firebase = new FirebaseReference(FirebaseDatabase.getInstance().getReference());
         firebase.select("courses").getAll(String.class, AdapterConsumer.adapterConsumer(String.class, coursesDB, new ArrayAdapterAdapter(adapter)));
