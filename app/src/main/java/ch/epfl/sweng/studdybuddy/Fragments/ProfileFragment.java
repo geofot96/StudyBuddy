@@ -36,6 +36,7 @@ import ch.epfl.sweng.studdybuddy.firebase.ReferenceWrapper;
 import ch.epfl.sweng.studdybuddy.tools.CourseAdapter;
 import ch.epfl.sweng.studdybuddy.tools.GroupsRecyclerAdapter;
 import ch.epfl.sweng.studdybuddy.tools.Intentable;
+import ch.epfl.sweng.studdybuddy.tools.ParticipantAdapter;
 import ch.epfl.sweng.studdybuddy.tools.RecyclerAdapterAdapter;
 import ch.epfl.sweng.studdybuddy.util.StudyBuddy;
 
@@ -49,10 +50,10 @@ public class ProfileFragment extends Fragment
 
     private final List<String> userCourses =  new ArrayList<>();
     private  final List<Group> userGroups = new ArrayList<>();
-    private  final List<String> userFriends = new ArrayList<>();
+    private  final List<User> userFriends = new ArrayList<>();
     private GroupsRecyclerAdapter ad;
     private CourseAdapter adCourse;
-    private CourseAdapter adFriend;
+    private ParticipantAdapter adFriend;
     private User user;
     private String userID;
     private MetaGroup metabase = new MetaGroup();
@@ -97,8 +98,8 @@ public class ProfileFragment extends Fragment
     }
 
     public ValueEventListener setFriendsUp() {
-        metabase.addListenner(new RecyclerAdapterAdapter(adCourse));
-        return metabase.getUserCourses(userID, userCourses);
+        metabase.addListenner(new RecyclerAdapterAdapter(adFriend));
+        return metabase.getBuddies(userID, userFriends);
     }
 
 
@@ -110,7 +111,7 @@ public class ProfileFragment extends Fragment
         RecyclerView recyclerView_courses = (RecyclerView) v.findViewById(R.id.courses_list);
         adCourse.initRecyclerView(v.getContext(), recyclerView_courses);
 
-        adFriend = new CourseAdapter(userFriends);
+        adFriend = new ParticipantAdapter(userFriends);
         RecyclerView recyclerView_friends = v.findViewById(R.id.friends_list);
         adFriend.initRecyclerView(v.getContext(), recyclerView_friends);
 
