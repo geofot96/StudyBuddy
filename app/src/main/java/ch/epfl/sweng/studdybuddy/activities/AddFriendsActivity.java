@@ -45,7 +45,7 @@ import static ch.epfl.sweng.studdybuddy.util.ActivityHelper.showDropdown;
 
 public class AddFriendsActivity extends AppCompatActivity {
     static ReferenceWrapper firebase;
-    static ArrayList<User> friendsDB = new ArrayList<>();
+    static List<User> friendsDB = new ArrayList<>();
     List<String> usernames = new ArrayList<>();
     static AutoCompleteTextView autocompleteFriends;
     public static final List<User> friendSelection = new ArrayList<>();
