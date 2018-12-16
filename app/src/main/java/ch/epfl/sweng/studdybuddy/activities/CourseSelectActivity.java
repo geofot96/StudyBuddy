@@ -49,6 +49,10 @@ public class CourseSelectActivity extends AppCompatActivity {
     public static ArrayAdapter<String> adapter;
     static Button doneButton;
 
+    /**
+     * OnCreate method setting up all the graphical components
+     * @param savedInstanceState The state of the previous instance
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
