@@ -88,7 +88,13 @@ public class ChatUtils {
     }
 
 
-
+    /**
+     * Open the default camera activity of the android system
+     * @param data intent containing the openCamera code
+     * @param mProgress progress bar showing uploading progress
+     * @param applicationContext context of the caller
+     * @return The task containing information on the success of the process
+     */
     protected static UploadTask openCamera(Intent data, ProgressDialog mProgress, Context applicationContext) {
         mProgress.setMessage("Uploading");
         mProgress.show();
