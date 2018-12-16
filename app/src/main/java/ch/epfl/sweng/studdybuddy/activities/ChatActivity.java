@@ -77,6 +77,9 @@ public class ChatActivity extends AppCompatActivity {
         initializations();
     }
 
+    /**
+     * A helper function that sets up part of the graphical components
+     */
     private void initializations() {
         downloadUri = "";
         displayChatMessages();
