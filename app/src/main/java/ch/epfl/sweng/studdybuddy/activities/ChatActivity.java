@@ -55,6 +55,9 @@ public class ChatActivity extends AppCompatActivity {
     private ProgressDialog mProgress;
 
     @Override
+    /**
+     * OnCreate method setting up all the graphical components
+     */
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
