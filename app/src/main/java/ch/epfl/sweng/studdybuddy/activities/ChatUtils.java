@@ -64,7 +64,7 @@ public class ChatUtils {
      * @param dataBAOS An array of bytes representing the image
      * @param applicationContext Context of the caller
      * @param mProgress  progress bar showing uploading progress
-     * @return v
+     * @return A task containing the URI of the uploaded photo
      */
     protected static UploadTask uploadImageFromCamera(byte[] dataBAOS, Context applicationContext, ProgressDialog mProgress) {
 
@@ -86,6 +86,7 @@ public class ChatUtils {
         });
         return uploadTask;
     }
+
 
 
     protected static UploadTask openCamera(Intent data, ProgressDialog mProgress, Context applicationContext) {
