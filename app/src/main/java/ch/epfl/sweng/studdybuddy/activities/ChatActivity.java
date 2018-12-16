@@ -192,17 +192,23 @@ public class ChatActivity extends AppCompatActivity {
                 while (!urlTask.isSuccessful()) ;
                 downloadUri = urlTask.getResult().toString();
                 mProgress.dismiss();
-                Toast.makeText(ChatActivity.this, downloadUri, Toast.LENGTH_SHORT).show();
                 fab.performClick();
             }
         };
     }
 
+    /**
+     * Method to be mocked at DummyChatChatActivity.
+     * @return the firebaseReference
+     */
     public FirebaseReference initRef() {
         return new FirebaseReference();
     }
 
-
+    /**
+     * Notify user if the uploading process failed or succeeded
+     * @return returns a OnCompleteListener with the specified feature
+     */
     @NonNull
     private OnCompleteListener<Uri> getOnCompleteListener() {
         return new OnCompleteListener<Uri>() {
