@@ -61,6 +61,15 @@ public final class CourseSelectController {
         };
     }
 
+    public static AdapterAdapter updateClickableUsers(Button doneButton, List<User> userSelection) {
+        return new AdapterAdapter() {
+            @Override
+            public void update() {
+                doneButton.setEnabled(userSelection.size() > 0);
+            }
+        };
+    }
+
     public static void onSwiped_(List<String> courseSelection, Button doneButton, AdapterAdapter adapter, Holder cc) {
         int idx = courseSelection.indexOf(cc.get());
         if(idx > -1 && idx < courseSelection.size()) {
@@ -78,6 +87,19 @@ public final class CourseSelectController {
                 if(!courseSelection.contains(textInput)) {
                     courseSelection.add(textInput);
                     callback.accept(textInput);
+                }
+            }
+        };
+    }
+
+    public static AdapterView.OnItemClickListener onClickAddUser(List<User> userSelection, Consumer<String> callback) {
+        return new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                User userInput = (User) parent.getAdapter().getItem(position);
+                if(!userSelection.contains(userInput)) {
+                    userSelection.add(userInput);
+                    callback.accept(userInput.getName());
                 }
             }
         };

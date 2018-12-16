@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -29,23 +30,26 @@ import ch.epfl.sweng.studdybuddy.tools.Intentable;
 import ch.epfl.sweng.studdybuddy.tools.ParticipantAdapter;
 import ch.epfl.sweng.studdybuddy.tools.RecyclerAdapterAdapter;
 import ch.epfl.sweng.studdybuddy.tools.UserAdapter;
+import ch.epfl.sweng.studdybuddy.tools.UserArrayAdapter;
 import ch.epfl.sweng.studdybuddy.util.Language;
 import ch.epfl.sweng.studdybuddy.util.Messages;
 import ch.epfl.sweng.studdybuddy.util.StudyBuddy;
 
 import static ch.epfl.sweng.studdybuddy.controllers.CourseSelectController.onClickAddCourse;
+import static ch.epfl.sweng.studdybuddy.controllers.CourseSelectController.onClickAddUser;
 import static ch.epfl.sweng.studdybuddy.controllers.CourseSelectController.resetSelectViews;
 import static ch.epfl.sweng.studdybuddy.controllers.CourseSelectController.updateClickable;
+import static ch.epfl.sweng.studdybuddy.controllers.CourseSelectController.updateClickableUsers;
 import static ch.epfl.sweng.studdybuddy.controllers.CourseSelectController.updateCoursesOnDone;
 import static ch.epfl.sweng.studdybuddy.util.ActivityHelper.showDropdown;
 
 public class AddFriendsActivity extends AppCompatActivity {
     static ReferenceWrapper firebase;
-    static List<String> friendsDB = new ArrayList<>();
+    static ArrayList<User> friendsDB = new ArrayList<>();
     static AutoCompleteTextView autocompleteFriends;
-    public static final List<String> friendSelection = new ArrayList<>();
+    public static final List<User> friendSelection = new ArrayList<>();
     public static UserAdapter adapter;
-    public static ArrayAdapter<String> adapterFriends;
+    public static UserArrayAdapter adapterFriends;
     String uId;
     static Button addButton;
     private MetaGroupAdmin mga;
@@ -72,26 +76,27 @@ public class AddFriendsActivity extends AppCompatActivity {
     }
 
     private void setUpAutoComplete(){
-        adapterFriends = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, friendsDB);
-        autocompleteFriends = (AutoCompleteTextView) findViewById(R.id.friendsComplete);
+        adapterFriends = new UserArrayAdapter(this, R.layout.user_custom_row, friendsDB);
+        autocompleteFriends = findViewById(R.id.friendsComplete);
+        autocompleteFriends.setThreshold(1);
         autocompleteFriends.setAdapter(adapterFriends);
         autocompleteFriends.setOnClickListener(showDropdown(autocompleteFriends));
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        autocompleteFriends.setOnItemClickListener(onClickAddCourse(friendSelection, resetSelectViews(addButton, autocompleteFriends, imm)));
+        autocompleteFriends.setOnItemClickListener(onClickAddUser(friendSelection, resetSelectViews(addButton, autocompleteFriends, imm)));
     }
 
     private void setUpSelectedFriends() {
-        final RecyclerView selectedFriends = (RecyclerView) findViewById(R.id.friends_set);
-        RecyclerView.Adapter friendsAdapter = new CourseAdapter(friendSelection);
+        final RecyclerView selectedFriends = findViewById(R.id.friends_set);
+        RecyclerView.Adapter friendsAdapter = new ParticipantAdapter(friendSelection);
         selectedFriends.setLayoutManager(new LinearLayoutManager(getBaseContext()));
         selectedFriends.setAdapter(friendsAdapter);
         AdapterAdapter adapterC = new RecyclerAdapterAdapter(friendsAdapter);
         mga.addListenner(adapterC);
-        mga.addListenner(updateClickable(addButton, friendSelection));
+        mga.addListenner(updateClickableUsers(addButton, friendSelection));
     }
 
     private void setUpDb() {
         mga.addListenner(new ArrayAdapterAdapter(adapterFriends));
-        mga.fetchUserNames(friendsDB);
+        mga.fetchUser(friendsDB);
     }
 }

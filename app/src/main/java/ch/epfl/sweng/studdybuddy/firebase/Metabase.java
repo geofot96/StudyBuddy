@@ -132,20 +132,33 @@ abstract public class Metabase {
     }
 
 
-    public ValueEventListener fetchUserNames(List<String> usernames) {
+    public ValueEventListener fetchUser(ArrayList<User> usernames) {
         return db.select(Messages.FirebaseNode.USERS).getAll(User.class, new Consumer<List<User>>() {
             @Override
             public void accept(@Nullable List<User> users) {
                 usernames.clear();
                 for(User user: users) {
-                    usernames.add(user.getName());
+                    usernames.add(user);
                 }
                 notif();
             }
         });
     }
 
-    public static View.OnClickListener updateFriendsOnDone(String uId, List<String> friendsSelection, MetaGroupAdmin mga, Intentable mother) {
+    public ValueEventListener fetchUserId(List<String> usernames) {
+        return db.select(Messages.FirebaseNode.USERS).getAll(User.class, new Consumer<List<User>>() {
+            @Override
+            public void accept(@Nullable List<User> users) {
+                usernames.clear();
+                for(User user: users) {
+                    usernames.add(user.getUserID().getId());
+                }
+                notif();
+            }
+        });
+    }
+
+    public static View.OnClickListener updateFriendsOnDone(String uId, List<User> friendsSelection, MetaGroupAdmin mga, Intentable mother) {
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -156,9 +169,9 @@ abstract public class Metabase {
         };
     }
 
-    public void putAllFriends(List<String> friendsSelection, String userid) {
-        for(String friend : friendsSelection){
-           befriend(userid, friend);
+    public void putAllFriends(List<User> friendsSelection, String userid) {
+        for(User friend : friendsSelection){
+           befriend(userid, friend.getUserID().getId());
         }
     }
 
