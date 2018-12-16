@@ -92,17 +92,26 @@ public final class CourseSelectController {
         };
     }
 
-    public static AdapterView.OnItemClickListener onClickAddUser(List<User> userSelection, Consumer<String> callback) {
+    public static AdapterView.OnItemClickListener onClickAddUser(List<User> userSelection, List<User> userDB, Consumer<String> callback) {
         return new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                User userInput = (User) parent.getAdapter().getItem(position);
+                String userInput = (String) parent.getAdapter().getItem(position);
                 if(!userSelection.contains(userInput)) {
-                    userSelection.add(userInput);
-                    callback.accept(userInput.getName());
+                    userSelection.add(findUsername(userInput, userDB));
+                    callback.accept(userInput);
                 }
             }
         };
+    }
+
+    public static User findUsername(String username, List<User> users) {
+        for(User user:users) {
+            if(user.getName().equals(username)) {
+                return user;
+            }
+        }
+        return null;
     }
 
     public static Consumer<String> resetSelectViews(Button doneButton, AutoCompleteTextView autocomplete, InputMethodManager imm) {
