@@ -97,6 +97,10 @@ public class CourseSelectActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Prepares the text field which suggests courses as the user types
+     * @return An ArrayAdapter of the suggested courses
+     */
     private ArrayAdapter<String> setUpAutoComplete() {
         adapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, coursesDB);
         autocomplete = (AutoCompleteTextView) findViewById(R.id.courseComplete);
