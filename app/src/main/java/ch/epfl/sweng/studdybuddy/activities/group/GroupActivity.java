@@ -71,7 +71,10 @@ public class GroupActivity extends AppCompatActivity implements Notifiable, Resu
     private Pair pair = new Pair();
     RecyclerView meetingRV;
     Button inviteFriends;
-
+    /**
+     * OnCreate method setting up all the graphical components
+     * @param savedInstanceState  The state of the previous instance
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
