@@ -3,6 +3,7 @@ package ch.epfl.sweng.studdybuddy.services.notifications;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.app.TaskStackBuilder;
 import android.content.Context;
 import android.content.Intent;
 import android.media.RingtoneManager;
@@ -39,7 +40,7 @@ public class MyFirebaseMessaging extends FirebaseMessagingService {
     private String body;
     private String click_action;
     private String groupID;
-    private PendingIntent pendingIntent;
+    private PendingIntent resultPendingIntent;
     private Uri defaultSound;
 
     private NotifFactory notifFactory = new NotifFactory();
@@ -56,12 +57,15 @@ public class MyFirebaseMessaging extends FirebaseMessagingService {
         click_action = notification.getClickAction();
         groupID = remoteMessage.getData().get("group_id");
 
-        Intent intent = new Intent(click_action);
+        Intent resultIntent = new Intent(this, ChatActivity.class);
+        resultIntent.setAction(click_action);
+        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
         Bundle bundle = new Bundle();
         bundle.putString(Messages.groupID, groupID);
         bundle.putString(Messages.course, title);
-        intent.putExtras(bundle);
-        pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        resultIntent.putExtras(bundle);
+        stackBuilder.addNextIntentWithParentStack(resultIntent);
+        resultPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
 
         defaultSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 
@@ -76,7 +80,7 @@ public class MyFirebaseMessaging extends FirebaseMessagingService {
 
     private void sendOreoNotification() {
         OreoNotification oreoNotification = notifFactory.OreoNotificationFactory(this);
-        Notification.Builder builder = oreoNotification.getOreoNotification(title, body, pendingIntent, defaultSound, R.mipmap.ic_launcher);
+        Notification.Builder builder = oreoNotification.getOreoNotification(title, body, resultPendingIntent, defaultSound, R.mipmap.ic_launcher);
 
         int mNotificationID = (int) System.currentTimeMillis();
         oreoNotification.getNotificationManager().notify(mNotificationID, builder.build());
@@ -90,7 +94,7 @@ public class MyFirebaseMessaging extends FirebaseMessagingService {
                 .setContentText(body)
                 .setAutoCancel(true)
                 .setSound(defaultSound)
-                .setContentIntent(pendingIntent);
+                .setContentIntent(resultPendingIntent);
 
         int mNotificationId = (int) System.currentTimeMillis();
         NotificationManager mNotifyMgr = notifFactory.nManagerFactory(this);
