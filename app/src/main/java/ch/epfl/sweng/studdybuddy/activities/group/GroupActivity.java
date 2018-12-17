@@ -48,9 +48,7 @@ import static ch.epfl.sweng.studdybuddy.tools.AvailabilitiesHelper.calendarEvent
 import static ch.epfl.sweng.studdybuddy.tools.AvailabilitiesHelper.calendarGetDataListener;
 import static ch.epfl.sweng.studdybuddy.tools.AvailabilitiesHelper.readData;
 import static ch.epfl.sweng.studdybuddy.util.ActivityHelper.onClickLaunch;
-/**
- * An activity used by the user to create a new group with specific course, language and participant number limit
- */
+
 public class GroupActivity extends AppCompatActivity implements Notifiable, Resultable {
     private boolean wrongInput = false;
     List<User> participants = new ArrayList<>();
@@ -71,10 +69,7 @@ public class GroupActivity extends AppCompatActivity implements Notifiable, Resu
     private Pair pair = new Pair();
     RecyclerView meetingRV;
     Button inviteFriends;
-    /**
-     * OnCreate method setting up all the graphical components
-     * @param savedInstanceState  The state of the previous instance
-     */
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
