@@ -17,13 +17,11 @@ import ch.epfl.sweng.studdybuddy.core.User;
 public class BuddyAdapter extends RecyclerView.Adapter<BuddyHolder> {
     List<User> buddies;
     private ID<Group> groupID;
-    private ID<User> userID;
 
-    public BuddyAdapter(List<User> buddies, ID<Group> groupID, ID<User> userID)
+    public BuddyAdapter(List<User> buddies, ID<Group> groupID)
     {
         this.buddies = buddies;
         this.groupID = groupID;
-        this.userID = userID;
     }
 
 

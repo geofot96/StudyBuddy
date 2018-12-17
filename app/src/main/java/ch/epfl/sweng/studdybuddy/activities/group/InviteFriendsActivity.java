@@ -33,7 +33,7 @@ public class InviteFriendsActivity extends AppCompatActivity {
         buddies = new ArrayList<>();
         participants = new ArrayList<>();
         rv = findViewById(R.id.buddiesToInvite);
-        buddyAdapter = new BuddyAdapter(buddies, new ID<>(gId), new ID<>(uId));
+        buddyAdapter = new BuddyAdapter(buddies, new ID<>(gId));
         mg.addListenner(new RecyclerAdapterAdapter(buddyAdapter));
         buddyAdapter.initRecyclerView(this, rv);
         mg.getBuddiesNotInGroup(gId, uId, participants, buddies);

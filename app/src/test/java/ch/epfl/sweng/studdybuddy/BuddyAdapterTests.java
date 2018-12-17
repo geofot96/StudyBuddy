@@ -10,11 +10,9 @@ import ch.epfl.sweng.studdybuddy.core.ID;
 import ch.epfl.sweng.studdybuddy.core.User;
 import ch.epfl.sweng.studdybuddy.tools.BuddyAdapter;
 import ch.epfl.sweng.studdybuddy.tools.BuddyHolder;
-import static org.junit.Assert.*;
+
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 public class BuddyAdapterTests
 {
@@ -23,7 +21,7 @@ public class BuddyAdapterTests
     @Test
     public void bindViewHolderTest() {
         BuddyHolder h = mock(BuddyHolder.class);
-        BuddyAdapter adapter = new BuddyAdapter(participants, new ID<>(), new ID<>());
+        BuddyAdapter adapter = new BuddyAdapter(participants, new ID<>());
 
 
         adapter.onBindViewHolder(h, 0);
@@ -36,7 +34,7 @@ public class BuddyAdapterTests
         ArrayList<User> users = new ArrayList<>();
         users.add(new User("a", "b"));
 
-        BuddyAdapter adapter = new BuddyAdapter(users, new ID<>(), new ID<>());
+        BuddyAdapter adapter = new BuddyAdapter(users, new ID<>());
 
         assertEquals(1, adapter.getItemCount());
 
