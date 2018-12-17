@@ -49,6 +49,10 @@ public class CourseSelectActivity extends AppCompatActivity {
     String uId;
     private MetaGroupAdmin mga;
 
+    /**
+     * OnCreate method setting up all the graphical components
+     * @param savedInstanceState The state of the previous instance
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,7 +63,9 @@ public class CourseSelectActivity extends AppCompatActivity {
         setUpSelectedCourses();
         setUpDb(setUpAutoComplete());
     }
-
+    /**
+     * Method used to set up the graphical buttons
+     */
     private void setUpButtons() {
         Intentable i = new Intentable(this, new Intent(this, NavigationActivity.class));
         Button skipButton = findViewById(R.id.skipButton);
@@ -69,7 +75,10 @@ public class CourseSelectActivity extends AppCompatActivity {
         uId = currentUser.getUserID().getId();
         doneButton.setOnClickListener(updateCoursesOnDone(currentUser, courseSelection, mga, i));
     }
-
+    /**
+     * Prepares the text field which suggests courses as the user types
+     * @return An ArrayAdapter of the suggested courses
+     */
     private ArrayAdapter<String> setUpAutoComplete() {
         adapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, coursesDB);
         autocomplete = (AutoCompleteTextView) findViewById(R.id.courseComplete);
@@ -79,7 +88,9 @@ public class CourseSelectActivity extends AppCompatActivity {
         autocomplete.setOnItemClickListener(onClickAddCourse(courseSelection, resetSelectViews(doneButton, autocomplete, imm)));
         return adapter;
     }
-
+    /**
+     * Method which attaches to the suggested list only the appropriate courses
+     */
     private void setUpSelectedCourses() {
         final RecyclerView selectedCourses = (RecyclerView) findViewById(R.id.coursesSet);
         RecyclerView.Adapter courseAdapter = new CourseAdapter(courseSelection);
@@ -92,7 +103,10 @@ public class CourseSelectActivity extends AppCompatActivity {
         ItemTouchHelper swipeCourse = deleteCourseOnSwipe(courseSelection, doneButton, adapterC);
         swipeCourse.attachToRecyclerView(selectedCourses);
     }
-
+    /**
+     * Selects the courses and stores them in a list
+     * @param adapter Adapter containing the necessary information
+     */
     private void setUpDb(ArrayAdapter<String> adapter) {
         firebase.select("courses").getAll(String.class, AdapterConsumer.adapterConsumer(String.class, coursesDB, new ArrayAdapterAdapter(adapter)));
     }
