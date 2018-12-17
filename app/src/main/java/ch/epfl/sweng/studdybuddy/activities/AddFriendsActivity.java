@@ -31,6 +31,10 @@ import static ch.epfl.sweng.studdybuddy.controllers.CourseSelectController.reset
 import static ch.epfl.sweng.studdybuddy.controllers.CourseSelectController.updateClickableUsers;
 import static ch.epfl.sweng.studdybuddy.util.ActivityHelper.showDropdown;
 
+
+/**
+ * Activity offering to the user the possibility to add friends to his account
+ */
 public class AddFriendsActivity extends AppCompatActivity {
     static ReferenceWrapper fireBase;
     static List<User> friendsDb = new ArrayList<>();
@@ -42,6 +46,10 @@ public class AddFriendsActivity extends AppCompatActivity {
     static Button addButton;
     private MetaGroupAdmin metaGroupAdmin;
 
+    /**
+     * OnCreate method setting up all the graphical components
+     * @param savedInstanceState The state of the previous instance
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,6 +62,9 @@ public class AddFriendsActivity extends AppCompatActivity {
         setUpDb();
     }
 
+    /**
+     * Method used to set up the graphical buttons
+     */
     private void setUpButtons() {
         Intentable i = new Intentable(this, new Intent(this, NavigationActivity.class));
         addButton = findViewById(R.id.btn_add);
@@ -62,6 +73,10 @@ public class AddFriendsActivity extends AppCompatActivity {
         addButton.setOnClickListener(metaGroupAdmin.updateFriendsOnDone(uId, friendSelection, metaGroupAdmin, i));
     }
 
+    /**
+     * Prepares the text field which suggests users as the user types
+     * @return An ArrayAdapter of the suggested users
+     */
     private void setUpAutoComplete() {
         adapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, userNames);
         autocompleteFriends = findViewById(R.id.friendsComplete);
@@ -71,6 +86,9 @@ public class AddFriendsActivity extends AppCompatActivity {
         autocompleteFriends.setOnItemClickListener(onClickAddUser(friendSelection, friendsDb, resetSelectViews(addButton, autocompleteFriends, imm)));
     }
 
+    /**
+     * Method which attaches to the suggested list only the appropriate users
+     */
     private void setUpSelectedFriends() {
         final RecyclerView selectedFriends = findViewById(R.id.friends_set);
         RecyclerView.Adapter friendsAdapter = new ParticipantAdapter(friendSelection);
@@ -81,6 +99,10 @@ public class AddFriendsActivity extends AppCompatActivity {
         metaGroupAdmin.addListenner(updateClickableUsers(addButton, friendSelection));
     }
 
+    /**
+     * Selects the users from database and stores them in a two lists -
+     * List of users and List of user's names
+     */
     private void setUpDb() {
         metaGroupAdmin.addListenner(new ArrayAdapterAdapter(adapter));
         metaGroupAdmin.fetchUser(friendsDb);
