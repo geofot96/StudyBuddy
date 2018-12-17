@@ -1,5 +1,6 @@
 package ch.epfl.sweng.studdybuddy.activities;
 
+import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
@@ -21,77 +23,59 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ch.epfl.sweng.studdybuddy.R;
-import ch.epfl.sweng.studdybuddy.auth.AuthManager;
-import ch.epfl.sweng.studdybuddy.auth.FirebaseAuthManager;
-import ch.epfl.sweng.studdybuddy.core.Pair;
 import ch.epfl.sweng.studdybuddy.core.User;
 import ch.epfl.sweng.studdybuddy.firebase.FirebaseReference;
+import ch.epfl.sweng.studdybuddy.firebase.MetaGroupAdmin;
 import ch.epfl.sweng.studdybuddy.firebase.ReferenceWrapper;
+import ch.epfl.sweng.studdybuddy.tools.Adapter;
+import ch.epfl.sweng.studdybuddy.tools.AdapterAdapter;
 import ch.epfl.sweng.studdybuddy.tools.AdapterConsumer;
 import ch.epfl.sweng.studdybuddy.tools.ArrayAdapterAdapter;
 import ch.epfl.sweng.studdybuddy.tools.CourseAdapter;
 import ch.epfl.sweng.studdybuddy.tools.Holder;
+import ch.epfl.sweng.studdybuddy.tools.Intentable;
+import ch.epfl.sweng.studdybuddy.tools.RecyclerAdapterAdapter;
 import ch.epfl.sweng.studdybuddy.util.Helper;
 import ch.epfl.sweng.studdybuddy.util.StudyBuddy;
 
+import static ch.epfl.sweng.studdybuddy.controllers.CourseSelectController.deleteCourseOnSwipe;
+import static ch.epfl.sweng.studdybuddy.controllers.CourseSelectController.onClickAddCourse;
+import static ch.epfl.sweng.studdybuddy.controllers.CourseSelectController.resetSelectViews;
+import static ch.epfl.sweng.studdybuddy.controllers.CourseSelectController.updateClickable;
+import static ch.epfl.sweng.studdybuddy.controllers.CourseSelectController.updateCoursesOnDone;
+import static ch.epfl.sweng.studdybuddy.util.ActivityHelper.onClickLaunch;
 import static ch.epfl.sweng.studdybuddy.util.ActivityHelper.showDropdown;
 
 
-public class CourseSelectActivity extends AppCompatActivity
-{
-
-    static List<String> coursesDB;
-    //List of selected courses
-    public static final List<String> courseSelection = new ArrayList<>();
-
-
+public class CourseSelectActivity extends AppCompatActivity {
+    static List<String> coursesDB = new ArrayList<>();
+    private final List<String> courseSelection = new ArrayList<>();
     static AutoCompleteTextView autocomplete;
     static ReferenceWrapper firebase;
     public static ArrayAdapter<String> adapter;
     static Button doneButton;
+    String uId;
+    private MetaGroupAdmin mga;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        firebase  = new FirebaseReference();
+        mga = new MetaGroupAdmin(firebase);
         setContentView(R.layout.activity_course_select);
-
-        Intent other = getIntent();
-        coursesDB = new ArrayList<>();
-        coursesDB.add("Untitled");
-
-        setUpDb(setUpAutoComplete());
         setUpButtons();
         setUpSelectedCourses();
-
+        setUpDb(setUpAutoComplete());
     }
 
     private void setUpButtons() {
-        final Intent toMain = new Intent(this, NavigationActivity.class);
+        Intentable i = new Intentable(this, new Intent(this, NavigationActivity.class));
         Button skipButton = findViewById(R.id.skipButton);
-        skipButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v)  {
-                startActivity(toMain);
-            }
-        });
+        skipButton.setOnClickListener(onClickLaunch(i));
         doneButton = findViewById(R.id.doneButton);
-        doneButton.setEnabled(false);
-        doneButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v)
-            {
-                User currentUser = ((StudyBuddy) CourseSelectActivity.this.getApplication()).getAuthendifiedUser();
-                AuthManager auth = new FirebaseAuthManager(CourseSelectActivity.this, getString(R.string.default_web_client_id));
-                for(String course : courseSelection){
-                    Pair pair = new Pair(currentUser.getUserID().toString(), course);
-                    firebase.select("userCourse").select(Helper.hashCode(pair).toString()).setVal(pair);
-                }
-                //currentUser.setCoursesPreset(courseSelection);
-                //Launches null pointer exception because the user is not fully initialized
-                //currentUser.setCoursesPreset(courseSelection);
-                startActivity(toMain);
-            }
-        });
+        User currentUser = ((StudyBuddy) CourseSelectActivity.this.getApplication()).getAuthendifiedUser();
+        uId = currentUser.getUserID().getId();
+        doneButton.setOnClickListener(updateCoursesOnDone(currentUser, courseSelection, mga, i));
     }
 
     private ArrayAdapter<String> setUpAutoComplete(){
@@ -99,64 +83,25 @@ public class CourseSelectActivity extends AppCompatActivity
         autocomplete = (AutoCompleteTextView) findViewById(R.id.courseComplete);
         autocomplete.setAdapter(adapter);
         autocomplete.setOnClickListener(showDropdown(autocomplete));
-        autocomplete.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String textInput = parent.getAdapter().getItem(position).toString();
-                if(!courseSelection.contains(textInput)) { addCourse(textInput); }
-            }
-        });
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        autocomplete.setOnItemClickListener(onClickAddCourse(courseSelection, resetSelectViews(doneButton, autocomplete, imm)));
         return adapter;
-   }
+    }
 
    private void setUpSelectedCourses() {
-
        final RecyclerView selectedCourses = (RecyclerView) findViewById(R.id.coursesSet);
-       selectedCourses.setLayoutManager(new LinearLayoutManager(this));
-
-       selectedCourses.setAdapter(new CourseAdapter(courseSelection));
-       ItemTouchHelper mIth = new ItemTouchHelper(
-               new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP | ItemTouchHelper.DOWN,
-                       ItemTouchHelper.RIGHT)
-               {
-                   @Override
-                   public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder viewHolder1)
-                   {
-                       return false;
-                   }
-
-                   @Override
-                   public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int i)
-                   {
-                       Holder cc = (Holder) viewHolder;
-                       courseSelection.remove(courseSelection.indexOf(cc.get()));
-                       selectedCourses.getAdapter().notifyDataSetChanged();
-                       if(courseSelection.size() == 0)
-                           doneButton.setEnabled(false);
-                   }
-               });
-       mIth.attachToRecyclerView(selectedCourses);
+       RecyclerView.Adapter courseAdapter = new CourseAdapter(courseSelection);
+       selectedCourses.setLayoutManager(new LinearLayoutManager(getBaseContext()));
+       selectedCourses.setAdapter(courseAdapter);
+       AdapterAdapter adapterC = new RecyclerAdapterAdapter(courseAdapter);
+       mga.addListenner(adapterC);
+       mga.addListenner(updateClickable(doneButton, courseSelection));
+       mga.getUserCourses(uId, courseSelection);
+       ItemTouchHelper swipeCourse = deleteCourseOnSwipe(courseSelection, doneButton, adapterC);
+       swipeCourse.attachToRecyclerView(selectedCourses);
    }
 
    private void setUpDb(ArrayAdapter<String> adapter) {
-       firebase = new FirebaseReference(FirebaseDatabase.getInstance().getReference());
        firebase.select("courses").getAll(String.class, AdapterConsumer.adapterConsumer(String.class, coursesDB, new ArrayAdapterAdapter(adapter)));
    }
-
-    private void addCourse(String course)
-    {
-        courseSelection.add(course);
-        //Dismiss KB
-        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(autocomplete.getWindowToken(), 0);
-        //reset search text
-        autocomplete.setText("");
-        doneButton.setEnabled(true);
-    }
-
-    private void removeCourse(String course)
-    {
-        courseSelection.remove(course);
-    }
-
 }

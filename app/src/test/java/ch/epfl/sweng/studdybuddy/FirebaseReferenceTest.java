@@ -15,6 +15,7 @@ import java.util.UUID;
 import ch.epfl.sweng.studdybuddy.core.Course;
 import ch.epfl.sweng.studdybuddy.core.Group;
 import ch.epfl.sweng.studdybuddy.firebase.FirebaseReference;
+import ch.epfl.sweng.studdybuddy.firebase.ReferenceWrapper;
 import ch.epfl.sweng.studdybuddy.tools.Consumer;
 
 import static org.hamcrest.CoreMatchers.is;
@@ -22,6 +23,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 public class FirebaseReferenceTest {
@@ -117,4 +120,31 @@ public class FirebaseReferenceTest {
         FirebaseReference ref = new FirebaseReference(testRef);
         FirebaseReference res = (FirebaseReference) ref.select("xyz");
     }*/
+
+    @Test
+    public void testMuteAll() {
+        ValueEventListener vl = mock(ValueEventListener.class);
+        DatabaseReference db = mock(DatabaseReference.class);
+        DatabaseReference db2 = mock(DatabaseReference.class);
+        FirebaseReference fb = new FirebaseReference(db);
+        when(db.child("")).thenReturn(db2);
+        ReferenceWrapper fb2 = fb.select("");
+        ValueEventListener l1 = fb.get(String.class, new Consumer<String>() {
+            @Override
+            public void accept(String s) {
+
+            }
+        });
+        ValueEventListener l2 = fb2.getAll(String.class, new Consumer<List<String>>() {
+            @Override
+            public void accept(List<String> strings) {
+
+            }
+        });
+        fb.muteAll();
+        verify(db, times(1)).removeEventListener(l1);
+        verify(db2, times(1)).removeEventListener(l2);
+        //fb.mute();
+        //verify(db, times(1)).removeEventListener(vl);
+    }
 }

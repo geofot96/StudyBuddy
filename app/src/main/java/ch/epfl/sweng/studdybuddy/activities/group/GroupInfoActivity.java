@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -34,8 +35,14 @@ public class GroupInfoActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group_info);
         uId = ((StudyBuddy) GroupInfoActivity.this.getApplication()).getAuthendifiedUser().getUserID().getId();
+        GlobalBundle.getInstance().putAll(getIntent().getExtras());
         Bundle origin = GlobalBundle.getInstance().getSavedBundle();
         gId = origin.getString(Messages.groupID);
+        if(gId == null){
+            String TAG = "GROUP_INFO_ACTIVITY";
+            Log.d(TAG, "Information of the group is not fully recovered");
+            startActivity(new Intent(this, NavigationActivity.class));
+        }
         gIds.add(gId);
         mb.getGroupsfromIds(gIds, group);
         mb.getGroupUsers(gId, participants);
@@ -53,7 +60,9 @@ public class GroupInfoActivity extends AppCompatActivity{
             public void onClick(View v) {
                 if (uId != null && gId != null) {
                     mb.clearListeners();
-                    mb.removeUserFromGroup(uId, group.get(0));
+                    if(group.size()>0) {
+                        mb.removeUserFromGroup(uId, group.get(0));
+                    }
                     Intent transition = new Intent(GroupInfoActivity.this, NavigationActivity.class);
                     startActivity(transition);
                 }
