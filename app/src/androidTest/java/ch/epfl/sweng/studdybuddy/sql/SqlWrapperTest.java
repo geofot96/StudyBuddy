@@ -1,4 +1,4 @@
-package ch.epfl.sweng.studdybuddy.sql;
+    package ch.epfl.sweng.studdybuddy.sql;
 
 import android.content.Context;
 import android.support.annotation.Nullable;

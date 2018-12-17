@@ -46,12 +46,11 @@ final public class User
         User user = (User) o;
         return
                 (o != null &&
-                        getClass() == o.getClass() &&
-                        name.equals(user.getName()) &&
-                        userID.equals(user.userID) &&
-                        favoriteLocation.equals(user.favoriteLocation) &&
-                        favoriteLanguage.equals(user.favoriteLanguage));
-
+                getClass() == o.getClass() &&
+                name.equals(user.getName()) &&
+                userID.equals(user.userID) &&
+                favoriteLocation.equals(user.favoriteLocation) &&
+                favoriteLanguage.equals(user.favoriteLanguage));
 
     }
 

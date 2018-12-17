@@ -34,10 +34,7 @@ import ch.epfl.sweng.studdybuddy.util.ActivityHelper;
 import ch.epfl.sweng.studdybuddy.util.DateTimeHelper;
 import ch.epfl.sweng.studdybuddy.util.MapsHelper;
 import ch.epfl.sweng.studdybuddy.util.Messages;
-
 import ch.epfl.sweng.studdybuddy.util.RequestCodes;
-
-import ch.epfl.sweng.studdybuddy.util.StudyBuddy;
 
 
 
@@ -64,7 +61,6 @@ public class createMeetingActivity extends AppCompatActivity {
     private String userID;
 
     private AdapterAdapter ButtonListener;
-    String uId;
     private final String TAG = "CREATE_MEETING_ACTIVITY";
 
     @Override
@@ -94,7 +90,7 @@ public class createMeetingActivity extends AppCompatActivity {
 
         mDisplayLocation = findViewById(R.id.locationTitle);
         initDisplayLocation();
-
+        initMeetingLocation();
         initSaveBtn();
 
         meeting = onStartForResult();
@@ -218,7 +214,7 @@ public class createMeetingActivity extends AppCompatActivity {
     }
 
     private void initMeetingLocation(){
-        ref.select(Messages.FirebaseNode.USERS).select(uId).get(User.class, new Consumer<User>() {
+        ref.select(Messages.FirebaseNode.USERS).select(userID).get(User.class, new Consumer<User>() {
             @Override
             public void accept(User user) {
                 meetingLocation = user.getFavoriteLocation() != null ? user.getFavoriteLocation() : MapsHelper.ROLEX_LOCATION;

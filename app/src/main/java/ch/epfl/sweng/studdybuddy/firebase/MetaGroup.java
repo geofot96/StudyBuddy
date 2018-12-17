@@ -140,10 +140,6 @@ public class MetaGroup extends Metabase{
         db.select(Messages.FirebaseNode.USERGROUP).select(Helper.hashCode(pair)).setVal(pair);
     }
 
-    public void pushBuddies(Buddy buddy){
-        db.select(Messages.FirebaseNode.BUDDIES).select(buddy.hash()).setVal(buddy);
-    }
-
 
     public ValueEventListener onGroupGet(String gid, Consumer<Group> callback) {
         return db.select(Messages.FirebaseNode.GROUPS).select(gid).get(Group.class, new Consumer<Group>() {
