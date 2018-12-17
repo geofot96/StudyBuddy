@@ -32,9 +32,8 @@ import ch.epfl.sweng.studdybuddy.util.SettingsFragmentHelper;
 import ch.epfl.sweng.studdybuddy.util.StudyBuddy;
 
 /**
- * A simple {@link Fragment} subclass.
+ * A fragment containing settings: favourite location, favourite language and ability to sign out
  */
-
 public class SettingsFragment extends Fragment implements AdapterView.OnItemSelectedListener {
 
     Spinner spinnerLang;
@@ -51,10 +50,11 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
     StudyBuddy application;
     private TextView textDisplayLocation;
 
-    public SettingsFragment()
-    {
-        // Required empty public constructor
-    }
+    /**
+     *  Required empty public constructor
+     */
+    public SettingsFragment(){}
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
