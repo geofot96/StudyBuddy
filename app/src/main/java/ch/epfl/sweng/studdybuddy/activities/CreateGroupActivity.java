@@ -44,7 +44,10 @@ public class CreateGroupActivity extends AppCompatActivity implements AdapterVie
     FirebaseReference firebase;
     MetaGroup mb;
     Button create;
-
+    /**
+     * OnCreate method setting up all the graphical components
+     * @param savedInstanceState  The state of the previous instance
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,7 +63,10 @@ public class CreateGroupActivity extends AppCompatActivity implements AdapterVie
         create = (Button) findViewById(R.id.confirmGroupCreation);
         create.setEnabled(false);
     }
-
+    /**
+     * Prepares the text field which suggests courses as the user types
+     * @return An ArrayAdapter of the suggested courses
+     */
     ArrayAdapter<String> setUpAutoComplete() {
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_dropdown_item_1line, coursesDB);
@@ -77,7 +83,9 @@ public class CreateGroupActivity extends AppCompatActivity implements AdapterVie
         });
         return adapter;
     }
-
+    /**
+     * Set the limits of the graphical numberPicker
+     */
     void setUpNumberPicker() {
         //Number picker
         NumberPicker np = findViewById(R.id.numberPicker);
@@ -85,7 +93,9 @@ public class CreateGroupActivity extends AppCompatActivity implements AdapterVie
         np.setMaxValue(10);
         np.setOnValueChangedListener(onValueChangeListener);
     }
-
+    /**
+     * Assigns different emojis representing different languages to the LanguageSpinner
+     */
     void setUpLang() {
         //Language spinner
         Spinner spinnerLanguage = (Spinner) findViewById(R.id.spinnerLanguage);
@@ -105,7 +115,13 @@ public class CreateGroupActivity extends AppCompatActivity implements AdapterVie
         spinnerLanguage.setAdapter(dataAdapterLanguages);
     }
 
-
+    /**
+     * Sets the selected language
+     * @param parent Parent of the current view
+     * @param view Current view
+     * @param position Position in the list of children
+     * @param id element id
+     */
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         String item = parent.getItemAtPosition(position).toString();
@@ -123,14 +139,19 @@ public class CreateGroupActivity extends AppCompatActivity implements AdapterVie
     public void onNothingSelected(AdapterView<?> parent) {
 
     }
-
+    /**
+     * Push the newly created group to firebase and switch view with the FeedFragment
+     * @param view The current view
+     */
     public void addtoGroups(View view) {
         User user = ((StudyBuddy) CreateGroupActivity.this.getApplication()).authendifiedUser;
         Group g = new Group(maxParticipants, new Course(selectedCourse), selectedLanguage, UUID.randomUUID().toString(), user.getUserID().getId());
         Intentable toNav = new Intentable(this, NavigationActivity.class);
         joinGroupsAndGo(mb, user, g, toNav);
     }
-
+    /**
+     * Listener of the Number Picker
+     */
     NumberPicker.OnValueChangeListener onValueChangeListener = new NumberPicker.OnValueChangeListener() {
         @Override
         public void onValueChange(NumberPicker numberPicker, int i, int i1) {
