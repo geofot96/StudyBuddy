@@ -1,5 +1,6 @@
 package ch.epfl.sweng.studdybuddy.firebase;
 
+
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
@@ -7,6 +8,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import ch.epfl.sweng.studdybuddy.core.Buddy;
 import ch.epfl.sweng.studdybuddy.core.Group;
 import ch.epfl.sweng.studdybuddy.core.Pair;
 import ch.epfl.sweng.studdybuddy.core.User;
@@ -54,15 +56,6 @@ public class MetaGroup extends Metabase{
         });
     }
 
-    public ValueEventListener getGroup(String id, Group g, AdapterAdapter adapter) {
-        return db.select(Messages.FirebaseNode.GROUPS).select(id).get(Group.class, new Consumer<Group>() {
-            @Override
-            public void accept(Group group) {
-                g.copy(group);
-                adapter.update();
-            }
-        });
-    }
     //protected ?
     public ValueEventListener getGroupsfromIds(List<String> gIds, List<Group> userGroups) {
         return db.select(Messages.FirebaseNode.GROUPS).getAll(Group.class, groupsFromIds(gIds, userGroups));
@@ -147,6 +140,7 @@ public class MetaGroup extends Metabase{
         db.select(Messages.FirebaseNode.USERGROUP).select(Helper.hashCode(pair)).setVal(pair);
     }
 
+
     public ValueEventListener onGroupGet(String gid, Consumer<Group> callback) {
         return db.select(Messages.FirebaseNode.GROUPS).select(gid).get(Group.class, new Consumer<Group>() {
             @Override
@@ -157,9 +151,4 @@ public class MetaGroup extends Metabase{
             }
         });
     }
-
-
-
-
-
 }

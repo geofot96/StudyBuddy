@@ -21,6 +21,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ch.epfl.sweng.studdybuddy.R;
+import ch.epfl.sweng.studdybuddy.activities.AddFriendsActivity;
+import ch.epfl.sweng.studdybuddy.activities.CreateGroupActivity;
 import ch.epfl.sweng.studdybuddy.activities.CourseSelectActivity;
 import ch.epfl.sweng.studdybuddy.activities.NavigationActivity;
 import ch.epfl.sweng.studdybuddy.auth.AuthManager;
@@ -34,6 +36,7 @@ import ch.epfl.sweng.studdybuddy.firebase.ReferenceWrapper;
 import ch.epfl.sweng.studdybuddy.tools.CourseAdapter;
 import ch.epfl.sweng.studdybuddy.tools.GroupsRecyclerAdapter;
 import ch.epfl.sweng.studdybuddy.tools.Intentable;
+import ch.epfl.sweng.studdybuddy.tools.ParticipantAdapter;
 import ch.epfl.sweng.studdybuddy.tools.RecyclerAdapterAdapter;
 import ch.epfl.sweng.studdybuddy.util.StudyBuddy;
 
@@ -47,12 +50,15 @@ public class ProfileFragment extends Fragment
 
     private final List<String> userCourses =  new ArrayList<>();
     private  final List<Group> userGroups = new ArrayList<>();
+    private  final List<User> userFriends = new ArrayList<>();
     private GroupsRecyclerAdapter ad;
     private CourseAdapter adCourse;
+    private ParticipantAdapter adFriend;
     private User user;
     private String userID;
     private MetaGroup metabase = new MetaGroup();
     private AuthManager mAuth = null;
+    Button addFriends;
 
     public ProfileFragment()
     {
@@ -70,6 +76,8 @@ public class ProfileFragment extends Fragment
         setUI(v);
         setCoursesUp();
         setGroupsUp();
+        setFriendsUp();
+
 
         return v;
     }
@@ -89,6 +97,12 @@ public class ProfileFragment extends Fragment
         return metabase.getUserCourses(userID, userCourses);
     }
 
+    public ValueEventListener setFriendsUp() {
+        metabase.addListenner(new RecyclerAdapterAdapter(adFriend));
+        return metabase.getBuddies(userID, userFriends);
+    }
+
+
     private void setUI(View v){
         TextView nameView = (TextView) v.findViewById(R.id.profile_name_text);
         nameView.setText(user.getName());
@@ -96,6 +110,13 @@ public class ProfileFragment extends Fragment
         adCourse = new CourseAdapter(userCourses);
         RecyclerView recyclerView_courses = (RecyclerView) v.findViewById(R.id.courses_list);
         adCourse.initRecyclerView(v.getContext(), recyclerView_courses);
+
+        adFriend = new ParticipantAdapter(userFriends);
+        RecyclerView recyclerView_friends = v.findViewById(R.id.friends_list);
+        adFriend.initRecyclerView(v.getContext(), recyclerView_friends);
+
+        addFriends = v.findViewById(R.id.btn_add_friend);
+        addFriends.setOnClickListener(getOnClickListener());
 
         ad = new GroupsRecyclerAdapter(userGroups, userID);
         RecyclerView recyclerView_groups = (RecyclerView) v.findViewById(R.id.groups_list);
@@ -109,29 +130,19 @@ public class ProfileFragment extends Fragment
     public ReferenceWrapper getDB(){
         return new FirebaseReference();
     }
-    public AuthManager getAuthManager()
+   
+
+    @NonNull
+    private View.OnClickListener getOnClickListener()
     {
-        if(mAuth == null)
+        return new View.OnClickListener()
         {
-            //mAuth = new FirebaseAuthManager(NavigationActivity.this, getString(R.string.default_web_client_id));
-        }
-        return mAuth;
+            @Override
+            public void onClick(View v)
+            {
+                Intent intent = new Intent(v.getContext(), AddFriendsActivity.class);
+                startActivity(intent);
+            }
+        };
     }
-
-    /*
-    *
-    @Override
-    protected void onStart()
-    {
-        super.onStart();
-        Account currentUser = getAuthManager().getCurrentUser();
-        if(currentUser == null)
-        {
-            signOut();
-        }
-    }
-
-    * */
-
-
 }

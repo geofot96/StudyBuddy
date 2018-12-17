@@ -18,9 +18,18 @@ import ch.epfl.sweng.studdybuddy.firebase.FirebaseReference;
 import ch.epfl.sweng.studdybuddy.firebase.MetaGroup;
 import ch.epfl.sweng.studdybuddy.tools.AdapterAdapter;
 import ch.epfl.sweng.studdybuddy.tools.Consumer;
+
+
 import ch.epfl.sweng.studdybuddy.tools.Intentable;
+
 import ch.epfl.sweng.studdybuddy.util.Messages;
 
+
+import ch.epfl.sweng.studdybuddy.util.Messages;
+
+
+import static ch.epfl.sweng.studdybuddy.util.CoreFactory.johnDoe;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -75,6 +84,7 @@ public class MetabaseTest {
         }).onDataChange(ds);
     }
 
+
     private static Pair p(String a, String b) {
         return new Pair(a, b);
     }
@@ -99,14 +109,6 @@ public class MetabaseTest {
         //The element to delete
         verify(testref, times(1)).removeValue();
     }
-    @Test
-    public void testBefriend() {
-        Buddy b = new Buddy("alice", "bob");
-        mb.befriend("alice", "bob");
-        verify(testref, times(1)).child(Messages.FirebaseNode.BUDDIES);
-        verify(testref, times(1)).child(b.hash());
-        verify(testref, times(1)).setValue(any(Buddy.class));
-    }
 
     @Test
     public void testGetBuddies() {
@@ -122,6 +124,25 @@ public class MetabaseTest {
         verify(testref, times(2)).addValueEventListener(any(ValueEventListener.class));
         verify(testref, times(1)).child(Messages.FirebaseNode.BUDDIES);
         verify(testref, times(1)).child("users");
+    }
+
+    @Test
+    public void testFetchUsers() {
+        List<User> users = Arrays.asList(johnDoe("1"));
+        List<String> usernames = new ArrayList<>();
+        usernames.add("Robert");
+        usernames.add("Kim");
+        usernames.add("Khloe");
+        DataSnapshot user = mock(DataSnapshot.class);
+        DataSnapshot user1 = mock(DataSnapshot.class);
+        when(user1.getValue(User.class)).thenReturn(users.get(0));
+        when(user.getChildren()).thenReturn(Arrays.asList(user1));
+        AdapterAdapter ad = mock(AdapterAdapter.class);
+        //mb.addListenner(ad); will fail getBuddies
+        mb.fetchUserNames(usernames).onDataChange(user);
+        assertEquals(1, usernames.size());
+        assertEquals("John Doe", usernames.get(0));
+        //verify(ad, times(1)).notify();
     }
 
     private static Buddy buddy(String friend) {

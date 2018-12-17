@@ -39,6 +39,8 @@ final public class User
         this.favoriteLanguage = Language.EN;
     }
 
+
+
     @Override
     public boolean equals(Object o) {
         User user = (User) o;
@@ -49,7 +51,9 @@ final public class User
                 userID.equals(user.userID) &&
                 favoriteLocation.equals(user.favoriteLocation) &&
                 favoriteLanguage.equals(user.favoriteLanguage));
+
     }
+
 
     public User(String name, String uId) {
         this.name = name;
