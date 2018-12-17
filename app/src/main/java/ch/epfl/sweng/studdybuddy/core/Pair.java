@@ -1,5 +1,8 @@
 package ch.epfl.sweng.studdybuddy.core;
 
+/**
+ * A class representing a pair of two string valures
+ */
 public class Pair {
     String key;
     String value;
