@@ -14,7 +14,7 @@ public final class Group implements Comparable<Group> {
     private int maxNoUsers;
     private Course course;
 
-    private ID<Group> groupID; //TODO add getters and setters
+    private ID<Group> groupID;
     private String lang;
     private long creationDate;
     private String adminID;
@@ -28,21 +28,13 @@ public final class Group implements Comparable<Group> {
     }
 
 
-
     public long getCreationDate() {
         return creationDate;
     }
 
-    public void setCreationDate(long creationDate) {
-        this.creationDate = creationDate;
+
+    public Group() {
     }
-
-
-    //TODO add schedule and Chat
-    //private commonSchedule;
-    //private groupChat;
-
-    public Group() {}
 
 
     public Group(int maxNoUsers, Course course, String lang, String adminID) {
@@ -51,7 +43,7 @@ public final class Group implements Comparable<Group> {
 
     public Group(int maxNoUsers, Course course, String lang, String gId, String adminID) {
         this();
-        if(maxNoUsers <= 0) {
+        if (maxNoUsers <= 0) {
             throw new IllegalArgumentException("Participants number must be > 0 and maximum number of participants must be positive");
         }
         this.groupID = new ID<>(gId);
@@ -62,48 +54,39 @@ public final class Group implements Comparable<Group> {
         this.adminID = adminID;
     }
 
-    public ID<Group> getGroupID()
-    {
+    public ID<Group> getGroupID() {
         return new ID<>(groupID);
     }
 
-    public void setGroupID(ID<Group> groupID)
-    {
+    public void setGroupID(ID<Group> groupID) {
         this.groupID = groupID;
     }
 
 
-    public int getMaxNoUsers()
-    {
+    public int getMaxNoUsers() {
         return maxNoUsers;
     }
 
-    public void setMaxNoUsers(int maxNoUsers)
-    {
-        if(maxNoUsers <= 0)
-        {
+    public void setMaxNoUsers(int maxNoUsers) {
+        if (maxNoUsers <= 0) {
             throw new IllegalArgumentException("Maximum number of participants must be positive");
         }
         this.maxNoUsers = maxNoUsers;
     }
 
-    public Course getCourse()
-    {
+    public Course getCourse() {
         return new Course(this.course);
     }
 
-    public void setCourse(Course course)
-    {
+    public void setCourse(Course course) {
         this.course = new Course(course);
     }
 
-    public String getLang()
-    {
+    public String getLang() {
         return lang;
     }
 
-    public void setLang(String language)
-    {
+    public void setLang(String language) {
         this.lang = language;
     }
 
@@ -121,18 +104,12 @@ public final class Group implements Comparable<Group> {
     }
 
     @Override
-    public int compareTo(Group group)
-    {
-        if(this.getCreationDate() < (group.getCreationDate()))
-        {
+    public int compareTo(Group group) {
+        if (this.getCreationDate() < (group.getCreationDate())) {
             return 1;
-        }
-        else if(this.getCreationDate() > (group.getCreationDate()))
-        {
+        } else if (this.getCreationDate() > (group.getCreationDate())) {
             return -1;
-        }
-        else
-        {
+        } else {
             return 0;
         }
     }
