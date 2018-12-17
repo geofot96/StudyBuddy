@@ -32,11 +32,10 @@ import ch.epfl.sweng.studdybuddy.util.Messages;
 import ch.epfl.sweng.studdybuddy.util.StudyBuddy;
 
 /**
- * A simple {@link Fragment} subclass.
+ * A fragment containing the feed of available groups
  */
 public class FeedFragment extends Fragment
 {
-
     GroupsRecyclerAdapter mAdapter;
     static List<Group> groupSet = new ArrayList<>();
     public static final String IS_PARTICIPANT = "ch.epfl.sweng.studybuddy.particip";
@@ -44,13 +43,19 @@ public class FeedFragment extends Fragment
     Button sortButton;
     FloatingActionButton actionButton;
 
-
+    /**
+     * Required empty public constructor
+     */
     public FeedFragment()
-    {
-        // Required empty public constructor
-    }
+    {}
 
-
+    /**
+     * Sets up the graphical elements of the Fragment
+     * @param inflater Inflater containing the list of existing chats
+     * @param container container of the list
+     * @param savedInstanceState previously saved state
+     * @return The inflatet view containing the list of chats
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState)
@@ -80,7 +85,7 @@ public class FeedFragment extends Fragment
 
         return v;
     }
-
+//TODO, do not comment this class before I merge the new functionality to it
     @NonNull
     private Consumer<Intent> getButtonClickConsumer()
     {
