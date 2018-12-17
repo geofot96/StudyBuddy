@@ -41,16 +41,14 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
     String favoriteLanguage;
     User user;
     String uId;
-    String gId;
     FirebaseReference ref;
-    Metabase mb;
-    Button locationButton;
-    Button signout;
+    Metabase metaBase;
+    Button signOut;
     Button applyButton;
     View view;
     MeetingLocation favoriteLocation = MapsHelper.ROLEX_LOCATION;
-    SqlWrapper sql;
-    StudyBuddy app;
+    SqlWrapper sqlWrapper;
+    StudyBuddy application;
     private TextView textDisplayLocation;
 
     public SettingsFragment()
@@ -69,18 +67,16 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState)
     {
-//         Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_settings, container, false);
-        app = ((StudyBuddy) getActivity().getApplication());
-        user = app.getAuthendifiedUser();
-        Log.i("D", "language is " + user.getFavoriteLanguage());
+        application = ((StudyBuddy) getActivity().getApplication());
+        user = application.getAuthendifiedUser();
         ref = (FirebaseReference) getDB();
         uId = user.getUserID().getId();
-        mb = new MetaGroup();
-        sql = new SqlWrapper(this.getActivity());
+        metaBase = new MetaGroup();
+        sqlWrapper = new SqlWrapper(this.getActivity());
         textDisplayLocation = view.findViewById(R.id.text_location_set_up);
-        setUpUI();
 
+        setUpUI();
 
         return view;
     }
@@ -95,22 +91,19 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
 
         FirebaseReference ref = new FirebaseReference();
 
-
-        //Language spinner
         ArrayAdapter<String> dataAdapterLanguages = new ArrayAdapter<>(this.getContext(), android.R.layout.simple_spinner_item, Language.languages);
         dataAdapterLanguages.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerLang.setAdapter(dataAdapterLanguages);
-        //select from local db first
 
         updateLanguage(user);
         ref.select(Messages.FirebaseNode.USERS).select(uId).get(User.class, SettingsFragmentHelper.updateLanguage(this));
     }
 
-
     public void updateLanguage(User user){
         String selectedLanguage = user.getFavoriteLanguage() != null ? user.getFavoriteLanguage() : Language.EN;
         spinnerLang.setSelection(Language.LanguageToInt(selectedLanguage));
     }
+
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         switch(parent.getId()){
@@ -121,7 +114,6 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
 
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
-
     }
 
     @Override
@@ -152,13 +144,10 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
                ref.select(Messages.FirebaseNode.USERS).select(uId).select("favoriteLocation").setVal(favoriteLocation);
                user.setFavoriteLanguage(favoriteLanguage);
                user.setFavoriteLocation(favoriteLocation);
-               app.setAuthendifiedUser(user);
-               sql.insertUser(user);
+               application.setAuthendifiedUser(user);
+               sqlWrapper.insertUser(user);
            }
-
         });
-
-
     }
 
     public void setUpLocation(){
@@ -166,7 +155,7 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
         favoriteLocation = user.getFavoriteLocation() != null ? user.getFavoriteLocation() : favoriteLocation;
         textDisplayLocation.setText("Default Location: " + favoriteLocation.toString());
 
-        mb.getUserAndConsume(uId, new Consumer<User>() {
+        metaBase.getUserAndConsume(uId, new Consumer<User>() {
             @Override
             public void accept(User user) {
                 SettingsFragment.this.user = user;
@@ -179,10 +168,9 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
             }
         });
     }
+
     public void setUpSignOut(){
-        signout = view.findViewById(R.id.btn_sign_out);
-        signout.setOnClickListener(SettingsFragmentHelper.signOutButtonOnClickLister(uId, this));
-
-
+        signOut = view.findViewById(R.id.btn_sign_out);
+        signOut.setOnClickListener(SettingsFragmentHelper.signOutButtonOnClickLister(uId, this));
     }
 }
