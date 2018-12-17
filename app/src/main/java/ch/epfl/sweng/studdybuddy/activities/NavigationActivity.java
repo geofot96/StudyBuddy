@@ -14,7 +14,9 @@ import ch.epfl.sweng.studdybuddy.Fragments.ProfileFragment;
 import ch.epfl.sweng.studdybuddy.Fragments.SettingsFragment;
 import ch.epfl.sweng.studdybuddy.R;
 
-
+/**
+ * Activity which contains a graphical navigation bar used to switch between the main views of the app
+ */
 public class NavigationActivity extends AppCompatActivity {
 
     private ChatListsFragment chatFragment;
@@ -22,6 +24,10 @@ public class NavigationActivity extends AppCompatActivity {
     private ProfileFragment profileFragment;
     private SettingsFragment settingsFragment;
 
+    /**
+     * Set up graphical elements of the activity
+     * @param savedInstanceState previously saved state
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,6 +41,10 @@ public class NavigationActivity extends AppCompatActivity {
         mMainNav.setOnNavigationItemSelectedListener(getListener());
     }
 
+    /**
+     * Listener which switches the current view according to navigation bar
+     * @return A Listener which provides the aforementioned feature
+     */
     @NonNull
     private BottomNavigationView.OnNavigationItemSelectedListener getListener() {
         return new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -62,6 +72,10 @@ public class NavigationActivity extends AppCompatActivity {
         };
     }
 
+    /**
+     * Sets the current fragment to a new one
+     * @param fragment The new fragment to be set
+     */
     private void setFragment(Fragment fragment) {
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.main_frame, fragment, "mainFragment");
