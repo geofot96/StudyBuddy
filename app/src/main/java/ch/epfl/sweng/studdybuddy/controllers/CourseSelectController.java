@@ -61,6 +61,15 @@ public final class CourseSelectController {
         };
     }
 
+    public static AdapterAdapter updateClickableUsers(Button doneButton, List<User> userSelection) {
+        return new AdapterAdapter() {
+            @Override
+            public void update() {
+                doneButton.setEnabled(userSelection.size() > 0);
+            }
+        };
+    }
+
     public static void onSwiped_(List<String> courseSelection, Button doneButton, AdapterAdapter adapter, Holder cc) {
         int idx = courseSelection.indexOf(cc.get());
         if(idx > -1 && idx < courseSelection.size()) {
@@ -81,6 +90,28 @@ public final class CourseSelectController {
                 }
             }
         };
+    }
+
+    public static AdapterView.OnItemClickListener onClickAddUser(List<User> userSelection, List<User> userDB, Consumer<String> callback) {
+        return new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String userInput = (String) parent.getAdapter().getItem(position);
+                if(!userSelection.contains(userInput)) {
+                    userSelection.add(findUsername(userInput, userDB));
+                    callback.accept(userInput);
+                }
+            }
+        };
+    }
+
+    public static User findUsername(String username, List<User> users) {
+        for(User user:users) {
+            if(user.getName().equals(username)) {
+                return user;
+            }
+        }
+        return null;
     }
 
     public static Consumer<String> resetSelectViews(Button doneButton, AutoCompleteTextView autocomplete, InputMethodManager imm) {

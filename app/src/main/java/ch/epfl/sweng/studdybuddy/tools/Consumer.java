@@ -14,4 +14,15 @@ public interface Consumer<T> {
             }
         };
     }
+
+    static <T> Consumer<T> doNothing() {
+        return new Consumer<T>() {
+            @Override
+            public void accept(T t) {
+
+            }
+        };
+    }
+
+
 }

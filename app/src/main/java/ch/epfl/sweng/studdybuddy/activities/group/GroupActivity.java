@@ -6,7 +6,6 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.View;
 import android.widget.Button;
 import android.widget.GridLayout;
 
@@ -41,6 +40,7 @@ import ch.epfl.sweng.studdybuddy.util.Messages;
 import ch.epfl.sweng.studdybuddy.util.StudyBuddy;
 
 import static ch.epfl.sweng.studdybuddy.controllers.GroupController.callbackCalendar;
+import static ch.epfl.sweng.studdybuddy.controllers.GroupController.inviteFriendsListener;
 import static ch.epfl.sweng.studdybuddy.controllers.GroupController.leaveOnClick;
 import static ch.epfl.sweng.studdybuddy.controllers.GroupController.processResult;
 import static ch.epfl.sweng.studdybuddy.services.calendar.Color.updateColor;
@@ -68,7 +68,7 @@ public class GroupActivity extends AppCompatActivity implements Notifiable, Resu
     private DatabaseReference database;
     private Pair pair = new Pair();
     RecyclerView meetingRV;
-
+    Button inviteFriends;
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -141,6 +141,9 @@ public class GroupActivity extends AppCompatActivity implements Notifiable, Resu
         FloatingActionButton actionButton = findViewById(R.id.createMeeting);
         Intentable toCreation = new Intentable(this, new Intent(this, createMeetingActivity.class));
         actionButton.setOnClickListener(onClickLaunch(toCreation));
+        Intentable toInviteFriends = new Intentable(this, new Intent(this, InviteFriendsActivity.class));
+        inviteFriends = findViewById(R.id.invite_friends);
+        inviteFriends.setOnClickListener(inviteFriendsListener(toInviteFriends, gId, uId));
     }
 
     public void setupMeetings() {
