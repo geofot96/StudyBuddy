@@ -3,6 +3,7 @@ package ch.epfl.sweng.studdybuddy;
 import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
+import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.view.View;
 import android.widget.TextView;
@@ -24,6 +25,7 @@ import ch.epfl.sweng.studdybuddy.services.meeting.Meeting;
 import ch.epfl.sweng.studdybuddy.services.meeting.MeetingLocation;
 import ch.epfl.sweng.studdybuddy.services.meeting.MeetingRecyclerAdapter;
 import ch.epfl.sweng.studdybuddy.util.CoreFactory;
+import ch.epfl.sweng.studdybuddy.util.DateTimeHelper;
 import ch.epfl.sweng.studdybuddy.util.Messages;
 import ch.epfl.sweng.studdybuddy.util.StudyBuddy;
 
@@ -36,8 +38,7 @@ import static org.mockito.Mockito.when;
 
 public class MeetingRecyclerAdapterTest {
     List<Meeting> meetingList;
-    int month,day,hourS,minS, hourE, minE;
-    String testString = Messages.TEST;
+    Bundle origin = mock(Bundle.class);
     Context context = mock(Context.class);
     Activity activity = mock(Activity.class);
     StudyBuddy app = mock(StudyBuddy.class);
@@ -47,51 +48,36 @@ public class MeetingRecyclerAdapterTest {
     CardView cMock = mock(CardView.class);
     View v = mock(View.class);
     MeetingRecyclerAdapter.ViewHolder h ;
-    MeetingRecyclerAdapter.ViewHolder viewHolder ;
 
 
     @Before
     public void setUp(){
-        Meeting meeting = new Meeting();
         MeetingLocation mL = mock(MeetingLocation.class);
         when(mL.getTitle()).thenReturn("test");
         when(mL.getAddress()).thenReturn("");
-        Date starting = new Date(meeting.getStarting());
-        Date ending = new Date(meeting.getEnding());
-        Calendar c = Calendar.getInstance();
-        c.setTime(starting);
-        month = c.get(Calendar.MONTH) +1;
-        day = c.get(Calendar.DAY_OF_MONTH);
-        hourS = c.get(Calendar.HOUR_OF_DAY);
-        minS = c.get(Calendar.MINUTE);
-        c.setTime(ending);
-        hourE = c.get(Calendar.HOUR_OF_DAY);
-        minE = c.get(Calendar.MINUTE);
-        meeting.setLocation(mL);
+        Meeting meeting = new Meeting((long)0,(long)0, mL, Messages.TEST);
         meetingList = Arrays.asList(meeting);
-
         when(activity.getApplication()).thenReturn(app);
         when(app.getAuthendifiedUser()).thenReturn(random);
-
         h = new MeetingRecyclerAdapter.ViewHolder(v, t, t, cMock);
+
+        when(origin.getString(any())).thenReturn(Messages.TEST);
     }
 
     @Test
     public void MeetingsCountTest(){
-        MeetingRecyclerAdapter ad = new MeetingRecyclerAdapter(context, activity, new ArrayList<>(), new Pair(testString, testString));
-        MeetingRecyclerAdapter ad2 = new MeetingRecyclerAdapter(context, activity, meetingList, new Pair(testString, testString));
+        MeetingRecyclerAdapter ad = new MeetingRecyclerAdapter(context, activity, new ArrayList<>(), origin);
+        MeetingRecyclerAdapter ad2 = new MeetingRecyclerAdapter(context, activity, meetingList, origin);
         assertTrue(ad.getItemCount() == 0);
         assertTrue(ad2.getItemCount() == 1);
     }
 
     @Test
     public void onBindViewHolder() {
-        MeetingRecyclerAdapter adapter = new MeetingRecyclerAdapter(context, activity, meetingList, new Pair(testString,testString));
+        MeetingRecyclerAdapter adapter = new MeetingRecyclerAdapter(context, activity, meetingList, origin);
         adapter.onBindViewHolder(h, 0);
         verify(t, times(1)).setText(
-                month + "/" + day + " From: " + hourS +
-                        ":" + minS/10 + minS%10 + " To: "+
-                        hourE + ":" + minE/10 +minE%10);
+                DateTimeHelper.printMeetingDate(0,0));
         verify(t, times(1)).setText("test: ");
     }
 

@@ -5,6 +5,11 @@ import android.content.Intent;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.rule.GrantPermissionRule;
 import android.support.test.runner.AndroidJUnit4;
+import android.widget.EditText;
+
+
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -18,6 +23,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ch.epfl.sweng.studdybuddy.activities.DummyChatActivity;
+import ch.epfl.sweng.studdybuddy.activities.ChatActivity;
+
 import ch.epfl.sweng.studdybuddy.firebase.FirebaseReference;
 import ch.epfl.sweng.studdybuddy.services.chat.ChatMessage;
 import ch.epfl.sweng.studdybuddy.tools.Consumer;
@@ -27,6 +34,8 @@ import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.mock;
+
 
 @RunWith(AndroidJUnit4.class)
 
@@ -60,7 +69,7 @@ public class ChatActivityTests
         List<ChatMessage> list = new ArrayList<>();
 
         FirebaseReference reference = new FirebaseReference();
-
+        //Thread.sleep(500);
         reference.select("test_chat").getAll(ChatMessage.class, new Consumer<List<ChatMessage>>()
         {
             @Override
@@ -78,6 +87,15 @@ public class ChatActivityTests
         assertEquals(1, list.size());
         DummyChatActivityIntentRule.finishActivity();
     }
+
+    @Test
+    public void testFabListener() {
+        EditText et = mock(EditText.class);
+        FirebaseReference fr = mock(FirebaseReference.class);
+        FirebaseAuth auth = mock(FirebaseAuth.class);
+        ChatActivity.fabListener(et, fr, auth, "uno");
+    }
+
 
     @Test
     public void galleryTest()

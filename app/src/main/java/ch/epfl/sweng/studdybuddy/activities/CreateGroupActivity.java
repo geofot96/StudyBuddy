@@ -3,6 +3,7 @@ package ch.epfl.sweng.studdybuddy.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -12,7 +13,6 @@ import android.widget.NumberPicker;
 import android.widget.Spinner;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
@@ -26,8 +26,13 @@ import ch.epfl.sweng.studdybuddy.services.calendar.Availability;
 import ch.epfl.sweng.studdybuddy.services.calendar.ConnectedAvailability;
 import ch.epfl.sweng.studdybuddy.tools.AdapterConsumer;
 import ch.epfl.sweng.studdybuddy.tools.ArrayAdapterAdapter;
+import ch.epfl.sweng.studdybuddy.tools.Consumer;
+import ch.epfl.sweng.studdybuddy.tools.Intentable;
+import ch.epfl.sweng.studdybuddy.util.Language;
+import ch.epfl.sweng.studdybuddy.util.Messages;
 import ch.epfl.sweng.studdybuddy.util.StudyBuddy;
 
+import static ch.epfl.sweng.studdybuddy.controllers.CreateGroupController.joinGroupsAndGo;
 import static ch.epfl.sweng.studdybuddy.util.ActivityHelper.showDropdown;
 
 public class CreateGroupActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener
@@ -88,8 +93,17 @@ public class CreateGroupActivity extends AppCompatActivity implements AdapterVie
         //Language spinner
         Spinner spinnerLanguage = (Spinner) findViewById(R.id.spinnerLanguage);
         spinnerLanguage.setOnItemSelectedListener(this);
-        List<String> languagesList = Arrays.asList("\uD83C\uDDEC\uD83C\uDDE7","\uD83C\uDDEB\uD83C\uDDF7","\uD83C\uDDE9\uD83C\uDDEA","\uD83C\uDDEE\uD83C\uDDF9");
-        ArrayAdapter<String> dataAdapterLanguages = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, languagesList);
+        FirebaseReference ref = new FirebaseReference();
+        String uId = ((StudyBuddy) this.getApplication()).getAuthendifiedUser().getUserID().getId();
+
+        ref.select(Messages.FirebaseNode.USERS).select(uId).get(User.class, new Consumer<User>() {
+            @Override
+            public void accept(User user) {
+                selectedLanguage = user.getFavoriteLanguage() != null ? user.getFavoriteLanguage() : Language.EN;
+                spinnerLanguage.setSelection(Language.LanguageToInt(selectedLanguage));
+            }
+        });
+        ArrayAdapter<String> dataAdapterLanguages = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, Language.languages);
         dataAdapterLanguages.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerLanguage.setAdapter(dataAdapterLanguages);
     }
@@ -116,15 +130,11 @@ public class CreateGroupActivity extends AppCompatActivity implements AdapterVie
 
     }
 
-    public void addtoGroups(View view)
-    {
-
-            User user = ((StudyBuddy) CreateGroupActivity.this.getApplication()).authendifiedUser;
-            Group g = new Group(maxParticipants, new Course(selectedCourse),selectedLanguage, UUID.randomUUID().toString(), user.getUserID().getId());
-            mb.pushGroup(g, user.getUserID().getId());
-            createUserInitialAvailabilities(user.getUserID().getId(), g.getGroupID().getId());
-	        Intent intent = new Intent(this, NavigationActivity.class);
-	        startActivity(intent);
+    public void addtoGroups(View view) {
+        User user = ((StudyBuddy) CreateGroupActivity.this.getApplication()).authendifiedUser;
+        Group g = new Group(maxParticipants, new Course(selectedCourse),selectedLanguage, UUID.randomUUID().toString(), user.getUserID().getId());
+        Intentable toNav = new Intentable(this, NavigationActivity.class);
+        joinGroupsAndGo(mb, user, g, toNav);
     }
 
     NumberPicker.OnValueChangeListener onValueChangeListener = new NumberPicker.OnValueChangeListener()
@@ -137,7 +147,4 @@ public class CreateGroupActivity extends AppCompatActivity implements AdapterVie
         }
     };
 
-    private void createUserInitialAvailabilities(String user, String group){
-        Availability a = new ConnectedAvailability(user, group);
-    }
 }

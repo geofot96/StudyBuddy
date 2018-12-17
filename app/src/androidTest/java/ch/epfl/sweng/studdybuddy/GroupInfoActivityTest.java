@@ -8,6 +8,7 @@ import org.junit.Rule;
 import org.junit.Test;
 
 import ch.epfl.sweng.studdybuddy.Fragments.FeedFragment;
+import ch.epfl.sweng.studdybuddy.activities.NavigationActivity;
 import ch.epfl.sweng.studdybuddy.activities.group.GroupInfoActivity;
 import ch.epfl.sweng.studdybuddy.activities.GroupsActivity;
 import ch.epfl.sweng.studdybuddy.util.Messages;
@@ -36,7 +37,7 @@ public class GroupInfoActivityTest {
         try {
             Thread.sleep(2000);
             onView(withId(R.id.quitGroup)).perform(click());
-            intended(hasComponent(GroupsActivity.class.getName()));
+            intended(hasComponent(NavigationActivity.class.getName()));
         }
         catch (Exception e) {
 

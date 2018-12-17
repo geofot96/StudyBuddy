@@ -7,7 +7,9 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
+import java.util.List;
 
 import ch.epfl.sweng.studdybuddy.core.Group;
 import ch.epfl.sweng.studdybuddy.core.Pair;
@@ -90,5 +92,21 @@ public class MetaGroupAdminTest {
     }
     @Test public void removeUserFromGroupDoesNotReturnNull() {
         assertNotNull(mg.removeUserFromGroup("123", withAdmin("123")));
+    }
+    @Test
+    public void putAll() {
+        List<String> courses = Arrays.asList("1", "2", "3");
+        mg.putAllCourses(courses, "a");
+        verify(testref, times(3)).child("userCourse");
+    }
+
+    @Test
+    public void onGroupGetNull() {
+
+    }
+
+    @Test
+    public void onGroupGet() {
+
     }
 }

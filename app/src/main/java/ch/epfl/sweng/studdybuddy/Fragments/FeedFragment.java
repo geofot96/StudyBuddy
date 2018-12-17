@@ -16,8 +16,6 @@ import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ToggleButton;
 
-import com.google.firebase.database.FirebaseDatabase;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -67,7 +65,7 @@ public class FeedFragment extends Fragment
         actionButton = v.findViewById(R.id.createGroup);
         actionButton.setOnClickListener(getFloatingButtonListener());
 
-        FirebaseReference firebase = new FirebaseReference(FirebaseDatabase.getInstance().getReference());
+        FirebaseReference firebase = new FirebaseReference();
         String userId = ((StudyBuddy) getActivity().getApplication()).getAuthendifiedUser().getUserID().toString();
         Consumer<Intent> buttonClickConsumer = getButtonClickConsumer();
 

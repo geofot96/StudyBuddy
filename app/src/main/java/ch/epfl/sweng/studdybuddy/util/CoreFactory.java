@@ -50,7 +50,5 @@ public final class CoreFactory {
     public static Meeting randomMeeting() {
         return new Meeting();
     }
-    private CoreFactory(){
-        throw new IllegalMonitorStateException(); //Safe but will drop code cvg a little
-    }
+    private CoreFactory(){ }
 }

@@ -4,6 +4,8 @@ import org.junit.Test;
 
 import ch.epfl.sweng.studdybuddy.core.ID;
 
+import static junit.framework.TestCase.assertEquals;
+
 public class IDTest {
 
 
@@ -38,15 +40,13 @@ public class IDTest {
         assert(original.toString().equals("foo"));
     }
 
-   /*
+
     @Test
     public void equalsWorks(){
         ID<Integer> original = new ID<>("foo");
         ID<Integer> notOriginal = new ID<>("bar");
-       // System.out.println(original.getId());
-       // System.out.println(original.getId().equals(notOriginal.getId()));
-        //assert(original.equals(original));
-        assert(original.equals(notOriginal));
+        assertEquals(original, notOriginal);
+        assertEquals(original, original);
 
-    }*/
+    }
 }
