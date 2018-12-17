@@ -211,6 +211,21 @@ public class ChatActivity extends AppCompatActivity {
         };
     }
 
+//    public static View.OnClickListener fabListener(EditText input, FirebaseReference ref, FirebaseAuth auth, String groupID, String downloadUri) {
+//        return new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                if(input.getText().toString().trim().length() > 0 || !downloadUri.isEmpty()) {
+//                    ref.select(Messages.FirebaseNode.CHAT).select(groupID).push(new ChatMessage(input.getText().toString(),
+//                            auth.getCurrentUser().getDisplayName()));
+//
+//                    input.setText("");
+//
+//                }
+//            }
+//        };
+//    }
+
 
     public void displayChatMessages() {
         ListView listOfMessages = (ListView) findViewById(R.id.list_of_messages);
