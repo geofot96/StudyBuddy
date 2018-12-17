@@ -4,10 +4,13 @@ import com.google.android.gms.tasks.Task;
 
 import ch.epfl.sweng.studdybuddy.core.Account;
 
+/**
+ * A dummy class used solely for testing GoogleSingInActivity
+ */
 public class DummyGoogleSignInActivity extends GoogleSignInActivity {
 
     @Override
-    public AuthManager getAuthManager(){
+    public AuthManager getAuthManager() {
         return new AuthManager() {
             @Override
             public void login(Account acct, OnLoginCallback f, String TAG) {
@@ -33,7 +36,7 @@ public class DummyGoogleSignInActivity extends GoogleSignInActivity {
     }
 
     @Override
-    public boolean onTest(){
+    public boolean onTest() {
         return true;
     }
 
