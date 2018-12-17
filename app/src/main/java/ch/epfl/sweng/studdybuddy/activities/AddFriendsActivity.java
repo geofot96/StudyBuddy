@@ -32,21 +32,21 @@ import static ch.epfl.sweng.studdybuddy.controllers.CourseSelectController.updat
 import static ch.epfl.sweng.studdybuddy.util.ActivityHelper.showDropdown;
 
 public class AddFriendsActivity extends AppCompatActivity {
-    static ReferenceWrapper firebase;
-    static List<User> friendsDB = new ArrayList<>();
+    static ReferenceWrapper fireBase;
+    static List<User> friendsDb = new ArrayList<>();
     List<String> userNames = new ArrayList<>();
     static AutoCompleteTextView autocompleteFriends;
     public static final List<User> friendSelection = new ArrayList<>();
-    static ArrayAdapter<String> ad;
+    static ArrayAdapter<String> adapter;
     String uId;
     static Button addButton;
-    private MetaGroupAdmin mga;
+    private MetaGroupAdmin metaGroupAdmin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        firebase  = new FirebaseReference();
-        mga = new MetaGroupAdmin(firebase);
+        fireBase = new FirebaseReference();
+        metaGroupAdmin = new MetaGroupAdmin(fireBase);
         setContentView(R.layout.activity_find_friends);
         setUpButtons();
         setUpSelectedFriends();
@@ -59,16 +59,16 @@ public class AddFriendsActivity extends AppCompatActivity {
         addButton = findViewById(R.id.btn_add);
         User currentUser = ((StudyBuddy) AddFriendsActivity.this.getApplication()).getAuthendifiedUser();
         uId = currentUser.getUserID().getId();
-        addButton.setOnClickListener(mga.updateFriendsOnDone(uId, friendSelection, mga, i));
+        addButton.setOnClickListener(metaGroupAdmin.updateFriendsOnDone(uId, friendSelection, metaGroupAdmin, i));
     }
 
-    private void setUpAutoComplete(){
-        ad = new ArrayAdapter<>(this,android.R.layout.simple_dropdown_item_1line, userNames);
+    private void setUpAutoComplete() {
+        adapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, userNames);
         autocompleteFriends = findViewById(R.id.friendsComplete);
-        autocompleteFriends.setAdapter(ad);
+        autocompleteFriends.setAdapter(adapter);
         autocompleteFriends.setOnClickListener(showDropdown(autocompleteFriends));
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        autocompleteFriends.setOnItemClickListener(onClickAddUser(friendSelection, friendsDB, resetSelectViews(addButton, autocompleteFriends, imm)));
+        autocompleteFriends.setOnItemClickListener(onClickAddUser(friendSelection, friendsDb, resetSelectViews(addButton, autocompleteFriends, imm)));
     }
 
     private void setUpSelectedFriends() {
@@ -77,13 +77,13 @@ public class AddFriendsActivity extends AppCompatActivity {
         selectedFriends.setLayoutManager(new LinearLayoutManager(getBaseContext()));
         selectedFriends.setAdapter(friendsAdapter);
         AdapterAdapter adapterC = new RecyclerAdapterAdapter(friendsAdapter);
-        mga.addListenner(adapterC);
-        mga.addListenner(updateClickableUsers(addButton, friendSelection));
+        metaGroupAdmin.addListenner(adapterC);
+        metaGroupAdmin.addListenner(updateClickableUsers(addButton, friendSelection));
     }
 
     private void setUpDb() {
-        mga.addListenner(new ArrayAdapterAdapter(ad));
-        mga.fetchUser(friendsDB);
-        mga.fetchUserNames(userNames);
+        metaGroupAdmin.addListenner(new ArrayAdapterAdapter(adapter));
+        metaGroupAdmin.fetchUser(friendsDb);
+        metaGroupAdmin.fetchUserNames(userNames);
     }
 }
