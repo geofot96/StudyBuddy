@@ -125,6 +125,10 @@ public class ConnectedCalendarActivity extends AppCompatActivity implements Obse
     @Override
     public void update(Observable observable) {
         List<Integer> groupAvailabilities = ((ConnectedCalendar) observable).getComputedAvailabilities();
+        updateColor(groupAvailabilities);
+    }
+
+    private void updateColor(List<Integer> groupAvailabilities) {
         if(groupAvailabilities.size() == ConnectedCalendar.CALENDAR_SIZE) {
             colorController.updateColor(calendarGrid, groupAvailabilities, maxNumberOfUsers, calendarWidth);
         }

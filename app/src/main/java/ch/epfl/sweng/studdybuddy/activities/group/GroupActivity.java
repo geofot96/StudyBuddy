@@ -176,6 +176,8 @@ public class GroupActivity extends AppCompatActivity implements Observer, Result
     /**
      * change the color of every cell of the calendar when a change has been added to
      * the availabilities of the users.
+     *
+     * @param observable the object (here the ConnectedCalendar) which is observed by the activity
      */
     @Override
     public void update(Observable observable) {
