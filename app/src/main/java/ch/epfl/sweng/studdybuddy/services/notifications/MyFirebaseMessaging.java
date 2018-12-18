@@ -50,16 +50,20 @@ public class MyFirebaseMessaging extends FirebaseMessagingService {
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
+        setUp(
+                remoteMessage.getNotification(),
+                remoteMessage,
+                new Intent(this, ChatActivity.class),
+                TaskStackBuilder.create(this));
+    }
 
-        RemoteMessage.Notification notification = remoteMessage.getNotification();
+    public void setUp(RemoteMessage.Notification notification, RemoteMessage remoteMessage, Intent resultIntent, TaskStackBuilder stackBuilder) {
         title = notification.getTitle();
         body = notification.getBody();
         click_action = notification.getClickAction();
         groupID = remoteMessage.getData().get("group_id");
 
-        Intent resultIntent = new Intent(this, ChatActivity.class);
         resultIntent.setAction(click_action);
-        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
         Bundle bundle = new Bundle();
         bundle.putString(Messages.groupID, groupID);
         bundle.putString(Messages.course, title);
@@ -88,7 +92,7 @@ public class MyFirebaseMessaging extends FirebaseMessagingService {
 
     private void sendNotification() {
 
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
+        NotificationCompat.Builder builder = notifFactory.getBuilder(this)
                 .setSmallIcon(R.mipmap.ic_launcher)
                 .setContentTitle(title)
                 .setContentText(body)

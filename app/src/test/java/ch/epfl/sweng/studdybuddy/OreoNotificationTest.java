@@ -15,6 +15,7 @@ import ch.epfl.sweng.studdybuddy.services.notifications.NotifFactory;
 import ch.epfl.sweng.studdybuddy.services.notifications.OreoNotification;
 import ch.epfl.sweng.studdybuddy.services.notifications.Version;
 
+import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;

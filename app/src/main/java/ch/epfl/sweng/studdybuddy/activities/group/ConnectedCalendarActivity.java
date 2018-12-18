@@ -90,7 +90,7 @@ public class ConnectedCalendarActivity extends AppCompatActivity implements Obse
         if(pair.getKey() == null || pair.getValue() == null){
             String TAG = "CALENDAR_ACTIVITY";
             Log.d(TAG, "Information of the group is not fully recovered");
-            startActivity(new Intent(this, NavigationActivity.class));
+            startActivity(new Intent(ConnectedCalendarActivity.this, NavigationActivity.class));
         }
 
     }

@@ -1,5 +1,8 @@
 package ch.epfl.sweng.studdybuddy;
 
+import android.content.ComponentName;
+import android.os.Bundle;
+import android.support.test.espresso.intent.rule.IntentsTestRule;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.support.v7.widget.CardView;
@@ -16,10 +19,22 @@ import java.util.List;
 import java.util.Map;
 
 import ch.epfl.sweng.studdybuddy.activities.group.ConnectedCalendarActivity;
+import ch.epfl.sweng.studdybuddy.activities.group.GlobalBundle;
+import ch.epfl.sweng.studdybuddy.activities.group.GroupActivity;
 import ch.epfl.sweng.studdybuddy.services.calendar.Availability;
 import ch.epfl.sweng.studdybuddy.services.calendar.ConcreteAvailability;
 import ch.epfl.sweng.studdybuddy.services.calendar.ConnectedCalendar;
+import ch.epfl.sweng.studdybuddy.util.Messages;
 
+import static android.support.test.InstrumentationRegistry.getTargetContext;
+import static android.support.test.espresso.Espresso.onView;
+import static android.support.test.espresso.action.ViewActions.click;
+import static android.support.test.espresso.action.ViewActions.scrollTo;
+import static android.support.test.espresso.assertion.ViewAssertions.matches;
+import static android.support.test.espresso.intent.Intents.intended;
+import static android.support.test.espresso.intent.matcher.IntentMatchers.hasComponent;
+import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.internal.runner.junit4.statement.UiThreadStatement.runOnUiThread;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -45,6 +60,12 @@ public class ConnectedCalendarActivityTest{
         mapAvailabailities.put("test", mActivityRule.getMockAvailabilities());
         calendar = new ConnectedCalendar(mapAvailabailities);
         calendarView = mActivityRule.getActivity().findViewById(R.id.calendarGrid);
+    }
+
+    @Test
+    public void confirmButtonIsClikable(){
+        onView(withId(R.id.confirmSlots)).perform(scrollTo(), click());
+        onView(withId(R.id.editAvail)).check(matches(isDisplayed()));
     }
 
     @Test
@@ -131,6 +152,9 @@ public class ConnectedCalendarActivityTest{
             super.beforeActivityLaunched();
             setUpMockAvailaibilities();
             GroupActivityTest.setup();
+            Bundle bundle = new Bundle();
+            bundle.putString(Messages.groupID, "this is a test");
+            GlobalBundle.getInstance().putAll(bundle);
         }
 
         private void setUpMockAvailaibilities() {

@@ -2,7 +2,10 @@ package ch.epfl.sweng.studdybuddy;
 
 import android.app.Notification;
 import android.app.NotificationManager;
+import android.app.TaskStackBuilder;
+import android.content.Intent;
 import android.os.Build;
+import android.support.v4.app.NotificationCompat;
 
 import com.google.firebase.messaging.RemoteMessage;
 
@@ -20,6 +23,8 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 public class MyFireBaseMessagingTest {
@@ -35,6 +40,12 @@ public class MyFireBaseMessagingTest {
     private Notification.Builder notifOreoBuilder = mock(Notification.Builder.class);
     private Version versionOreo = mock(Version.class);
     private Version versionBase = mock(Version.class);
+
+    private RemoteMessage.Notification mockedNotification = mock(RemoteMessage.Notification.class);
+    private Intent intent = mock(Intent.class);
+    private TaskStackBuilder stackBuilder = mock(TaskStackBuilder.class);
+    private NotificationCompat.Builder builder = mock(NotificationCompat.Builder.class);
+
     @Before
     public void setup(){
         remoteMessageBuilder.addData("group_id", Messages.TEST);
@@ -42,27 +53,35 @@ public class MyFireBaseMessagingTest {
         remoteMessageBuilder.addData("group_id", "wrongGp");
         remoteMessageWrongGroup = remoteMessageBuilder.build();
         classTested = new MyFirebaseMessaging();
-        classTested.setNotifFactory(notifFactory);
-        classTested.setCurrentGroupID(Messages.TEST);
-
         when(notifFactory.nManagerFactory(any())).thenReturn(mockManager);
         when(notifFactory.OreoNotificationFactory(any())).thenReturn(mockOreo);
+        when(notifFactory.getBuilder(any())).thenReturn(builder);
         when(mockOreo.getNotificationManager()).thenReturn(mockManager);
         when(versionOreo.getBuildVersion()).thenReturn(Build.VERSION_CODES.O);
         when(versionBase.getBuildVersion()).thenReturn(Build.VERSION_CODES.BASE);
-        when(mockOreo.getOreoNotification(anyString(), anyString(), any(), any(), anyInt())).thenReturn(notifOreoBuilder);
+        when(mockOreo.getOreoNotification(any(), any(), any(), any(), anyInt())).thenReturn(notifOreoBuilder);
 
+        when(builder.setSmallIcon(anyInt())).thenReturn(builder);
+        when(builder.setContentTitle(any())).thenReturn(builder);
+        when(builder.setContentText(any())).thenReturn(builder);
+        when(builder.setAutoCancel(true)).thenReturn(builder);
+        when(builder.setSound(any())).thenReturn(builder);
+        when(builder.setContentIntent(any())).thenReturn(builder);
+
+
+        classTested.setNotifFactory(notifFactory);
+        classTested.setCurrentGroupID(Messages.TEST);
     }
 
     @Test
     public void correctlySetUpGroup(){
         assertEquals(Messages.TEST, classTested.getCurrentGroupID());
     }
-/*
+
     @Test
     public void createOreoNotification(){
         classTested.setVersion(versionOreo);
-        classTested.onMessageReceived(remoteMessageWrongGroup);
+        classTested.setUp(mockedNotification, remoteMessageWrongGroup, intent, stackBuilder);
         verify(notifFactory, times(1)).OreoNotificationFactory(any());
         verify(notifFactory, times(0)).nManagerFactory(any());
     }
@@ -70,16 +89,16 @@ public class MyFireBaseMessagingTest {
     @Test
     public void createRegularNotification(){
         classTested.setVersion(versionBase);
-        classTested.onMessageReceived(remoteMessageWrongGroup);
+        classTested.setUp(mockedNotification, remoteMessageWrongGroup, intent, stackBuilder);
         verify(notifFactory, times(0)).OreoNotificationFactory(any());
         verify(notifFactory, times(1)).nManagerFactory(any());
     }
 
     @Test
     public void noNotificationIfChattingWithTheGroup(){
-        classTested.onMessageReceived(remoteMessageCorrectGroup);
+        classTested.setUp(mockedNotification, remoteMessageCorrectGroup, intent, stackBuilder);
         verify(notifFactory, times(0)).OreoNotificationFactory(any());
         verify(notifFactory, times(0)).nManagerFactory(any());
     }
-*/
+
 }
