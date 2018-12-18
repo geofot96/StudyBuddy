@@ -40,6 +40,10 @@ public final class Buddy {
     //Returns null if not buddy, because no Optionnal for Java<8
     public String buddyOf(String uid) {
         String buddy = null;
+        if(alice == null || bob == null)
+        {
+            return null;
+        }
         if(alice.equals(uid)) {
             buddy = bob;
         }
