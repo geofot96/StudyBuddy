@@ -81,10 +81,16 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
         return view;
     }
 
+    /**
+     *  Getter for the database instance
+     */
     public ReferenceWrapper getDB(){
         return new FirebaseReference();
     }
 
+    /**
+     *  Set up the view of user's favourite language field and current data from database
+     */
     void setUpLang() {
         spinnerLang = view.findViewById(R.id.spinner_languages_settings);
         spinnerLang.setOnItemSelectedListener(this);
@@ -98,6 +104,7 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
         updateLanguage(user);
         ref.select(Messages.FirebaseNode.USERS).select(uId).get(User.class, SettingsFragmentHelper.updateLanguage(this));
     }
+
 
     public void updateLanguage(User user){
         String selectedLanguage = user.getFavoriteLanguage() != null ? user.getFavoriteLanguage() : Language.EN;
@@ -128,6 +135,12 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
             }
     }
 
+
+
+    /**
+     *  Call all methods that in charge of UI in this fragment - language field, location field,
+     *  sign out and apply settings button
+     */
     public void setUpUI(){
         setUpLang();
         setUpLocation();
@@ -135,6 +148,10 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
         SetUpApply();
     }
 
+
+    /**
+     *  Setter for apply button
+     */
     public void SetUpApply(){
         applyButton = view.findViewById(R.id.btn_settings_apply);
         applyButton.setOnClickListener(new View.OnClickListener() {
@@ -150,6 +167,10 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
         });
     }
 
+
+    /**
+     *  Set up data in order to display location field and current location from database
+     */
     public void setUpLocation(){
         textDisplayLocation.setOnClickListener(SettingsFragmentHelper.setUpLocationOnClickListener(this));
         favoriteLocation = user.getFavoriteLocation() != null ? user.getFavoriteLocation() : favoriteLocation;
