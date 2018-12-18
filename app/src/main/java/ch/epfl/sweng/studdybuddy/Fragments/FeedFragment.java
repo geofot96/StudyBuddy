@@ -37,7 +37,7 @@ import ch.epfl.sweng.studdybuddy.util.Messages;
 import ch.epfl.sweng.studdybuddy.util.StudyBuddy;
 
 /**
- * A simple {@link Fragment} subclass.
+ * A fragment containing the list of available courses
  */
 public class FeedFragment extends Fragment {
 
@@ -51,12 +51,20 @@ public class FeedFragment extends Fragment {
     private FloatingActionButton actionButton;
     private ToggleButton toggleFull, toggleUserCourses;
 
-
+    /**
+     *  Required empty public constructor
+     */
     public FeedFragment() {
-        // Required empty public constructor
+
     }
 
-
+    /**
+     * Sets up the graphical elements of the Fragment
+     * @param inflater Inflater containing the list of existing chats
+     * @param container container of the list
+     * @param savedInstanceState previously saved state
+     * @return The inflated view containing the list of chats
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -92,6 +100,10 @@ public class FeedFragment extends Fragment {
         return v;
     }
 
+    /**
+     * Returns a listener that starts the given activity
+     * @return A consumer that does the given action
+     */
     @NonNull
     private Consumer<Intent> getButtonClickConsumer() {
         return new Consumer<Intent>() {
@@ -102,6 +114,10 @@ public class FeedFragment extends Fragment {
         };
     }
 
+    /**
+     * Listener for the toggle buttons that decides what behaviour to do
+     * @return a listener that does the aforementioned functionality
+     */
     @NonNull
     private CompoundButton.OnCheckedChangeListener getToggleListener() {
         return new CompoundButton.OnCheckedChangeListener() {
@@ -111,6 +127,12 @@ public class FeedFragment extends Fragment {
         };
     }
 
+    /**
+     * Set up the graphical components of the view
+     * @param rv The recyclerViewer containing the different classes
+     * @param sv The SearchView where te user types to filter
+     * @param v the current view
+     */
     private void setUpActivity(RecyclerView rv, SearchView sv, View v) {
         rv.setHasFixedSize(true);
         rv.setLayoutManager(new LinearLayoutManager(v.getContext()));
@@ -131,8 +153,14 @@ public class FeedFragment extends Fragment {
         });
     }
 
+    /**
+     * Filters the available groups depending on which toggle are selected
+     * @param buttonView the buttonview that has changed
+     * @param isChecked boolean describing the state of the toggle
+     */
     public void toggleButtonBehaviour(CompoundButton buttonView, boolean isChecked) {
-        Set filteredGroupSet=new HashSet(groupSet);;
+        Set filteredGroupSet = new HashSet(groupSet);
+        ;
         if (toggleFull.isChecked()) {
             selectOnlyAvailableGroups();
 
@@ -144,7 +172,7 @@ public class FeedFragment extends Fragment {
                 selectOnlyAvailableGroups();
 
             }
-        } else if(toggleUserCourses.isChecked()) {
+        } else if (toggleUserCourses.isChecked()) {
             selectOnlyGroupsWithUserCourses();
             filteredGroupSet = new HashSet(filteredGroupSetUserCourses);
         }
@@ -153,7 +181,9 @@ public class FeedFragment extends Fragment {
         mAdapter.notifyDataSetChanged();
     }
 
-
+    /**
+     * Keeps only the groups with free spaces for more participants
+     */
     private void selectOnlyAvailableGroups() {
         filteredGroupSetFull.clear();
         for (Group g : groupSet) {
@@ -162,6 +192,9 @@ public class FeedFragment extends Fragment {
         }
     }
 
+    /**
+     * Keeps only the groups with the same courses as the user's preferred ones
+     */
     private void selectOnlyGroupsWithUserCourses() {
         filteredGroupSetUserCourses.clear();
         for (Group g : groupSet) {
@@ -170,7 +203,10 @@ public class FeedFragment extends Fragment {
         }
     }
 
-
+    /**
+     * Listener that starts an activity changing the current view to the CreateGroupActivity
+     * @return the aforementioned listener
+     */
     @NonNull
     private View.OnClickListener getFloatingButtonListener() {
         return new View.OnClickListener() {
@@ -182,6 +218,10 @@ public class FeedFragment extends Fragment {
         };
     }
 
+    /**
+     * Listener which triggers the sorting by date of the list of groups
+     * @return the aforementioned listener
+     */
     @NonNull
     private View.OnClickListener getOnClickListener() {
         return new View.OnClickListener() {
@@ -192,6 +232,10 @@ public class FeedFragment extends Fragment {
         };
     }
 
+    /**
+     * Sorts the current list of groups according to creation date
+     * @param view the current view
+     */
     public void sortGroupCards(View view) {
         List<Group> groupList = mAdapter.getGroupList();
         Collections.sort(groupList);
@@ -199,6 +243,10 @@ public class FeedFragment extends Fragment {
         mAdapter.notifyDataSetChanged();
     }
 
+    /**
+     * Start the given intent
+     * @param intent intent to be started
+     */
     public void moveOn(Intent intent) {
         startActivity(intent);
     }
