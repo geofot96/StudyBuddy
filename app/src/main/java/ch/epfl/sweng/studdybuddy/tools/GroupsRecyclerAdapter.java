@@ -13,7 +13,6 @@ import android.widget.Filterable;
 import java.util.List;
 
 import ch.epfl.sweng.studdybuddy.R;
-import ch.epfl.sweng.studdybuddy.activities.CreateGroupActivity;
 import ch.epfl.sweng.studdybuddy.activities.group.GroupActivity;
 import ch.epfl.sweng.studdybuddy.core.Group;
 import ch.epfl.sweng.studdybuddy.core.Pair;
@@ -23,28 +22,48 @@ import ch.epfl.sweng.studdybuddy.util.Helper;
 import ch.epfl.sweng.studdybuddy.util.Messages;
 
 import static ch.epfl.sweng.studdybuddy.controllers.CreateGroupController.createUserInitialAvailabilities;
-
-public class GroupsRecyclerAdapter extends BasicRecyclerAdapter implements Filterable
-{
-    public GroupsRecyclerAdapter(List<Group> groupList, String userId)
-    {
-        super(groupList,userId);
+/**
+ * A specialised adapter used for the elements of the group feed in a recyclerAdapter
+ */
+public class GroupsRecyclerAdapter extends BasicRecyclerAdapter implements Filterable {
+    /**
+     * Constructs an adapter using a list of groups and the current user id
+     * @param groupList the list of groups related to the user
+     * @param userId the id of the user
+     */
+    public GroupsRecyclerAdapter(List<Group> groupList, String userId) {
+        super(groupList, userId);
     }
 
-    public GroupsRecyclerAdapter(List<Group> groupList, String userId, Consumer<Intent> joinConsumer)
-    {
+    /**
+     * Constructs an adapter using a list of groups and the current user id, and a consumer used for joining the group
+     * @param groupList the list of groups related to the user
+     * @param userId the id of the user
+     * @param joinConsumer consumer used for joining this group
+     */
+    public GroupsRecyclerAdapter(List<Group> groupList, String userId, Consumer<Intent> joinConsumer) {
         this(groupList, userId);
         setJoinConsumer(joinConsumer);
     }
 
-    public BasicRecyclerAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
-    {
+    /**
+     * Inflates the elements of the viewGrop
+     * @param parent the viewGroup containing the different views
+     * @param viewType the type of the view
+     * @return A viewHolder with the inflated element
+     */
+    public BasicRecyclerAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         Context context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
         View groupCardView = inflater.inflate(R.layout.recycle_viewer_row, parent, false);
         return getViewHolder(groupCardView);
     }
 
+    /**
+     * Sets the information retrieved from the list of groups to the holder
+     * @param holder The holder of the graphical elements of the card
+     * @param position the index of the element in the child list
+     */
     @Override
     public void onBindViewHolder(@NonNull BasicRecyclerAdapter.MyViewHolder holder, int position) {
         Group group = getGroupList().get(position);
@@ -53,69 +72,74 @@ public class GroupsRecyclerAdapter extends BasicRecyclerAdapter implements Filte
         holder.groupCreationDateTextView.setText(getCreationDate(group.getCreationDate()));
         setParticipantNumber(holder.groupParticipantInfoTextView, group);
         setButton(holder.messageButton, group);
-        if(getUserId().equals(group.getAdminID())) {
+        if (getUserId().equals(group.getAdminID())) {
             holder.admin.setText("\uD83D\uDC51");
-        }
-        else {
+        } else {
             holder.admin.setText("");
         }
     }
 
-
-
-    private String getCreationDate(long date){
+    /**
+     * setter for the creation  date of the Group
+     * @param date long number representing the date
+     * @return A string representing the date
+     */
+    private String getCreationDate(long date) {
         return DateTimeHelper.printLongDate(date);
     }
 
-
-
+    /**
+     *  getter of the number of elements
+     * @return the number of items in the list of groups
+     */
     @Override
-    public int getItemCount()
-    {
+    public int getItemCount() {
         return getGroupList().size();
     }
+
+    /**
+     * getter of the feed filter
+     * @return the feedFilter being used
+     */
     @Override
     public Filter getFilter() {
-        if(filter==null)
-        {
-            filter=new FeedFilter(this,getFilterList());
+        if (filter == null) {
+            filter = new FeedFilter(this, getFilterList());
         }
 
         return filter;
     }
 
-    public void setFilterList(List<Group> newFilter)
-    {
+    public void setFilterList(List<Group> newFilter) {
         getFilter();
         filter.setFilterList(newFilter);
     }
 
-    private void setButton(Button button, Group group){
+    private void setButton(Button button, Group group) {
         Integer gSize = getSizes().get(group.getGroupID().toString());
         int groupSize = 1;
-        if(gSize != null) {
+        if (gSize != null) {
             groupSize = gSize;
         }
-        if(getuGroupIds().contains(group.getGroupID().getId())) {
+        if (getuGroupIds().contains(group.getGroupID().getId())) {
             button.setText("More Info");
             button.setOnClickListener(moreInfoListenerIfInTheGroup(button, group));
-        }
-        else {
+        } else {
             button.setText("Join");
             button.setOnClickListener(joinButtonListener(group, button));
 
             button.setClickable(groupSize < group.getMaxNoUsers());
         }
     }
-    private View.OnClickListener joinButtonListener(Group group, Button button){
+
+    private View.OnClickListener joinButtonListener(Group group, Button button) {
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Pair pair =new Pair(getUserId(), group.getGroupID().toString());
+                Pair pair = new Pair(getUserId(), group.getGroupID().toString());
                 fb.select(Messages.FirebaseNode.USERGROUP).select(Helper.hashCode(pair)).setVal(pair);
                 createUserInitialAvailabilities(getUserId(), group.getAdminID());
-                if(getJoinConsumer() != null)
-                {
+                if (getJoinConsumer() != null) {
                     Intent intent = new Intent(button.getContext(), GroupActivity.class);
                     intent.putExtra(Messages.groupID, group.getGroupID().getId());
                     intent.putExtra(Messages.userID, getUserId());
@@ -129,8 +153,7 @@ public class GroupsRecyclerAdapter extends BasicRecyclerAdapter implements Filte
 
 
     private void gotoGroups(Button button, Group group) {
-        if(getJoinConsumer() != null )
-        {
+        if (getJoinConsumer() != null) {
             Intent intent = new Intent(button.getContext(), GroupActivity.class);
             intent.putExtra(Messages.groupID, group.getGroupID().getId());
             intent.putExtra(Messages.maxUser, group.getMaxNoUsers());
@@ -140,7 +163,7 @@ public class GroupsRecyclerAdapter extends BasicRecyclerAdapter implements Filte
         }
     }
 
-    private View.OnClickListener moreInfoListenerIfInTheGroup(Button button, Group group){
+    private View.OnClickListener moreInfoListenerIfInTheGroup(Button button, Group group) {
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
