@@ -44,10 +44,12 @@ abstract public class Metabase {
         return getUsersFromIdsAndConsume(uIds, groupUsers, Consumer.doNothing());
     }
 
+
     public ValueEventListener getUsersFromIdsAndConsume(List<String> uIds, List<User> groupUsers, Consumer<List<User>> consumer) {
-        return db.select("users").getAll(User.class, new Consumer<List<User>>() {
+        return db.select(Messages.FirebaseNode.USERS).getAll(User.class, new Consumer<List<User>>() {
             @Override
             public void accept(List<User> users) {
+                groupUsers.clear();
                 for (int i = 0; i < users.size(); ++i) {
                     User u = users.get(i);
                     ID<User> id = u.getUserID();
@@ -119,6 +121,7 @@ abstract public class Metabase {
         return db.select(Messages.FirebaseNode.BUDDIES).getAll(Buddy.class, new Consumer<List<Buddy>>() {
             @Override
             public void accept(@Nullable List<Buddy> buddies) {
+
                 for (Buddy buddy : buddies) {
                     String bob = buddy.buddyOf(uid);
                     if (bob != null) {
