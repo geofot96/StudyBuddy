@@ -3,7 +3,6 @@ package ch.epfl.sweng.studdybuddy.controllers;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.Nullable;
-import android.util.Log;
 
 import com.google.firebase.database.ValueEventListener;
 
@@ -59,7 +58,7 @@ public final class GoogleSigninController {
                 if(users != null && users.size()> 0){
                     app.setAuthendifiedUser(users.get(0));
                     ctx.startActivity(new Intent(ctx, CourseSelectActivity.class));
-                    //finish();
+                    
                 }else {
                     fetchUserAndStart(acct, app, ctx);
                 }

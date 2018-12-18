@@ -99,4 +99,11 @@ public class MetaMeetingTest {
        verify(wb, times(1)).select(bg.getGroupID().getId());
        verify(wb, times(1)).getAll(Meeting.class, consumer);
     }
+
+    @Test
+    public void pushLocationTest(){
+        mm.pushLocation(m.getLocation(), bg.getGroupID(),m.getId());
+        when(testref.child(any())).thenReturn(testref);
+        verify(wb, times(1)).setVal(m.getLocation());
+    }
 }

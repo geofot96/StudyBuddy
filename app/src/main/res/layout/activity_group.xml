@@ -53,6 +53,14 @@
                 android:text="Leave Group"
                 android:textColor="@color/buttonTextColor" />
 
+            <Button
+                android:id="@+id/invite_friends"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top|center"
+                android:background="@color/com_facebook_messenger_blue"
+                android:text="INVITE FRIENDS" />
+
             <TextView
                 android:id="@+id/meetingsTextview"
                 android:layout_width="match_parent"

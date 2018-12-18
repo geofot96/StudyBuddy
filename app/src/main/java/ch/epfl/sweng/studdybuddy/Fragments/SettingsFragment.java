@@ -170,7 +170,11 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
             @Override
             public void accept(User user) {
                 SettingsFragment.this.user = user;
-                favoriteLocation = user.getFavoriteLocation();
+
+                if(user.getFavoriteLanguage() != null)
+                {
+                    favoriteLocation = user.getFavoriteLocation();
+                }
                 textDisplayLocation.setText("Default Location: " + favoriteLocation.toString());
             }
         });

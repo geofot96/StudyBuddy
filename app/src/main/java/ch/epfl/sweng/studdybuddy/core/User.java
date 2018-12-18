@@ -39,14 +39,21 @@ final public class User
         this.favoriteLanguage = Language.EN;
     }
 
+
+
     @Override
     public boolean equals(Object o) {
         User user = (User) o;
-        return  !(o == null || getClass() != o.getClass()) &&
+        return
+                (o != null &&
+                getClass() == o.getClass() &&
+                name.equals(user.getName()) &&
                 userID.equals(user.userID) &&
                 favoriteLocation.equals(user.favoriteLocation) &&
-                favoriteLanguage.equals(user.favoriteLanguage);
+                favoriteLanguage.equals(user.favoriteLanguage));
+
     }
+
 
     public User(String name, String uId) {
         this.name = name;
