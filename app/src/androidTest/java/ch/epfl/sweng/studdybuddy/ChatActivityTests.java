@@ -47,8 +47,6 @@ import static org.mockito.Mockito.when;
 public class ChatActivityTests
 {
     Intent intent;
-    View v = mock(View.class);
-
 
     @Rule
     public ActivityTestRule<DummyChatActivity> DummyChatActivityIntentRule = new ActivityTestRule<>(DummyChatActivity.class, false, false);
