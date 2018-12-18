@@ -1,11 +1,15 @@
 package ch.epfl.sweng.studdybuddy;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.rule.GrantPermissionRule;
 import android.support.test.runner.AndroidJUnit4;
+import android.text.Editable;
+import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 
 
 import com.google.android.gms.tasks.Task;
@@ -35,6 +39,7 @@ import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 
 @RunWith(AndroidJUnit4.class)
@@ -42,6 +47,7 @@ import static org.mockito.Mockito.mock;
 public class ChatActivityTests
 {
     Intent intent;
+    View v = mock(View.class);
 
 
     @Rule
@@ -90,10 +96,17 @@ public class ChatActivityTests
 
     @Test
     public void testFabListener() {
-//        EditText et = mock(EditText.class);
-//        FirebaseReference fr = mock(FirebaseReference.class);
-//        FirebaseAuth auth = mock(FirebaseAuth.class);
-//        ChatActivity.fabListener(et, fr, auth, "uno");
+        EditText inputText = mock(EditText.class);
+        FirebaseReference ref = new FirebaseReference();
+        Editable editable = mock(Editable.class);
+        ChatActivity chatActivity = mock(ChatActivity.class);
+
+
+        when(chatActivity.fabListener(inputText, ref, "fabTest", "FabTestURI")).thenCallRealMethod();
+        inputText.setText("text");
+        when(inputText.getText()).thenReturn(editable);
+        when(editable.toString()).thenReturn("text");
+        chatActivity.fabListener(inputText, ref, "fabTest", "FabTestURI");
     }
 
 
@@ -111,5 +124,17 @@ public class ChatActivityTests
         DummyChatActivityIntentRule.launchActivity(intent);
         onView(withId(R.id.camera)).perform(click());
         DummyChatActivityIntentRule.finishActivity();
+    }
+
+    @Test
+    public void testPopView()
+    {
+
+//        ChatMessage chatMessage = mock(ChatMessage.class);
+//
+//        TextView messageUser = mock(TextView.class);
+//        when(v.findViewById(R.id.message_user)).thenReturn(messageUser);
+//        when(chatMessage.getMessageUser()).thenReturn("user");
+//        //when(messageUser.setText("user"))
     }
 }

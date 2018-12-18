@@ -211,13 +211,14 @@ public class ChatActivity extends AppCompatActivity {
         this.downloadUri = downloadUri;
     }
 
-    public void fabListener(EditText inputText, FirebaseReference reference, String groupsID, String downloadURI) {
+    public int fabListener(EditText inputText, FirebaseReference reference, String groupsID, String downloadURI) {
                 if (inputText.getText().toString().trim().length() > 0 || !downloadURI.isEmpty()) {
                     ChatUtils.pushToFirebase(reference, groupsID, inputText.getText().toString(), downloadURI);
                     inputText.setText("");
                     setDownloadUri("");
                     displayChatMessages();
                 }
+                return 0;
     }
 
 
@@ -230,26 +231,31 @@ public class ChatActivity extends AppCompatActivity {
                 FirebaseDatabase.getInstance().getReference().child(Messages.FirebaseNode.CHAT).child(groupID)) {
             @Override
             protected void populateView(View v, ChatMessage model, int position) {
-                TextView messageUser = (TextView) v.findViewById(R.id.message_user);
-                messageUser.setText(model.getMessageUser());
-                TextView messageTime = (TextView) v.findViewById(R.id.message_time);
-                messageTime.setText(DateFormat.format("dd-MM (HH:mm)", model.getMessageTime()));
-                TextView messageText = (TextView) v.findViewById(R.id.message_text);
-                messageText.setText(model.getMessageText());
-                ImageView image = (ImageView) v.findViewById(R.id.imgViewGall);
-                String modelUri = model.getImageUri();
-                if (modelUri != null && !modelUri.isEmpty()) {
-                    //Put the image in the chat
-                    Glide.with(ChatActivity.this).
-                            load(modelUri)
-                            .apply(new RequestOptions().override(500, 700)).
-                            into(image);
-                } else {
-                    image.setImageResource(android.R.color.transparent);
-                }
+                popViewBody(v, model);
             }
 
         };
         listOfMessages.setAdapter(adapter);
+    }
+
+    public void popViewBody(View v, ChatMessage model)
+    {
+        TextView messageUser = (TextView) v.findViewById(R.id.message_user);
+        messageUser.setText(model.getMessageUser());
+        TextView messageTime = (TextView) v.findViewById(R.id.message_time);
+        messageTime.setText(DateFormat.format("dd-MM (HH:mm)", model.getMessageTime()));
+        TextView messageText = (TextView) v.findViewById(R.id.message_text);
+        messageText.setText(model.getMessageText());
+        ImageView image = (ImageView) v.findViewById(R.id.imgViewGall);
+        String modelUri = model.getImageUri();
+        if (modelUri != null && !modelUri.isEmpty()) {
+            //Put the image in the chat
+            Glide.with(ChatActivity.this).
+                    load(modelUri)
+                    .apply(new RequestOptions().override(500, 700)).
+                    into(image);
+        } else {
+            image.setImageResource(android.R.color.transparent);
+        }
     }
 }
