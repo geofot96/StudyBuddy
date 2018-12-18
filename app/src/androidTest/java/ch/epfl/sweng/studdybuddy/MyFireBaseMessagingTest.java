@@ -79,18 +79,12 @@ public class MyFireBaseMessagingTest {
 
     @Test
     public void createOreoNotification(){
-        classTested.setVersion(versionOreo);
-        classTested.setUp(mockedNotification, remoteMessageWrongGroup, intent, stackBuilder);
-        verify(notifFactory, times(1)).OreoNotificationFactory(any());
-        verify(notifFactory, times(0)).nManagerFactory(any());
+        createNotification(versionOreo, 1, 0);
     }
 
     @Test
     public void createRegularNotification(){
-        classTested.setVersion(versionBase);
-        classTested.setUp(mockedNotification, remoteMessageWrongGroup, intent, stackBuilder);
-        verify(notifFactory, times(0)).OreoNotificationFactory(any());
-        verify(notifFactory, times(1)).nManagerFactory(any());
+        createNotification(versionBase, 0, 1);
     }
 
     @Test
@@ -98,6 +92,14 @@ public class MyFireBaseMessagingTest {
         classTested.setUp(mockedNotification, remoteMessageCorrectGroup, intent, stackBuilder);
         verify(notifFactory, times(0)).OreoNotificationFactory(any());
         verify(notifFactory, times(0)).nManagerFactory(any());
+    }
+
+
+    private void createNotification(Version versioning, int a, int b) {
+        classTested.setVersion(versioning);
+        classTested.setUp(mockedNotification, remoteMessageWrongGroup, intent, stackBuilder);
+        verify(notifFactory, times(a)).OreoNotificationFactory(any());
+        verify(notifFactory, times(b)).nManagerFactory(any());
     }
 
 }
