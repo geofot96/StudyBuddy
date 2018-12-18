@@ -4,7 +4,6 @@ import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -26,19 +25,13 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.firebase.ui.database.FirebaseListAdapter;
-import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-
-import java.io.ByteArrayOutputStream;
-import java.util.UUID;
 
 import ch.epfl.sweng.studdybuddy.R;
 import ch.epfl.sweng.studdybuddy.firebase.FirebaseReference;
@@ -55,9 +48,11 @@ public class ChatActivity extends AppCompatActivity {
     protected static final int PICK_IMAGE_REQUEST = 1;
     protected static final int OPEN_CAMERA_REQUEST = 42;
     private FloatingActionButton fab;
-
     private ProgressDialog mProgress;
 
+    /**
+     * OnCreate method setting up all the graphical components
+     */
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -136,8 +131,7 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     private void initiatePhotoRequest(int requestCode, Intent data) {
-        if (requestCode == PICK_IMAGE_REQUEST)
-        {
+        if (requestCode == PICK_IMAGE_REQUEST) {
             ChatUtils.uploadImageFromGallery(getFilePath(data), mProgress, storageRef).addOnCompleteListener(getOnCompleteListener());
         }
         if (requestCode == OPEN_CAMERA_REQUEST) {
@@ -206,23 +200,21 @@ public class ChatActivity extends AppCompatActivity {
         };
     }
 
-    public void setDownloadUri(String downloadUri)
-    {
+    public void setDownloadUri(String downloadUri) {
         this.downloadUri = downloadUri;
     }
 
     public int fabListener(EditText inputText, FirebaseReference reference, String groupsID, String downloadURI) {
-                if (inputText.getText().toString().trim().length() > 0 || !downloadURI.isEmpty()) {
-                    pushMessage(inputText, reference, groupsID, downloadURI);
-                    inputText.setText("");
-                    setDownloadUri("");
-                    displayChatMessages();
-                }
-                return 0;
+        if (inputText.getText().toString().trim().length() > 0 || !downloadURI.isEmpty()) {
+            pushMessage(inputText, reference, groupsID, downloadURI);
+            inputText.setText("");
+            setDownloadUri("");
+            displayChatMessages();
+        }
+        return 0;
     }
 
-    protected void pushMessage(EditText inputText, FirebaseReference reference, String groupsID, String downloadURI)
-    {
+    protected void pushMessage(EditText inputText, FirebaseReference reference, String groupsID, String downloadURI) {
         ChatUtils.pushToFirebase(reference, groupsID, inputText.getText().toString(), downloadURI);
     }
 
@@ -242,8 +234,7 @@ public class ChatActivity extends AppCompatActivity {
         listOfMessages.setAdapter(adapter);
     }
 
-    public int popViewBody(View v, ChatMessage model)
-    {
+    public int popViewBody(View v, ChatMessage model) {
         TextView messageUser = (TextView) v.findViewById(R.id.message_user);
         messageUser.setText(model.getMessageUser());
         TextView messageTime = (TextView) v.findViewById(R.id.message_time);
@@ -264,8 +255,7 @@ public class ChatActivity extends AppCompatActivity {
         return 0;
     }
 
-    protected CharSequence getDate(ChatMessage model)
-    {
+    protected CharSequence getDate(ChatMessage model) {
         return DateFormat.format("dd-MM (HH:mm)", model.getMessageTime());
     }
 }
