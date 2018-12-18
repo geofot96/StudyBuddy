@@ -11,20 +11,29 @@ public class CourseAdapter extends Adapter {
 
     List<String> list;
 
-    //ajouter un constructeur prenant en entrée une liste
-
+    /**
+     * Constructor of an adapter using a list of courses
+     * @param list list of courses
+     */
     public CourseAdapter(List<String> list) {
         super(R.layout.course_card, R.id.text);
         this.list = list;
     }
 
-    //c'est ici que nous allons remplir notre cellule avec le texte/image de chaque MyObjects
+    /**
+     * Assign the extracted information to the graphical holder
+     * @param holder The holder of the graphical elements of the card
+     * @param position the index of the element in the child list
+     */
     @Override
     public void onBindViewHolder(Holder holder, int position) {
         String course = list.get(position);
         holder.bind(course);
     }
-
+    /**
+     *
+     * @return returns the size of the list of courses
+     */
     @Override
     public int getItemCount() {
         return list.size();
