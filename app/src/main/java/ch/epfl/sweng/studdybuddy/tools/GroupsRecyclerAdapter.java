@@ -110,11 +110,20 @@ public class GroupsRecyclerAdapter extends BasicRecyclerAdapter implements Filte
         return filter;
     }
 
+    /**
+     * Setter for the filter of the list
+     * @param newFilter the new filter to be set
+     */
     public void setFilterList(List<Group> newFilter) {
         getFilter();
         filter.setFilterList(newFilter);
     }
 
+    /**
+     * Sets a functionality to the button depending on the number of participants in the group
+     * @param button button used to trigger the different actions
+     * @param group the group related to the holder where the button is
+     */
     private void setButton(Button button, Group group) {
         Integer gSize = getSizes().get(group.getGroupID().toString());
         int groupSize = 1;
@@ -132,6 +141,12 @@ public class GroupsRecyclerAdapter extends BasicRecyclerAdapter implements Filte
         }
     }
 
+    /**
+     * Listener for the button, used when the user is joining a group
+     * @param group the group to be joined
+     * @param button the button triggering the joining action
+     * @return the aforementioned listener
+     */
     private View.OnClickListener joinButtonListener(Group group, Button button) {
         return new View.OnClickListener() {
             @Override
@@ -151,7 +166,11 @@ public class GroupsRecyclerAdapter extends BasicRecyclerAdapter implements Filte
         };
     }
 
-
+    /**
+     * Starts an intent transmitting all the necessary information
+     * @param button the button triggering the action
+     * @param group The information of the group extracted and transmitted
+     */
     private void gotoGroups(Button button, Group group) {
         if (getJoinConsumer() != null) {
             Intent intent = new Intent(button.getContext(), GroupActivity.class);
@@ -163,6 +182,12 @@ public class GroupsRecyclerAdapter extends BasicRecyclerAdapter implements Filte
         }
     }
 
+    /**
+     * Listener for the button, used when the user cannot join the grop
+     * @param group the group to be joined
+     * @param button the button triggering the go to group info screen
+     * @return
+     */
     private View.OnClickListener moreInfoListenerIfInTheGroup(Button button, Group group) {
         return new View.OnClickListener() {
             @Override
