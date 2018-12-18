@@ -59,7 +59,6 @@ public class ID<T> {
         return new ID(id);
     }
 
-    //TODO
     @Override
     public int hashCode() {
         return id.hashCode();
