@@ -37,7 +37,9 @@ import ch.epfl.sweng.studdybuddy.R;
 import ch.epfl.sweng.studdybuddy.firebase.FirebaseReference;
 import ch.epfl.sweng.studdybuddy.services.chat.ChatMessage;
 import ch.epfl.sweng.studdybuddy.util.Messages;
-
+/**
+ * An activity showing text messages and photos sent between the members of a group
+ */
 public class ChatActivity extends AppCompatActivity {
     String groupID;
     public FirebaseReference ref;
@@ -72,8 +74,9 @@ public class ChatActivity extends AppCompatActivity {
         }
         initializations();
     }
-
-    private void initializations() {
+    /**
+     * A helper function that sets up part of the graphical components
+     */    private void initializations() {
         downloadUri = "";
         displayChatMessages();
         mProgress = new ProgressDialog(this);
@@ -86,7 +89,9 @@ public class ChatActivity extends AppCompatActivity {
         askForCameraPermission();
         fab.setOnClickListener(getFabListener());
     }
-
+    /**
+     * Check if permissions for using the camera are granted and if not prompt a message to ask the user
+     */
     private void askForCameraPermission() {
         if (ContextCompat.checkSelfPermission(ChatActivity.this.getApplicationContext(),
                 Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
@@ -95,7 +100,9 @@ public class ChatActivity extends AppCompatActivity {
                     1);
         }
     }
-
+    /**
+     * Start an intent demanding for the system gallery- style photo picker to be started
+     */
     @NonNull
     protected View.OnClickListener getGalleryImage() {
         return new View.OnClickListener() {
@@ -109,7 +116,9 @@ public class ChatActivity extends AppCompatActivity {
             }
         };
     }
-
+    /**
+     * Start an intent demanding for the system camera capture to be started
+     */
     @NonNull
     protected View.OnClickListener getCameraListener() {
         return new View.OnClickListener() {
@@ -121,7 +130,12 @@ public class ChatActivity extends AppCompatActivity {
         };
     }
 
-    //Get the filepath of the selected image
+    /**
+     * Initiate the retrieval of filepath of the selected image
+     * @param requestCode The code to be transmitted through an intent
+     * @param resultCode resulting code of the operation
+     * @param data intent to be started
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -129,7 +143,11 @@ public class ChatActivity extends AppCompatActivity {
             initiatePhotoRequest(requestCode, data);
         }
     }
-
+    /**
+     * Decide wether the user asked to pick an existing photo or capture a new one
+     * @param requestCode the code contained within the received intent
+     * @param data the intent captured
+     */
     private void initiatePhotoRequest(int requestCode, Intent data) {
         if (requestCode == PICK_IMAGE_REQUEST) {
             ChatUtils.uploadImageFromGallery(getFilePath(data), mProgress, storageRef).addOnCompleteListener(getOnCompleteListener());
@@ -140,16 +158,20 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     /**
-     * method to be mocked at DummyChatChatActivity
+     * Method to be mocked at DummyChatChatActivity.
      *
-     * @param data
-     * @return
+     * @param data Intent containing the data
+     * @return Returns the Filepath of a Uri contained within an intent
      */
+
     protected Uri getFilePath(Intent data) {
         return data.getData();
     }
 
-
+    /**
+     *
+     * @return Upload the image once the selected or captured photo has been loaded
+     */
     @NonNull
     private OnSuccessListener<UploadTask.TaskSnapshot> getOnSuccessListener() {
         return new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -164,12 +186,18 @@ public class ChatActivity extends AppCompatActivity {
             }
         };
     }
-
+    /**
+     * Method to be mocked at DummyChatChatActivity.
+     * @return the firebaseReference
+     */
     public FirebaseReference initRef() {
         return new FirebaseReference();
     }
 
-
+    /**
+     * Notify user if the uploading process failed or succeeded
+     * @return returns a OnCompleteListener with the specified feature
+     */
     @NonNull
     private OnCompleteListener<Uri> getOnCompleteListener() {
         return new OnCompleteListener<Uri>() {
@@ -188,7 +216,10 @@ public class ChatActivity extends AppCompatActivity {
             }
         };
     }
-
+    /**
+     * The listener assigned to the FAB that sends the message
+     * @return The aforementioned listener
+     */
     @NonNull
     protected View.OnClickListener getFabListener() {
         EditText input = (EditText) findViewById(R.id.input);
@@ -200,10 +231,22 @@ public class ChatActivity extends AppCompatActivity {
         };
     }
 
+    /**
+     * Setter for the downloadUri
+     * @param downloadUri the new downloadUri to be set
+     */
     public void setDownloadUri(String downloadUri) {
         this.downloadUri = downloadUri;
     }
 
+    /**
+     * Initializes the pushing to firebase procedure and clears the used fields
+     * @param inputText InputText containing the message to be sent
+     * @param reference the FirebaseReference
+     * @param groupsID the id of the current group related to this chat
+     * @param downloadURI the uri of the uploaded image
+     * @return //TODO
+     */
     public int fabListener(EditText inputText, FirebaseReference reference, String groupsID, String downloadURI) {
         if (inputText.getText().toString().trim().length() > 0 || !downloadURI.isEmpty()) {
             pushMessage(inputText, reference, groupsID, downloadURI);
@@ -211,14 +254,16 @@ public class ChatActivity extends AppCompatActivity {
             setDownloadUri("");
             displayChatMessages();
         }
-        return 0;
+        return 0;//TODO also change the return comment
     }
 
     protected void pushMessage(EditText inputText, FirebaseReference reference, String groupsID, String downloadURI) {
         ChatUtils.pushToFirebase(reference, groupsID, inputText.getText().toString(), downloadURI);
     }
 
-
+    /**
+     * Updates the list of messages visible on screen with the information retrieved from Firebase
+     */
     public void displayChatMessages() {
         ListView listOfMessages = (ListView) findViewById(R.id.list_of_messages);
 
