@@ -9,15 +9,12 @@
 
     <Button
         android:id="@+id/camera"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="66dp"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
         android:layout_marginStart="52dp"
-        android:text="Camera"
-        android:background="@android:color/transparent"
-        android:drawableTop="@drawable/round_camera_alt_black_24dp"
-        android:scaleType="fitXY"/>
+        android:text="Camera" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
@@ -35,17 +32,16 @@
         android:focusable="true" />
 
     <android.support.design.widget.TextInputLayout
-        android:layout_width="237dp"
+        android:layout_width="187dp"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
-        android:layout_marginRight="-9dp"
-        android:layout_marginStart="100dp"
+        android:layout_marginStart="125dp"
         android:layout_toLeftOf="@id/fab">
 
         <EditText
             android:id="@+id/input"
-            android:layout_width="230dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="  Type Here" />
     </android.support.design.widget.TextInputLayout>
@@ -53,24 +49,23 @@
     <ListView
         android:id="@+id/list_of_messages"
         android:layout_width="match_parent"
-        android:layout_height="526dp"
+        android:layout_height="match_parent"
         android:layout_above="@id/fab"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginBottom="-15dp"
+        android:layout_marginBottom="16dp"
         android:divider="@android:color/transparent"
         android:dividerHeight="16dp"
         android:smoothScrollbar="false"
-        android:stackFromBottom="true"
-        android:transcriptMode="alwaysScroll" />
+        android:transcriptMode="alwaysScroll"
+        android:stackFromBottom="true"/>
 
     <Button
         android:id="@+id/gallery"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="66dp"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
-        android:background="@android:color/transparent"
-        android:drawableTop="@drawable/iconfinder_ui_32_3556073" />
+        android:text="Gallery" />
 
 </RelativeLayout>
