@@ -21,7 +21,6 @@ import ch.epfl.sweng.studdybuddy.util.Messages;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -59,7 +58,7 @@ public class MyFireBaseMessagingTest {
         when(mockOreo.getNotificationManager()).thenReturn(mockManager);
         when(versionOreo.getBuildVersion()).thenReturn(Build.VERSION_CODES.O);
         when(versionBase.getBuildVersion()).thenReturn(Build.VERSION_CODES.BASE);
-        when(mockOreo.getOreoNotification(any(), any(), any(), any(), anyInt())).thenReturn(notifOreoBuilder);
+        when(mockOreo.getOreoNotification(any(), any(), any(), anyInt())).thenReturn(notifOreoBuilder);
 
         when(builder.setSmallIcon(anyInt())).thenReturn(builder);
         when(builder.setContentTitle(any())).thenReturn(builder);

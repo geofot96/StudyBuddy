@@ -4,24 +4,20 @@ import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.TaskStackBuilder;
-import android.content.Context;
 import android.content.Intent;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
+import android.util.Pair;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
 import ch.epfl.sweng.studdybuddy.R;
 import ch.epfl.sweng.studdybuddy.activities.ChatActivity;
 import ch.epfl.sweng.studdybuddy.util.Messages;
-
-import static java.lang.Math.max;
 
 
 public class MyFirebaseMessaging extends FirebaseMessagingService {
@@ -84,7 +80,7 @@ public class MyFirebaseMessaging extends FirebaseMessagingService {
 
     private void sendOreoNotification() {
         OreoNotification oreoNotification = notifFactory.OreoNotificationFactory(this);
-        Notification.Builder builder = oreoNotification.getOreoNotification(title, body, resultPendingIntent, defaultSound, R.mipmap.ic_launcher);
+        Notification.Builder builder = oreoNotification.getOreoNotification(new Pair<>(title, body), resultPendingIntent, defaultSound, R.mipmap.ic_launcher);
 
         int mNotificationID = (int) System.currentTimeMillis();
         oreoNotification.getNotificationManager().notify(mNotificationID, builder.build());

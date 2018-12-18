@@ -9,6 +9,7 @@ import android.content.Context;
 import android.content.ContextWrapper;
 import android.net.Uri;
 import android.os.Build;
+import android.util.Pair;
 
 public class OreoNotification extends ContextWrapper {
 
@@ -59,11 +60,11 @@ public class OreoNotification extends ContextWrapper {
 
 
     @TargetApi(Build.VERSION_CODES.O)
-    public Notification.Builder getOreoNotification(String title, String body, PendingIntent pendingIntent, Uri soundUri, int icon){
+    public Notification.Builder getOreoNotification(Pair<String, String> titleBody, PendingIntent pendingIntent, Uri soundUri, int icon){
         return new Notification.Builder(getApplicationContext(), CHANNEL_ID)
                 .setContentIntent(pendingIntent)
-                .setContentTitle(title)
-                .setContentText(body)
+                .setContentTitle(titleBody.first)
+                .setContentText(titleBody.second)
                 .setSmallIcon(icon)
                 .setSound(soundUri)
                 .setAutoCancel(true);
