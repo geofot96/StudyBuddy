@@ -7,6 +7,7 @@ import java.util.List;
 import ch.epfl.sweng.studdybuddy.core.User;
 import ch.epfl.sweng.studdybuddy.tools.Consumer;
 
+
 public class FirebaseConsumers {
     public static Consumer<List<User>> filterBuddiesWithParticipants(List<User> buddies, MetaGroup metaGroup){
         return new Consumer<List<User>>() {

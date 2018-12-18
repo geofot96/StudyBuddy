@@ -19,9 +19,13 @@ public final class Buddy extends Pair{
     /**
      * Returns the friend of a given userID
      * @param uid the user for which we search the friend
-     * @return the id of the friend if the uid in parameter is correct, null otherwise
+     * @return the id of the friend if the uid in parameter is correct
      */
     public String buddyOf(String uid) {
+        if(getValue() == null || getKey()== null)
+        {
+            return null;
+        }
         if(getKey().equals(uid)) {
             return getValue();
         }
