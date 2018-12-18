@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.view.View;
+import android.widget.EditText;
 
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -74,5 +75,17 @@ public class DummyChatActivity extends ChatActivity
                 onActivityResult(OPEN_CAMERA_REQUEST, RESULT_OK, in1);
             }
         };
+    }
+
+    @Override
+    protected CharSequence getDate(ChatMessage model)
+    {
+        return "date";
+    }
+
+    @Override
+    protected void pushMessage(EditText inputText, FirebaseReference reference, String groupsID, String downloadURI)
+    {
+        //do nothing
     }
 }

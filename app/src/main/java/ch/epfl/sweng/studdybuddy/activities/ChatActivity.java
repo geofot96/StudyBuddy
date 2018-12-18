@@ -213,7 +213,7 @@ public class ChatActivity extends AppCompatActivity {
 
     public int fabListener(EditText inputText, FirebaseReference reference, String groupsID, String downloadURI) {
                 if (inputText.getText().toString().trim().length() > 0 || !downloadURI.isEmpty()) {
-                    ChatUtils.pushToFirebase(reference, groupsID, inputText.getText().toString(), downloadURI);
+                    pushMessage(inputText, reference, groupsID, downloadURI);
                     inputText.setText("");
                     setDownloadUri("");
                     displayChatMessages();
@@ -221,6 +221,10 @@ public class ChatActivity extends AppCompatActivity {
                 return 0;
     }
 
+    protected void pushMessage(EditText inputText, FirebaseReference reference, String groupsID, String downloadURI)
+    {
+        ChatUtils.pushToFirebase(reference, groupsID, inputText.getText().toString(), downloadURI);
+    }
 
 
     public void displayChatMessages() {
@@ -238,12 +242,12 @@ public class ChatActivity extends AppCompatActivity {
         listOfMessages.setAdapter(adapter);
     }
 
-    public void popViewBody(View v, ChatMessage model)
+    public int popViewBody(View v, ChatMessage model)
     {
         TextView messageUser = (TextView) v.findViewById(R.id.message_user);
         messageUser.setText(model.getMessageUser());
         TextView messageTime = (TextView) v.findViewById(R.id.message_time);
-        messageTime.setText(DateFormat.format("dd-MM (HH:mm)", model.getMessageTime()));
+        messageTime.setText(getDate(model));
         TextView messageText = (TextView) v.findViewById(R.id.message_text);
         messageText.setText(model.getMessageText());
         ImageView image = (ImageView) v.findViewById(R.id.imgViewGall);
@@ -257,5 +261,11 @@ public class ChatActivity extends AppCompatActivity {
         } else {
             image.setImageResource(android.R.color.transparent);
         }
+        return 0;
+    }
+
+    protected CharSequence getDate(ChatMessage model)
+    {
+        return DateFormat.format("dd-MM (HH:mm)", model.getMessageTime());
     }
 }

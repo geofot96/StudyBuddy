@@ -97,7 +97,7 @@ public class ChatActivityTests
         EditText inputText = mock(EditText.class);
         FirebaseReference ref = new FirebaseReference();
         Editable editable = mock(Editable.class);
-        ChatActivity chatActivity = mock(ChatActivity.class);
+        DummyChatActivity chatActivity = mock(DummyChatActivity.class);
 
 
         when(chatActivity.fabListener(inputText, ref, "fabTest", "FabTestURI")).thenCallRealMethod();
@@ -122,17 +122,5 @@ public class ChatActivityTests
         DummyChatActivityIntentRule.launchActivity(intent);
         onView(withId(R.id.camera)).perform(click());
         DummyChatActivityIntentRule.finishActivity();
-    }
-
-    @Test
-    public void testPopView()
-    {
-
-//        ChatMessage chatMessage = mock(ChatMessage.class);
-//
-//        TextView messageUser = mock(TextView.class);
-//        when(v.findViewById(R.id.message_user)).thenReturn(messageUser);
-//        when(chatMessage.getMessageUser()).thenReturn("user");
-//        //when(messageUser.setText("user"))
     }
 }
