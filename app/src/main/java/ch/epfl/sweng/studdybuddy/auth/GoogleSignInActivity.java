@@ -92,12 +92,7 @@ public class GoogleSignInActivity extends AppCompatActivity {
                             if (onTest()) {
                                 startActivity(new Intent(GoogleSignInActivity.this, CourseSelectActivity.class));
                             } else {
-                                updateToken(FirebaseInstanceId.getInstance().getToken()).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                    @Override
-                                    public void onSuccess(Void aVoid) {
-                                        fetchUserAndStart(mAuth.getCurrentUser(), CourseSelectActivity.class);
-                                    }
-                                });
+                                moveToCourseSelectActvitiy();
                             }
                         }
                     }
@@ -107,6 +102,15 @@ public class GoogleSignInActivity extends AppCompatActivity {
                 Log.w(TAG, "Google sign in failed.", e);
             }
         }
+    }
+
+    private void moveToCourseSelectActvitiy() {
+        updateToken(FirebaseInstanceId.getInstance().getToken()).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                fetchUserAndStart(mAuth.getCurrentUser(), CourseSelectActivity.class);
+            }
+        });
     }
 
     private Task<Void> updateToken(String token) {
