@@ -15,17 +15,12 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import ch.epfl.sweng.studdybuddy.Fragments.FeedFragment;
-import ch.epfl.sweng.studdybuddy.activities.GroupsActivity;
 import ch.epfl.sweng.studdybuddy.activities.NavigationActivity;
 
 import static android.support.test.espresso.Espresso.onView;
-import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
-import static android.support.test.espresso.matcher.ViewMatchers.withText;
-import static org.hamcrest.Matchers.allOf;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
@@ -77,17 +72,7 @@ public class GroupsActivityLeadsToCreateGroup
         linearLayout.check(matches(isDisplayed()));
     }
 */
-  void refactor(){
-    ViewInteraction appCompatButton = onView(
-            allOf(withId(R.id.gotoGroups), withText("Groups"),
-                    childAtPosition(
-                            childAtPosition(
-                                    withId(android.R.id.content),
-                                    0),
-                            0),
-                    isDisplayed()));
-    appCompatButton.perform(click());
-  }
+
 
   static Matcher<View> childAtPosition(
           final Matcher<View> parentMatcher, final int position)
