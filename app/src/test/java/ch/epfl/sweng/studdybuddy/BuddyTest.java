@@ -13,10 +13,8 @@ public class BuddyTest {
         Buddy b = new Buddy("alice", "bob");
         b.setKey("bob");
         b.setValue("alice");
-        b.setCreationDate((long)0);
         assertEquals("alice", b.getValue());
         assertEquals("bob", b.getKey());
-        assertEquals(new Long(0), b.getCreationDate());
     }
 
     @Test
