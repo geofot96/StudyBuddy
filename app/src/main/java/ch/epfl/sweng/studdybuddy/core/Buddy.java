@@ -3,20 +3,22 @@ package ch.epfl.sweng.studdybuddy.core;
 import java.util.Date;
 
 public final class Buddy {
-    public String getAlice() {
-        return alice;
+
+
+    public String getKey() {
+        return buddies.getKey();
     }
 
-    public void setAlice(String alice) {
-        this.alice = alice;
+    public void setKey(String alice) {
+        buddies.setKey(alice);
     }
 
-    public String getBob() {
-        return bob;
+    public String getValue() {
+        return buddies.getValue();
     }
 
-    public void setBob(String bob) {
-        this.bob = bob;
+    public void setValue(String bob) {
+        buddies.setValue(bob);
     }
 
     public Long getCreationDate() {
@@ -27,29 +29,26 @@ public final class Buddy {
         this.creationDate = creationDate;
     }
 
-    private String alice;
-    private String bob;
+    private Pair buddies;
     private Long creationDate;
     public Buddy(){}
     public Buddy(String alice, String bob) {
         creationDate = new Date().getTime();
-        this.alice = alice;
-        this.bob = bob;
+        buddies = new Pair(alice, bob);
     }
 
     //Returns null if not buddy, because no Optionnal for Java<8
     public String buddyOf(String uid) {
-        String buddy = null;
-        if(alice.equals(uid)) {
-            buddy = bob;
+        if(getKey().equals(uid)) {
+            return getValue();
         }
-        else if(bob.equals(uid)) {
-            buddy = alice;
+        else if(getValue().equals(uid)) {
+            return getKey();
         }
-        return buddy;
+        return null;
     }
 
     public String hash() {
-        return Integer.toHexString(alice.hashCode() ^ bob.hashCode());
+        return Integer.toHexString(getKey().hashCode() ^ getValue().hashCode());
     }
 }
