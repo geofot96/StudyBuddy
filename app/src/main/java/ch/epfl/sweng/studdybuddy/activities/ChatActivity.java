@@ -72,7 +72,7 @@ public class ChatActivity extends AppCompatActivity {
         } else {
             Toast.makeText(this,
                     "Group not found in database",
-                    Toast.LENGTH_LONG).show();
+                    Toast.LENGTH_SHORT).show();
             finish();
         }
         initializations();
@@ -163,9 +163,9 @@ public class ChatActivity extends AppCompatActivity {
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                 Task<Uri> urlTask = taskSnapshot.getStorage().getDownloadUrl();
                 while (!urlTask.isSuccessful()) ;
-                downloadUri = urlTask.getResult().toString();
+                setDownloadUri(urlTask.getResult().toString());
                 mProgress.dismiss();
-                Toast.makeText(ChatActivity.this, downloadUri, Toast.LENGTH_SHORT).show();
+
                 fab.performClick();
             }
         };
@@ -182,14 +182,14 @@ public class ChatActivity extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<Uri> task) {
                 if (task.isSuccessful()) {
-                    downloadUri = task.getResult().toString();
+                    setDownloadUri(task.getResult().toString());
                     mProgress.dismiss();
                     fab.performClick();
-                    Toast.makeText(ChatActivity.this, "Uploaded " + downloadUri, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ChatActivity.this, "Uploaded ", Toast.LENGTH_SHORT).show();
 
                 } else {
                     mProgress.dismiss();
-                    Toast.makeText(ChatActivity.this, "Failed Uploading" + task.getException().toString(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(ChatActivity.this, "Failed Uploading", Toast.LENGTH_LONG).show();
                 }
             }
         };
@@ -197,34 +197,29 @@ public class ChatActivity extends AppCompatActivity {
 
     @NonNull
     protected View.OnClickListener getFabListener() {
+        EditText input = (EditText) findViewById(R.id.input);
         return new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                EditText input = (EditText) findViewById(R.id.input);
-                if (input.getText().toString().trim().length() > 0 || !downloadUri.isEmpty()) {
-                    ChatUtils.pushToFirebase(ref, groupID, input.getText().toString(), downloadUri);
-                    input.setText("");
-                    downloadUri = "";
-                    displayChatMessages();
-                }
+                fabListener(input, ref, groupID, downloadUri);
             }
         };
     }
 
-//    public static View.OnClickListener fabListener(EditText input, FirebaseReference ref, FirebaseAuth auth, String groupID, String downloadUri) {
-//        return new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                if(input.getText().toString().trim().length() > 0 || !downloadUri.isEmpty()) {
-//                    ref.select(Messages.FirebaseNode.CHAT).select(groupID).push(new ChatMessage(input.getText().toString(),
-//                            auth.getCurrentUser().getDisplayName()));
-//
-//                    input.setText("");
-//
-//                }
-//            }
-//        };
-//    }
+    public void setDownloadUri(String downloadUri)
+    {
+        this.downloadUri = downloadUri;
+    }
+
+    public void fabListener(EditText inputText, FirebaseReference reference, String groupsID, String downloadURI) {
+                if (inputText.getText().toString().trim().length() > 0 || !downloadURI.isEmpty()) {
+                    ChatUtils.pushToFirebase(reference, groupsID, inputText.getText().toString(), downloadURI);
+                    inputText.setText("");
+                    setDownloadUri("");
+                    displayChatMessages();
+                }
+    }
+
 
 
     public void displayChatMessages() {
