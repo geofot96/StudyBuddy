@@ -12,8 +12,7 @@ import org.junit.runner.RunWith;
 
 import ch.epfl.sweng.studdybuddy.activities.CourseSelectActivity;
 import ch.epfl.sweng.studdybuddy.auth.DummyGoogleSignInActivity;
-import ch.epfl.sweng.studdybuddy.auth.DummyMainActivity;
-import ch.epfl.sweng.studdybuddy.auth.GoogleSignInActivity;
+import ch.epfl.sweng.studdybuddy.auth.DummyNavigationActivity;
 
 import static android.support.test.InstrumentationRegistry.getTargetContext;
 import static android.support.test.espresso.Espresso.onView;
@@ -31,8 +30,8 @@ public class GoogleSignInTest {
             new IntentsTestRule<>(DummyGoogleSignInActivity.class, false, false);
 
     @Rule
-    public IntentsTestRule<DummyMainActivity> DummyMainActivityIntentRule =
-            new IntentsTestRule<>(DummyMainActivity.class, false, false);
+    public IntentsTestRule<DummyNavigationActivity> DummyNavigationActivityIntentRule =
+            new IntentsTestRule<>(DummyNavigationActivity.class, false, false);
 
     @Test
     public void SignInTest() {

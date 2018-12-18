@@ -3,10 +3,10 @@ package ch.epfl.sweng.studdybuddy.auth;
 import com.google.android.gms.tasks.Task;
 
 import ch.epfl.sweng.studdybuddy.EmptyTask;
-import ch.epfl.sweng.studdybuddy.activities.MainActivity;
+import ch.epfl.sweng.studdybuddy.activities.NavigationActivity;
 import ch.epfl.sweng.studdybuddy.core.Account;
 
-public class DummyMainActivity extends MainActivity{
+public class DummyNavigationActivity extends NavigationActivity{
 
     public AuthManager  getAuthManager(){
         return new AuthManager() {
