@@ -15,13 +15,17 @@ import ch.epfl.sweng.studdybuddy.core.ID;
 import ch.epfl.sweng.studdybuddy.core.User;
 
 public class BuddyAdapter extends RecyclerView.Adapter<BuddyHolder> {
-    List<User> buddies;
+    private List<User> buddies;
     private ID<Group> groupID;
-
-    public BuddyAdapter(List<User> buddies, ID<Group> groupID)
+    private List<User>  groupMembers;
+    private int maxGroupSize;
+    public BuddyAdapter(List<User> buddies, ID<Group> groupID, List<User> groupMembers, int maxGroupSize)
     {
         this.buddies = buddies;
         this.groupID = groupID;
+        this.groupMembers = groupMembers;
+        this.maxGroupSize = maxGroupSize;
+
     }
 
 
@@ -29,7 +33,7 @@ public class BuddyAdapter extends RecyclerView.Adapter<BuddyHolder> {
     public void onBindViewHolder(BuddyHolder holder, int position)
     {
         User buddy = buddies.get(position);
-        holder.bind(buddy.getName(), true, groupID, buddy.getUserID());
+        holder.bind(buddy.getName(), true, groupID, buddy.getUserID(), groupMembers.size() >= maxGroupSize);
     }
 
     @Override
