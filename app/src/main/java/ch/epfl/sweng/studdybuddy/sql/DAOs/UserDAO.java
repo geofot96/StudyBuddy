@@ -9,6 +9,11 @@ import java.util.List;
 
 import ch.epfl.sweng.studdybuddy.core.ID;
 import ch.epfl.sweng.studdybuddy.core.User;
+
+/**
+ * The user Data Access Object
+ * Facilitate the user managemenet
+ */
 @Dao
 public interface UserDAO {
     @Query("SELECT * FROM user")

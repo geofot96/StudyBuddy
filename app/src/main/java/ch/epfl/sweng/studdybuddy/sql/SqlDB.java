@@ -8,6 +8,9 @@ import android.content.Context;
 
 import ch.epfl.sweng.studdybuddy.sql.DAOs.UserDAO;
 
+/**
+ * SQL local database based on room for Android
+ */
 @Database(entities = {ch.epfl.sweng.studdybuddy.core.User.class}, version = 1)
 @TypeConverters({Converter.class})
 public abstract class SqlDB extends RoomDatabase{
@@ -22,6 +25,7 @@ public abstract class SqlDB extends RoomDatabase{
                         return db;
                 }
         }
+
         public abstract UserDAO userDAO();
 
 }
