@@ -31,6 +31,9 @@ public class ConnectedAvailability implements Availability {
     private Availability availabilities;
 
     private ConnectedAvailability(@NonNull ID<User> user, @NonNull ID<Group> group){
+        if(user == null || group == null){
+            throw new IllegalArgumentException();
+        }
         databaseReference = FirebaseDatabase
                 .getInstance()
                 .getReference()

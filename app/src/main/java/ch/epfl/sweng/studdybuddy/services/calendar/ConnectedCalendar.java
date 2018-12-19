@@ -30,7 +30,8 @@ import ch.epfl.sweng.studdybuddy.util.Messages;
  * of every user of the group.
  */
 
-public class ConnectedCalendar implements Observable{
+public class
+ConnectedCalendar implements Observable{
     public static final int CALENDAR_SIZE = 77;
     private CalendarComputation calendarController;
     private HashMap<String, List<Boolean>> availabilities = new HashMap<>() ;

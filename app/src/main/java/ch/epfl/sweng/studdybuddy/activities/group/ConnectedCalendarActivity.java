@@ -111,7 +111,12 @@ public class ConnectedCalendarActivity extends AppCompatActivity implements Obse
                 cardView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        userAvailabilities.modifyAvailability(row, column-1);
+                        try {
+                            userAvailabilities.modifyAvailability(row, column - 1);
+                        }catch(IndexOutOfBoundsException e){
+                            Log.d("AVAILABILITIES", "The availabilities of the user are not correctly retrieved");
+                            startActivity(new Intent(ConnectedCalendarActivity.this, NavigationActivity.class));
+                        }
                     }
                 });
             }
