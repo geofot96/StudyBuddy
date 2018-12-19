@@ -11,7 +11,7 @@ import ch.epfl.sweng.studdybuddy.sql.DAOs.UserDAO;
 /**
  * SQL local database based on room for Android
  */
-@Database(entities = {ch.epfl.sweng.studdybuddy.core.User.class}, version = 1)
+@Database(entities = {ch.epfl.sweng.studdybuddy.core.User.class}, version = 1, exportSchema = false)
 @TypeConverters({Converter.class})
 public abstract class SqlDB extends RoomDatabase{
         private static SqlDB db =null;

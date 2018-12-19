@@ -34,11 +34,14 @@ import ch.epfl.sweng.studdybuddy.util.MapsHelper;
 import ch.epfl.sweng.studdybuddy.util.Messages;
 import ch.epfl.sweng.studdybuddy.util.StudyBuddy;
 
+/**
+ * Activity where the user can choose or see a meeting location
+ */
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
 
-    private MarkerOptions mMarker;  //TODO remove it if never used
+    private MarkerOptions mMarker;
     private Marker marker;
     private MeetingLocation confirmedPlace;
     private Bundle origin;
@@ -184,7 +187,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                @Override
                public void onMapClick(LatLng latLng) {
-                   MeetingLocation tmp =  MapsHelper.mapListener(latLng, marker, autocompleteFragment, MapsActivity.this);
+                   MeetingLocation tmp =  MapsHelper.mapClickUpdate(latLng, marker, autocompleteFragment, MapsActivity.this);
 
                    if(tmp != null) {
                        confirmedPlace = tmp;
