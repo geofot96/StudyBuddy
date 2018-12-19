@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.view.View;
 import android.widget.EditText;
 
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import ch.epfl.sweng.studdybuddy.R;
@@ -72,5 +73,13 @@ public class DummyChatActivity extends ChatActivity {
     @Override
     protected void pushMessage(EditText inputText, FirebaseReference reference, String groupsID, String downloadURI) {
         //do nothing
+    }
+
+    @Override
+    protected void initDatabaseReference() {
+    }
+
+    @Override
+    protected void initAuthenticatedUser(){
     }
 }

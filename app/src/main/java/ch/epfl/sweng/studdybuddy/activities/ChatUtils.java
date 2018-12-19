@@ -9,6 +9,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.storage.FirebaseStorage;
@@ -16,8 +17,10 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
+import java.util.HashMap;
 import java.util.UUID;
 
+import ch.epfl.sweng.studdybuddy.core.User;
 import ch.epfl.sweng.studdybuddy.firebase.FirebaseReference;
 import ch.epfl.sweng.studdybuddy.services.chat.ChatMessage;
 import ch.epfl.sweng.studdybuddy.util.Messages;
@@ -26,8 +29,8 @@ import ch.epfl.sweng.studdybuddy.util.Messages;
  * A class containing a selection of auxiliary methods used in ChatActivity
  */
 public class ChatUtils {
-    protected static void pushToFirebase(FirebaseReference ref, String groupID, String input, String downloadUri) {
-        ref.select(Messages.FirebaseNode.CHAT).select(groupID).push(new ChatMessage(input,
+    protected static Task<Void> pushToFirebase(FirebaseReference ref, String groupID, String input, String downloadUri) {
+        return ref.select(Messages.FirebaseNode.CHAT).select(groupID).push(new ChatMessage(input,
                 FirebaseAuth.getInstance().getCurrentUser().getDisplayName(), downloadUri));
     }
 
