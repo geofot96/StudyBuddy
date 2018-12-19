@@ -28,10 +28,10 @@ import ch.epfl.sweng.studdybuddy.services.calendar.ConnectedCalendar;
 import ch.epfl.sweng.studdybuddy.services.meeting.Meeting;
 import ch.epfl.sweng.studdybuddy.services.meeting.MeetingLocation;
 import ch.epfl.sweng.studdybuddy.services.meeting.MeetingRecyclerAdapter;
-import ch.epfl.sweng.studdybuddy.tools.Observable;
-import ch.epfl.sweng.studdybuddy.tools.Observer;
 import ch.epfl.sweng.studdybuddy.tools.Consumer;
 import ch.epfl.sweng.studdybuddy.tools.Intentable;
+import ch.epfl.sweng.studdybuddy.tools.Observable;
+import ch.epfl.sweng.studdybuddy.tools.Observer;
 import ch.epfl.sweng.studdybuddy.tools.ParticipantAdapter;
 import ch.epfl.sweng.studdybuddy.tools.RecyclerAdapterAdapter;
 import ch.epfl.sweng.studdybuddy.tools.Resultable;
@@ -44,10 +44,6 @@ import static ch.epfl.sweng.studdybuddy.controllers.GroupController.leaveOnClick
 import static ch.epfl.sweng.studdybuddy.controllers.GroupController.processResult;
 import static ch.epfl.sweng.studdybuddy.util.ActivityHelper.onClickLaunch;
 
-public class GroupActivity extends AppCompatActivity implements Observer, Resultable {
-import static ch.epfl.sweng.studdybuddy.controllers.GroupController.callbackCalendar;
-import static ch.epfl.sweng.studdybuddy.services.calendar.Color.updateColor;
-import static ch.epfl.sweng.studdybuddy.util.ActivityHelper.onClickLaunch;
 
 public class GroupActivity extends AppCompatActivity implements Observer, Resultable {
     private boolean wrongInput = false;
@@ -157,7 +153,7 @@ public class GroupActivity extends AppCompatActivity implements Observer, Result
         calendarGrid = findViewById(R.id.calendarGrid);
         meetingRV.setLayoutManager(new LinearLayoutManager(this));
         FloatingActionButton actionButton = findViewById(R.id.createMeeting);
-        Intentable toCreation = new Intentable(this, new Intent(this, createMeetingActivity.class));
+        Intentable toCreation = new Intentable(this, new Intent(this, CreateMeetingActivity.class));
         actionButton.setOnClickListener(onClickLaunch(toCreation));
         Intentable toInviteFriends = new Intentable(this, new Intent(this, InviteFriendsActivity.class));
         inviteFriends = findViewById(R.id.invite_friends);

@@ -1,6 +1,5 @@
 package ch.epfl.sweng.studdybuddy.firebase;
 
-import android.renderscript.Sampler;
 import android.support.annotation.NonNull;
 
 import com.google.android.gms.tasks.Task;
@@ -13,9 +12,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-import ch.epfl.sweng.studdybuddy.core.Pair;
 import ch.epfl.sweng.studdybuddy.tools.Consumer;
-import ch.epfl.sweng.studdybuddy.util.Helper;
 
 public class FirebaseReference implements ReferenceWrapper {
     //pass it

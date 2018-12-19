@@ -1,7 +1,6 @@
 package ch.epfl.sweng.studdybuddy.activities.group;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import ch.epfl.sweng.studdybuddy.services.meeting.Meeting;

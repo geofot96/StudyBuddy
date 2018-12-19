@@ -1,8 +1,6 @@
 package ch.epfl.sweng.studdybuddy.services.notifications;
 
 import android.app.NotificationChannel;
-import android.app.NotificationManager;
-import android.os.Build;
 import android.support.annotation.RequiresApi;
 
 import static android.os.Build.VERSION_CODES.O;

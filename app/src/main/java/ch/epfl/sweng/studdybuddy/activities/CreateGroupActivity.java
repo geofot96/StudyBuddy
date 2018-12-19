@@ -1,9 +1,7 @@
 package ch.epfl.sweng.studdybuddy.activities;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -19,12 +17,9 @@ import java.util.UUID;
 import ch.epfl.sweng.studdybuddy.R;
 import ch.epfl.sweng.studdybuddy.core.Course;
 import ch.epfl.sweng.studdybuddy.core.Group;
-import ch.epfl.sweng.studdybuddy.core.ID;
 import ch.epfl.sweng.studdybuddy.core.User;
 import ch.epfl.sweng.studdybuddy.firebase.FirebaseReference;
 import ch.epfl.sweng.studdybuddy.firebase.MetaGroup;
-import ch.epfl.sweng.studdybuddy.services.calendar.Availability;
-import ch.epfl.sweng.studdybuddy.services.calendar.ConnectedAvailability;
 import ch.epfl.sweng.studdybuddy.tools.AdapterConsumer;
 import ch.epfl.sweng.studdybuddy.tools.ArrayAdapterAdapter;
 import ch.epfl.sweng.studdybuddy.tools.Consumer;
@@ -43,7 +38,6 @@ public class CreateGroupActivity extends AppCompatActivity implements AdapterVie
     private int maxParticipants = 2;//default value
     private static List<String> coursesDB;
 
-    private static final List<String> courseSelection = new ArrayList<>();
     FirebaseReference firebase;
     MetaGroup mb;
     Button create;
@@ -54,7 +48,6 @@ public class CreateGroupActivity extends AppCompatActivity implements AdapterVie
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_group);
         mb = new MetaGroup();
-        Intent intent = getIntent();
         setUpLang();
         setUpNumberPicker();
         firebase = new FirebaseReference();
@@ -147,8 +140,4 @@ public class CreateGroupActivity extends AppCompatActivity implements AdapterVie
             maxParticipants = numberPicker.getValue();
         }
     };
-
-    public static void createUserInitialAvailabilities(String user, String group){
-        new ConnectedAvailability(new ID<>(user), new ID<>(group));
-    }
 }

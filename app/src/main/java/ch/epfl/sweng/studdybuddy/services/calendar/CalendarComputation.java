@@ -3,9 +3,6 @@ package ch.epfl.sweng.studdybuddy.services.calendar;
 import java.util.ArrayList;
 import java.util.List;
 
-import ch.epfl.sweng.studdybuddy.core.Group;
-import ch.epfl.sweng.studdybuddy.core.ID;
-
 public class CalendarComputation {
 
     public List<Integer> getSumOfTwoLists(List<Integer> first_list, List<Integer> second_list){

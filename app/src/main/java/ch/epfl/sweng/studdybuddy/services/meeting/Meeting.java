@@ -4,7 +4,6 @@ import java.util.Date;
 import java.util.UUID;
 
 import ch.epfl.sweng.studdybuddy.core.ID;
-import ch.epfl.sweng.studdybuddy.util.MapsHelper;
 
 public final class Meeting {
     private ID<Meeting> id;

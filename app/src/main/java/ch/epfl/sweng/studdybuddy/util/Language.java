@@ -3,8 +3,6 @@ package ch.epfl.sweng.studdybuddy.util;
 import java.util.Arrays;
 import java.util.List;
 
-import ch.epfl.sweng.studdybuddy.R;
-
 public class Language {
     public static final String EN = "\uD83C\uDDEC\uD83C\uDDE7";
     public static final String FR = "\uD83C\uDDEB\uD83C\uDDF7";

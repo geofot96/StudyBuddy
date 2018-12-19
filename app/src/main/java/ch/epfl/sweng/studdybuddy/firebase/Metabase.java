@@ -4,7 +4,6 @@ package ch.epfl.sweng.studdybuddy.firebase;
 import android.support.annotation.Nullable;
 import android.view.View;
 
-
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
