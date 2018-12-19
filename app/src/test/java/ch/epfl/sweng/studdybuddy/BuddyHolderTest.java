@@ -38,7 +38,7 @@ public class BuddyHolderTest
     }
 
     @Test
-    public void testBindTrue()
+    public void testBindTrueFalse()
     {
         holder.bind("name", true, new ID<Group>(), new ID<>(), false);
         verify(buddy, times(1)).setText("name");
@@ -46,12 +46,21 @@ public class BuddyHolderTest
     }
 
     @Test
-    public void testBindFalse()
+    public void testBindFalseFalse()
     {
         holder.bind("name", false, new ID<Group>(), new ID<>(), false);
         verify(invite, times(1)).setEnabled(false);
         verify(invite, times(1)).setVisibility(View.INVISIBLE);
     }
+
+    @Test
+    public void testBindFalseTrue()
+    {
+        holder.bind("name", false, new ID<Group>(), new ID<>(), true);
+        verify(invite, times(1)).setText("The group is full");
+        verify(invite, times(1)).setEnabled(false);
+    }
+
 
     @Test
     public void testGet()

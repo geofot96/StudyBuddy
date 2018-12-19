@@ -53,7 +53,7 @@ public class BuddyHolder extends RecyclerView.ViewHolder
     public void bind(String name, boolean invite, ID<Group> gID, ID<User> uID, boolean isFull)
     {
         buddyName.setText(name);
-        if(invite &&  !isFull)
+        if(invite && !isFull)
         {
             buddyInvite.setText("Invite");
         }else if (isFull){
