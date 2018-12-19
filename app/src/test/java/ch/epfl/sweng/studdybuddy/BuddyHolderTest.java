@@ -40,7 +40,7 @@ public class BuddyHolderTest
     @Test
     public void testBindTrue()
     {
-        holder.bind("name", true, new ID<Group>(), new ID<>());
+        holder.bind("name", true, new ID<Group>(), new ID<>(), false);
         verify(buddy, times(1)).setText("name");
         verify(invite, times(1)).setText("Invite");
     }
@@ -48,7 +48,7 @@ public class BuddyHolderTest
     @Test
     public void testBindFalse()
     {
-        holder.bind("name", false, new ID<Group>(), new ID<>());
+        holder.bind("name", false, new ID<Group>(), new ID<>(), false);
         verify(invite, times(1)).setEnabled(false);
         verify(invite, times(1)).setVisibility(View.INVISIBLE);
     }
