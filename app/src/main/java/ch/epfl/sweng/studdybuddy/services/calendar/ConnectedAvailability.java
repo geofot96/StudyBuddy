@@ -53,7 +53,7 @@ public class ConnectedAvailability implements Availability {
         this.databaseReference = databaseReference;
     }
 
-    private ConnectedAvailability(Availability A, DatabaseReference databaseReference){
+    public ConnectedAvailability(Availability A, DatabaseReference databaseReference){
         if(A == null || databaseReference == null){
             throw new IllegalArgumentException();
         }

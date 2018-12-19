@@ -98,11 +98,6 @@ public class ConnectedAvailabilityTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void FirstConstructorWithNullDatabaseReference(){
-        new ConnectedAvailability(null);
-    }
-
-    @Test(expected = IllegalArgumentException.class)
     public void SecondConstructorWithNullDatabaseReference(){
         new ConnectedAvailability(new ConcreteAvailability(), null);
     }
