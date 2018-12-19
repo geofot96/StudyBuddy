@@ -84,12 +84,12 @@ public class ConnectedCalendarActivityTest{
     }
 
     @Test
-    public void addAvailabilityInTimeSlot(){
+    public void addAvailabilityInTimeSlot() throws Throwable{
        assertEquals(-16711936, setAvailability(2));
     }
 
     @Test
-    public void removeAvailabilityInTimeSlot(){
+    public void removeAvailabilityInTimeSlot() throws Throwable{
         assertEquals(-1, setAvailability(1));
     }
 
@@ -125,7 +125,7 @@ public class ConnectedCalendarActivityTest{
         });
     }
 
-    private int setAvailability(int index){
+    private int setAvailability(int index) throws Throwable{
         CardView cardView = (CardView) calendarView.getChildAt(index);
         try{
             clickOnCardView(cardView);
@@ -135,7 +135,14 @@ public class ConnectedCalendarActivityTest{
 
         activity = mActivityRule.getActivity();
         calendar.modify("test", activity.getUserAvailabilities().getUserAvailabilities());
-        activity.update(calendar);
+        runOnUiThread(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                activity.update(calendar);
+            }
+        });
         return cardView.getCardBackgroundColor().getDefaultColor();
     }
 
