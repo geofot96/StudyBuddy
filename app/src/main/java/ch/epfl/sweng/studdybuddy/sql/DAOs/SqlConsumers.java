@@ -1,6 +1,7 @@
 package ch.epfl.sweng.studdybuddy.sql.DAOs;
 
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 import java.util.List;
 
@@ -16,6 +17,7 @@ public class SqlConsumers {
                 if(users != null && users.size() > 0){
                     userList.clear();
                     userList.addAll(users);
+                    Log.i("USERS", users.toString());
                 }
             }
         };

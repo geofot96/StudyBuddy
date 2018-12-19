@@ -45,6 +45,7 @@ public class SqlWrapper {
     }
 
     public Thread getUser(String userID, Consumer<List<User>> consumer){
+
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
