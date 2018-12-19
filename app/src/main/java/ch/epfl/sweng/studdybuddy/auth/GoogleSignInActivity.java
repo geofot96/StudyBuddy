@@ -22,11 +22,13 @@ import java.util.List;
 
 import ch.epfl.sweng.studdybuddy.R;
 import ch.epfl.sweng.studdybuddy.activities.CourseSelectActivity;
+import ch.epfl.sweng.studdybuddy.activities.NavigationActivity;
 import ch.epfl.sweng.studdybuddy.core.Account;
 import ch.epfl.sweng.studdybuddy.core.User;
 import ch.epfl.sweng.studdybuddy.services.notifications.Token;
 import ch.epfl.sweng.studdybuddy.sql.SqlWrapper;
 import ch.epfl.sweng.studdybuddy.tools.Consumer;
+import ch.epfl.sweng.studdybuddy.tools.Intentable;
 import ch.epfl.sweng.studdybuddy.util.StudyBuddy;
 
 import static ch.epfl.sweng.studdybuddy.controllers.GoogleSigninController.fetchUserAndStart;
@@ -75,6 +77,7 @@ public class GoogleSignInActivity extends AppCompatActivity {
             Toast.makeText(this, "Welcome " + personName, Toast.LENGTH_SHORT).show();
             List<User> users = new ArrayList<>();
             sql.getUser(acct.getId(), Consumer.sequenced(clearAndFill(users), fetchUserAndStartConsumer(acct, app, getBaseContext())));
+            fetchUserAndStart(acct, app, this);
         } else {
             //appears only when the user isn't connected to the app
             Toast.makeText(this, "No User", Toast.LENGTH_SHORT).show();
