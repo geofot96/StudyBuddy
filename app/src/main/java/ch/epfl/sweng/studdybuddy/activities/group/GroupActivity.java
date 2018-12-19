@@ -57,7 +57,7 @@ public class GroupActivity extends AppCompatActivity implements Observer, Result
     private static final int CalendarWidth = 8;
     private RecyclerView.Adapter adapter;
     GridLayout calendarGrid;
-    private float NmaxUsers;
+    private int NmaxUsers;
     private Pair pair = new Pair();
 
 
@@ -126,7 +126,7 @@ public class GroupActivity extends AppCompatActivity implements Observer, Result
             String TAG = "MEETINGS_ACTIVITY";
             Log.d(TAG, "Information of the group is not fully recovered");
         }*/
-        NmaxUsers = (float) origin.getInt(Messages.maxUser, -1);
+        NmaxUsers =  origin.getInt(Messages.maxUser, -1);
     }
 
 
@@ -155,7 +155,7 @@ public class GroupActivity extends AppCompatActivity implements Observer, Result
         actionButton.setOnClickListener(onClickLaunch(toCreation));
         Intentable toInviteFriends = new Intentable(this, new Intent(this, InviteFriendsActivity.class));
         inviteFriends = findViewById(R.id.invite_friends);
-        inviteFriends.setOnClickListener(inviteFriendsListener(toInviteFriends, gId, uId));
+        inviteFriends.setOnClickListener(inviteFriendsListener(toInviteFriends, gId, uId,NmaxUsers));
     }
 
     public void setupMeetings() {

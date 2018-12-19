@@ -21,7 +21,7 @@ public class BuddyAdapterTests
     @Test
     public void bindViewHolderTest() {
         BuddyHolder h = mock(BuddyHolder.class);
-        BuddyAdapter adapter = new BuddyAdapter(participants, new ID<>());
+        BuddyAdapter adapter = new BuddyAdapter(participants, new ID<>(), new ArrayList<>(), 5);
 
 
         adapter.onBindViewHolder(h, 0);
@@ -34,7 +34,7 @@ public class BuddyAdapterTests
         ArrayList<User> users = new ArrayList<>();
         users.add(new User("a", "b"));
 
-        BuddyAdapter adapter = new BuddyAdapter(users, new ID<>());
+        BuddyAdapter adapter = new BuddyAdapter(users, new ID<>(), new ArrayList<>(), 5);
 
         assertEquals(1, adapter.getItemCount());
 

@@ -34,13 +34,14 @@ public final class GroupController {
         }
     }
 
-    public static View.OnClickListener inviteFriendsListener(Intentable toInviteFriends, String gId, String uId){
+    public static View.OnClickListener inviteFriendsListener(Intentable toInviteFriends, String gId, String uId, int maxUsers){
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Bundle bundle = new Bundle();
                 bundle.putString(Messages.userID, uId  );
                 bundle.putString(Messages.groupID, gId);
+                bundle.putInt(Messages.maxUser, maxUsers);
                 GlobalBundle.getInstance().putAll(bundle);
                 toInviteFriends.launch();
             }
