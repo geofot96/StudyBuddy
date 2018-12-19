@@ -3,6 +3,7 @@ package ch.epfl.sweng.studdybuddy.controllers;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.Nullable;
+import android.widget.Toast;
 
 import com.google.firebase.database.ValueEventListener;
 
@@ -30,21 +31,27 @@ public final class GoogleSigninController {
         return new Consumer<User>() {
             @Override
             public void accept(User user) {
-                final ID<User> userID = new ID<>(acct.getId());
-                Intentable destination;
-                if(user == null) { //create a new user and put in db
-                    app.setAuthendifiedUser(new User(acct.getDisplayName(), userID));
-                    app.disableTravis();
-                    fb.select("users").select(userID.getId()).setVal(app.getAuthendifiedUser());
-                    (new SqlWrapper(context)).insertUser(app.getAuthendifiedUser());
-                    destination = new Intentable(context, CourseSelectActivity.class);
+                if(acct != null) {
+                    Toast.makeText(context, "Welcome " + acct.getDisplayName(), Toast.LENGTH_SHORT).show();
+
+                    final ID<User> userID = new ID<>(acct.getId());
+                    Intentable destination;
+                    if (user == null) { //create a new user and put in db
+                        app.setAuthendifiedUser(new User(acct.getDisplayName(), userID));
+                        app.disableTravis();
+                        fb.select("users").select(userID.getId()).setVal(app.getAuthendifiedUser());
+                        (new SqlWrapper(context)).insertUser(app.getAuthendifiedUser());
+                        destination = new Intentable(context, CourseSelectActivity.class);
+                    } else {
+                        app.setAuthendifiedUser(user);
+                        (new SqlWrapper(context)).insertUser(user);
+                        destination = new Intentable(context, NavigationActivity.class);
+                    }
+                    destination.launch();
+                }else{
+                    //appears only when the user isn't connected to the app
+                    Toast.makeText(context, "Please click to log in", Toast.LENGTH_SHORT).show();
                 }
-                else {
-                    app.setAuthendifiedUser(user);
-                    (new SqlWrapper(context)).insertUser(user);
-                    destination = new Intentable(context, NavigationActivity.class);
-                }
-                destination.launch();
             }
         };
     }
@@ -54,16 +61,29 @@ public final class GoogleSigninController {
     }
 
 
-    public static Consumer<List<User>> fetchUserAndStartConsumer(Account acct, StudyBuddy app, Context ctx){
+    public static Consumer<List<User>>  fetchUserAndStartConsumer(Account acct, StudyBuddy app, Context ctx, boolean hasSignedOut){
         return new Consumer<List<User>>() {
             @Override
             public void accept(@Nullable List<User> users) {
-                if(users != null && users.size()> 0){
-                    app.setAuthendifiedUser(users.get(0));
-                    ctx.startActivity(new Intent(ctx, CourseSelectActivity.class));
-                    
-                }else {
-                    fetchUserAndStart(acct, app, ctx);
+                // only one user in the sql db
+                if(!hasSignedOut  && users != null && users.size() == 1){
+                    for(User user : users){
+                            app.setAuthendifiedUser(users.get(0));
+                            ctx.startActivity(new Intent(ctx, CourseSelectActivity.class));
+                            break;
+                        }
+                //multiple users in the sql db
+                }else if(!hasSignedOut && acct != null && users!= null) {
+                    for(User user : users){
+                        if(user.getUserID().getId().equals(acct.getId())) {
+                            app.setAuthendifiedUser(users.get(0));
+                            ctx.startActivity(new Intent(ctx, CourseSelectActivity.class));
+                            break;
+                        }else {
+                            fetchUserAndStart(acct, app, ctx);
+
+                        }
+                    }
                 }
             }
         };

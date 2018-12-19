@@ -1,6 +1,7 @@
 package ch.epfl.sweng.studdybuddy.util;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.view.View;
 
@@ -31,6 +32,10 @@ public class SettingsFragmentHelper {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(settingsFragment.getContext(), GoogleSignInActivity.class);
+
+                Bundle bundle = new Bundle();
+                bundle.putBoolean(Messages.signedOut, true);
+                GlobalBundle.getInstance().putAll(bundle);
                 //If it's a travis test, don't logout from GoogleAuth
                 if(uId.equals("Default")){
                     settingsFragment.startActivity(intent);

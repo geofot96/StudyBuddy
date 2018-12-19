@@ -138,7 +138,7 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
 
 
     /**
-     *  Call all methods that in charge of UI in this fragment - language field, location field,
+     *  Call all methods that in charge of UI in this fragment - language field, location field,no
      *  sign out and apply settings button
      */
     public void setUpUI(){

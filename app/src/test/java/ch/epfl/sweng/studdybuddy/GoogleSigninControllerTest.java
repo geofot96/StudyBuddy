@@ -3,8 +3,6 @@ package ch.epfl.sweng.studdybuddy;
 import android.content.Context;
 import android.content.Intent;
 
-import net.bytebuddy.matcher.CollectionOneToOneMatcher;
-
 import org.junit.Test;
 
 import ch.epfl.sweng.studdybuddy.core.Account;
@@ -16,7 +14,6 @@ import ch.epfl.sweng.studdybuddy.util.StudyBuddy;
 
 import static ch.epfl.sweng.studdybuddy.controllers.GoogleSigninController.callbackUserFetch;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.RETURNS_SELF;
 import static org.mockito.Mockito.mock;
@@ -54,4 +51,7 @@ public class GoogleSigninControllerTest {
         verify(app, times(1)).setAuthendifiedUser(u);
         verify(ctx, times(1)).startActivity(any(Intent.class));
     }
+
+    @Test
+    public void test
 }

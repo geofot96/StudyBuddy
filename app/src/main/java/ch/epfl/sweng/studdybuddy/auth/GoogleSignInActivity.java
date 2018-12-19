@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
 
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.common.SignInButton;
@@ -22,11 +21,13 @@ import java.util.List;
 
 import ch.epfl.sweng.studdybuddy.R;
 import ch.epfl.sweng.studdybuddy.activities.CourseSelectActivity;
+import ch.epfl.sweng.studdybuddy.activities.group.GlobalBundle;
 import ch.epfl.sweng.studdybuddy.core.Account;
 import ch.epfl.sweng.studdybuddy.core.User;
 import ch.epfl.sweng.studdybuddy.services.notifications.Token;
 import ch.epfl.sweng.studdybuddy.sql.SqlWrapper;
 import ch.epfl.sweng.studdybuddy.tools.Consumer;
+import ch.epfl.sweng.studdybuddy.util.Messages;
 import ch.epfl.sweng.studdybuddy.util.StudyBuddy;
 
 import static ch.epfl.sweng.studdybuddy.controllers.GoogleSigninController.fetchUserAndStart;
@@ -69,17 +70,11 @@ public class GoogleSignInActivity extends AppCompatActivity {
         // Check for existing Google Sign In account, if the user is already signed in
         // the GoogleSignInAccount will be non-null.
         Account acct = getAuthManager().getCurrentUser();
-        if (acct != null ) {
-            String personName = acct.getDisplayName();
-            //appears only when the user is connected
-            Toast.makeText(this, "Welcome " + personName, Toast.LENGTH_SHORT).show();
             List<User> users = new ArrayList<>();
-            sql.getUser(acct.getId(), Consumer.sequenced(clearAndFill(users), fetchUserAndStartConsumer(acct, app, this)));
+        boolean hasSignedOut = GlobalBundle.getInstance().getSavedBundle().getBoolean(Messages.signedOut);
+        sql.getAllUsers(Consumer.sequenced(clearAndFill(users), fetchUserAndStartConsumer(acct, app, this, hasSignedOut)));
             //  fetchUserAndStart(acct, app, this);
-        } else {
-            //appears only when the user isn't connected to the app
-            Toast.makeText(this, "No User", Toast.LENGTH_SHORT).show();
-        }
+
     }
 
     @Override
