@@ -126,13 +126,18 @@ public class ConnectedAvailabilityTest {
         int l = ConcreteAvailability.columnsNum;
         assertEquals(true, list.isAvailable(rowTest, columnTest));
         for (int i = 0; i < L; i++){
-            for(int j = 0; j < l; j++){
-                if(i!=rowTest || j!= columnTest){
-                    assertEquals(false, list.isAvailable(i,j));
-                }
+            checkTheRow(list,l, i);
+        }
+    }
+
+    private void checkTheRow(Availability list, int l, int i) {
+        for(int j = 0; j < l; j++){
+            if(i!=rowTest || j!= columnTest){
+                assertEquals(false, list.isAvailable(i,j));
             }
         }
     }
+
 
 }
 

@@ -55,7 +55,6 @@ public class ChatActivity extends AppCompatActivity{
     public FirebaseReference ref;
     private StorageReference storageRef;
     private Button addImage, cameraButon;
-    private Uri filePath;
     private String downloadUri;
     protected static final int PICK_IMAGE_REQUEST = 1;
     protected static final int OPEN_CAMERA_REQUEST = 42;
@@ -109,13 +108,9 @@ public class ChatActivity extends AppCompatActivity{
         initAuthenticatedUser();
     }
 
-    protected void initAuthenticatedUser() {
-        auth = FirebaseAuth.getInstance().getCurrentUser();
-    }
+    protected void initAuthenticatedUser() {auth = FirebaseAuth.getInstance().getCurrentUser();}
 
-    protected void initDatabaseReference() {
-        mNotificationsRef = FirebaseDatabase.getInstance().getReference("notifications");
-    }
+    protected void initDatabaseReference() {mNotificationsRef = FirebaseDatabase.getInstance().getReference("notifications");}
 
     @Override
     protected void onStart() {
@@ -302,20 +297,7 @@ public class ChatActivity extends AppCompatActivity{
     protected void pushMessage(EditText inputText, FirebaseReference reference, String groupsID, String downloadURI) {
         if(auth != null) {
             ChatUtils.pushToFirebase(reference, groupsID, inputText.getText().toString(), downloadURI)
-                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void aVoid) {
-                            HashMap<String, String> notification = new HashMap<>();
-                            notification.put("FROM", auth.getUid());
-                            notification.put("GROUP", groupID);
-                            notification.put("TYPE", "message");
-                            for (User u : users) {
-                                if (!u.getUserID().getId().equals(auth.getUid())) {
-                                    mNotificationsRef.child(u.getUserID().getId()).push().setValue(notification);
-                                }
-                            }
-                        }
-                    });
+                    .addOnSuccessListener(ChatUtils.getOnSuccessListener(mNotificationsRef, auth, groupsID, users));
         }
     }
 

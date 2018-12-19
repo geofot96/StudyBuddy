@@ -12,12 +12,15 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
 import java.util.HashMap;
+import java.util.List;
 import java.util.UUID;
 
 import ch.epfl.sweng.studdybuddy.core.User;
@@ -85,6 +88,23 @@ public class ChatUtils {
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
         byte[] dataBAOS = baos.toByteArray();
         return ChatUtils.uploadImageFromCamera(dataBAOS, applicationContext);
+    }
+
+    protected static OnSuccessListener<Void> getOnSuccessListener(DatabaseReference mNotificationsRef, FirebaseUser auth, String groupID, List<User> users){
+        return new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                    HashMap<String, String> notification = new HashMap<>();
+                    notification.put("FROM", auth.getUid());
+                    notification.put("GROUP", groupID);
+                    notification.put("TYPE", "message");
+                    for (User u : users) {
+                        if (!u.getUserID().getId().equals(auth.getUid())) {
+                            mNotificationsRef.child(u.getUserID().getId()).push().setValue(notification);
+                        }
+                    }
+            }
+        };
     }
 
 }
