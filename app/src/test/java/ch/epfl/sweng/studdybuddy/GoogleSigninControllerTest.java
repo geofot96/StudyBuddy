@@ -53,5 +53,7 @@ public class GoogleSigninControllerTest {
     }
 
     @Test
-    public void test
+    public void test(){
+        
+    }
 }
