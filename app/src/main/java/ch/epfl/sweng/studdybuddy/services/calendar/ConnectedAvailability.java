@@ -1,6 +1,7 @@
 package ch.epfl.sweng.studdybuddy.services.calendar;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.google.android.gms.tasks.Task;
@@ -16,6 +17,7 @@ import java.util.List;
 import ch.epfl.sweng.studdybuddy.core.Group;
 import ch.epfl.sweng.studdybuddy.core.ID;
 import ch.epfl.sweng.studdybuddy.core.User;
+import ch.epfl.sweng.studdybuddy.firebase.FirebaseReference;
 import ch.epfl.sweng.studdybuddy.firebase.OnGetDataListener;
 import ch.epfl.sweng.studdybuddy.firebase.ReferenceWrapper;
 import ch.epfl.sweng.studdybuddy.tools.Consumer;
@@ -27,10 +29,13 @@ import ch.epfl.sweng.studdybuddy.util.Messages;
  * update the database every time the availabilities are updated
  */
 public class ConnectedAvailability implements Availability {
-    private final DatabaseReference databaseReference;
+    private DatabaseReference databaseReference;
     private Availability availabilities;
 
     private ConnectedAvailability(@NonNull ID<User> user, @NonNull ID<Group> group){
+        if(user == null || group == null){
+            throw new IllegalArgumentException();
+        }
         databaseReference = FirebaseDatabase
                 .getInstance()
                 .getReference()
@@ -41,16 +46,19 @@ public class ConnectedAvailability implements Availability {
         update();
     }
 
-    private ConnectedAvailability(DatabaseReference databaseReference) {
-        if(databaseReference == null){
+    private ConnectedAvailability(DatabaseReference db) throws IllegalArgumentException {
+        if(db == null){
             throw new IllegalArgumentException();
         }
 
-        List<Boolean> data = new ArrayList<>();
-        readData(databaseReference, availabilityGetDataListener(callbackAvailabilities(data)));
-
-        this.availabilities = new ConcreteAvailability(data);
-        this.databaseReference = databaseReference;
+        FirebaseReference ref = new FirebaseReference(db);
+        ref.getAll(Boolean.class, new Consumer<List<Boolean>>() {
+            @Override
+            public void accept(@Nullable List<Boolean> booleans) {
+                databaseReference = db;
+                availabilities = new ConcreteAvailability(booleans);
+            }
+        });
     }
 
     public ConnectedAvailability(Availability A, DatabaseReference databaseReference){
@@ -65,7 +73,7 @@ public class ConnectedAvailability implements Availability {
         return new ConnectedAvailability(user, group);
     }
 
-    public static ConnectedAvailability copyExistedAvailabilities(@NonNull ID<User> user, @NonNull ID<Group> group){
+    public static ConnectedAvailability copyExistedAvailabilities(@NonNull ID<User> user, @NonNull ID<Group> group) throws InterruptedException {
         return new ConnectedAvailability(
                 FirebaseDatabase
                         .getInstance()

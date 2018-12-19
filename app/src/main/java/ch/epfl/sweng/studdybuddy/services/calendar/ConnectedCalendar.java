@@ -30,7 +30,8 @@ import ch.epfl.sweng.studdybuddy.util.Messages;
  * of every user of the group.
  */
 
-public class ConnectedCalendar implements Observable{
+public class
+ConnectedCalendar implements Observable{
     public static final int CALENDAR_SIZE = 77;
     private CalendarComputation calendarController;
     private HashMap<String, List<Boolean>> availabilities = new HashMap<>() ;
@@ -40,9 +41,9 @@ public class ConnectedCalendar implements Observable{
     // this reference to the database is used to listen every change to the database to update the calendar
     private DatabaseReference databaseReference;
 
-    public ConnectedCalendar(Map<String, List<Boolean>> list){
+    public ConnectedCalendar(Map<String, List<Boolean>> mapUserAvail){
         calendarController = new CalendarComputation();
-        availabilities.putAll(list);
+        availabilities.putAll(mapUserAvail);
     }
 
     public ConnectedCalendar(Observer observer, ID<Group> groupID){

@@ -11,15 +11,21 @@ import java.util.List;
 public class ConcreteAvailability implements Availability{
     public final static int rowsNum = 11;
     public final static int columnsNum = 7;
-    private int size = rowsNum*columnsNum;
+    private int sizeOfTheCalendar = rowsNum*columnsNum;
     private List<Boolean> userAvailabilities = init();
 
     public ConcreteAvailability(){
     }
 
+    /**
+     * if the list is smaller than the one we expect, we are trying to pursue
+     * the process by considering the missing slots as "false" i.e not available
+     *
+     * @param list
+     */
     public ConcreteAvailability(List<Boolean> list){
-        this.userAvailabilities = list;
-        int rest = list.size() > size ? 0: size - list.size();
+        this.userAvailabilities = new ArrayList<>(list);
+        int rest = list.size() > sizeOfTheCalendar ? 0: sizeOfTheCalendar - list.size();
         for(int i = 0; i<rest; i++){
             this.userAvailabilities.add(false);
         }
@@ -36,15 +42,6 @@ public class ConcreteAvailability implements Availability{
         return userAvailabilities.get(row * columnsNum + column);
     }
 
-
-    private List<Boolean> init(){
-        List<Boolean> x = new ArrayList<>(size);
-        for(int i = 0; i<size; i++){
-            x.add(false);
-        }
-        return x;
-    }
-
     public void modifyAvailability(int row, int column) throws ArrayIndexOutOfBoundsException{
         if((row < 0) || (row >= rowsNum) || (column < 0) || (column >= columnsNum)){
             throw new ArrayIndexOutOfBoundsException("the availability slot doesn't exist");
@@ -52,4 +49,14 @@ public class ConcreteAvailability implements Availability{
             userAvailabilities.set(row*columnsNum+column, !isAvailable(row, column));
         }
     }
+
+
+    private List<Boolean> init(){
+        List<Boolean> x = new ArrayList<>(sizeOfTheCalendar);
+        for(int i = 0; i<sizeOfTheCalendar; i++){
+            x.add(false);
+        }
+        return x;
+    }
+
 }
