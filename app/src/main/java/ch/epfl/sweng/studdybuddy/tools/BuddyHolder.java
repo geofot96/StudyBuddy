@@ -59,7 +59,6 @@ public class BuddyHolder extends RecyclerView.ViewHolder
         }else if (isFull){
             buddyInvite.setText("The group is full");
             buddyInvite.setEnabled(false);
-            buddyInvite.setVisibility(View.INVISIBLE);
         }
         else
         {
