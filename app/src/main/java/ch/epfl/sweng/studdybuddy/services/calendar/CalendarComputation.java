@@ -38,11 +38,7 @@ public class CalendarComputation {
         int listsLen = lists.size();
         List<Integer> result = new ArrayList<>();
         if(listsLen != 0) {
-            int oneListLen = Integer.MAX_VALUE;
-            for(int i = 0; i<listsLen; i++){
-                oneListLen = Math.min(oneListLen, lists.get(i).size());
-            }
-
+            int oneListLen = getMinSize(lists, listsLen);
             for (int i = 0; i < oneListLen; i++) {
                 result.add(0);
             }
@@ -51,6 +47,14 @@ public class CalendarComputation {
                 List<Integer> current_list = getIntegerListFromBooleanList(lists.get(j));
                 result = getSumOfTwoLists(result, current_list);
             }
+        }
+        return result;
+    }
+
+    private int getMinSize(List<List<Boolean>> lists, int listsLen) {
+        int result = Integer.MAX_VALUE;
+        for(int i = 0; i<listsLen; i++){
+            result = Math.min(result, lists.get(i).size());
         }
         return result;
     }
