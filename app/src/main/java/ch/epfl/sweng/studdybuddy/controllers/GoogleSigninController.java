@@ -27,11 +27,14 @@ public final class GoogleSigninController {
         return fb.select("users").select(acct.getId()).get(User.class, callbackUserFetch(fb, acct, app, context));
     }
 
+
+
     public static Consumer<User> callbackUserFetch(ReferenceWrapper fb, Account acct, StudyBuddy app, Context context) {
         return new Consumer<User>() {
             @Override
             public void accept(User user) {
                 if(acct != null) {
+
                     Toast.makeText(context, "Welcome " + acct.getDisplayName(), Toast.LENGTH_SHORT).show();
 
                     final ID<User> userID = new ID<>(acct.getId());

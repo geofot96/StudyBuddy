@@ -2,8 +2,10 @@ package ch.epfl.sweng.studdybuddy;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.test.runner.AndroidJUnit4;
 
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import java.util.Arrays;
 import java.util.List;
@@ -16,6 +18,7 @@ import ch.epfl.sweng.studdybuddy.tools.Consumer;
 import ch.epfl.sweng.studdybuddy.tools.Intentable;
 import ch.epfl.sweng.studdybuddy.util.StudyBuddy;
 
+import static android.support.test.internal.runner.junit4.statement.UiThreadStatement.runOnUiThread;
 import static ch.epfl.sweng.studdybuddy.controllers.GoogleSigninController.callbackUserFetch;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -24,7 +27,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-
+@RunWith(AndroidJUnit4.class)
 public class GoogleSigninControllerTest {
     ReferenceWrapper rw = mock(ReferenceWrapper.class, RETURNS_SELF);
     Account acct = mock(Account.class);
@@ -61,28 +64,22 @@ public class GoogleSigninControllerTest {
     @Test
     public void fetchUserAndStartConsumerTest1(){
 
-  /*      boolean hasSignedOut = false;
 
-        Consumer<List<User>> consumer = GoogleSigninController.fetchUserAndStartConsumer(acct, app, ctx, hasSignedOut);
-        consumer.accept(Arrays.asList(new User("a", "b")));
-        verify(app, times(1)).setAuthendifiedUser(any());
-        verify(ctx, times(1)).startActivity(any());
-*/
-
-        customCheck(false, Arrays.asList(new User("a", "b")), 1,1);
+        try {
+            customCheck(false, Arrays.asList(new User("a", "b")), 1,1);
+        } catch (Throwable throwable) {
+            throwable.printStackTrace();
+        }
 
     }
 
     @Test
     public void fetchUserAndStartConsumerTest2(){
-
-    /*    hasSignedOut = true;
-        Consumer<List<User>> consumer = GoogleSigninController.fetchUserAndStartConsumer(acct, app, ctx, hasSignedOut);
-        consumer.accept(Arrays.asList(new User("a", "b")));
-        verify(app, times(0)).setAuthendifiedUser(any());
-        verify(ctx, times(0)).startActivity(any());
-*/
-        customCheck(true, Arrays.asList(new User("a", "b")), 0,0);
+        try {
+            customCheck(true, Arrays.asList(new User("a", "b")), 0,0);
+        } catch (Throwable throwable) {
+            throwable.printStackTrace();
+        }
 
 
     }
@@ -98,7 +95,11 @@ public class GoogleSigninControllerTest {
         verify(ctx, times(1)).startActivity(any());
 
         */
-        customCheck(false, Arrays.asList(new User("a", "b"), new User("c", "d")), 1,1);
+        try {
+            customCheck(false, Arrays.asList(new User("a", "b"), new User("c", "d")), 1,1);
+        } catch (Throwable throwable) {
+            throwable.printStackTrace();
+        }
 
     }
 
@@ -107,13 +108,20 @@ public class GoogleSigninControllerTest {
     }
 
 
-    private void customCheck(boolean hasSignedOut, List<User> users, int appTimes, int ctxTimes){
+    private void customCheck(boolean hasSignedOut, List<User> users, int appTimes, int ctxTimes) throws Throwable {
+        runOnUiThread(new Runnable() {
+                          @Override
+                          public void run() {
+                              //activity.update(calendar);
 
-        Consumer<List<User>> consumer = GoogleSigninController.fetchUserAndStartConsumer(acct, app, ctx, hasSignedOut);
-        consumer.accept(users);
-        verify(app, times(appTimes)).setAuthendifiedUser(any());
-        verify(ctx, times(ctxTimes)).startActivity(any());
+                              Consumer<List<User>> consumer = GoogleSigninController.fetchUserAndStartConsumer(acct, app, ctx, hasSignedOut);
+                              consumer.accept(users);
+                              verify(app, times(appTimes)).setAuthendifiedUser(any());
+                              verify(ctx, times(ctxTimes)).startActivity(any());
 
+                          }
+                      }
+        );
     }
 
 
