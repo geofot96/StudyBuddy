@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * a ConcreteAvailability instance will modelize the availibilities
+ * a ConcreteAvailability instance will modelize the availabilities
  * of the user in a list of Boolean matching the size of the calendar
  *
  */

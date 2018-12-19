@@ -8,43 +8,60 @@ import android.support.annotation.NonNull;
  * Class representing courses
  */
 @Entity
-public class Course
-{
+public class Course {
     @PrimaryKey
     @NonNull
-    private ID<Course> courseID; //mustn't be final because it will be reset when we read from the DB #kiru
+    private ID<Course> courseID;
 
     private String courseName;
-
-    public Course() {}
-
-    public Course(String courseName)
-    {
+    /**
+     * Empty constructor
+     */
+    public Course() {
+    }
+    /**
+     * Create a course from a Course name
+     * @param courseName the course name
+     */
+    public Course(String courseName) {
         this();
         this.courseName = courseName;
         courseID = new ID<>(courseName);
     }
-
-    public Course(Course sourceCourse)
-    {
+    /**
+     * Create a new course from an existing one
+     * @param sourceCourse the course to be copied
+     */
+    public Course(Course sourceCourse) {
         this.courseName = sourceCourse.getCourseName();
         this.courseID = sourceCourse.getCourseID();
     }
-
-    public String getCourseName()
-    {
-        return  courseName;
+    /**
+     *
+     * @return the name of the course
+     */
+    public String getCourseName() {
+        return courseName;
     }
-
-    public void setCourseName(String name) { courseName = name; }
-
-    public ID<Course> getCourseID()
-    {
+    /**
+     * Set a new name to the course
+     * @param name the name to be set
+     */
+    public void setCourseName(String name) {
+        courseName = name;
+    }
+    /**
+     *
+     * @return the id of the course
+     */
+    public ID<Course> getCourseID() {
         return courseID;
     }
-
-    public void setCourseID(ID<Course> courseID)
-    {
+    /**
+     * Set a new id to the course
+     * @param courseID the id to be set
+     */
+    public void setCourseID(ID<Course> courseID) {
         this.courseID = courseID;
     }
 

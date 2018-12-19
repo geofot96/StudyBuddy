@@ -36,7 +36,9 @@ import static ch.epfl.sweng.studdybuddy.controllers.CourseSelectController.updat
 import static ch.epfl.sweng.studdybuddy.util.ActivityHelper.onClickLaunch;
 import static ch.epfl.sweng.studdybuddy.util.ActivityHelper.showDropdown;
 
-
+/**
+ * Activity offering to the user the possibility to add a preferred course to his account
+ */
 public class CourseSelectActivity extends AppCompatActivity {
     static List<String> coursesDB = new ArrayList<>();
     private final List<String> courseSelection = new ArrayList<>();
@@ -47,17 +49,23 @@ public class CourseSelectActivity extends AppCompatActivity {
     String uId;
     private MetaGroupAdmin mga;
 
+    /**
+     * OnCreate method setting up all the graphical components
+     * @param savedInstanceState The state of the previous instance
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        firebase  = new FirebaseReference();
+        firebase = new FirebaseReference();
         mga = new MetaGroupAdmin(firebase);
         setContentView(R.layout.activity_course_select);
         setUpButtons();
         setUpSelectedCourses();
         setUpDb(setUpAutoComplete());
     }
-
+    /**
+     * Method used to set up the graphical buttons
+     */
     private void setUpButtons() {
         Intentable i = new Intentable(this, new Intent(this, NavigationActivity.class));
         Button skipButton = findViewById(R.id.skipButton);
@@ -67,8 +75,11 @@ public class CourseSelectActivity extends AppCompatActivity {
         uId = currentUser.getUserID().getId();
         doneButton.setOnClickListener(updateCoursesOnDone(currentUser, courseSelection, mga, i));
     }
-
-    private ArrayAdapter<String> setUpAutoComplete(){
+    /**
+     * Prepares the text field which suggests courses as the user types
+     * @return An ArrayAdapter of the suggested courses
+     */
+    private ArrayAdapter<String> setUpAutoComplete() {
         adapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, coursesDB);
         autocomplete = (AutoCompleteTextView) findViewById(R.id.courseComplete);
         autocomplete.setAdapter(adapter);
@@ -77,21 +88,26 @@ public class CourseSelectActivity extends AppCompatActivity {
         autocomplete.setOnItemClickListener(onClickAddCourse(courseSelection, resetSelectViews(doneButton, autocomplete, imm)));
         return adapter;
     }
-
-   private void setUpSelectedCourses() {
-       final RecyclerView selectedCourses = (RecyclerView) findViewById(R.id.coursesSet);
-       RecyclerView.Adapter courseAdapter = new CourseAdapter(courseSelection);
-       selectedCourses.setLayoutManager(new LinearLayoutManager(getBaseContext()));
-       selectedCourses.setAdapter(courseAdapter);
-       AdapterAdapter adapterC = new RecyclerAdapterAdapter(courseAdapter);
-       mga.addListenner(adapterC);
-       mga.addListenner(updateClickable(doneButton, courseSelection));
-       mga.getUserCourses(uId, courseSelection);
-       ItemTouchHelper swipeCourse = deleteCourseOnSwipe(courseSelection, doneButton, adapterC);
-       swipeCourse.attachToRecyclerView(selectedCourses);
-   }
-
-   private void setUpDb(ArrayAdapter<String> adapter) {
-       firebase.select("courses").getAll(String.class, AdapterConsumer.adapterConsumer(String.class, coursesDB, new ArrayAdapterAdapter(adapter)));
-   }
+    /**
+     * Method which attaches to the suggested list only the appropriate courses
+     */
+    private void setUpSelectedCourses() {
+        final RecyclerView selectedCourses = (RecyclerView) findViewById(R.id.coursesSet);
+        RecyclerView.Adapter courseAdapter = new CourseAdapter(courseSelection);
+        selectedCourses.setLayoutManager(new LinearLayoutManager(getBaseContext()));
+        selectedCourses.setAdapter(courseAdapter);
+        AdapterAdapter adapterC = new RecyclerAdapterAdapter(courseAdapter);
+        mga.addListenner(adapterC);
+        mga.addListenner(updateClickable(doneButton, courseSelection));
+        mga.getUserCourses(uId, courseSelection);
+        ItemTouchHelper swipeCourse = deleteCourseOnSwipe(courseSelection, doneButton, adapterC);
+        swipeCourse.attachToRecyclerView(selectedCourses);
+    }
+    /**
+     * Selects the courses and stores them in a list
+     * @param adapter Adapter containing the necessary information
+     */
+    private void setUpDb(ArrayAdapter<String> adapter) {
+        firebase.select("courses").getAll(String.class, AdapterConsumer.adapterConsumer(String.class, coursesDB, new ArrayAdapterAdapter(adapter)));
+    }
 }

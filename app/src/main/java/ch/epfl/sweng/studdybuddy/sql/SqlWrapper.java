@@ -8,6 +8,11 @@ import ch.epfl.sweng.studdybuddy.core.ID;
 import ch.epfl.sweng.studdybuddy.core.User;
 import ch.epfl.sweng.studdybuddy.tools.Consumer;
 
+/**
+ * Wrapper around SQL
+ * Encapsulates the different access methods
+ * On a GET operation, the thread body is given by a Consumer
+ */
 public class SqlWrapper {
 
     private final String TAG = "SqlWrapper";

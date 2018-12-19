@@ -18,9 +18,18 @@ import ch.epfl.sweng.studdybuddy.firebase.FirebaseReference;
 import ch.epfl.sweng.studdybuddy.firebase.MetaGroup;
 import ch.epfl.sweng.studdybuddy.util.Messages;
 
+/**
+ * A specialised adapter used for chat elements in a recyclerAdapter
+ */
 public class ChatRecyclerAdapter extends BasicRecyclerAdapter
 {
-
+    /**
+     * Constructor for the specialised recyclerAdapter
+     * @param mg Metagroup used to get data from Firebase
+     * @param fr The FirebaseReference
+     * @param groupList List of groups that will be used as chat cards
+     * @param userId id of the Current user
+     */
     public ChatRecyclerAdapter(MetaGroup mg, FirebaseReference fr, List<Group> groupList, String userId) {
         setGroupList(groupList);
         setFilterList(groupList);
@@ -34,12 +43,24 @@ public class ChatRecyclerAdapter extends BasicRecyclerAdapter
         getMb().getUserGroups(userId, getuGroupIds(), getuGroups());
         getMb().getAllGroupSizes(getSizes());
     }
+
+    /**
+     * Constructor for the specialised recyclerAdapter that uses the default Metagroup and FirebaseReference
+     * @param groupList List of groups that will be used as chat cards
+     * @param userId id of the Current user
+     */
     public ChatRecyclerAdapter(List<Group> groupList, String userId)
     {
 
         this(new MetaGroup(), new FirebaseReference(), groupList, userId);
     }
 
+    /**
+     * Inflates the elements of the viewGrop
+     * @param parent the viewGroup containing the different views
+     * @param i the index of the element in the child list
+     * @return A viewHolder with the inflated element
+     */
     @NonNull
     @Override
     public BasicRecyclerAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int i)
@@ -51,6 +72,11 @@ public class ChatRecyclerAdapter extends BasicRecyclerAdapter
 
     }
 
+    /**
+     * Sets the information retrieved from the list of groups to the holder
+     * @param holder The holder of the graphical elements of the card
+     * @param position the index of the element in the child list
+     */
     @Override
     public void onBindViewHolder(@NonNull BasicRecyclerAdapter.MyViewHolder holder, int position)
     {
@@ -61,30 +87,25 @@ public class ChatRecyclerAdapter extends BasicRecyclerAdapter
         holder.getItemView().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i=new Intent(holder.itemView.getContext(), ChatActivity.class);
-                i.putExtra(Messages.groupID,group.getGroupID().getId());
+                Intent i = new Intent(holder.itemView.getContext(), ChatActivity.class);
+                i.putExtra(Messages.groupID, group.getGroupID().getId());
                 v.getContext().startActivity(i);
 
             }
         });
-        if(getUserId().equals(group.getAdminID()))
-        {
+        if (getUserId().equals(group.getAdminID())) {
             holder.getAdmin().setText("\uD83D\uDC51");
-        }
-        else
-        {
+        } else {
             holder.getAdmin().setText("");
         }
 
     }
 
 
-//    @SuppressLint("DefaultLocale")
-////    @Override
-////    public void onBindViewHolder(MyViewHolder holder, int position){
-////
-////    }
-
+    /**
+     *
+     * @return returns the size of the list of groups
+     */
     @Override
     public int getItemCount()
     {

@@ -2,6 +2,9 @@ package ch.epfl.sweng.studdybuddy.services.chat;
 
 import java.util.Date;
 
+/**
+ * A class representing a chat message object
+ */
 public class ChatMessage {
 
     private String messageText;
@@ -18,7 +21,7 @@ public class ChatMessage {
         messageTime = new Date().getTime();
     }
 
-    public ChatMessage(){
+    public ChatMessage() {
 
     }
 

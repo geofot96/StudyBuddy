@@ -39,12 +39,11 @@ import static ch.epfl.sweng.studdybuddy.util.ActivityHelper.onClickLaunch;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ProfileFragment extends Fragment
-{
+public class ProfileFragment extends Fragment {
 
-    private final List<String> userCourses =  new ArrayList<>();
-    private  final List<Group> userGroups = new ArrayList<>();
-    private  final List<User> userFriends = new ArrayList<>();
+    private final List<String> userCourses = new ArrayList<>();
+    private final List<Group> userGroups = new ArrayList<>();
+    private final List<User> userFriends = new ArrayList<>();
     private GroupsRecyclerAdapter ad;
     private CourseAdapter adCourse;
     private ParticipantAdapter adFriend;
@@ -54,16 +53,21 @@ public class ProfileFragment extends Fragment
     private AuthManager mAuth = null;
     Button addFriends;
 
-    public ProfileFragment()
-    {
-        // Required empty public constructor
-    }
+    /**
+     *  Required empty public constructor
+     */
+    public ProfileFragment() {}
 
-
+    /**
+     * Sets up the graphical elements of the Fragment
+     * @param inflater Inflater containing the list of existing chats
+     * @param container container of the list
+     * @param savedInstanceState previously saved state
+     * @return The inflatet view containing the list of chats
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState)
-    {
+                             Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_profile, container, false);
         setupUser();
@@ -76,28 +80,44 @@ public class ProfileFragment extends Fragment
         return v;
     }
 
+    /**
+     * Get the necessary information about the current user
+     */
     public void setupUser() {
         user = ((StudyBuddy) getActivity().getApplication()).getAuthendifiedUser();
         userID = user.getUserID().toString();
     }
 
+    /**
+     * Retrieves the correct groups from firebase
+     * @return a listener providing the aforementioned functionality
+     */
     public ValueEventListener setGroupsUp() {
         metabase.addListenner(new RecyclerAdapterAdapter(ad));
         return metabase.getUserGroups(userID, userGroups);
     }
-
+    /**
+     * Retrieves the correct Courses from firebase
+     * @return a listener providing the aforementioned functionality
+     */
     public ValueEventListener setCoursesUp() {
         metabase.addListenner(new RecyclerAdapterAdapter(adCourse));
         return metabase.getUserCourses(userID, userCourses);
     }
-
+    /**
+     * Retrieves the correct Friends from firebase
+     * @return a listener providing the aforementioned functionality
+     */
     public ValueEventListener setFriendsUp() {
         metabase.addListenner(new RecyclerAdapterAdapter(adFriend));
         return metabase.getBuddies(userID, userFriends);
     }
 
-
-    private void setUI(View v){
+    /**
+     * Modifies the provided view, by adding all the information of the user
+     * @param v the vire to be modified
+     */
+    private void setUI(View v) {
         TextView nameView = (TextView) v.findViewById(R.id.profile_name_text);
         nameView.setText(user.getName());
 
@@ -121,19 +141,23 @@ public class ProfileFragment extends Fragment
         editCourses.setOnClickListener(onClickLaunch(new Intentable(v.getContext(), CourseSelectActivity.class)));
     }
 
-    public ReferenceWrapper getDB(){
+    /**
+     * Method used for testing
+     * @return the firebase reference
+     */
+    public ReferenceWrapper getDB() {
         return new FirebaseReference();
     }
-   
 
+    /**
+     *
+     * @return a listener which starts a new activity
+     */
     @NonNull
-    private View.OnClickListener getOnClickListener()
-    {
-        return new View.OnClickListener()
-        {
+    private View.OnClickListener getOnClickListener() {
+        return new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 Intent intent = new Intent(v.getContext(), AddFriendsActivity.class);
                 startActivity(intent);
             }

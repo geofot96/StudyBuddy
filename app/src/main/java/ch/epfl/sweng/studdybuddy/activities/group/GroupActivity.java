@@ -65,8 +65,9 @@ public class GroupActivity extends AppCompatActivity implements Observer, Result
 
     RecyclerView meetingRV;
     Button inviteFriends;
+
     @Override
-    protected void onCreate(Bundle savedInstanceState){
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group);
         setupUserGroupAdmin();
@@ -79,7 +80,7 @@ public class GroupActivity extends AppCompatActivity implements Observer, Result
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent d){
+    public void onActivityResult(int requestCode, int resultCode, Intent d) {
         processResult(requestCode, resultCode, this);
     }
 
@@ -139,7 +140,7 @@ public class GroupActivity extends AppCompatActivity implements Observer, Result
         };
     }
 
-    public void setUI(){
+    public void setUI() {
         setContentView(R.layout.activity_group);
         ParticipantAdapter participantAdapter = new ParticipantAdapter(participants);
         mb.addListenner(new RecyclerAdapterAdapter(participantAdapter));
