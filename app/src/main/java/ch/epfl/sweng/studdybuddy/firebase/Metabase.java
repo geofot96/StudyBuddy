@@ -21,9 +21,22 @@ import ch.epfl.sweng.studdybuddy.tools.Intentable;
 import ch.epfl.sweng.studdybuddy.util.Helper;
 import ch.epfl.sweng.studdybuddy.util.Messages;
 
+/**
+ * Abstract Wrapper around a Database instance
+ * This class offers advanced ooperations on the database
+ */
 abstract public class Metabase {
+    /**
+     * Database instance
+     */
     protected ReferenceWrapper db;
+
+    /**
+     * The list of adapters we can update
+     */
     protected final List<AdapterAdapter> ads; // eventually use option
+
+
 
     public Metabase(ReferenceWrapper db, AdapterAdapter ad) {
         this.db = db;
@@ -33,6 +46,10 @@ abstract public class Metabase {
         }
     }
 
+    /**
+     * Updates all adapters
+     *
+     */
     protected void notif() {
         if (ads != null) {
             for (AdapterAdapter ad : ads)
@@ -40,14 +57,26 @@ abstract public class Metabase {
         }
     }
 
+    /**
+     * Fills the list of users according to a list of user IDs
+     * Notifies all ArrayAdapters listeners once the callback is done.
+     * @return the ValueEventListener of the database interaction
+     */
     public ValueEventListener getUsersfromIds(List<String> uIds, List<User> groupUsers) {
         return getUsersFromIdsAndConsume(uIds, groupUsers, Consumer.doNothing());
     }
 
+    /**
+     * Fills the list of users according to a list of user IDs and
+     *  calls the callback consumer on the filled list.
+     * Notifies all ArrayAdapters listeners once the callback has accepted the data.
+     * @return the ValueEventListener of the database query
+     */
     public ValueEventListener getUsersFromIdsAndConsume(List<String> uIds, List<User> groupUsers, Consumer<List<User>> consumer) {
-        return db.select("users").getAll(User.class, new Consumer<List<User>>() {
+        return db.select(Messages.FirebaseNode.USERS).getAll(User.class, new Consumer<List<User>>() {
             @Override
             public void accept(List<User> users) {
+                groupUsers.clear();
                 for (int i = 0; i < users.size(); ++i) {
                     User u = users.get(i);
                     ID<User> id = u.getUserID();
@@ -63,11 +92,19 @@ abstract public class Metabase {
         });
     }
 
+
+    /**
+     * Calls the consumer accept function on the fetched user
+     * @return the ValueEventListener of the database query
+     */
     public ValueEventListener getUserAndConsume(String uId, Consumer<User> consumer) {
         return db.select(Messages.FirebaseNode.USERS).select(uId).get(User.class, consumer);
     }
 
-    //The update function from FB API is not appropriate
+    /**
+     * Update the list of user courses
+     * @return the ValueEventListener of the database query
+     */
     public ValueEventListener updateUserCourses(String uid, List<String> update, Intentable mother) {
         return db.select(Messages.FirebaseNode.USERCOURSE).getAll(Pair.class, new Consumer<List<Pair>>() {
             private void updateField(List<String> diff, Pair pair) {
@@ -95,6 +132,10 @@ abstract public class Metabase {
         });
     }
 
+    /**
+     * Puts the list of courses in the database
+     *
+     */
     public void putAllCourses(List<String> courseSelection, String userid) {
         for (String course : courseSelection) {
             Pair pair = new Pair(userid, course);
@@ -102,23 +143,40 @@ abstract public class Metabase {
         }
     }
 
+    /**
+     * Adds the adapter to the list of adapters to notify when some data changes
+     */
     public void addListenner(AdapterAdapter ad) {
         this.ads.add(ad);
     }
 
+    /**
+     * Clears the list of adapters notified on a data change
+     */
     public void clearListeners() {
         this.ads.clear();
     }
 
 
+    /**
+     * Fills the users list with the friends of the user with ID uid
+     * @return the ValueEventListener of the databaseTransaction
+     */
     public ValueEventListener getBuddies(String uid, List<User> users) {
         return getBuddiesAndConsume(uid, users, new LinkedList<>(), Consumer.doNothing());
     }
 
+    /**
+     * Adds all friends of the users with the given ID to the list of users.
+     * Additionnaly fills the list of ids with the friendsIDs.
+     * The consumer will accept the list of users before notifying the adapters
+     * @return the ValueEventListener of the database query
+     */
     public ValueEventListener getBuddiesAndConsume(String uid, List<User> users, List<String> uIdsToFill, Consumer<List<User>> consumer) {
         return db.select(Messages.FirebaseNode.BUDDIES).getAll(Buddy.class, new Consumer<List<Buddy>>() {
             @Override
             public void accept(@Nullable List<Buddy> buddies) {
+
                 for (Buddy buddy : buddies) {
                     String bob = buddy.buddyOf(uid);
                     if (bob != null) {
@@ -132,19 +190,27 @@ abstract public class Metabase {
     }
 
 
-    public ValueEventListener fetchUser(List<User> usernames) {
+    /**
+     * Fills the list with all users stored in the database
+     * @return the ValueEventListener of the database query
+     */
+    public ValueEventListener fetchUser(List<User> users) {
         return db.select(Messages.FirebaseNode.USERS).getAll(User.class, new Consumer<List<User>>() {
             @Override
             public void accept(@Nullable List<User> users) {
-                usernames.clear();
+                users.clear();
                 for (User user : users) {
-                    usernames.add(user);
+                    users.add(user);
                 }
                 notif();
             }
         });
     }
 
+    /**
+     * Fills the list with all usernamess of the users stored in the database
+     * @return the ValueEventListener of the database query
+     */
     public ValueEventListener fetchUserNames(List<String> usernames) {
         return db.select(Messages.FirebaseNode.USERS).getAll(User.class, new Consumer<List<User>>() {
             @Override
@@ -158,6 +224,11 @@ abstract public class Metabase {
         });
     }
 
+    /**
+     * Returns an OnClickListener which adds a friendship relation between
+     * the user with the given uId and a list of users.
+     * @return the OnClickListener
+     */
     public View.OnClickListener updateFriendsOnDone(String uId, List<User> friendsSelection, MetaGroupAdmin mga, Intentable mother) {
         return new View.OnClickListener() {
             @Override

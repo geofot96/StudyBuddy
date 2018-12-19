@@ -3,7 +3,6 @@ package ch.epfl.sweng.studdybuddy.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -22,8 +21,6 @@ import ch.epfl.sweng.studdybuddy.core.Group;
 import ch.epfl.sweng.studdybuddy.core.User;
 import ch.epfl.sweng.studdybuddy.firebase.FirebaseReference;
 import ch.epfl.sweng.studdybuddy.firebase.MetaGroup;
-import ch.epfl.sweng.studdybuddy.services.calendar.Availability;
-import ch.epfl.sweng.studdybuddy.services.calendar.ConnectedAvailability;
 import ch.epfl.sweng.studdybuddy.tools.AdapterConsumer;
 import ch.epfl.sweng.studdybuddy.tools.ArrayAdapterAdapter;
 import ch.epfl.sweng.studdybuddy.tools.Consumer;
@@ -34,10 +31,11 @@ import ch.epfl.sweng.studdybuddy.util.StudyBuddy;
 
 import static ch.epfl.sweng.studdybuddy.controllers.CreateGroupController.joinGroupsAndGo;
 import static ch.epfl.sweng.studdybuddy.util.ActivityHelper.showDropdown;
-
-public class CreateGroupActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener
-{
-    private String selectedCourse="";
+/**
+ * An activity used by the user to create a new group with specific course, language and participant number limit
+ */
+public class CreateGroupActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+    private String selectedCourse = "";
     private String selectedLanguage;
     private int maxParticipants = 2;//default value
     private static List<String> coursesDB;
@@ -46,10 +44,12 @@ public class CreateGroupActivity extends AppCompatActivity implements AdapterVie
     FirebaseReference firebase;
     MetaGroup mb;
     Button create;
-
+    /**
+     * OnCreate method setting up all the graphical components
+     * @param savedInstanceState  The state of the previous instance
+     */
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_group);
         mb = new MetaGroup();
@@ -60,27 +60,32 @@ public class CreateGroupActivity extends AppCompatActivity implements AdapterVie
         coursesDB = new ArrayList<>();
         coursesDB.add("untitled");
         firebase.select("courses").getAll(String.class, AdapterConsumer.adapterConsumer(String.class, coursesDB, new ArrayAdapterAdapter(setUpAutoComplete())));
-        create = (Button)findViewById(R.id.confirmGroupCreation);
+        create = (Button) findViewById(R.id.confirmGroupCreation);
         create.setEnabled(false);
     }
-
+    /**
+     * Prepares the text field which suggests courses as the user types
+     * @return An ArrayAdapter of the suggested courses
+     */
     ArrayAdapter<String> setUpAutoComplete() {
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_dropdown_item_1line, coursesDB);
         AutoCompleteTextView textView = (AutoCompleteTextView) findViewById(R.id.courseComplete2);
         textView.setAdapter(adapter);
         textView.setOnClickListener(showDropdown(textView));
-        textView.setOnItemClickListener(new AdapterView.OnItemClickListener()
-        {
-            @Override public void onItemClick(AdapterView<?> parent, View view, int position, long id)
-            {
-                selectedCourse =  parent.getItemAtPosition(position).toString();;
+        textView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                selectedCourse = parent.getItemAtPosition(position).toString();
+                ;
                 create.setEnabled(true);
             }
         });
         return adapter;
     }
-
+    /**
+     * Set the limits of the graphical numberPicker
+     */
     void setUpNumberPicker() {
         //Number picker
         NumberPicker np = findViewById(R.id.numberPicker);
@@ -88,7 +93,9 @@ public class CreateGroupActivity extends AppCompatActivity implements AdapterVie
         np.setMaxValue(10);
         np.setOnValueChangedListener(onValueChangeListener);
     }
-
+    /**
+     * Assigns different emojis representing different languages to the LanguageSpinner
+     */
     void setUpLang() {
         //Language spinner
         Spinner spinnerLanguage = (Spinner) findViewById(R.id.spinnerLanguage);
@@ -108,14 +115,18 @@ public class CreateGroupActivity extends AppCompatActivity implements AdapterVie
         spinnerLanguage.setAdapter(dataAdapterLanguages);
     }
 
-
+    /**
+     * Sets the selected language
+     * @param parent Parent of the current view
+     * @param view Current view
+     * @param position Position in the list of children
+     * @param id element id
+     */
     @Override
-    public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
-    {
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         String item = parent.getItemAtPosition(position).toString();
 
-        switch(parent.getId())
-        {
+        switch (parent.getId()) {
             case R.id.spinnerLanguage:
                 selectedLanguage = item;
                 break;
@@ -125,23 +136,25 @@ public class CreateGroupActivity extends AppCompatActivity implements AdapterVie
     }
 
     @Override
-    public void onNothingSelected(AdapterView<?> parent)
-    {
+    public void onNothingSelected(AdapterView<?> parent) {
 
     }
-
+    /**
+     * Push the newly created group to firebase and switch view with the FeedFragment
+     * @param view The current view
+     */
     public void addtoGroups(View view) {
         User user = ((StudyBuddy) CreateGroupActivity.this.getApplication()).authendifiedUser;
-        Group g = new Group(maxParticipants, new Course(selectedCourse),selectedLanguage, UUID.randomUUID().toString(), user.getUserID().getId());
+        Group g = new Group(maxParticipants, new Course(selectedCourse), selectedLanguage, UUID.randomUUID().toString(), user.getUserID().getId());
         Intentable toNav = new Intentable(this, NavigationActivity.class);
         joinGroupsAndGo(mb, user, g, toNav);
     }
-
-    NumberPicker.OnValueChangeListener onValueChangeListener = new NumberPicker.OnValueChangeListener()
-    {
+    /**
+     * Listener of the Number Picker
+     */
+    NumberPicker.OnValueChangeListener onValueChangeListener = new NumberPicker.OnValueChangeListener() {
         @Override
-        public void onValueChange(NumberPicker numberPicker, int i, int i1)
-        {
+        public void onValueChange(NumberPicker numberPicker, int i, int i1) {
 
             maxParticipants = numberPicker.getValue();
         }

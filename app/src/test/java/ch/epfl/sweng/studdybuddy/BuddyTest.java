@@ -3,23 +3,18 @@ package ch.epfl.sweng.studdybuddy;
 import org.junit.Test;
 
 import ch.epfl.sweng.studdybuddy.core.Buddy;
-import ch.epfl.sweng.studdybuddy.core.Pair;
-import ch.epfl.sweng.studdybuddy.util.Helper;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
 
 public class BuddyTest {
     @Test
     public void testSettersGetters() {
         Buddy b = new Buddy("alice", "bob");
-        b.setAlice("bob");
-        b.setBob("alice");
-        b.setCreationDate((long)0);
-        assertEquals("alice", b.getBob());
-        assertEquals("bob", b.getAlice());
-        assertEquals(new Long(0), b.getCreationDate());
+        b.setKey("bob");
+        b.setValue("alice");
+        assertEquals("alice", b.getValue());
+        assertEquals("bob", b.getKey());
     }
 
     @Test

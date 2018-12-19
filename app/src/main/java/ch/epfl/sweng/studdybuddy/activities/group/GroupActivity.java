@@ -51,8 +51,8 @@ import static ch.epfl.sweng.studdybuddy.util.ActivityHelper.onClickLaunch;
 
 public class GroupActivity extends AppCompatActivity implements Notifiable, Resultable {
     private boolean wrongInput = false;
-    List<User> participants  = new ArrayList<>();
-    MetaGroupAdmin mb  = new MetaGroupAdmin();
+    List<User> participants = new ArrayList<>();
+    MetaGroupAdmin mb = new MetaGroupAdmin();
     private String uId;
     private String gId;
     Button button;
@@ -69,8 +69,9 @@ public class GroupActivity extends AppCompatActivity implements Notifiable, Resu
     private Pair pair = new Pair();
     RecyclerView meetingRV;
     Button inviteFriends;
+
     @Override
-    protected void onCreate(Bundle savedInstanceState){
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setupUserGroupAdmin();
         setUI();
@@ -80,7 +81,7 @@ public class GroupActivity extends AppCompatActivity implements Notifiable, Resu
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent d){
+    public void onActivityResult(int requestCode, int resultCode, Intent d) {
         processResult(requestCode, resultCode, this);
     }
 
@@ -128,7 +129,7 @@ public class GroupActivity extends AppCompatActivity implements Notifiable, Resu
         update();
     }
 
-    public void setUI(){
+    public void setUI() {
         setContentView(R.layout.activity_group);
         ParticipantAdapter participantAdapter = new ParticipantAdapter(participants);
         mb.addListenner(new RecyclerAdapterAdapter(participantAdapter));
@@ -156,7 +157,7 @@ public class GroupActivity extends AppCompatActivity implements Notifiable, Resu
         meetingRV.setAdapter(adapter);
     }
 
-    public boolean getInfoWrongInput(){
+    public boolean getInfoWrongInput() {
         return wrongInput;
     }
 
@@ -167,7 +168,7 @@ public class GroupActivity extends AppCompatActivity implements Notifiable, Resu
      */
     public void update() {
         List<Integer> groupAvailabilities = calendar.getComputedAvailabilities();
-        if(groupAvailabilities.size() == 77) {
+        if (groupAvailabilities.size() == 77) {
             updateColor(calendarGrid, groupAvailabilities, NmaxUsers, CalendarWidth);
         }
     }

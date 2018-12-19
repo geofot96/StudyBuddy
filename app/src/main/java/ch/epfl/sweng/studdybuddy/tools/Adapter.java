@@ -9,24 +9,44 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-public abstract class Adapter extends RecyclerView.Adapter<Holder>{
-    @IdRes int holderId;
-    @LayoutRes int layoutRes;
-    public Adapter(@LayoutRes int layoutRes, @IdRes int holderId){
+/**
+ * This class represent a specialised RecyclerView adapter
+ */
+public abstract class Adapter extends RecyclerView.Adapter<Holder> {
+    @IdRes
+    int holderId;
+    @LayoutRes
+    int layoutRes;
+
+    /**
+     * Consturctor of an adapter
+     * @param layoutRes
+     * @param holderId the unique id of the holder
+     */
+    public Adapter(@LayoutRes int layoutRes, @IdRes int holderId) {
         this.holderId = holderId;
         this.layoutRes = layoutRes;
     }
-    //cette fonction permet de créer les viewHolder
-    //et par la même indiquer la vue à inflater (à partir des layout xml)
+
+    /**
+     * Creates a viewHolder and indicates what view to inflate
+     * @param viewGroup The viewGroup from where the view gets inflated
+     * @param itemType type of the item
+     * @return returns a viewholder that indicates what view to inflate
+     */
     @Override
-    public Holder onCreateViewHolder(ViewGroup viewGroup, int itemType)
-    {
+    public Holder onCreateViewHolder(ViewGroup viewGroup, int itemType) {
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(layoutRes, viewGroup, false);
         return new Holder(view, holderId);
     }
 
-    public void initRecyclerView(Context ctx, RecyclerView rv){
-       rv.setLayoutManager(new LinearLayoutManager(ctx));
-       rv.setAdapter(this);
+    /**
+     * Initialises the RecyclerViewer
+     * @param ctx the current context
+     * @param rv RecyclerViewer to be initialised
+     */
+    public void initRecyclerView(Context ctx, RecyclerView rv) {
+        rv.setLayoutManager(new LinearLayoutManager(ctx));
+        rv.setAdapter(this);
     }
 }

@@ -50,7 +50,6 @@ public class ChatActivity extends AppCompatActivity {
     protected static final int PICK_IMAGE_REQUEST = 1;
     protected static final int OPEN_CAMERA_REQUEST = 42;
     private FloatingActionButton fab;
-    private ProgressDialog mProgress;
 
     /**
      * OnCreate method setting up all the graphical components
@@ -79,7 +78,6 @@ public class ChatActivity extends AppCompatActivity {
      */    private void initializations() {
         downloadUri = "";
         displayChatMessages();
-        mProgress = new ProgressDialog(this);
         fab = (FloatingActionButton) findViewById(R.id.fab);
         addImage = (Button) findViewById(R.id.gallery);
         addImage.setOnClickListener(getGalleryImage());
@@ -150,10 +148,10 @@ public class ChatActivity extends AppCompatActivity {
      */
     private void initiatePhotoRequest(int requestCode, Intent data) {
         if (requestCode == PICK_IMAGE_REQUEST) {
-            ChatUtils.uploadImageFromGallery(getFilePath(data), mProgress, storageRef).addOnCompleteListener(getOnCompleteListener());
+            ChatUtils.uploadImageFromGallery(getFilePath(data), storageRef).addOnCompleteListener(getOnCompleteListener());
         }
         if (requestCode == OPEN_CAMERA_REQUEST) {
-            ChatUtils.openCamera(data, mProgress, getApplicationContext()).addOnSuccessListener(getOnSuccessListener());
+            ChatUtils.openCamera(data, getApplicationContext()).addOnSuccessListener(getOnSuccessListener());
         }
     }
 
@@ -180,7 +178,7 @@ public class ChatActivity extends AppCompatActivity {
                 Task<Uri> urlTask = taskSnapshot.getStorage().getDownloadUrl();
                 while (!urlTask.isSuccessful()) ;
                 setDownloadUri(urlTask.getResult().toString());
-                mProgress.dismiss();
+                //mProgress.dismiss();
 
                 fab.performClick();
             }
@@ -205,12 +203,10 @@ public class ChatActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<Uri> task) {
                 if (task.isSuccessful()) {
                     setDownloadUri(task.getResult().toString());
-                    mProgress.dismiss();
                     fab.performClick();
                     Toast.makeText(ChatActivity.this, "Uploaded ", Toast.LENGTH_SHORT).show();
 
                 } else {
-                    mProgress.dismiss();
                     Toast.makeText(ChatActivity.this, "Failed Uploading", Toast.LENGTH_LONG).show();
                 }
             }

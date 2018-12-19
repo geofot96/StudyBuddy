@@ -22,10 +22,13 @@ public class MapsHelper {
     public static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
     public static final float DEFAULT_ZOOM = 14.0f;
 
-
+    /**
+     * Sets the default position of the marker to the ROLEX if the meeting is null
+     * Return a draggable marker
+     * @return a marker
+     */
     public static MarkerOptions setInitialPosition(@Nullable Meeting meeting){
         MarkerOptions mMarker = new MarkerOptions().position(new LatLng(ROLEX_LOCATION.getLatitude(), ROLEX_LOCATION.getLongitude()));
-        //need to select the correct meeting
         if(meeting != null) {
             MeetingLocation location = meeting.getLocation();
             mMarker = (new MarkerOptions().position(new LatLng(location.getLatitude(), location.getLongitude())).title(location.getTitle()));
@@ -34,7 +37,11 @@ public class MapsHelper {
         return mMarker;
     }
 
-    public static MeetingLocation mapListener(LatLng latLng ,Marker marker, PlaceAutocompleteFragment autocompleteFragment,  Context ctx){
+    /**
+     * Updates the marker position and return a new meeting Location when the user clicks on the map
+     * @return the new meeting location if the address is valid, null otherwise
+     */
+    public static MeetingLocation mapClickUpdate(LatLng latLng , Marker marker, PlaceAutocompleteFragment autocompleteFragment, Context ctx){
         marker.setPosition(latLng);
         Geocoder geocoder;
         Address address = null;
@@ -55,6 +62,10 @@ public class MapsHelper {
         return null;
     }
 
+    /**
+     * Set the marker position to the selected place in the autoCompleteBar and return the corresponding meeting location
+     * @return the meeting location
+     */
     public static MeetingLocation acceptSelectedPlace(Place place , Marker marker){
         // TODO: Get info about the selected place.
       //  Log.i("Maps", "Place: " + place.getName());

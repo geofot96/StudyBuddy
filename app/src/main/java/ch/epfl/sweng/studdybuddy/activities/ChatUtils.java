@@ -35,15 +35,12 @@ public class ChatUtils {
     /**
      *Uploads the provided image selected from the system "gallery picker" to the Firebase Storage
      * @param filePath the path of the selected image
-     * @param mProgress progress bar showing uploading progress
      * @param storageRef Firebase Storage reference
      * @return A task containing the URI of the uploaded image
      */
-    protected static Task<Uri> uploadImageFromGallery(Uri filePath, ProgressDialog mProgress, StorageReference storageRef) {
+    protected static Task<Uri> uploadImageFromGallery(Uri filePath, StorageReference storageRef) {
         Task result = null;
         if (filePath != null) {
-            mProgress.setTitle("Uploading...");
-            mProgress.show();
             StorageReference ref = storageRef.child("images/" + UUID.randomUUID().toString());
             result = ref.putFile(filePath).continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
                 @Override
@@ -59,7 +56,7 @@ public class ChatUtils {
         return result;
     }
 
-    protected static UploadTask uploadImageFromCamera(byte[] dataBAOS, Context applicationContext, ProgressDialog mProgress) {
+    protected static UploadTask uploadImageFromCamera(byte[] dataBAOS, Context applicationContext) {
 
 
         //Firebase storage folder where you want to put the images
@@ -74,22 +71,18 @@ public class ChatUtils {
             @Override
             public void onFailure(@NonNull Exception exception) {
                 Toast.makeText(applicationContext, "Sending failed", Toast.LENGTH_SHORT).show();
-                mProgress.dismiss();
             }
         });
         return uploadTask;
     }
 
-    protected static UploadTask openCamera(Intent data, ProgressDialog mProgress, Context applicationContext) {
-        mProgress.setMessage("Uploading");
-        mProgress.show();
-
+    protected static UploadTask openCamera(Intent data, Context applicationContext) {
         //get the camera image
         Bitmap bitmap = (Bitmap) data.getExtras().get("data");
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
         byte[] dataBAOS = baos.toByteArray();
-        return ChatUtils.uploadImageFromCamera(dataBAOS, applicationContext, mProgress);
+        return ChatUtils.uploadImageFromCamera(dataBAOS, applicationContext);
     }
 
 }

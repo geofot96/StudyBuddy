@@ -37,12 +37,12 @@ import ch.epfl.sweng.studdybuddy.util.Messages;
 import ch.epfl.sweng.studdybuddy.util.StudyBuddy;
 
 /**
- * A fragment containing the list of available courses
+ * A fragment containing the feed of available groups
  */
-public class FeedFragment extends Fragment {
-
-    private GroupsRecyclerAdapter mAdapter;
-    private static List<Group> groupSet = new ArrayList<>();
+public class FeedFragment extends Fragment
+{
+    GroupsRecyclerAdapter mAdapter;
+    static List<Group> groupSet = new ArrayList<>();
     private static List<String> userCourses = new ArrayList<>();
     public static final String IS_PARTICIPANT = "ch.epfl.sweng.studybuddy.particip";
     static Set<Group> filteredGroupSetFull = new HashSet<>();
@@ -52,7 +52,7 @@ public class FeedFragment extends Fragment {
     private ToggleButton toggleFull, toggleUserCourses;
 
     /**
-     *  Required empty public constructor
+     * Required empty public constructor
      */
     public FeedFragment() {
 
@@ -63,7 +63,7 @@ public class FeedFragment extends Fragment {
      * @param inflater Inflater containing the list of existing chats
      * @param container container of the list
      * @param savedInstanceState previously saved state
-     * @return The inflated view containing the list of chats
+     * @return The inflatet view containing the list of chats
      */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
