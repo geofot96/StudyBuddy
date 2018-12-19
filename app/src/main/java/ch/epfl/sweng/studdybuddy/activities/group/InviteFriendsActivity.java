@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ch.epfl.sweng.studdybuddy.R;
-import ch.epfl.sweng.studdybuddy.core.Buddy;
 import ch.epfl.sweng.studdybuddy.core.ID;
 import ch.epfl.sweng.studdybuddy.core.User;
 import ch.epfl.sweng.studdybuddy.firebase.MetaGroup;
@@ -24,22 +23,17 @@ public class InviteFriendsActivity extends AppCompatActivity {
 
     private BuddyAdapter buddyAdapter;
     private MetaGroup mg = new MetaGroup();
-    private final String A = "TnGyoumVk2SDqYCQx0psDttd3Ea2";
-    private final String B = "RfxAvevZKyZFfjqrvRLq7hmHDdu2";
-    private final String C = "ZqHa4GLFGEfbuQW9gO6E0kndWNw2";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_invite_friends);
         getBundleData();
-
-        mg.pushBuddies(new Buddy(A, B));
-        mg.pushBuddies(new Buddy(A, C));
         buddies = new ArrayList<>();
         participants = new ArrayList<>();
         rv = findViewById(R.id.buddiesToInvite);
-        buddyAdapter = new BuddyAdapter(buddies, new ID<>(gId), new ID<>(uId));
+        buddyAdapter = new BuddyAdapter(buddies, new ID<>(gId));
         mg.addListenner(new RecyclerAdapterAdapter(buddyAdapter));
         buddyAdapter.initRecyclerView(this, rv);
         mg.getBuddiesNotInGroup(gId, uId, participants, buddies);

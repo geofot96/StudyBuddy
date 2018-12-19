@@ -26,7 +26,6 @@ public class BuddyHolder extends RecyclerView.ViewHolder
         super(itemView);
         buddyName = (TextView) itemView.findViewById(R.id.buddy);
         buddyInvite = (Button) itemView.findViewById(R.id.invite);
-        buddyInvite.setOnClickListener(getInvitationListener());
     }
 
     public View.OnClickListener getInvitationListener()
@@ -39,6 +38,7 @@ public class BuddyHolder extends RecyclerView.ViewHolder
                 Pair pair = new Pair(userID.toString(), groupID.toString());
                 FirebaseReference reference = new FirebaseReference();
                 reference.select(Messages.FirebaseNode.USERGROUP).select(Helper.hashCode(pair)).setVal(pair);
+                System.out.println(userID);
                 buddyInvite.setText("INVITED");
                 buddyInvite.setEnabled(false);
             }
@@ -64,5 +64,7 @@ public class BuddyHolder extends RecyclerView.ViewHolder
         }
         this.groupID = gID;
         this.userID = uID;
+        buddyInvite.setOnClickListener(getInvitationListener());
+
     }
 }
