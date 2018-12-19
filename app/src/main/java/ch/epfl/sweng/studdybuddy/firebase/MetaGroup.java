@@ -205,4 +205,13 @@ public class MetaGroup extends Metabase{
             }
         });
     }
-}
+
+     /**
+      * Push buddy to database
+      */
+     public void pushBuddies(Buddy buddy){
+         db.select(Messages.FirebaseNode.BUDDIES).select(buddy.hash()).setVal(buddy);
+     }
+
+
+ }
