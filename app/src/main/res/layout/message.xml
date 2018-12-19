@@ -30,5 +30,16 @@
             android:id="@+id/message_text"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             android:textSize="18sp" />
+
+        <ImageView
+            android:id="@+id/imgViewGall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_margin="10dp"
+            android:layout_marginTop="40dp"
+             />
     </RelativeLayout>
+    <!--android:paddingTop="40dp"-->
+    <!--android:layout_marginTop="40dp"-->
 </android.support.constraint.ConstraintLayout>
