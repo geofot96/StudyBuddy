@@ -20,7 +20,7 @@ public class InviteFriendsActivity extends AppCompatActivity {
     private RecyclerView rv ;
     private List<User> buddies;
     private List<User> participants;
-
+    private int maxUsers;
     private BuddyAdapter buddyAdapter;
     private MetaGroup mg = new MetaGroup();
 
@@ -33,7 +33,7 @@ public class InviteFriendsActivity extends AppCompatActivity {
         buddies = new ArrayList<>();
         participants = new ArrayList<>();
         rv = findViewById(R.id.buddiesToInvite);
-        buddyAdapter = new BuddyAdapter(buddies, new ID<>(gId));
+        buddyAdapter = new BuddyAdapter(buddies, new ID<>(gId), participants, maxUsers);
         mg.addListenner(new RecyclerAdapterAdapter(buddyAdapter));
         buddyAdapter.initRecyclerView(this, rv);
         mg.getBuddiesNotInGroup(gId, uId, participants, buddies);
@@ -44,6 +44,7 @@ public class InviteFriendsActivity extends AppCompatActivity {
         Bundle bundle = GlobalBundle.getInstance().getSavedBundle();
         gId = bundle.getString(Messages.groupID);
         uId = bundle.getString(Messages.userID);
+        maxUsers = bundle.getInt(Messages.maxUser);
     }
 
 

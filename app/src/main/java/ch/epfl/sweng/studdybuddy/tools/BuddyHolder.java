@@ -50,12 +50,16 @@ public class BuddyHolder extends RecyclerView.ViewHolder
         return buddyName.getText().toString();
     }
 
-    public void bind(String name, boolean invite, ID<Group> gID, ID<User> uID)
+    public void bind(String name, boolean invite, ID<Group> gID, ID<User> uID, boolean isFull)
     {
         buddyName.setText(name);
-        if(invite)
+        if(invite &&  !isFull)
         {
             buddyInvite.setText("Invite");
+        }else if (isFull){
+            buddyInvite.setText("The group is full");
+            buddyInvite.setEnabled(false);
+            buddyInvite.setVisibility(View.INVISIBLE);
         }
         else
         {
