@@ -1,24 +1,32 @@
 package ch.epfl.sweng.studdybuddy;
 
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
+
 import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.Date;
 
+import ch.epfl.sweng.studdybuddy.activities.ChatActivity;
+import ch.epfl.sweng.studdybuddy.activities.DummyChatActivity;
 import ch.epfl.sweng.studdybuddy.core.ID;
 import ch.epfl.sweng.studdybuddy.core.User;
 import ch.epfl.sweng.studdybuddy.services.chat.ChatMessage;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class ChatMessageTest {
 
     private static User user = new User( "Mr Potato", new ID<>("dumbid"));
     private String userName = user.getName();
     private String message = "Hello! How are you?";
+    private String uri = "firebase.com";
     public long time = new Date().getTime();
-    private ChatMessage testChatMessage = new ChatMessage(message, userName, time);
+    private ChatMessage testChatMessage = new ChatMessage(message, userName, uri);
 
     private ChatMessage emptyChatMessage = new ChatMessage();
 
@@ -51,14 +59,45 @@ public class ChatMessageTest {
 
     @Test
     public void setMessageTime(){
-        emptyChatMessage.setMessageTime(time+1);
-        assertEquals(time+1, emptyChatMessage.getMessageTime());
+        long time = new Date().getTime();
+        emptyChatMessage.setMessageTime(time);
+        assertEquals(time, emptyChatMessage.getMessageTime());
+    }
+    @Test
+    public void getMessageUri(){
+        assertEquals("firebase.com", testChatMessage.getImageUri());
     }
 
     @Test
-    public void differentTimes() throws InterruptedException {
-        Thread.sleep(100);
-        ChatMessage laterMessage = new ChatMessage(message, userName);
-        assertNotEquals(time, laterMessage.getMessageTime());
+    public void setMessageUri(){
+        emptyChatMessage.setImageUri("travis.com");
+        assertEquals("travis.com", emptyChatMessage.getImageUri());
+    }
+
+    @Test
+    public void testPopulateViewOfChatActivity()
+    {
+        View view = mock(View.class);
+
+        ChatMessage chatMessage = mock(ChatMessage.class);
+
+        TextView messageUser = mock(TextView.class);
+        when(view.findViewById(R.id.message_user)).thenReturn(messageUser);
+        when(chatMessage.getMessageUser()).thenReturn("user");
+
+        TextView messageTime = mock(TextView.class);
+        when(view.findViewById(R.id.message_time)).thenReturn(messageTime);
+
+        TextView messageText = mock(TextView.class);
+        when(view.findViewById(R.id.message_text)).thenReturn(messageTime);
+        when(chatMessage.getMessageText()).thenReturn("text");
+
+        ImageView image = mock(ImageView.class);
+        when(view.findViewById(R.id.imgViewGall)).thenReturn(image);
+
+        DummyChatActivity chatActivity = mock(DummyChatActivity.class);
+
+        when(chatActivity.popViewBody(view, chatMessage)).thenCallRealMethod();
+        chatActivity.popViewBody(view, chatMessage);
     }
 }

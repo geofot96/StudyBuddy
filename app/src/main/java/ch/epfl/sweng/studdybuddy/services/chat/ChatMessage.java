@@ -9,18 +9,16 @@ public class ChatMessage {
 
     private String messageText;
     private String messageUser;
+    private String imageUri;
     private long messageTime;
 
-//TODO, after the merge
-    public ChatMessage(String messageText, String messageUser) {
-        // Initialize to current time
-        this(messageText, messageUser, new Date().getTime());
-    }
-
-    public ChatMessage(String messageText, String messageUser, long messageTime) {
+    public ChatMessage(String messageText, String messageUser,String imageUri) {
         this.messageText = messageText;
         this.messageUser = messageUser;
-        this.messageTime = messageTime;
+        this.imageUri=imageUri;
+
+        // Initialize to current time
+        messageTime = new Date().getTime();
     }
 
     public ChatMessage() {
@@ -49,5 +47,13 @@ public class ChatMessage {
 
     public void setMessageTime(long messageTime) {
         this.messageTime = messageTime;
+    }
+
+    public String getImageUri() {
+        return imageUri;
+    }
+
+    public void setImageUri(String imageUri) {
+        this.imageUri = imageUri;
     }
 }

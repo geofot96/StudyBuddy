@@ -7,6 +7,7 @@ import java.util.List;
 import ch.epfl.sweng.studdybuddy.core.User;
 import ch.epfl.sweng.studdybuddy.tools.Consumer;
 
+
 public class FirebaseConsumers {
     /**
      * Consumer  which removes all users present in the accepted list from the list of buddies
