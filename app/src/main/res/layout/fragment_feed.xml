@@ -20,7 +20,7 @@
         android:tint="@android:color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-/>
+        />
 
     <android.support.v7.widget.SearchView
         android:id="@+id/feed_search"
@@ -35,13 +35,13 @@
     <Button
         android:id="@+id/sortButton"
         android:layout_width="0dp"
-        android:layout_height="48dp"
+        android:layout_height="55dp"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="117dp"
         android:layout_marginStart="15dp"
         android:text="Sort"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/toggleButton"
+        app:layout_constraintEnd_toStartOf="@+id/toggleAllCourses"
         app:layout_constraintHorizontal_bias="0.068"
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="parent" />
@@ -59,15 +59,29 @@
         app:layout_constraintTop_toBottomOf="@+id/feed_search" />
 
     <ToggleButton
-        android:id="@+id/toggleButton"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:id="@+id/toggleAllCourses"
+        android:layout_width="100dp"
+        android:layout_height="55dp"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="80dp"
-        android:text="ToggleButton"
-        android:textOff="All"
+        android:text="Available"
+        android:textOff="Available"
         android:textOn="Available"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/sortButton" />
+
+    <ToggleButton
+        android:id="@+id/toggleYourCourses"
+        android:layout_width="100dp"
+        android:layout_height="55dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="80dp"
+        android:text="Your Courses"
+        android:textOff="Your Courses"
+        android:textOn="Your Courses"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.122"
         app:layout_constraintStart_toEndOf="@+id/sortButton" />
 </android.support.constraint.ConstraintLayout>
