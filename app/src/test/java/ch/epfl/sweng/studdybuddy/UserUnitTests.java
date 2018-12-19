@@ -4,8 +4,11 @@ import org.junit.Test;
 
 import ch.epfl.sweng.studdybuddy.core.ID;
 import ch.epfl.sweng.studdybuddy.core.User;
+import ch.epfl.sweng.studdybuddy.util.MapsHelper;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class UserUnitTests
 {
@@ -30,6 +33,30 @@ public class UserUnitTests
 
         user.setUserID(new ID<>("foobar"));
         assert(user.getUserID().getId().equals("foobar"));
+    }
+
+    @Test
+    public void equalsTest(){
+        User u = new User("a", new ID<>("1"));
+        User u2 = new User("b", new ID<>("1"));
+        User u3 = new User("b", new ID<>("2"));
+        User u4 = new User("a", new ID<>("1"));
+        u.setFavoriteLanguage("a");
+        u2.setFavoriteLanguage("b");
+        u3.setFavoriteLocation(MapsHelper.ROLEX_LOCATION);
+        assertTrue(u.equals(u));
+        assertFalse(u.equals(u2));
+        assertFalse(u.equals(u3));
+        assertFalse(u2.equals(u3));
+        assertFalse(u.equals(u4));
+
+    }
+
+    @Test
+    public void setAsTest(){
+        User u = new User("a", "b");
+        u.setAs(user);
+        assertEquals(u, user);
     }
 
    /* @Test

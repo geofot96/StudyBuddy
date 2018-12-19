@@ -19,6 +19,8 @@ import ch.epfl.sweng.studdybuddy.services.calendar.ConnectedAvailability;
 import ch.epfl.sweng.studdybuddy.services.calendar.ConnectedCalendar;
 import ch.epfl.sweng.studdybuddy.tools.Consumer;
 
+import static ch.epfl.sweng.studdybuddy.AvailabilityTest.checkAllFalse;
+import static ch.epfl.sweng.studdybuddy.AvailabilityTest.checkHeadTrueTailFalse;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.anyString;

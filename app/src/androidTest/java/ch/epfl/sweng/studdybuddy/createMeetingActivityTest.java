@@ -57,6 +57,7 @@ public class createMeetingActivityTest {
 
     @BeforeClass
     public static void setUpBeforeClass(){
+        MeetingsActivityTest.setup();
     }
 
     @Before

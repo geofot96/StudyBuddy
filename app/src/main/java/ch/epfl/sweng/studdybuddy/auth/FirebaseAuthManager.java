@@ -20,7 +20,7 @@ import ch.epfl.sweng.studdybuddy.core.Account;
 import ch.epfl.sweng.studdybuddy.services.notifications.Token;
 
 public class FirebaseAuthManager implements AuthManager {
-    private FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    private FirebaseAuth mAuth;
     private GoogleSignInClient client;
     private Activity ctx;
 
@@ -32,6 +32,13 @@ public class FirebaseAuthManager implements AuthManager {
                 .build();
 
         this.client = GoogleSignIn.getClient(currentActivity, gso);
+        mAuth = FirebaseAuth.getInstance();
+    }
+
+    public FirebaseAuthManager(FirebaseAuth mAuth, GoogleSignInClient client, Activity ctx) {
+        this.mAuth = mAuth;
+        this.client = client;
+        this.ctx = ctx;
     }
 
     public void login(Account acct, OnLoginCallback f, String TAG){

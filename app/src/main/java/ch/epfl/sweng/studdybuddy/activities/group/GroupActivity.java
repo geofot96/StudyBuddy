@@ -30,12 +30,24 @@ import ch.epfl.sweng.studdybuddy.services.meeting.MeetingLocation;
 import ch.epfl.sweng.studdybuddy.services.meeting.MeetingRecyclerAdapter;
 import ch.epfl.sweng.studdybuddy.tools.Observable;
 import ch.epfl.sweng.studdybuddy.tools.Observer;
+import ch.epfl.sweng.studdybuddy.tools.Consumer;
+import ch.epfl.sweng.studdybuddy.tools.Intentable;
 import ch.epfl.sweng.studdybuddy.tools.ParticipantAdapter;
 import ch.epfl.sweng.studdybuddy.tools.RecyclerAdapterAdapter;
 import ch.epfl.sweng.studdybuddy.tools.Resultable;
 import ch.epfl.sweng.studdybuddy.util.ActivityHelper;
 import ch.epfl.sweng.studdybuddy.util.Messages;
 import ch.epfl.sweng.studdybuddy.util.StudyBuddy;
+
+import static ch.epfl.sweng.studdybuddy.controllers.GroupController.inviteFriendsListener;
+import static ch.epfl.sweng.studdybuddy.controllers.GroupController.leaveOnClick;
+import static ch.epfl.sweng.studdybuddy.controllers.GroupController.processResult;
+import static ch.epfl.sweng.studdybuddy.util.ActivityHelper.onClickLaunch;
+
+public class GroupActivity extends AppCompatActivity implements Observer, Resultable {
+import static ch.epfl.sweng.studdybuddy.controllers.GroupController.callbackCalendar;
+import static ch.epfl.sweng.studdybuddy.services.calendar.Color.updateColor;
+import static ch.epfl.sweng.studdybuddy.util.ActivityHelper.onClickLaunch;
 
 public class GroupActivity extends AppCompatActivity implements Observer, Resultable {
     private boolean wrongInput = false;
@@ -57,6 +69,9 @@ public class GroupActivity extends AppCompatActivity implements Observer, Result
 
 
     private ColorController colorController = new ColorController();
+
+    RecyclerView meetingRV;
+    Button inviteFriends;
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -67,11 +82,12 @@ public class GroupActivity extends AppCompatActivity implements Observer, Result
         FloatingActionButton actionButton = findViewById(R.id.createMeeting);
         actionButton.setOnClickListener(goTo(CreateMeetingActivity.class, this));
         setupAvails();
+
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent d){
-        resultActivity(requestCode, resultCode, this);
+        processResult(requestCode, resultCode, this);
     }
 
     public void onResult() {
@@ -79,25 +95,12 @@ public class GroupActivity extends AppCompatActivity implements Observer, Result
     }
 
     public static void onResult(Bundle data, MetaMeeting metaM, String gId) {
-        MeetingLocation meetingLocation = new MeetingLocation(
-                data.getString(Messages.LOCATION_TITLE),
-                data.getString(Messages.ADDRESS),
-                data.getDouble(Messages.LATITUDE, 0),
-                data.getDouble(Messages.LONGITUDE, 0)
-        );
+        MeetingLocation meetingLocation = new MeetingLocation(data);
         metaM.pushLocation(meetingLocation, new ID<>(gId), new ID<>(data.getString(Messages.meetingID)));
     }
 
-    public static void resultActivity(int requestCode, int resultCode, Resultable res) {
-
-        if(requestCode == 1 && resultCode == RESULT_OK) {
-            res.onResult();
-        }
-    }
-
     public void setupAvails() {
-        calendarGrid = findViewById(R.id.calendarGrid);
-        Button button = findViewById(R.id.editAvail);
+        Button abutton = findViewById(R.id.editAvail);
         pair.setKey(gId);
         pair.setValue(uId);
         /*if(pair.getKey() == null || pair.getValue() == null){
@@ -105,12 +108,8 @@ public class GroupActivity extends AppCompatActivity implements Observer, Result
         }*/
         new ConnectedCalendar(this, new ID<>(pair.getKey()));
 
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(GroupActivity.this, ConnectedCalendarActivity.class));
-            }
-        });
+        Intentable toCalendar = new Intentable(this, new Intent(this, ConnectedCalendarActivity.class));
+        abutton.setOnClickListener(onClickLaunch(toCalendar));
     }
 
     public void setupUserGroupAdmin() {
@@ -119,8 +118,13 @@ public class GroupActivity extends AppCompatActivity implements Observer, Result
         Bundle origin = globalBundle.getSavedBundle();
         uId = ((StudyBuddy) GroupActivity.this.getApplication()).getAuthendifiedUser().getUserID().getId();
         gId = origin.getString(Messages.groupID);
-        gIds.add(gId);
-        mb.getGroupsfromIds(gIds, group);
+        mb.onGroupGet(gId, new Consumer<Group>() {
+            @Override
+            public void accept(Group group) {
+                Intentable toNavig = new Intentable(GroupActivity.this, new Intent(GroupActivity.this, NavigationActivity.class));
+                button.setOnClickListener(leaveOnClick(mb, uId, group, toNavig));
+            }
+        });
         mb.getGroupUsers(gId, participants);
         adminId = origin.getString(Messages.ADMIN);
         /*if(gId == null || adminId == null ) {
@@ -130,6 +134,7 @@ public class GroupActivity extends AppCompatActivity implements Observer, Result
         }*/
         NmaxUsers = (float) origin.getInt(Messages.maxUser, -1);
     }
+
 
 
     public static View.OnClickListener goTo(Class<?> to, Activity from) {
@@ -142,27 +147,24 @@ public class GroupActivity extends AppCompatActivity implements Observer, Result
     }
 
     public void setUI(){
+        setContentView(R.layout.activity_group);
         ParticipantAdapter participantAdapter = new ParticipantAdapter(participants);
         mb.addListenner(new RecyclerAdapterAdapter(participantAdapter));
         RecyclerView participantsRv = (RecyclerView) findViewById(R.id.participantsRecyclerVIew);
         participantAdapter.initRecyclerView(this, participantsRv);
         button = findViewById(R.id.quitGroup);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (uId != null && gId != null) {
-                    mb.clearListeners();
-                    mb.removeUserFromGroup(uId, group.get(0));
-                    Intent transition = new Intent(GroupActivity.this, NavigationActivity.class);
-                    startActivity(transition);
-                }
-            }
-        });
+        meetingRV = findViewById(R.id.meetingRV);
+        calendarGrid = findViewById(R.id.calendarGrid);
+        meetingRV.setLayoutManager(new LinearLayoutManager(this));
+        FloatingActionButton actionButton = findViewById(R.id.createMeeting);
+        Intentable toCreation = new Intentable(this, new Intent(this, createMeetingActivity.class));
+        actionButton.setOnClickListener(onClickLaunch(toCreation));
+        Intentable toInviteFriends = new Intentable(this, new Intent(this, InviteFriendsActivity.class));
+        inviteFriends = findViewById(R.id.invite_friends);
+        inviteFriends.setOnClickListener(inviteFriendsListener(toInviteFriends, gId, uId));
     }
 
     public void setupMeetings() {
-        RecyclerView meetingRV = findViewById(R.id.meetingRV);
-        meetingRV.setLayoutManager(new LinearLayoutManager(this));
         meetingList = new ArrayList<>();
         Bundle bundle = GlobalBundle.getInstance().getSavedBundle();
         bundle.putString(Messages.groupID, gId);
@@ -170,6 +172,10 @@ public class GroupActivity extends AppCompatActivity implements Observer, Result
         adapter = new MeetingRecyclerAdapter(this, this, meetingList, bundle);
         metaM.getMeetingsOfGroup(new ID<>(gId), ActivityHelper.getConsumerForMeetings(meetingList, metaM, new ID<>(gId), adapter));
         meetingRV.setAdapter(adapter);
+    }
+
+    public boolean getInfoWrongInput(){
+        return wrongInput;
     }
 
 
@@ -186,4 +192,6 @@ public class GroupActivity extends AppCompatActivity implements Observer, Result
             colorController.updateColor(calendarGrid, groupAvailabilities, NmaxUsers, CalendarWidth);
         }
     }
+
+
 }

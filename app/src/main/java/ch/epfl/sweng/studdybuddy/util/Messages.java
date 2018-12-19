@@ -34,6 +34,6 @@ public class Messages {
         public static final String USERCOURSE = "userCourse";
         public static final String CHAT = "chat";
         public static final String USERS = "users";
-
+        public static final String BUDDIES = "buddies";
     }
 }

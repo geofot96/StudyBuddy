@@ -1,5 +1,6 @@
 package ch.epfl.sweng.studdybuddy.firebase;
 
+
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
@@ -7,6 +8,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import ch.epfl.sweng.studdybuddy.core.Buddy;
 import ch.epfl.sweng.studdybuddy.core.Group;
 import ch.epfl.sweng.studdybuddy.core.Pair;
 import ch.epfl.sweng.studdybuddy.core.User;
@@ -54,15 +56,6 @@ public class MetaGroup extends Metabase{
         });
     }
 
-    public ValueEventListener getGroup(String id, Group g, AdapterAdapter adapter) {
-        return db.select(Messages.FirebaseNode.GROUPS).select(id).get(Group.class, new Consumer<Group>() {
-            @Override
-            public void accept(Group group) {
-                g.copy(group);
-                adapter.update();
-            }
-        });
-    }
     //protected ?
     public ValueEventListener getGroupsfromIds(List<String> gIds, List<Group> userGroups) {
         return db.select(Messages.FirebaseNode.GROUPS).getAll(Group.class, groupsFromIds(gIds, userGroups));
@@ -118,6 +111,10 @@ public class MetaGroup extends Metabase{
     }
 
     public ValueEventListener getGroupUsers(String gId, List<String> uIds, List<User> groupUsers) {
+      return getGroupUsersAndConsume(gId, uIds, groupUsers, Consumer.doNothing());
+    }
+
+    public ValueEventListener getGroupUsersAndConsume(String gId, List<String> uIds, List<User> groupUsers, Consumer<List<User>> consumer){
         return db.select(Messages.FirebaseNode.USERGROUP).getAll(Pair.class, new Consumer<List<Pair>>() {
             @Override
             public void accept(List<Pair> pairs) {
@@ -126,9 +123,15 @@ public class MetaGroup extends Metabase{
                     safeAddId(gId, pairs.get(i).getValue(), pairs.get(i).getKey(), uIds);
                 }
                 groupUsers.clear();
-                getUsersfromIds(uIds, groupUsers);
+                getUsersFromIdsAndConsume(uIds, groupUsers, consumer);
             }
         });
+    }
+
+
+
+    public ValueEventListener getBuddiesNotInGroup(String gId, String uId,  List<User> participants, List<User> buddies ){
+        return getBuddiesAndConsume(uId, buddies, new LinkedList<>(), FirebaseConsumers.filterBuddies(gId, new ArrayList<>(), participants, this));
     }
 
     public void pushGroup(Group g, String creatorId) {
@@ -137,4 +140,15 @@ public class MetaGroup extends Metabase{
         db.select(Messages.FirebaseNode.USERGROUP).select(Helper.hashCode(pair)).setVal(pair);
     }
 
+
+    public ValueEventListener onGroupGet(String gid, Consumer<Group> callback) {
+        return db.select(Messages.FirebaseNode.GROUPS).select(gid).get(Group.class, new Consumer<Group>() {
+            @Override
+            public void accept(Group group) {
+                if(group != null) {
+                    callback.accept(group);
+                }
+            }
+        });
+    }
 }

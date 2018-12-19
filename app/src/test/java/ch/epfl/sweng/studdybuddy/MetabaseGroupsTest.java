@@ -14,11 +14,13 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import ch.epfl.sweng.studdybuddy.core.Buddy;
 import ch.epfl.sweng.studdybuddy.core.Group;
 import ch.epfl.sweng.studdybuddy.core.Pair;
 import ch.epfl.sweng.studdybuddy.core.User;
 import ch.epfl.sweng.studdybuddy.firebase.FirebaseReference;
 import ch.epfl.sweng.studdybuddy.firebase.MetaGroup;
+import ch.epfl.sweng.studdybuddy.tools.Consumer;
 import ch.epfl.sweng.studdybuddy.util.Helper;
 import ch.epfl.sweng.studdybuddy.util.Messages;
 
@@ -28,6 +30,7 @@ import static ch.epfl.sweng.studdybuddy.util.CoreFactory.groups1;
 import static ch.epfl.sweng.studdybuddy.util.CoreFactory.userGroup1;
 import static ch.epfl.sweng.studdybuddy.util.CoreFactory.users1;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
@@ -51,31 +54,28 @@ public class MetabaseGroupsTest {
     @Before public void setup() {
         DataSnapshot a = mock(DataSnapshot.class), b = mock(DataSnapshot.class), c = mock(DataSnapshot.class);
         List<DataSnapshot> snaps = Arrays.asList(a, b, c);
-        for(int i = 0; i < snaps.size(); ++i) {
-            when(snaps.get(i).getValue(Pair.class)).thenReturn(tuples.get(i));
-        }
+        fillSnapshots(snaps, tuples, Pair.class);
         when(dataSnapshot.getValue(Pair.class)).thenReturn(null);
         when(dataSnapshot.getChildren()).thenReturn(snaps);
         DataSnapshot s1 = mock(DataSnapshot.class), s2 = mock(DataSnapshot.class), s3 = mock(DataSnapshot.class), s4 = mock(DataSnapshot.class);
         List<DataSnapshot> insaneSnaps = Arrays.asList(s1, s2, s3, s4);
-        for(int i = 0; i < doublons.size(); ++i) {
-            when(insaneSnaps.get(i).getValue(Pair.class)).thenReturn(doublons.get(i));
-        }
+        fillSnapshots(insaneSnaps, doublons, Pair.class);
         when(insaneSnapshot.getValue(Pair.class)).thenReturn(null);
         when(insaneSnapshot.getChildren()).thenReturn(insaneSnaps);
-
         List<DataSnapshot> groups = Arrays.asList(mock(DataSnapshot.class), mock(DataSnapshot.class), mock(DataSnapshot.class), mock(DataSnapshot.class));
-        for(int i = 0; i < groups.size(); ++i) {
-            when(groups.get(i).getValue(Group.class)).thenReturn(gs.get(i));
-        }
+        fillSnapshots(groups, gs, Group.class);
         when(groupTbl.getValue(Group.class)).thenReturn(null);
         when(groupTbl.getChildren()).thenReturn(groups);
 
         List<DataSnapshot> usrSnaps = Arrays.asList(mock(DataSnapshot.class), mock(DataSnapshot.class), mock(DataSnapshot.class), mock(DataSnapshot.class), mock(DataSnapshot.class));
-        for(int i = 0; i < usrSnaps.size(); ++i) {
-            when(usrSnaps.get(i).getValue(User.class)).thenReturn(usrs.get(i));
-        }
+        fillSnapshots(usrSnaps, usrs, User.class);
         when(usrTbl.getChildren()).thenReturn(usrSnaps);
+    }
+
+    private <T> void fillSnapshots(List<DataSnapshot> snapshots, List<T> values, Class<T> classT){
+        for(int i = 0; i < snapshots.size(); ++i) {
+            when(snapshots.get(i).getValue(classT)).thenReturn(values.get(i));
+        }
     }
     @Test
     public void getAllGroupSizesWorksWhenNoGroup() {
@@ -177,4 +177,31 @@ public class MetabaseGroupsTest {
         assertTrue(p.getAllValues().contains(Messages.FirebaseNode.USERGROUP));
         assertTrue(p.getAllValues().contains(Helper.hashCode(new Pair("123", "ab"))));
     }
+
+    @Test
+    public void buddiesFilterTest(){
+        when(testref.child(Messages.FirebaseNode.USERGROUP)).thenReturn(testref);
+        when(testref.child(Messages.FirebaseNode.GROUPS)).thenReturn(testref);
+        when(testref.child(Messages.FirebaseNode.BUDDIES)).thenReturn(testref);
+        when(testref.child(Messages.FirebaseNode.USERS)).thenReturn(testref);
+        List<User> participants = new ArrayList<>();
+        List<String > uIds = new ArrayList<>();
+        DataSnapshot snapList = mock(DataSnapshot.class);
+        DataSnapshot snap = mock(DataSnapshot.class);
+
+        Buddy buddy = new Buddy("a", "b");
+
+        when(snapList.getChildren()).thenReturn(Arrays.asList(snap));
+        when(snap.getValue(Buddy.class)).thenReturn(buddy);
+        Consumer<List<User>> filterBuddies = mock(Consumer.class);
+        mb.getBuddiesAndConsume("a", participants, uIds, filterBuddies ).onDataChange(snapList);
+        assertTrue(uIds.contains("b"));
+        assertFalse(uIds.contains("a"));
+    }
+
+
+
+
+
+
 }

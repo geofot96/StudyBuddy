@@ -48,5 +48,6 @@ public interface ReferenceWrapper {
 
      ReferenceWrapper parent();
 
+     void muteAll();
 
 }

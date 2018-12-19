@@ -25,5 +25,15 @@ public class PairTest {
         assertEquals(p.getValue(),"m");
 
     }
+
+    @Test(expected =  IllegalArgumentException.class)
+    public void nullKeyTest(){
+        new Pair(null, "");
+    }
+
+    @Test(expected  = IllegalArgumentException.class)
+    public void nullValueTest(){
+        new Pair("", null);
+    }
     
 }

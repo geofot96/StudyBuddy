@@ -10,7 +10,10 @@
     <permission
         android:name="ch.epfl.sweng.studdybuddy.permission.MAPS_RECEIVE"
         android:protectionLevel="signature" />
+
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
         android:name=".util.StudyBuddy"
@@ -24,6 +27,7 @@
         <activity android:name=".auth.GoogleSignInActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
                 <action android:name="ch.epfl.sweng.studdybuddy_TARGET_NOTIFICATION"/>
                 <category android:name="android.intent.category.DEFAULT"/>
@@ -76,7 +80,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activities.NavigationActivity" />
         </activity>
-        <activity android:name=".activities.NavigationActivity"/>
+        <activity android:name=".activities.NavigationActivity" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -88,7 +92,7 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
-        <activity android:name=".DummyChatActivity"/>
+        <activity android:name=".activities.DummyChatActivity"/>
         <activity
             android:name=".activities.group.MapsActivity"
             android:label="@string/title_activity_maps"/>
@@ -100,6 +104,18 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activities.group.GroupActivity" />
+        </activity>
+        <activity
+
+            android:name=".activities.AddFriendsActivity"
+            android:parentActivityName=".activities.MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.AddFriendsActivity" />
+        </activity>
+        <activity
+            android:name=".activities.group.InviteFriendsActivity"
+            android:label="@string/title_activity_invite_friends">
         </activity>
         <service android:name=".services.notifications.MyFirebaseMessaging"
             android:enabled="true"

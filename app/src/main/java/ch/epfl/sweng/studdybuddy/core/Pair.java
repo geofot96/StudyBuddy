@@ -8,6 +8,12 @@ public class Pair {
 
     public Pair(String key, String value){
         this();
+
+        if(key == null) {
+            throw new IllegalArgumentException("Cannot instantiate a pair with a null key");
+        }else if (value == null){
+            throw new IllegalArgumentException("Cannot instantiate a pair with null value");
+        }
         this.key = key;
         this.value = value;
     }

@@ -14,7 +14,7 @@ before_script:
   - echo no | android create avd --force -n test -t android-22 --abi armeabi-v7a
   - emulator -avd test -no-window &
   - android-wait-for-emulator
-  - adb shell input keyevent 82
+  - adb shell input keyevent 82 &
     # This should be in the `before_script` entry
   # Set up Code Climate test reporter
   - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
@@ -22,7 +22,7 @@ before_script:
   - ./cc-test-reporter before-build
 script:
   - chmod +x ./gradlew
-  - travis_wait 45 ./gradlew build connectedCheck jacocoTestReport --info
+  - travis_wait 60 ./gradlew build connectedCheck jacocoTestReport
 after_script:
   # Report test coverage to Code Climate
   - export JACOCO_SOURCE_PATH=app/src/main/java/
@@ -31,3 +31,11 @@ after_script:
 after_failure:
   - if [ -f tests/tests.log ]; then cat tests/tests.log && sleep 10; fi
   - echo == End of test log ==
+before_cache:
+  - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
+  - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
+cache:
+  directories:
+    - $HOME/.gradle/caches/
+    - $HOME/.gradle/wrapper/
+    - $HOME/.android/build-cache

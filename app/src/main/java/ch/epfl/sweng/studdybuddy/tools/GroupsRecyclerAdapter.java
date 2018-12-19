@@ -22,6 +22,8 @@ import ch.epfl.sweng.studdybuddy.util.FeedFilter;
 import ch.epfl.sweng.studdybuddy.util.Helper;
 import ch.epfl.sweng.studdybuddy.util.Messages;
 
+import static ch.epfl.sweng.studdybuddy.controllers.CreateGroupController.createUserInitialAvailabilities;
+
 public class GroupsRecyclerAdapter extends BasicRecyclerAdapter implements Filterable
 {
     public GroupsRecyclerAdapter(List<Group> groupList, String userId)
@@ -111,7 +113,7 @@ public class GroupsRecyclerAdapter extends BasicRecyclerAdapter implements Filte
             public void onClick(View v) {
                 Pair pair =new Pair(getUserId(), group.getGroupID().toString());
                 fb.select(Messages.FirebaseNode.USERGROUP).select(Helper.hashCode(pair)).setVal(pair);
-                CreateGroupActivity.createUserInitialAvailabilities(getUserId(), group.getAdminID());
+                createUserInitialAvailabilities(getUserId(), group.getAdminID());
                 if(getJoinConsumer() != null)
                 {
                     Intent intent = new Intent(button.getContext(), GroupActivity.class);
