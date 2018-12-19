@@ -11,11 +11,11 @@ import ch.epfl.sweng.studdybuddy.tools.Intentable;
 public class CreateGroupController {
     public static void joinGroupsAndGo(MetaGroup mb, User user, Group g, Intentable toNav) {
         mb.pushGroup(g, user.getUserID().getId());
-        Availability a = new ConnectedAvailability(user.getUserID(), g.getGroupID());
+        ConnectedAvailability.createNewAvailabilities(user.getUserID(), g.getGroupID());
         toNav.launch();
     }
 
     public static void createUserInitialAvailabilities(String user, String group){
-        Availability a = new ConnectedAvailability(new ID<>(user), new ID<>(group));
+        ConnectedAvailability.createNewAvailabilities(new ID<>(user), new ID<>(group));
     }
 }

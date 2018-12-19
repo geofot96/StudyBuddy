@@ -3,6 +3,7 @@ package ch.epfl.sweng.studdybuddy.services.calendar;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -29,17 +30,18 @@ public class ConnectedAvailability implements Availability {
     private final DatabaseReference databaseReference;
     private Availability availabilities;
 
-    public ConnectedAvailability(@NonNull ID<User> user, @NonNull ID<Group> group){
-        this(FirebaseDatabase
+    private ConnectedAvailability(@NonNull ID<User> user, @NonNull ID<Group> group){
+        databaseReference = FirebaseDatabase
                 .getInstance()
                 .getReference()
                 .child(Messages.FirebaseNode.AVAILABILITIES)
                 .child(group.getId())
-                .child(user.getId())
-        );
+                .child(user.getId());
+        availabilities = new ConcreteAvailability();
+        update();
     }
 
-    public ConnectedAvailability(DatabaseReference databaseReference) {
+    private ConnectedAvailability(DatabaseReference databaseReference) {
         if(databaseReference == null){
             throw new IllegalArgumentException();
         }
@@ -51,12 +53,27 @@ public class ConnectedAvailability implements Availability {
         this.databaseReference = databaseReference;
     }
 
-    public ConnectedAvailability(Availability A, DatabaseReference databaseReference){
+    private ConnectedAvailability(Availability A, DatabaseReference databaseReference){
         if(A == null || databaseReference == null){
             throw new IllegalArgumentException();
         }
         this.availabilities = A;
         this.databaseReference = databaseReference;
+    }
+
+    public static ConnectedAvailability createNewAvailabilities(@NonNull ID<User> user, @NonNull ID<Group> group){
+        return new ConnectedAvailability(user, group);
+    }
+
+    public static ConnectedAvailability copyExistedAvailabilities(@NonNull ID<User> user, @NonNull ID<Group> group){
+        return new ConnectedAvailability(
+                FirebaseDatabase
+                        .getInstance()
+                        .getReference()
+                        .child(Messages.FirebaseNode.AVAILABILITIES)
+                        .child(group.getId())
+                        .child(user.getId())
+        );
     }
 
 

@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CalendarComputation {
-
     public List<Integer> getSumOfTwoLists(List<Integer> first_list, List<Integer> second_list){
 
         int len = first_list.size();

@@ -64,7 +64,7 @@ public class ConnectedCalendarActivity extends AppCompatActivity implements Obse
 
         calendar = new ConnectedCalendar(this, groupID);
 
-        userAvailabilities = new ConnectedAvailability(userID, groupID);
+        userAvailabilities = ConnectedAvailability.copyExistedAvailabilities(userID, groupID);
 
         setOnToggleBehavior(calendarGrid);
 

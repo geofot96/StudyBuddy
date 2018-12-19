@@ -46,14 +46,11 @@ import static ch.epfl.sweng.studdybuddy.util.ActivityHelper.onClickLaunch;
 
 
 public class GroupActivity extends AppCompatActivity implements Observer, Resultable {
-    private boolean wrongInput = false;
     List<User> participants  = new ArrayList<>();
     MetaGroupAdmin mb  = new MetaGroupAdmin();
     private String uId;
     private String gId;
     Button button;
-    List<Group> group = new ArrayList<>();
-    List<String> gIds = new ArrayList<>();
     private MetaMeeting metaM = new MetaMeeting();
     String adminId;
     private List<Meeting> meetingList;
@@ -170,9 +167,6 @@ public class GroupActivity extends AppCompatActivity implements Observer, Result
         meetingRV.setAdapter(adapter);
     }
 
-    public boolean getInfoWrongInput(){
-        return wrongInput;
-    }
 
 
     /**
