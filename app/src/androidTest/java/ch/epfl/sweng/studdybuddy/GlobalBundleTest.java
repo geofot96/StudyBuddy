@@ -72,6 +72,13 @@ public class GlobalBundleTest {
         assertEquals(Messages.TEST, toCheck.getLocation().getAddress());
     }
 
+    @Test
+    public void clearTest(){
+        GlobalBundle.getInstance().clear();
+        assertTrue(GlobalBundle.getInstance().getSavedBundle().isEmpty());
+        assertTrue(GlobalBundle.getInstance().getMeeting() == null);
+    }
+
     private void testingMeeting(){
         Bundle b = GlobalBundle.getInstance().getSavedBundle();
         assertEquals((long) 0, b.getLong(Messages.M_SDATE));
@@ -82,4 +89,5 @@ public class GlobalBundleTest {
         assertEquals(Messages.TEST, b.getString(Messages.LOCATION_TITLE));
         assertEquals(Messages.TEST, b.getString(Messages.ADDRESS));
     }
+
 }

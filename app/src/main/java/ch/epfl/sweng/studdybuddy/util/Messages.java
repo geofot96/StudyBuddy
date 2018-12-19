@@ -22,13 +22,11 @@ public class Messages {
     public static final String LONGITUDE = "ch.epfl.sweng.studybuddy.longitude";
 
 
-    public static final String chatGroupID = "GroupID";
     public static final String settingsPlaceHolder ="Settings";
 
-    public static final String NO_MEETINGID = "NO MEETING";
 
 
-    public class FirebaseNode{
+    public static class FirebaseNode{
         public static final String AVAILABILITIES = "availabilities";
         public static final String MEETINGS = "meetings";
         public static final String USERGROUP = "userGroup";

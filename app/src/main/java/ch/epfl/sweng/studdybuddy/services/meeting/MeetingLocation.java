@@ -6,8 +6,8 @@ import java.io.Serializable;
 
 public class MeetingLocation implements Serializable{
 
-    private  String title;
-    private String address;
+    private  String title = new String();
+    private String address = new String();
     private  double latitude;
     private  double longitude;
 

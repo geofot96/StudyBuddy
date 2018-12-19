@@ -60,4 +60,9 @@ public class GlobalBundle {
         }
         return null;
     }
+
+    public void clear(){
+        savedBundle.clear();
+        meetingExist = false;
+    }
 }

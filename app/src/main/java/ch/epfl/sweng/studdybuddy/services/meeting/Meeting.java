@@ -12,12 +12,12 @@ public final class Meeting {
     private long starting;
     private MeetingLocation location;
 
-    public Meeting(long creation, long deadline, String id) {
+    /*public Meeting(long creation, long deadline, String id) {
         this.starting = creation;
         this.ending = deadline;
         this.id = new ID<>(id);
         this.location = MapsHelper.ROLEX_LOCATION;
-    }
+    }*/
 
     //not used
     /*public void copy(Meeting copy) {
