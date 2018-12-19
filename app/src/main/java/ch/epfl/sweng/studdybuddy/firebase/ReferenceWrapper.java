@@ -10,6 +10,7 @@ import ch.epfl.sweng.studdybuddy.tools.Consumer;
 public interface ReferenceWrapper {
     /**
      * Wraps the database instance
+     * Allows to perform thre most basic operation on the Database
      */
 
     /**

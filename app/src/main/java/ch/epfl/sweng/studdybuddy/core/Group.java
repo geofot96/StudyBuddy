@@ -148,17 +148,10 @@ public final class Group implements Comparable<Group> {
      * @return the newly created group
      */
     public Group withAdmin(String adminID) {
+
         return new Group(maxNoUsers, course, lang, groupID.getId(), adminID);
     }
-//TODO should we delete this?
-    public void copy(Group group) {
-        setCourse(group.getCourse());
-        setLang(group.getLang());
-        setAdminID(group.getAdminID());
-        setMaxNoUsers(group.getMaxNoUsers());
-        setGroupID(group.getGroupID());
 
-    }
 
     /**
      * An overriden method used when comparing groups. The precedence is given to the most recently created one
