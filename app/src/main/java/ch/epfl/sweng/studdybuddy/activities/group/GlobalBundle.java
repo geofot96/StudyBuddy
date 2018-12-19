@@ -1,7 +1,6 @@
 package ch.epfl.sweng.studdybuddy.activities.group;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import ch.epfl.sweng.studdybuddy.services.meeting.Meeting;
@@ -59,5 +58,10 @@ public class GlobalBundle {
             return meeting;
         }
         return null;
+    }
+
+    public void clear(){
+        savedBundle.clear();
+        meetingExist = false;
     }
 }

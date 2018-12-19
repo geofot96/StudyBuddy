@@ -1,5 +1,6 @@
 package ch.epfl.sweng.studdybuddy;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.test.espresso.intent.rule.IntentsTestRule;
@@ -11,7 +12,7 @@ import org.junit.Test;
 import ch.epfl.sweng.studdybuddy.activities.group.GlobalBundle;
 import ch.epfl.sweng.studdybuddy.activities.group.GroupActivity;
 import ch.epfl.sweng.studdybuddy.activities.group.InviteFriendsActivity;
-import ch.epfl.sweng.studdybuddy.activities.group.meetings.createMeetingActivity;
+import ch.epfl.sweng.studdybuddy.activities.group.meetings.CreateMeetingActivity;
 import ch.epfl.sweng.studdybuddy.util.Messages;
 
 import static android.support.test.espresso.Espresso.onView;
@@ -46,7 +47,7 @@ public class GroupActivityTest {
     @Test
     public void AdminCanLeadToCreateMeeting(){
         mManualRule.launchActivity(new Intent());
-        testIntent(R.id.createMeeting, createMeetingActivity.class.getName());
+        testIntent(R.id.createMeeting, CreateMeetingActivity.class.getName());
         mManualRule.finishActivity();
     }
 
@@ -56,6 +57,7 @@ public class GroupActivityTest {
         testIntent(R.id.invite_friends, InviteFriendsActivity.class.getName());
         mManualRule.finishActivity();
     }
+
     /*@Test
     public void leadsToCalendar(){
         mManualRule.launchActivity(new Intent());

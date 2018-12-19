@@ -1,7 +1,6 @@
 package ch.epfl.sweng.studdybuddy.activities;
 
 import android.Manifest;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -28,28 +27,42 @@ import com.firebase.ui.database.FirebaseListAdapter;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
 import ch.epfl.sweng.studdybuddy.R;
+import ch.epfl.sweng.studdybuddy.core.User;
 import ch.epfl.sweng.studdybuddy.firebase.FirebaseReference;
+import ch.epfl.sweng.studdybuddy.firebase.MetaGroup;
 import ch.epfl.sweng.studdybuddy.services.chat.ChatMessage;
+import ch.epfl.sweng.studdybuddy.services.notifications.MyFirebaseMessaging;
 import ch.epfl.sweng.studdybuddy.util.Messages;
+
 /**
  * An activity showing text messages and photos sent between the members of a group
  */
-public class ChatActivity extends AppCompatActivity {
+public class ChatActivity extends AppCompatActivity{
     String groupID;
     public FirebaseReference ref;
     private StorageReference storageRef;
     private Button addImage, cameraButon;
-    private Uri filePath;
     private String downloadUri;
     protected static final int PICK_IMAGE_REQUEST = 1;
     protected static final int OPEN_CAMERA_REQUEST = 42;
     private FloatingActionButton fab;
+
+    protected DatabaseReference mNotificationsRef;
+    private static List<User> users = new ArrayList<>();
+    protected FirebaseUser auth;
 
     /**
      * OnCreate method setting up all the graphical components
@@ -71,11 +84,16 @@ public class ChatActivity extends AppCompatActivity {
                     Toast.LENGTH_SHORT).show();
             finish();
         }
+
+        MetaGroup mGp = new MetaGroup();
+        mGp.getGroupUsers(groupID, users);
+
         initializations();
     }
     /**
      * A helper function that sets up part of the graphical components
-     */    private void initializations() {
+     */
+    private void initializations() {
         downloadUri = "";
         displayChatMessages();
         fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -86,7 +104,30 @@ public class ChatActivity extends AppCompatActivity {
         //check if camera permission is granted and when it isn't ask for it]
         askForCameraPermission();
         fab.setOnClickListener(getFabListener());
+        initDatabaseReference();
+        initAuthenticatedUser();
     }
+
+    protected void initAuthenticatedUser() {auth = FirebaseAuth.getInstance().getCurrentUser();}
+
+    protected void initDatabaseReference() {mNotificationsRef = FirebaseDatabase.getInstance().getReference("notifications");}
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        //we avoid receiving notifications from people we are currently chatting with
+        MyFirebaseMessaging.setCurrentGroupID(groupID);
+    }
+
+    @Override
+    protected void onStop(){
+        super.onStop();
+        //once we don't see the chat box anymore, we tell to myFirebaseMessaging to send us
+        //the further notification from this chat box
+        MyFirebaseMessaging.setCurrentGroupID(MyFirebaseMessaging.NO_GROUP);
+    }
+
+
     /**
      * Check if permissions for using the camera are granted and if not prompt a message to ask the user
      */
@@ -254,7 +295,10 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     protected void pushMessage(EditText inputText, FirebaseReference reference, String groupsID, String downloadURI) {
-        ChatUtils.pushToFirebase(reference, groupsID, inputText.getText().toString(), downloadURI);
+        if(auth != null) {
+            ChatUtils.pushToFirebase(reference, groupsID, inputText.getText().toString(), downloadURI)
+                    .addOnSuccessListener(ChatUtils.getOnSuccessListener(mNotificationsRef, auth, groupsID, users));
+        }
     }
 
     /**
@@ -300,3 +344,4 @@ public class ChatActivity extends AppCompatActivity {
         return DateFormat.format("dd-MM (HH:mm)", model.getMessageTime());
     }
 }
+

@@ -1,6 +1,5 @@
 package ch.epfl.sweng.studdybuddy.activities;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -10,15 +9,21 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
+import java.util.HashMap;
+import java.util.List;
 import java.util.UUID;
 
+import ch.epfl.sweng.studdybuddy.core.User;
 import ch.epfl.sweng.studdybuddy.firebase.FirebaseReference;
 import ch.epfl.sweng.studdybuddy.services.chat.ChatMessage;
 import ch.epfl.sweng.studdybuddy.util.Messages;
@@ -27,8 +32,8 @@ import ch.epfl.sweng.studdybuddy.util.Messages;
  * A class containing a selection of auxiliary methods used in ChatActivity
  */
 public class ChatUtils {
-    protected static void pushToFirebase(FirebaseReference ref, String groupID, String input, String downloadUri) {
-        ref.select(Messages.FirebaseNode.CHAT).select(groupID).push(new ChatMessage(input,
+    protected static Task<Void> pushToFirebase(FirebaseReference ref, String groupID, String input, String downloadUri) {
+        return ref.select(Messages.FirebaseNode.CHAT).select(groupID).push(new ChatMessage(input,
                 FirebaseAuth.getInstance().getCurrentUser().getDisplayName(), downloadUri));
     }
 
@@ -83,6 +88,23 @@ public class ChatUtils {
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
         byte[] dataBAOS = baos.toByteArray();
         return ChatUtils.uploadImageFromCamera(dataBAOS, applicationContext);
+    }
+
+    protected static OnSuccessListener<Void> getOnSuccessListener(DatabaseReference mNotificationsRef, FirebaseUser auth, String groupID, List<User> users){
+        return new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                    HashMap<String, String> notification = new HashMap<>();
+                    notification.put("FROM", auth.getUid());
+                    notification.put("GROUP", groupID);
+                    notification.put("TYPE", "message");
+                    for (User u : users) {
+                        if (!u.getUserID().getId().equals(auth.getUid())) {
+                            mNotificationsRef.child(u.getUserID().getId()).push().setValue(notification);
+                        }
+                    }
+            }
+        };
     }
 
 }

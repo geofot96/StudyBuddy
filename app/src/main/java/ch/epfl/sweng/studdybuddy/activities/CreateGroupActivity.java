@@ -1,6 +1,5 @@
 package ch.epfl.sweng.studdybuddy.activities;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -40,7 +39,6 @@ public class CreateGroupActivity extends AppCompatActivity implements AdapterVie
     private int maxParticipants = 2;//default value
     private static List<String> coursesDB;
 
-    private static final List<String> courseSelection = new ArrayList<>();
     FirebaseReference firebase;
     MetaGroup mb;
     Button create;
@@ -53,7 +51,6 @@ public class CreateGroupActivity extends AppCompatActivity implements AdapterVie
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_group);
         mb = new MetaGroup();
-        Intent intent = getIntent();
         setUpLang();
         setUpNumberPicker();
         firebase = new FirebaseReference();
@@ -159,5 +156,4 @@ public class CreateGroupActivity extends AppCompatActivity implements AdapterVie
             maxParticipants = numberPicker.getValue();
         }
     };
-
 }

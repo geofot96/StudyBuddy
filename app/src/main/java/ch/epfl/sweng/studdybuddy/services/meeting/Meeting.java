@@ -4,7 +4,6 @@ import java.util.Date;
 import java.util.UUID;
 
 import ch.epfl.sweng.studdybuddy.core.ID;
-import ch.epfl.sweng.studdybuddy.util.MapsHelper;
 
 public final class Meeting {
     private ID<Meeting> id;
@@ -12,12 +11,12 @@ public final class Meeting {
     private long starting;
     private MeetingLocation location;
 
-    public Meeting(long creation, long deadline, String id) {
+    /*public Meeting(long creation, long deadline, String id) {
         this.starting = creation;
         this.ending = deadline;
         this.id = new ID<>(id);
         this.location = MapsHelper.ROLEX_LOCATION;
-    }
+    }*/
 
     //not used
     /*public void copy(Meeting copy) {

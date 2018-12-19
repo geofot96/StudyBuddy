@@ -1,9 +1,7 @@
 package ch.epfl.sweng.studdybuddy.auth;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -12,8 +10,12 @@ import android.widget.Toast;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,10 +24,8 @@ import ch.epfl.sweng.studdybuddy.R;
 import ch.epfl.sweng.studdybuddy.activities.CourseSelectActivity;
 import ch.epfl.sweng.studdybuddy.activities.NavigationActivity;
 import ch.epfl.sweng.studdybuddy.core.Account;
-import ch.epfl.sweng.studdybuddy.core.ID;
 import ch.epfl.sweng.studdybuddy.core.User;
-import ch.epfl.sweng.studdybuddy.firebase.FirebaseReference;
-import ch.epfl.sweng.studdybuddy.firebase.ReferenceWrapper;
+import ch.epfl.sweng.studdybuddy.services.notifications.Token;
 import ch.epfl.sweng.studdybuddy.sql.SqlWrapper;
 import ch.epfl.sweng.studdybuddy.tools.Consumer;
 import ch.epfl.sweng.studdybuddy.tools.Intentable;
@@ -33,7 +33,6 @@ import ch.epfl.sweng.studdybuddy.util.StudyBuddy;
 
 import static ch.epfl.sweng.studdybuddy.controllers.GoogleSigninController.fetchUserAndStart;
 import static ch.epfl.sweng.studdybuddy.controllers.GoogleSigninController.fetchUserAndStartConsumer;
-import static ch.epfl.sweng.studdybuddy.controllers.GoogleSigninController.fetchUserCallback;
 import static ch.epfl.sweng.studdybuddy.sql.DAOs.SqlConsumers.clearAndFill;
 
 public class GoogleSignInActivity extends AppCompatActivity {
@@ -78,6 +77,7 @@ public class GoogleSignInActivity extends AppCompatActivity {
             Toast.makeText(this, "Welcome " + personName, Toast.LENGTH_SHORT).show();
             List<User> users = new ArrayList<>();
             sql.getUser(acct.getId(), Consumer.sequenced(clearAndFill(users), fetchUserAndStartConsumer(acct, app, getBaseContext())));
+            fetchUserAndStart(acct, app, this);
         } else {
             //appears only when the user isn't connected to the app
             Toast.makeText(this, "No User", Toast.LENGTH_SHORT).show();
@@ -102,7 +102,7 @@ public class GoogleSignInActivity extends AppCompatActivity {
                             if (onTest()) {
                                 startActivity(new Intent(GoogleSignInActivity.this, CourseSelectActivity.class));
                             } else {
-                                fetchUserAndStart(mAuth.getCurrentUser(), app, getBaseContext());
+                                moveToCourseSelectActvitiy();
                             }
                         }
                     }
@@ -113,6 +113,22 @@ public class GoogleSignInActivity extends AppCompatActivity {
             }
         }
     }
+
+    private void moveToCourseSelectActvitiy() {
+        updateToken(FirebaseInstanceId.getInstance().getToken()).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                fetchUserAndStart(mAuth.getCurrentUser(), app, getBaseContext());
+            }
+        });
+    }
+
+    private Task<Void> updateToken(String token) {
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("tokens");
+        Token deviceToken = new Token(token);
+        return reference.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(deviceToken);
+    }
+
 
     AuthManager getAuthManager(){
         if (mAuth == null){

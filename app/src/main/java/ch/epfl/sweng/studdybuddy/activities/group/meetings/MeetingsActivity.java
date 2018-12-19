@@ -8,17 +8,14 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import ch.epfl.sweng.studdybuddy.R;
 import ch.epfl.sweng.studdybuddy.activities.NavigationActivity;
 import ch.epfl.sweng.studdybuddy.activities.group.GlobalBundle;
 import ch.epfl.sweng.studdybuddy.core.ID;
-import ch.epfl.sweng.studdybuddy.core.Pair;
 import ch.epfl.sweng.studdybuddy.firebase.MetaMeeting;
 import ch.epfl.sweng.studdybuddy.services.meeting.Meeting;
-import ch.epfl.sweng.studdybuddy.services.meeting.MeetingLocation;
 import ch.epfl.sweng.studdybuddy.services.meeting.MeetingRecyclerAdapter;
 import ch.epfl.sweng.studdybuddy.util.ActivityHelper;
 import ch.epfl.sweng.studdybuddy.util.Messages;

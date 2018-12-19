@@ -27,4 +27,10 @@ public class MessagesTest {
     public void test(){
         assertEquals("test", m.TEST);
     }
+
+    @Test
+    public void firebaseNode(){
+        Messages.FirebaseNode firebaseNode =new Messages.FirebaseNode();
+        assertEquals("groups", firebaseNode.GROUPS);
+    }
 }

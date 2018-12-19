@@ -153,8 +153,9 @@ public class GroupsRecyclerAdapter extends BasicRecyclerAdapter implements Filte
             public void onClick(View v) {
                 Pair pair = new Pair(getUserId(), group.getGroupID().toString());
                 fb.select(Messages.FirebaseNode.USERGROUP).select(Helper.hashCode(pair)).setVal(pair);
-                createUserInitialAvailabilities(getUserId(), group.getAdminID());
-                if (getJoinConsumer() != null) {
+                createUserInitialAvailabilities(getUserId(), group.getGroupID().toString());
+                if(getJoinConsumer() != null)
+                {
                     Intent intent = new Intent(button.getContext(), GroupActivity.class);
                     intent.putExtra(Messages.groupID, group.getGroupID().getId());
                     intent.putExtra(Messages.userID, getUserId());

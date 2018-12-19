@@ -1,7 +1,5 @@
 package ch.epfl.sweng.studdybuddy.firebase;
 
-import android.util.Log;
-
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.List;

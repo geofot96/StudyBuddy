@@ -16,6 +16,7 @@ public class FeedFilterTest {
     List<Group> groups = groups2();
     GroupsRecyclerAdapter ad = mock(GroupsRecyclerAdapter.class);
     FeedFilter filter = new FeedFilter(ad, groups);
+
     @Test
     public void performFilteringWithNoConstraints() {
         List<Group> fr = filter.forceFiltering("");

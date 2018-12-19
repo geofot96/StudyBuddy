@@ -44,6 +44,8 @@ public class FirebaseAuthManager implements AuthManager {
                 .addOnCompleteListener(ctx, ocl);
     }
 
+
+
     public void startLoginScreen(){
         int RC_SIGN_IN = 1;
         Intent signInIntent = client.getSignInIntent();

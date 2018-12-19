@@ -2,7 +2,6 @@ package ch.epfl.sweng.studdybuddy.tools;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 
 public class Intentable {
     Context ctx;

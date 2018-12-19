@@ -1,11 +1,11 @@
 package ch.epfl.sweng.studdybuddy.util;
 
-import android.app.Application;
+import android.support.multidex.MultiDexApplication;
 
 import ch.epfl.sweng.studdybuddy.core.ID;
 import ch.epfl.sweng.studdybuddy.core.User;
 
-public class StudyBuddy extends Application {
+public class StudyBuddy extends MultiDexApplication {
     public User authendifiedUser;
     private boolean onTravis = true;
     public User getAuthendifiedUser() {
